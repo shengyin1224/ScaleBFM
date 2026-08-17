@@ -4,20 +4,28 @@ from scipy.spatial.transform import Rotation as R
 from scalebridge.utils.torch_utils import calc_heading_quat, calc_heading_quat_inv, quat_mul
 
 # ---- constant: P frame expressed in tracker-2 body frame ----
-# Tracker-2 body axes (after Y-up→Z-up): x-down, y-right, z-back
+# Tracker-2 body axes (after Y-up→Z-up), measured on 2026-08-14 from the
+# mounted attitude plus a manual move-the-tracker calibration session
+# (outputs/2026-08-14/12-44-10): x-forward, y-right, z-down.
+# The previous assumption (x-down, y-right, z-back) left the P frame lying
+# on its side (P-z ~94 deg from vertical in every recorded run), which made
+# the extracted heading ill-conditioned and destabilised the global loop.
 # P axes: x-forward, y-left, z-up  (standard Z-up world)
 # Columns = T2-body basis vectors expressed in P/world frame:
-#   T2_x (down)  → [0, 0, -1]
-#   T2_y (right) → [0, -1, 0]
-#   T2_z (back)  → [-1, 0, 0]
+#   T2_x (forward) → [1, 0, 0]
+#   T2_y (right)   → [0, -1, 0]
+#   T2_z (down)    → [0, 0, -1]
 _R_P_FROM_T2BODY = np.array([
-    [ 0,  0, -1],
+    [ 1,  0,  0],
     [ 0, -1,  0],
-    [-1,  0,  0],
+    [ 0,  0, -1],
 ], dtype=np.float64)
 
-# Position of P origin in tracker-2 body coordinates (metres)
-_P_POS_IN_T2BODY = np.array([-0.04, 0.0, -0.07], dtype=np.float64)
+# Position of P origin in tracker-2 body coordinates (metres).
+# Physical intent unchanged: pelvis centre sits ~7 cm in front of and
+# ~4 cm above the tracker; re-expressed in the corrected body axes
+# (forward = +x, up = -z).
+_P_POS_IN_T2BODY = np.array([0.07, 0.0, -0.04], dtype=np.float64)
 
 
 def _yup_to_zup_pos(pos: np.ndarray) -> np.ndarray:
@@ -55,7 +63,7 @@ class ViveTrackerProcessor:
         self._calib_pos[..., -1] = 0.0
 
     def process(self, data: np.ndarray) -> np.ndarray:
-        """Process a (2, 14) raw tracker frame and return P pose in tracker-1 frame.
+        """Process a (2, 14) raw tracker frame and return the pelvis pose.
 
         Parameters
         ----------
@@ -67,11 +75,11 @@ class ViveTrackerProcessor:
         -------
         result : np.ndarray, shape (7,)
             [pos_x, pos_y, pos_z, quat_w, quat_x, quat_y, quat_z]
-            of frame P expressed in tracker-1's coordinate frame (Z-up).
+            of frame P in the gravity-aligned SteamVR frame, translated so the
+            floor tracker is the origin.
         """
         # ---- unpack raw data ----
         pos1_raw = data[0, :3]
-        quat1_raw = data[0, 3:7]   # (w, x, y, z)
         pos2_raw = data[1, :3]
         quat2_raw = data[1, 3:7]
 
@@ -83,41 +91,42 @@ class ViveTrackerProcessor:
         # ==================================================================
         pos1 = _yup_to_zup_pos(pos1_raw)
         pos2 = _yup_to_zup_pos(pos2_raw)
-        quat1 = _yup_to_zup_quat_wxyz(quat1_raw)
         quat2 = _yup_to_zup_quat_wxyz(quat2_raw)
 
         # scipy Rotation uses scalar-last (x, y, z, w)
-        R1 = R.from_quat([quat1[1], quat1[2], quat1[3], quat1[0]])
         R2 = R.from_quat([quat2[1], quat2[2], quat2[3], quat2[0]])
 
         # ==================================================================
-        # Step 2: Tracker-2 pose relative to tracker-1 (base)
-        #   R_rel   = R1^{-1} * R2
-        #   t_rel   = R1^{-1} * (pos2 - pos1)
+        # Step 2: Tracker-2 pose relative to the floor tracker origin
+        #
+        # SteamVR's standing universe already supplies a gravity-aligned
+        # coordinate system.  The floor tracker therefore defines only the
+        # translation origin; its arbitrary physical orientation must not
+        # rotate the world frame.  Using R1^{-1} here made the computed height
+        # depend on which way the floor tracker happened to face, and could
+        # turn a valid positive pelvis height into a negative value.
         # ==================================================================
-        R1_inv = R1.inv()
-        R_rel = R1_inv * R2            # rotation of T2 in T1 frame
-        t_rel = R1_inv.apply(pos2 - pos1)  # position of T2 in T1 frame
+        t_rel = pos2 - pos1
 
         # ==================================================================
-        # Step 3: Frame P in tracker-1 frame
+        # Step 3: Frame P in the gravity-aligned frame
         #   T_P_in_T2 is the fixed transform of P in tracker-2 body:
         #       rotation  = R_P_from_T2body
         #       position  = p_pos_in_T2body
-        #   T_P_in_T1 = T_T2_in_T1 * T_P_in_T2
-        #       R_P_in_T1 = R_rel * R_P_from_T2body
-        #       t_P_in_T1 = t_rel + R_rel.apply(p_pos_in_T2body)
+        #   T_P_in_W = T_T2_in_W * T_P_in_T2
+        #       R_P_in_W = R2 * R_P_from_T2body
+        #       t_P_in_W = t_rel + R2.apply(p_pos_in_T2body)
         # ==================================================================
-        R_P_in_T1 = R_rel * self._R_P_from_T2body
-        t_P_in_T1 = t_rel + R_rel.apply(self._p_pos_in_T2body)
+        R_P_in_world = R2 * self._R_P_from_T2body
+        t_P_in_world = t_rel + R2.apply(self._p_pos_in_T2body)
 
         # ---- optional calibration offset ----
         if self._calib_rot is not None:
-            R_P_in_T1 = self._calib_rot * R_P_in_T1
-            t_P_in_T1 = self._calib_rot.apply(t_P_in_T1 - self._calib_pos)
+            R_P_in_world = self._calib_rot * R_P_in_world
+            t_P_in_world = self._calib_rot.apply(t_P_in_world - self._calib_pos)
 
         # ---- pack result as (7,): pos(3) + quat_wxyz(4) ----
-        q_xyzw = R_P_in_T1.as_quat()  # scipy → (x, y, z, w)
+        q_xyzw = R_P_in_world.as_quat()  # scipy → (x, y, z, w)
         q_wxyz = np.array([q_xyzw[3], q_xyzw[0], q_xyzw[1], q_xyzw[2]])
-        result = np.concatenate([t_P_in_T1, q_wxyz])
+        result = np.concatenate([t_P_in_world, q_wxyz])
         return result
