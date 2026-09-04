@@ -1,0 +1,64 @@
+defaults:
+  - real_world
+
+_target_: simulator.real_world_inspire.InspireRealWorld
+_recursive_: False
+config:
+  # This is the PC interface connected to the G1.  It is the same interface
+  # used by SONIC/TWIST2 on this workstation.
+  hand_network: enp4s0
+  # Keep Unitree DDS in its already tested Python 3.8 environment; ScaleBridge
+  # itself remains in the existing Python 3.11 environment.
+  hand_bridge_python: /home/nerv/miniconda3/envs/twist2/bin/python
+  hand_sdk_path: /home/nerv/qingyaoxu/TWIST2/unitree_sdk2_python
+  hand_mapping_path: /home/nerv/qingyaoxu/TWIST2/deploy_real
+  hand_state_timeout: 8.0
+  # Maximum normalized motor change per 50 Hz command.  0.02 means a complete
+  # open-to-close transition takes at least one second.
+  hand_max_step: 0.02
+  # Resolved from env.config.motion_path so the hands can never replay a
+  # different motion's grasp.  Point this at a file to override.
+  hand_ik_path: auto
+  hand_ik_search_dir: /home/nerv/qingyaoxu/ScaleBFM/MyScaleBFM/ScaleTrack/action_error_results
+  # Deployment drives the hands from fingertip coordinates, so solve the
+  # packaged tip targets live rather than replaying the dof angles an offline
+  # pass already solved from them.  Set to False to replay those angles.
+  hand_realtime_ik: True
+  hand_ik_module_root: /home/nerv/qingyaoxu/ScaleBFM/MyScaleBFM
+  # Warm-started from the previous command, 20 iterations reproduce the offline
+  # 120-iteration solution exactly at a fifth of the cost.
+  hand_ik_iters: 20
+  hand_ik_damping: 0.001
+  hand_ik_step: 0.7
+  hand_ik_smooth_weight: 0.01
+  hand_ik_reg_weight: 0.0001
+  tracker_hold_root_mode: local_then_global
+  tracker_local_to_global_transition_steps: 25
+  # 2026-08-19 hardening master switch. True enables: (a) resuming from a
+  # localization pause through the 25-step Local-to-Global blend instead of an
+  # instant switch, (b) requiring tracker_resume_min_healthy_steps consecutive
+  # healthy 50Hz steps before resuming (stops local/global flapping),
+  # (c) logging hand commands and feedback to hand_control.jsonl, and
+  # (d) returning from the final motion frame to the proven frame-0 stand.
+  deployment_hardening: True
+  tracker_resume_min_healthy_steps: 50
+  # At 50 Hz, 100 steps gives a two-second final-pose -> frame-0 blend. Frame 0
+  # is anchored to the robot's completion heading (not its old global heading),
+  # then held indefinitely with Local root input.
+  motion_complete_return_to_start_steps: 100
+  # Same master switch as the stock real-world backend. False keeps the
+  # previous tracker behavior for A/B comparison.
+  tracker_robust_mode: False
+  tracker_stale_timeout: 0.25
+  tracker_recovery_valid_frames: 10
+  tracker_calibration_frames: 50
+  tracker_max_position_step: 0.0
+  tracker_max_position_speed: 3.0
+  tracker_position_smoothing_alpha: 0.2
+  tracker_calibration_max_position_std: 0.01
+  tracker_voice_alerts: True
+  tracker_voice_volume: 25
+  tracker_voice_speaker_id: 0
+  tracker_voice_network: enp4s0
+  tracker_voice_python: /home/nerv/miniconda3/envs/twist2/bin/python
+  tracker_voice_sdk_path: /home/nerv/qingyaoxu/TWIST2/unitree_sdk2_python

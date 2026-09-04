@@ -1,0 +1,7 @@
+defaults:
+  - bfm
+
+focus_phase:
+  func:
+    _target_: observation.hat4_components.focus_phase
+    _partial_: true

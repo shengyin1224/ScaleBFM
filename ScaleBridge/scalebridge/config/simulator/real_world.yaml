@@ -5,3 +5,32 @@ _target_: simulator.real_world.RealWorld
 _recursive_: False
 config:
   joystick: False
+  localization_root_height_tolerance: 0.30
+  reference_play_gate: True
+  reference_play_control: R1
+  # A/B switch for the R2-to-R1 root source. The default preserves the current
+  # Local hold and smoothly blends to Global when R1 starts playback. Set to
+  # global_from_calibration to keep the calibrated Global root during hold,
+  # matching the TWIST_QYX deployment pattern.
+  tracker_hold_root_mode: local_then_global
+  tracker_local_to_global_transition_steps: 25
+  # One A/B switch for all robust Global-Vive handling. False preserves the
+  # previous ScaleBridge runtime behavior.
+  tracker_robust_mode: False
+  tracker_stale_timeout: 0.25
+  tracker_recovery_valid_frames: 10
+  tracker_calibration_frames: 50
+  # 0 disables an absolute displacement gate; velocity validation remains on,
+  # so legitimate movement accumulated during a short dropout is retained.
+  tracker_max_position_step: 0.0
+  tracker_max_position_speed: 3.0
+  tracker_position_smoothing_alpha: 0.2
+  tracker_calibration_max_position_std: 0.01
+  tracker_voice_alerts: True
+  # Tracker alerts are quieter than the normal G1 audio stream. The worker
+  # restores the robot's original volume after each alert.
+  tracker_voice_volume: 25
+  tracker_voice_speaker_id: 0
+  tracker_voice_network: enp4s0
+  tracker_voice_python: /home/nerv/miniconda3/envs/twist2/bin/python
+  tracker_voice_sdk_path: /home/nerv/qingyaoxu/TWIST2/unitree_sdk2_python

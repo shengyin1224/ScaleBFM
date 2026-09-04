@@ -1,0 +1,53 @@
+defaults:
+  - base_env
+
+_target_: env.motion_tracking_hat4_online.HAT4OnlineMotionTrackingEnv
+_recursive_: False
+config:
+  # /dev/null only satisfies inherited simulator interpolation; online mode
+  # never loads an offline NPZ.
+  motion_path: /dev/null
+  # Pre-start uses the raised-arm pose measured from the real G1's L2+A hold
+  # and generated through FK; it does not reuse frame 0 of any task motion.
+  future_idx: [0, 1, 2, 3, 4, 5]
+  reference_forcing: False
+  # Pre-R1 hold pose: raised = fixed real-G1 raised-arm ready pose;
+  # stand = hold the as-calibrated stand, arms down (old behaviour).
+  prestart_arm_pose: raised
+  # Legacy fallback for producers/recordings without position_origin_world.
+  # Current HAT chunks carry their opening-head world origin and bypass this
+  # frame-0 anchoring so absolute global displacement is preserved.
+  # fixed locks the fallback transform; follow recomputes it every chunk.
+  chunk_alignment: fixed
+  # Closed-loop wrist landing compensation (offline-validated 5.2 -> 2.3cm):
+  # none | offset.  Online it is FOCUS-gated with a fade; measured wrist =
+  # T_pelvis(Vive) * FK(measured q) via current_pose_fk, same chain in sim.
+  wrist_compensation: none
+  # 0 = feedforward (clamped root error, weak); >0 integrates the measured
+  # world wrist residual per step.  Validated: gain 0.1, clamp 0.15.
+  wrist_compensation_gain: 0.1
+  wrist_compensation_clamp_m: 0.15
+  wrist_compensation_fade_s: 0.4
+  state_endpoint: tcp://127.0.0.1:5561
+  chunk_endpoint: tcp://127.0.0.1:5562
+  max_source_state_lag: 30
+  startup_chunk_timeout_s: 15.0
+  # Receding-horizon time alignment: every new chunk starts at its own source
+  # timestamp, so first discard its latency-stale prefix. Sample adjacent old
+  # and new chunks at the same absolute target time, then overlap-blend them.
+  # Pose is diagnostic only and cannot alter the clock. Never inherit an old
+  # chunk's frame index: old frame 80 can correspond to new frame 1.
+  chunk_phase_alignment: true
+  phase_rotation_weight: 0.08
+  phase_velocity_weight: 0.03
+  phase_measured_weight: 0.15
+  # Emergency corruption guard only. Normal 1--9 cm re-prediction differences
+  # are time-aligned and blended; rejecting them would recreate endpoint lock.
+  phase_max_root_jump_m: 0.20
+  # Recorded HAT replans arrive no faster than 0.239 s.  A 0.22 s overlap
+  # finishes before the next chunk, preventing nested-blend discontinuities
+  # while still smoothing ordinary centimetre-scale re-prediction changes.
+  chunk_blend_s: 0.22
+  takeover_blend_s: 0.75
+  chunk_hold_timeout_s: 0.50
+  chunk_latch_timeout_s: 2.0

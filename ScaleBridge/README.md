@@ -7,6 +7,83 @@ This guide covers workstation and Jetson setup, policy evaluation, policy deploy
 > [!IMPORTANT]
 > Real-robot deployment can cause sudden or unexpected motion. Keep an emergency stop within reach before launching the policy.
 
+## 新 HAT checkpoint 如何接入 ScaleBFM
+
+前提：HAT 和 ScaleBFM 各自已经可以独立运行。接入新 HAT checkpoint 时，
+**ScaleBFM 模型和代码不需要重新编译**；只需要用新 checkpoint 启动 HAT
+在线服务，再启动现有的 `hat4_online` ScaleBFM 配置。两个 Python 进程必须
+运行在同一台工作站，因为当前默认通过本机端口 `5561/5562` 通信。
+
+数据流只有一条：
+
+```text
+G1/Vive 当前状态 -> ScaleBFM -> HAT 在线推理 -> action chunk（默认 64 帧）-> ScaleBFM 跟踪 -> G1
+```
+
+### 1. 准备新 HAT checkpoint 的三个配套文件
+
+新 checkpoint 必须配套使用它训练时的：
+
+1. 模型 YAML，例如 `hdt/configs/models/hat_linear4.yaml`；
+2. `dataset_stats.pkl`；
+3. 已有相机回调 `module:function`。
+
+YAML 必须与 checkpoint 的模型结构一致；stats 中的 `qpos_mean`、
+`qpos_std`、`action_mean`、`action_std` 必须都是 128 维。HAT 输出宽度必须是
+128，chunk 长度必须与 YAML 的 `action_chunk_size` 一致（未配置时默认 64），
+并按训练时相同的 128 维语义包含 global root/head/wrist 和 wrist-local finger
+XYZ。ACT TorchScript、ACT checkpoint 和 RDT state dict 均可由在线服务加载。
+
+### 2. 启动顺序
+
+Vive sender 和 `g1_29dof_controller` 仍按原来能够独立部署 ScaleBFM 的方式
+启动，不需要改。然后依次打开下面两个终端。
+
+终端 A：使用**新 HAT checkpoint**启动 HAT。把四个占位符替换为新模型的
+实际路径和已有相机回调：
+
+```bash
+cd /home/nerv/qingyaoxu/human_policy
+PYTHONPATH=/home/nerv/qingyaoxu/human_policy:/home/nerv/qingyaoxu/ScaleBFM/ScaleBridge \
+/home/nerv/miniconda3/envs/twist_qyx/bin/python -m hdt.online_hat_service \
+  --config <新HAT模型.yaml> \
+  --checkpoint <新HAT_checkpoint.pt或ckpt> \
+  --stats <新HAT对应的dataset_stats.pkl> \
+  --embodiment h1_inspire \
+  --image-source <已有相机模块>:<get_images函数> \
+  --fps 30 \
+  --replan-frames 10
+```
+
+这个进程启动后等待 ScaleBFM 发来当前机器人状态；此时没有 chunk 日志是
+正常的。`--replan-frames 10` 表示每约 0.33 秒基于最新状态重新生成一次 chunk。
+
+终端 B：启动现有 ScaleBFM 真机部署，ScaleBFM checkpoint 不变：
+
+```bash
+cd /home/nerv/qingyaoxu/ScaleBFM/ScaleBridge
+/home/nerv/miniconda3/envs/scalebridge/bin/python scalebridge/run.py \
+  --config-name=hat4_online \
+  simulator=real_world_inspire_online \
+  agent.config.checkpoint=/home/nerv/qingyaoxu/ScaleBFM/MyScaleBFM/ScaleTrack/releases/hat4_focus_release_v1/model_20000_scalebridge_tensorrt_4080s.pt \
+  env.config.reference_forcing=false
+```
+
+### 3. 真机开始闭环
+
+1. 按第一次 `R2`，完成 Vive root 标定；
+2. 按第二次 `R2`，完成 ScaleBFM 与底层控制器通信；
+3. ScaleBFM 开始把当前 global root、FK head/wrist、手臂关节和 Inspire
+   实测手指状态发给 HAT；
+4. HAT 用新 checkpoint 生成 chunk；ScaleBFM 终端应依次看到
+   `Accepted chunk`、`Canonical FOCUS result attached` 和 `READY`；
+5. 只有看到 `READY` 后才按 `R1`，开始 HAT -> ScaleBFM -> G1 实时闭环。
+
+串联过程中，ScaleBFM 自动完成 chunk 的 global root 对齐、30 Hz 到 50 Hz
+采样、FOCUS 两维 phase、finger XYZ 到 Inspire 的 IK，以及新旧 chunk 过渡；
+不需要额外手工转换。超过 0.5 秒收不到 chunk 会冻结参考，超过 2 秒会锁住，
+恢复新 chunk 后必须重新按一次 `R1`。
+
 ## 🧭 Table of contents
 
 - [🛠️ 1. Prepare the environment](#️-1-prepare-the-environment)

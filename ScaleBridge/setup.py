@@ -28,6 +28,7 @@ setup(
     "ipdb",
     "pygame",
     "imageio[ffmpeg]",
+    "pyzmq",
     "torch_tensorrt==2.8.0",
   ],
 )

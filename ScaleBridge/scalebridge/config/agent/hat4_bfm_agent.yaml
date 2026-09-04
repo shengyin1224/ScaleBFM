@@ -1,0 +1,7 @@
+defaults:
+  - base_agent
+
+_target_: agent.hat4_bfm_agent.HAT4BFMAgent
+config:
+  control_mode: 8
+  checkpoint: ???

@@ -1,0 +1,10 @@
+defaults:
+  - mujoco_simulator_inspire
+
+_target_: simulator.mujoco_simulator_inspire.InspireMujocoSimulator
+_recursive_: False
+config:
+  hand_online_targets: True
+  reference_play_gate: True
+  reference_play_control: SPACE
+  record_online_trace: True

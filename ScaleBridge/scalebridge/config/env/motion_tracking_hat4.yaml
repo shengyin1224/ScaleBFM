@@ -1,0 +1,16 @@
+defaults:
+  - base_env
+
+_target_: env.motion_tracking_hat4.HAT4MotionTrackingEnv
+_recursive_: False
+config:
+  motion_path: ???
+  future_idx: [0, 1, 2, 3, 4, 5]
+  reference_forcing: True
+  # A/B for the wrist global landing error: none | offset | root_override
+  wrist_compensation: none
+  wrist_compensation_clamp_m: 0.08
+  # 0 = feedforward (add the root error); >0 = integrate the measured wrist
+  # residual with this per-step gain until the wrist lands on the target.
+  wrist_compensation_gain: 0.0
+  root_override_blend_s: 0.4

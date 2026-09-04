@@ -12,7 +12,7 @@ from hydra.core.hydra_config import HydraConfig
 from scalebridge.simulator.base_simulator import BaseSimulator
 from scalebridge.utils.merge_robot_object_xml import merge_robot_object_xml
 
-def draw_marker(pos,v):
+def draw_marker(pos,v,rgba=(1,0,0,1)):
     geom = v.user_scn.geoms[v.user_scn.ngeom]
     mujoco.mjv_initGeom(
         geom,
@@ -20,7 +20,7 @@ def draw_marker(pos,v):
         size=[0.03,0.03,0.03],
         pos=pos,
         mat=np.eye(3).flatten(),
-        rgba=[1,0,0,1]
+        rgba=list(rgba)
     )
     v.user_scn.ngeom += 1
 
@@ -31,6 +31,8 @@ class MujocoSimulator(BaseSimulator):
         self.marker = config.get('marker', False)
         self.use_joystick = config.get('joystick', False)
         self.camera_follow = config.get('camera_follow', False) or self.record_video
+        self.reference_play_gate = config.get('reference_play_gate', False)
+        self.reference_play_requested = False
 
         super().__init__(config, metadata_dict)
 
@@ -55,8 +57,10 @@ class MujocoSimulator(BaseSimulator):
             data=self.mujoco_data,
             show_left_ui=False,
             show_right_ui=False,
+            key_callback=self._key_callback,
         )
         self.marker_pos = None
+        self.marker_rgba = None
         if self.record_video:
             save_dir = HydraConfig.get().runtime.output_dir
             video_name = os.path.join(save_dir, 'recording.mp4')
@@ -91,6 +95,16 @@ class MujocoSimulator(BaseSimulator):
             self.ang_vel_z_tmp = 0
             self.joystick_thread = threading.Thread(target=self._handle_joystick, args=(pygame,),daemon=True)
             self.joystick_thread.start()
+
+    def _key_callback(self, keycode):
+        if self.reference_play_gate and keycode == ord(' '):
+            self.reference_play_requested = True
+
+    def consume_reference_play_request(self):
+        if self.reference_play_requested:
+            self.reference_play_requested = False
+            return True
+        return False
     
     def _handle_joystick(self, pygame):
         try:
@@ -114,7 +128,7 @@ class MujocoSimulator(BaseSimulator):
             self.viewer.user_scn.ngeom = 0
             for i in range(self.marker_pos.shape[0]):
                 draw_marker(
-                    self.marker_pos[i], self.viewer
+                    self.marker_pos[i], self.viewer, self._marker_rgba(i)
                 )
             if self.record_video:
                 self.render_scene.ngeom = 0
@@ -126,7 +140,7 @@ class MujocoSimulator(BaseSimulator):
                         size=[0.03, 0.03, 0.03],
                         pos=self.marker_pos[i],
                         mat=np.eye(3).flatten(),
-                        rgba=[1,0,0,1]
+                        rgba=list(self._marker_rgba(i))
                     )
                     self.render_scene.ngeom += 1
         if self.camera_follow:
@@ -152,15 +166,23 @@ class MujocoSimulator(BaseSimulator):
                         size=[0.03, 0.03, 0.03],
                         pos=self.marker_pos[i],
                         mat=np.eye(3).flatten(),
-                        rgba=[1,0,0,1]
+                        rgba=list(self._marker_rgba(i))
                     )
                     self.renderer.scene.ngeom += 1
 
             img = self.renderer.render()
             self.video_writer.append_data(img)
 
-    def update_marker_pos(self, marker_pos):
+    def _marker_rgba(self, index):
+        """One colour per tracked body so the spheres can be told apart."""
+        if self.marker_rgba is None or index >= len(self.marker_rgba):
+            return (1, 0, 0, 1)
+        return self.marker_rgba[index]
+
+    def update_marker_pos(self, marker_pos, rgba=None):
         self.marker_pos = marker_pos.cpu().numpy()
+        if rgba is not None:
+            self.marker_rgba = tuple(tuple(colour) for colour in rgba)
 
     def refresh_sim(self):
 

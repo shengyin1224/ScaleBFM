@@ -1,0 +1,12 @@
+defaults:
+  - real_world_inspire
+
+_target_: simulator.real_world_inspire.InspireRealWorld
+_recursive_: False
+config:
+  reference_play_gate: True
+  reference_play_control: R1
+  # Online HAT must freeze on a lost Vive pose and wait for a fresh chunk after
+  # the tracker has recovered; this enables the existing robust Vive path.
+  tracker_robust_mode: True
+

@@ -8,3 +8,5 @@ config:
   marker: True
   joystick: False
   camera_follow: True
+  reference_play_gate: False
+  reference_play_control: SPACE

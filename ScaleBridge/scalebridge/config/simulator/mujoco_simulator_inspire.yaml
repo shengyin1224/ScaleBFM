@@ -1,0 +1,14 @@
+defaults:
+  - mujoco_simulator
+
+_target_: simulator.mujoco_simulator_inspire.InspireMujocoSimulator
+_recursive_: False
+config:
+  inspire_xml_path: /home/nerv/qingyaoxu/TeleSim/assets/g1/g1_29dof_inspire_hand.xml
+  motion_path: ${env.config.motion_path}
+  # Resolved from env.config.motion_path so the hands can never replay a
+  # different motion's grasp.  Point this at a file to override.
+  hand_ik_path: auto
+  hand_ik_search_dir: /home/nerv/qingyaoxu/ScaleBFM/MyScaleBFM/ScaleTrack/action_error_results
+  hand_online_targets: False
+  hand_mapping_path: /home/nerv/qingyaoxu/TWIST2/deploy_real

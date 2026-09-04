@@ -1,0 +1,9 @@
+defaults:
+  - _self_
+  - asset: g1_29dof
+  - agent: hat4_bfm_agent
+  - simulator: mujoco_simulator
+  - observation: hat4_bfm
+  - env: motion_tracking_hat4
+
+device: cuda
