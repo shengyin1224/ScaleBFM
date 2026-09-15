@@ -18,6 +18,7 @@ PROTOCOL_VERSION = 4
 ROBOT_STATE_TYPE = "RobotStateV4"
 HAT_CHUNK_TYPE = "HatChunkV4"
 FINGER_ORDER = ("thumb", "index", "middle", "ring", "pinky")
+ACTION_REPRESENTATIONS = ("original", "relative_chunk")
 # The dex5 training state packs joints 0..18 of the G1 29-DOF standard order
 # into state[107:126].  Named explicitly so both processes agree on the order
 # regardless of how the simulator happens to sort its own joint list.
@@ -158,12 +159,18 @@ def validate_hat_chunk(message: dict) -> dict:
     source_state_sequence_id = int(message.get("source_state_sequence_id", -1))
     fps = float(message["fps"])
     frame_count = int(message["frame_count"])
+    action_representation = str(message.get("action_representation", "original"))
     if sequence_id < 0 or generated_at_ns < 0 or source_state_sequence_id < 0:
         raise ValueError("HatChunk IDs and timestamps must be non-negative")
     if not math.isfinite(fps) or fps <= 0.0:
         raise ValueError(f"HatChunk fps must be positive, got {fps}")
     if frame_count < 6:
         raise ValueError(f"HatChunk needs at least 6 frames, got {frame_count}")
+    if action_representation not in ACTION_REPRESENTATIONS:
+        raise ValueError(
+            f"HatChunk action_representation must be one of "
+            f"{ACTION_REPRESENTATIONS}, got {action_representation!r}"
+        )
 
     result = {
         "type": HAT_CHUNK_TYPE,
@@ -173,6 +180,7 @@ def validate_hat_chunk(message: dict) -> dict:
         "generated_at_ns": generated_at_ns,
         "fps": fps,
         "frame_count": frame_count,
+        "action_representation": action_representation,
         "root_pos": _array(message["root_pos"], (frame_count, 3), "root_pos").astype(np.float32),
         "root_quat_wxyz": _quat_wxyz(message["root_quat_wxyz"], (frame_count, 4), "root_quat_wxyz").astype(np.float32),
         "head_pos": _array(message["head_pos"], (frame_count, 3), "head_pos").astype(np.float32),

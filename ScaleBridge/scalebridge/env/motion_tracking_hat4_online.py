@@ -1176,6 +1176,26 @@ class HAT4OnlineMotionTrackingEnv(BaseEnv):
             self._logged_protocol_origin = True
         return align_pos, align_quat
 
+    def _chunk_execution_fraction(self, chunk=None):
+        """Execution floor for the chunk representation on the wire.
+
+        Original absolute checkpoints need the long hold because their useful
+        motion often lives in the chunk tail. HuMI ``relative_chunk`` advances
+        its absolute scheduled anchor on every producer replan; holding those
+        chunks for 2.2 seconds would discard most of that schedule and then
+        accept a far-ahead plan. Consume them at replan cadence by default,
+        while keeping an explicit override for hardware experiments.
+        """
+        chunk = self.chunk if chunk is None else chunk
+        if (
+            chunk is not None
+            and chunk.get("action_representation", "original") == "relative_chunk"
+        ):
+            return float(
+                self.cfg.get("relative_chunk_min_execution_fraction", 0.0)
+            )
+        return float(self.cfg.get("min_chunk_execution_fraction", 0.66))
+
     def _min_execution_hold_active(self, now_ns):
         """Whether the playing chunk must keep executing before a swap.
 
@@ -1195,7 +1215,7 @@ class HAT4OnlineMotionTrackingEnv(BaseEnv):
         CONFLATE=1 subscriber keeps only the newest published chunk, so at
         release the accepted chunk is at most one replan period old.
         """
-        fraction = float(self.cfg.get("min_chunk_execution_fraction", 0.66))
+        fraction = self._chunk_execution_fraction()
         if fraction <= 0.0:
             return False
         if (
@@ -1479,9 +1499,7 @@ class HAT4OnlineMotionTrackingEnv(BaseEnv):
         if hasattr(self.simulator, "record_hat_chunk"):
             self.simulator.record_hat_chunk(candidate, aligned)
         self._submit_chunk_focus(self.chunk, now_ns)
-        min_execution_fraction = float(
-            self.cfg.get("min_chunk_execution_fraction", 0.66)
-        )
+        min_execution_fraction = self._chunk_execution_fraction(candidate)
         hold_note = ""
         if min_execution_fraction > 0.0 and self.reference_playing:
             hold_s = (

@@ -91,6 +91,14 @@ class MinChunkExecutionHoldTest(unittest.TestCase):
         env = make_env(fraction=0.0)
         self.assertFalse(env._min_execution_hold_active(int(0.1 * SECOND)))
 
+    def test_humi_relative_chunks_swap_on_every_replan_by_default(self):
+        env = make_env(fraction=0.66)
+        env.chunk["action_representation"] = "relative_chunk"
+        self.assertFalse(env._min_execution_hold_active(int(0.1 * SECOND)))
+
+        env.cfg["relative_chunk_min_execution_fraction"] = 0.5
+        self.assertTrue(env._min_execution_hold_active(int(0.1 * SECOND)))
+
     def test_staleness_clock_counts_from_hold_release_not_acceptance(self):
         # During a deliberate 2.2 s hold no chunk is accepted, so judging the
         # stream by last_chunk_received_ns would freeze (0.5 s) and latch

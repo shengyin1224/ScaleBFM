@@ -68,6 +68,21 @@ def chunk(n=64, sequence_id=1):
 
 
 class HATOnlineProtocolTest(unittest.TestCase):
+    def test_hat_chunk_preserves_action_representation(self):
+        original = validate_hat_chunk(chunk())
+        self.assertEqual(original["action_representation"], "original")
+
+        relative = chunk()
+        relative["action_representation"] = "relative_chunk"
+        self.assertEqual(
+            validate_hat_chunk(relative)["action_representation"],
+            "relative_chunk",
+        )
+
+        relative["action_representation"] = "unknown"
+        with self.assertRaisesRegex(ValueError, "action_representation"):
+            validate_hat_chunk(relative)
+
     def test_hat_chunk_preserves_optional_global_position_origin(self):
         raw = chunk(n=100, sequence_id=5)
         raw["position_origin_world"] = [-0.078, -0.001, 1.272]
