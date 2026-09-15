@@ -88,6 +88,8 @@ class RealWorld(BaseSimulator):
         self._watchdog_enabled = bool(self.cfg.get("state_watchdog", True))
         self._watchdog_hold_timeout = float(self.cfg.get("state_watchdog_hold_timeout", 0.25))
         self._watchdog_damping_timeout = float(self.cfg.get("state_watchdog_damping_timeout", 1.0))
+        self._watchdog_hold_last_target = bool(self.cfg.get("state_watchdog_hold_last_target", False))
+        self._last_target_dof_pos = None
         self._last_state_change_mono = None
         self._watchdog_holding = False
         self._watchdog_latched = False
@@ -580,6 +582,12 @@ class RealWorld(BaseSimulator):
         """
         age = self._robot_state_age()
         now = time.monotonic()
+        if self._watchdog_hold_last_target and age > self._watchdog_hold_timeout:
+            if now - self._watchdog_last_log_mono >= 1.0:
+                logger.warning(f"[Watchdog] Robot state stale for {age:.2f}s: holding the last target.")
+                self._watchdog_last_log_mono = now
+            self._publish_hold_command()
+            return False
         if self._watchdog_latched or age > self._watchdog_damping_timeout:
             if not self._watchdog_latched:
                 self._watchdog_latched = True
@@ -623,10 +631,26 @@ class RealWorld(BaseSimulator):
         cmd.timestamp_us = int(time.time()*10**6)
         self.lcm.publish(f"pd_plustau_targets", cmd.encode())
 
+    def _publish_hold_command(self):
+        if self._last_target_dof_pos is None:
+            return
+        target = np.zeros((self.num_joints,), dtype=np.float32)
+        target[self.env_action_to_sim_idx] = self._last_target_dof_pos
+        cmd = self.command_encoder
+        cmd.q_des = target.copy()
+        cmd.qd_des = np.zeros_like(target)
+        cmd.kp = self.stiffness.copy()
+        cmd.kd = self.damping.copy()
+        cmd.tau_ff = np.zeros_like(target)
+        cmd.se_contactState = np.zeros(2)
+        cmd.timestamp_us = int(time.time()*10**6)
+        self.lcm.publish(f"pd_plustau_targets", cmd.encode())
+
     def apply_action(self, tgt_dof_pos):
         if self._watchdog_enabled and not self._watchdog_allows_publish():
             return
         tgt_dof_pos = tgt_dof_pos.squeeze()
+        self._last_target_dof_pos = np.asarray(tgt_dof_pos, dtype=np.float32).copy()
 
         target_dof_pos_in_sim = np.zeros((self.num_joints,), dtype=np.float32)
         target_dof_pos_in_sim[self.env_action_to_sim_idx] = tgt_dof_pos

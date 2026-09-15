@@ -129,6 +129,8 @@ class HATOnlineProtocolTest(unittest.TestCase):
         env.reference_playing = True
         env.localization_paused = False
         env.held_sample = None
+        env.requires_restart = False
+        env._latched_sample = None
         env.chunk = checked
         env.chunk_started_ns = 1_000_000_000
         env.previous_chunk = None
@@ -330,6 +332,8 @@ class HATOnlineProtocolTest(unittest.TestCase):
         env.future_offsets_s = np.arange(6, dtype=np.float64) / 50.0
         env.chunk = {"unused": True}
         env.held_sample = None
+        env.requires_restart = False
+        env._latched_sample = None
 
         sample = env._sample_reference(123)
         self.assertEqual(sample["root_pos"].shape, (6, 3))
@@ -412,6 +416,81 @@ class HATOnlineProtocolTest(unittest.TestCase):
         np.testing.assert_allclose(ready["left_fingertip_local"], 3.0)
         np.testing.assert_allclose(ready["right_fingertip_local"], 4.0)
         np.testing.assert_allclose(ready["focus_phase"], [[0.0, 2.0]])
+
+    def test_ready_reference_supports_sonic_0904_whole_body_opening_pose(self):
+        from scalebridge.env.motion_tracking_hat4_online import (
+            HAT4OnlineMotionTrackingEnv,
+            SONIC_0904_READY_ARM_Q,
+            SONIC_0904_READY_LOWER_Q,
+        )
+
+        env = HAT4OnlineMotionTrackingEnv.__new__(HAT4OnlineMotionTrackingEnv)
+        env.prestart_arm_pose = "sonic_0904"
+        joint_names = list(SONIC_0904_READY_LOWER_Q)
+        for side in ("left", "right"):
+            joint_names.extend([
+                f"{side}_shoulder_pitch_joint",
+                f"{side}_shoulder_roll_joint",
+                f"{side}_shoulder_yaw_joint",
+                f"{side}_elbow_joint",
+                f"{side}_wrist_roll_joint",
+                f"{side}_wrist_pitch_joint",
+                f"{side}_wrist_yaw_joint",
+            ])
+        env.metadata_dict = {"joint_names": joint_names}
+        env.state_buffer = {
+            "dof_pos_buffer": torch.full((1, 1, len(joint_names)), 9.0)
+        }
+
+        class FakeFK:
+            def compute(self, root_pos, root_quat, dof_pos):
+                self.dof_pos = np.asarray(dof_pos)
+                self.last_body_poses = {
+                    "torso_link": (
+                        np.zeros(3, dtype=np.float32),
+                        np.array([1.0, 0.0, 0.0, 0.0], dtype=np.float32),
+                    )
+                }
+                return {
+                    "head_pos_world": np.zeros(3, dtype=np.float32),
+                    "head_quat_world_wxyz": np.array(
+                        [1.0, 0.0, 0.0, 0.0], dtype=np.float32
+                    ),
+                    "left_wrist_pos_world": np.zeros(3, dtype=np.float32),
+                    "left_wrist_quat_world_wxyz": np.array(
+                        [1.0, 0.0, 0.0, 0.0], dtype=np.float32
+                    ),
+                    "right_wrist_pos_world": np.zeros(3, dtype=np.float32),
+                    "right_wrist_quat_world_wxyz": np.array(
+                        [1.0, 0.0, 0.0, 0.0], dtype=np.float32
+                    ),
+                }
+
+        env.current_pose_fk = FakeFK()
+        env.open_hand_fingertips = {
+            "lh": np.zeros((5, 3), dtype=np.float32),
+            "rh": np.zeros((5, 3), dtype=np.float32),
+        }
+        env._make_prestart_reference(
+            np.zeros(3, dtype=np.float32),
+            np.array([1.0, 0.0, 0.0, 0.0], dtype=np.float32),
+            {},
+        )
+
+        actual = dict(zip(joint_names, env.current_pose_fk.dof_pos))
+        for name, expected in SONIC_0904_READY_LOWER_Q.items():
+            self.assertAlmostEqual(actual[name], expected)
+        for side, expected in SONIC_0904_READY_ARM_Q.items():
+            names = [
+                f"{side}_shoulder_pitch_joint",
+                f"{side}_shoulder_roll_joint",
+                f"{side}_shoulder_yaw_joint",
+                f"{side}_elbow_joint",
+                f"{side}_wrist_roll_joint",
+                f"{side}_wrist_pitch_joint",
+                f"{side}_wrist_yaw_joint",
+            ]
+            np.testing.assert_allclose([actual[name] for name in names], expected)
 
     def test_root_obs_holds_local_before_r1_then_blends_to_tracker(self):
         from scalebridge.env.motion_tracking_hat4_online import HAT4OnlineMotionTrackingEnv

@@ -512,6 +512,59 @@ class _PinocchioInspireIK:
         return np.stack(out, axis=0), np.asarray(errs, dtype=np.float32)
 
 
+class _PinocchioCoupledMotorIK(_PinocchioInspireIK):
+    """Tip IK whose six normalized motor values are the optimization variables."""
+
+    def __init__(self, side: str, **kwargs):
+        super().__init__(side, **kwargs)
+        mapping_root = _TWIST_ROOT.parent / "TWIST2" / "deploy_real"
+        if not mapping_root.exists():
+            mapping_root = Path("/home/nerv/qingyaoxu/TWIST2/deploy_real")
+        sys.path.insert(0, str(mapping_root))
+        from cmd_to_dofpos import cmd6_to_dofpos12
+        from dofpos2cmd import dofpos12_to_q6
+        self._motor_to_q = cmd6_to_dofpos12
+        self._q_to_motor = dofpos12_to_q6
+        # TWIST2 table order -> this solver's Pinocchio order.
+        self._twist2_from_ik = np.array([8, 9, 10, 11, 0, 1, 2, 3, 6, 7, 4, 5])
+
+    def _q_from_motor(self, motor):
+        return self._motor_to_q(np.asarray(motor) * 1000.0)[np.argsort(self._twist2_from_ik)]
+
+    def solve_frame(self, target_local, q_prev=None):
+        target = np.asarray(target_local, dtype=np.float64)
+        if target.shape != (5, 3) or not np.isfinite(target).all():
+            raise ValueError("Expected a finite five-tip target shaped (5, 3)")
+        q_previous = np.zeros(12) if q_prev is None else np.asarray(q_prev, dtype=np.float64)
+        motor = np.clip(self._q_to_motor(q_previous[self._twist2_from_ik]), 0.0, 1.0)
+        previous_motor = motor.copy()
+        eye = np.eye(6)
+        for _ in range(self.iters):
+            q = self._q_from_motor(motor)
+            pred = self._fk_tips(q)
+            err = (target - pred).reshape(-1)
+            jac = np.empty((15, 6), dtype=np.float64)
+            for j in range(6):
+                lo, hi = motor.copy(), motor.copy()
+                lo[j] = max(0.0, motor[j] - 1e-4)
+                hi[j] = min(1.0, motor[j] + 1e-4)
+                # Derivative of predicted tips, not of target - prediction.
+                # Use the actual interval so fully open/closed motors still
+                # have a usable one-sided derivative at the limits.
+                jac[:, j] = (
+                    self._fk_tips(self._q_from_motor(hi))
+                    - self._fk_tips(self._q_from_motor(lo))
+                ).reshape(-1) / (hi[j] - lo[j])
+            lhs = jac.T @ jac + (self.damping**2 + self.smooth_w + self.reg_w) * eye
+            # Zero joint angles correspond to motor=1 (open), not motor=0.
+            rhs = jac.T @ err - self.smooth_w * (motor - previous_motor) - self.reg_w * (motor - 1.0)
+            motor = np.clip(motor + self.step * np.linalg.solve(lhs, rhs), 0.0, 1.0)
+            if np.mean(np.linalg.norm(target - self._fk_tips(self._q_from_motor(motor)), axis=1)) < 1e-4:
+                break
+        q = self._q_from_motor(motor)
+        return q.astype(np.float32), float(np.mean(np.linalg.norm(target - self._fk_tips(q), axis=1)))
+
+
 def _resolve_ik_backend(requested: str) -> str:
     if requested != "auto":
         return requested

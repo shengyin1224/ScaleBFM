@@ -110,6 +110,98 @@ def apply_alignment(chunk, align_pos, align_quat):
     return out
 
 
+RTC_LINEAR_FIELDS = (
+    "root_pos",
+    "head_pos",
+    "left_wrist_pos",
+    "right_wrist_pos",
+    "left_fingertip_local",
+    "right_fingertip_local",
+)
+RTC_QUAT_FIELDS = (
+    "root_quat_wxyz",
+    "head_quat_wxyz",
+    "left_wrist_quat_wxyz",
+    "right_wrist_quat_wxyz",
+)
+
+
+def rtc_blend_chunk_prefix(
+    old_chunk,
+    new_chunk,
+    *,
+    old_start_frame,
+    new_start_frame,
+    prefix_frames,
+    hard_prefix_frames=0,
+    blend_frames=None,
+):
+    """Blend unexecuted old future into the new chunk's playback prefix.
+
+    ``old_start_frame`` is the old chunk's live playback cursor, never a fixed
+    chunk index.  ``new_start_frame`` is the latency-compensated first frame
+    that the consumer will actually play from the new receding-horizon chunk.
+    Position and fingertip channels are blended linearly; rotations use the
+    shortest-path quaternion SLERP.
+
+    The caller is responsible for checking that both requested slices exist.
+    Keeping that decision outside this pure array operation lets recovery
+    paths bypass RTC without partially modifying a chunk.
+    """
+    old_start_frame = int(old_start_frame)
+    new_start_frame = int(new_start_frame)
+    prefix_frames = int(prefix_frames)
+    hard_prefix_frames = int(hard_prefix_frames)
+    if blend_frames is None:
+        blend_frames = prefix_frames - hard_prefix_frames
+    blend_frames = int(blend_frames)
+    if prefix_frames <= 0:
+        raise ValueError("RTC prefix_frames must be positive")
+    if old_start_frame < 0 or new_start_frame < 0:
+        raise ValueError("RTC start frames must be non-negative")
+    if hard_prefix_frames < 0 or blend_frames < 0:
+        raise ValueError("RTC hard/blend frame counts must be non-negative")
+    if hard_prefix_frames + blend_frames != prefix_frames:
+        raise ValueError(
+            "RTC hard_prefix_frames + blend_frames must equal prefix_frames"
+        )
+    old_count = int(old_chunk["frame_count"])
+    new_count = int(new_chunk["frame_count"])
+    if old_start_frame + prefix_frames > old_count:
+        raise ValueError("old chunk does not have enough unexecuted RTC future")
+    if new_start_frame + prefix_frames > new_count:
+        raise ValueError("new chunk does not have enough RTC playback future")
+
+    # Exactly ``hard_prefix_frames`` samples are 100% old.  The remaining
+    # samples advance toward new and land on alpha=1 at the prefix endpoint,
+    # so frame M transitions continuously to the untouched new chunk.
+    alpha = np.ones(prefix_frames, dtype=np.float64)
+    alpha[:hard_prefix_frames] = 0.0
+    if blend_frames:
+        alpha[hard_prefix_frames:] = (
+            np.arange(1, blend_frames + 1, dtype=np.float64) / blend_frames
+        )
+
+    old_slice = slice(old_start_frame, old_start_frame + prefix_frames)
+    new_slice = slice(new_start_frame, new_start_frame + prefix_frames)
+    out = dict(new_chunk)
+    for key in RTC_LINEAR_FIELDS:
+        old_values = np.asarray(old_chunk[key])[old_slice]
+        new_values = np.asarray(new_chunk[key])[new_slice]
+        shape = (prefix_frames,) + (1,) * (new_values.ndim - 1)
+        weight = alpha.reshape(shape)
+        blended = old_values * (1.0 - weight) + new_values * weight
+        out[key] = np.asarray(new_chunk[key]).copy()
+        out[key][new_slice] = blended.astype(out[key].dtype, copy=False)
+    for key in RTC_QUAT_FIELDS:
+        old_values = np.asarray(old_chunk[key])[old_slice]
+        new_values = np.asarray(new_chunk[key])[new_slice]
+        blended = quat_slerp(old_values, new_values, alpha)
+        out[key] = np.asarray(new_chunk[key]).copy()
+        out[key][new_slice] = blended.astype(out[key].dtype, copy=False)
+    return out
+
+
 def align_chunk_to_root(
     chunk, actual_root_pos, actual_root_quat_wxyz, *, validated=False
 ):

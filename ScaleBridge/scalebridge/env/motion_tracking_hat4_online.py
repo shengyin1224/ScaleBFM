@@ -25,9 +25,15 @@ from scalebridge.online.protocol import (
     validate_hat_chunk,
 )
 from scalebridge.online.reference import (
+    _sample_fingers,
     alignment_transform,
     apply_alignment,
+    quat_apply,
+    quat_heading,
+    quat_inv,
+    quat_mul,
     quat_slerp,
+    rtc_blend_chunk_prefix,
     sample_chunk,
 )
 from scalebridge.online.transport import BackgroundLatestSubscriber, LatestPublisher
@@ -48,6 +54,48 @@ RAISED_READY_ARM_Q = {
         [-0.479003, 0.074063, -0.109075, 0.475867, 0.007072, 0.076193, -0.128430],
         dtype=np.float32,
     ),
+}
+# Representative opening pose from the 2026-09-04 SONIC drink-to-basket
+# demonstrations.  For each usable episode (000000--000010), take the median
+# observation.state DOF over its first 10 frames, then take the median across
+# episodes.  Episode 000011 is intentionally excluded because it is a
+# different pillow task.  Order: shoulder pitch/roll/yaw, elbow,
+# wrist roll/pitch/yaw.
+SONIC_0904_READY_ARM_Q = {
+    "left": np.array(
+        [0.313214, 0.104670, 0.153009, 0.910478, -0.384106, -0.207728, -0.148002],
+        dtype=np.float32,
+    ),
+    "right": np.array(
+        [-0.033118, -0.304124, -0.341736, -0.141839, 0.002846, -0.248351, -0.305032],
+        dtype=np.float32,
+    ),
+}
+PRESTART_ARM_Q = {
+    "raised": RAISED_READY_ARM_Q,
+    "sonic_0904": SONIC_0904_READY_ARM_Q,
+}
+# Matching lower-body opening pose from the same 2026-09-04 demonstrations and
+# the same aggregation as SONIC_0904_READY_ARM_Q: median observation.state over
+# each episode's first 10 frames, then median across episodes 000000--000010.
+# These values intentionally preserve the asymmetric stance used at teleop
+# startup instead of replacing it with a synthetic symmetric policy default.
+SONIC_0904_READY_LOWER_Q = {
+    "left_hip_pitch_joint": 0.090422,
+    "left_hip_roll_joint": 0.096850,
+    "left_hip_yaw_joint": 0.225044,
+    "left_knee_joint": 0.148928,
+    "left_ankle_pitch_joint": -0.101243,
+    "left_ankle_roll_joint": -0.082735,
+    "right_hip_pitch_joint": 0.063370,
+    "right_hip_roll_joint": -0.168337,
+    "right_hip_yaw_joint": -0.385981,
+    "right_knee_joint": 0.214753,
+    "right_ankle_pitch_joint": -0.090552,
+    "right_ankle_roll_joint": 0.096560,
+    "waist_yaw_joint": -0.021293,
+    "waist_roll_joint": -0.035756,
+    "waist_pitch_joint": 0.008333,
 }
 # One colour per reference marker so the spheres can be told apart on screen.
 # The head is drawn as a fifth marker: it is the target HAT actually predicts,
@@ -154,6 +202,16 @@ class HAT4OnlineMotionTrackingEnv(BaseEnv):
         self.chunk_phase_state = None
         self.held_sample = None
         self.last_reference_sample = None
+        # finger_chunk_source="latest": newest received-but-not-accepted chunk
+        # kept for body acceptance at hold release, plus the chunk currently
+        # driving the fingers and its own source-timestamp clock.
+        self._pending_raw_chunk = None
+        self._finger_chunk = None
+        self._finger_chunk_started_ns = None
+        # finger_wrist_gate hysteresis state and the last fingertip targets a
+        # side was allowed to send (closing is frozen at these while gated).
+        self._finger_gate_blocked = {"left": False, "right": False}
+        self._finger_gate_hold = {"left": None, "right": None}
         self.prestart_reference_sample = None
         self.prestart_last_target = None
         self.takeover_hold_dof_pos = None
@@ -162,6 +220,7 @@ class HAT4OnlineMotionTrackingEnv(BaseEnv):
         self.requires_restart = False
         self.awaiting_fresh_chunk = False
         self.localization_paused = False
+        self._chunk_hold_release_ns = None
         self.hand_ik_worker = None
         self.open_hand_fingertips = None
         self.hand_motor_to_dof12 = None
@@ -172,8 +231,16 @@ class HAT4OnlineMotionTrackingEnv(BaseEnv):
         self._focus_result_logged = False
         self._closed_online = False
         self.alignment_anchor = None
+        self.protocol_alignment_anchor = None
         self._logged_protocol_origin = False
         self._prestart_link_poses = None
+        # Reference sample and link poses snapshotted at the moment the
+        # staleness watchdog latched a *running* reference.  Unlike held_sample
+        # these are never cleared by a later chunk acceptance (the latch outlives
+        # stream recovery until R1), and they are only consulted while the latch
+        # is active, so the genuine pre-R1 hold is untouched.
+        self._latched_sample = None
+        self._latched_link_poses = None
         self._prestart_debug_counter = 0
         self._marker_accepts_rgba = None
         self._root_transition_active = False
@@ -205,6 +272,8 @@ class HAT4OnlineMotionTrackingEnv(BaseEnv):
             + ("(anchor locks at start; heading errors self-correct)."
                if self.chunk_alignment == "fixed"
                else "(re-anchors to the measured root on every chunk).")
+            + " Applies to the heading of protocol chunks carrying"
+              " position_origin_world, and to the full transform otherwise."
         )
         self.chunk_phase_alignment = bool(
             self.cfg.get("chunk_phase_alignment", True)
@@ -228,6 +297,35 @@ class HAT4OnlineMotionTrackingEnv(BaseEnv):
                if self.chunk_phase_alignment
                else "disabled; new chunks start from latency-compensated time only.")
         )
+        self.rtc_enabled = bool(self.cfg.get("rtc_enabled", False))
+        self.rtc_prefix_frames = int(self.cfg.get("rtc_prefix_frames", 10))
+        self.rtc_hard_prefix_frames = int(
+            self.cfg.get("rtc_hard_prefix_frames", 2)
+        )
+        self.rtc_blend_frames = int(
+            self.cfg.get(
+                "rtc_blend_frames",
+                self.rtc_prefix_frames - self.rtc_hard_prefix_frames,
+            )
+        )
+        if self.rtc_enabled:
+            if self.rtc_prefix_frames <= 0:
+                raise ValueError("rtc_prefix_frames must be positive when RTC is enabled")
+            if self.rtc_hard_prefix_frames < 0 or self.rtc_blend_frames < 0:
+                raise ValueError("RTC hard/blend frame counts must be non-negative")
+            if (
+                self.rtc_hard_prefix_frames + self.rtc_blend_frames
+                != self.rtc_prefix_frames
+            ):
+                raise ValueError(
+                    "rtc_hard_prefix_frames + rtc_blend_frames must equal "
+                    "rtc_prefix_frames"
+                )
+            logger.info(
+                f"[Online HAT] RTC chunk-prefix overlap enabled: "
+                f"M={self.rtc_prefix_frames}, hard={self.rtc_hard_prefix_frames}, "
+                f"blend={self.rtc_blend_frames} frames."
+            )
         self.future_frame_offset = torch.as_tensor(
             self.cfg.future_idx, dtype=torch.long, device=self.device
         )
@@ -244,15 +342,16 @@ class HAT4OnlineMotionTrackingEnv(BaseEnv):
         if missing:
             raise KeyError(f"HAT4 metadata is missing active links: {missing}")
         self.active_indices = {name: selected.index(name) for name in ACTIVE_LINKS}
-        # raised: hold the fixed real-G1 raised-arm ready pose before R1.
-        # stand:  hold whatever pose calibration measured (arms stay down) --
-        #         the pre-raised-arm behaviour, for A/B when the raised hold
-        #         is unstable on hardware.
+        # raised:     hold the fixed real-G1 two-arm ready pose before R1.
+        # sonic_0904: hold the representative whole-body opening pose measured
+        #             from the Sep-04 SONIC teleoperation demonstrations.
+        # stand:      hold whatever pose calibration measured (arms stay down)
+        #             for A/B when an arm-pose hold is unstable on hardware.
         self.prestart_arm_pose = str(self.cfg.get("prestart_arm_pose", "raised"))
-        if self.prestart_arm_pose not in ("raised", "stand"):
+        if self.prestart_arm_pose not in (*PRESTART_ARM_Q, "stand"):
             raise ValueError(
                 f"prestart_arm_pose={self.prestart_arm_pose!r}; "
-                "expected 'raised' or 'stand'"
+                "expected 'raised', 'sonic_0904', or 'stand'"
             )
         # Same key and default the proven GMT env reads: blend the root
         # observation from the held local root to the live tracker over this
@@ -301,6 +400,75 @@ class HAT4OnlineMotionTrackingEnv(BaseEnv):
                 f"(gain={self.wrist_compensation_gain:.2f}, "
                 f"clamp={self.wrist_compensation_clamp_m:.3f}m, "
                 f"fade={self.wrist_compensation_fade_s:.2f}s, FOCUS-gated)"
+            )
+        # --- 2026-09-09 grasp-failure deployment experiments.  Three
+        # independent switches; every default reproduces the pre-existing
+        # behaviour exactly. ---
+        # 1) Reference-continuity chunk starts: widen the start-frame search
+        # forward of the latency frame and shift the chunk clock so the
+        # best-continuing frame actually plays (sample_chunk is purely
+        # time-based).  Forward-only, so the stream can never rewind.
+        self.chunk_start_reference_continuity = bool(
+            self.cfg.get("chunk_start_reference_continuity", False)
+        )
+        self.continuity_search_ahead_s = max(
+            0.0, float(self.cfg.get("continuity_search_ahead_s", 1.0))
+        )
+        if self.chunk_start_reference_continuity:
+            if not self.chunk_phase_alignment:
+                raise ValueError(
+                    "chunk_start_reference_continuity requires "
+                    "chunk_phase_alignment: true (it reuses the phase-match "
+                    "cost to score candidate start frames)"
+                )
+            logger.info(
+                "[Online HAT] Reference-continuity chunk starts enabled: "
+                f"forward search of {self.continuity_search_ahead_s:.2f}s past "
+                "the latency frame; the chunk clock is shifted to the selected "
+                "frame."
+            )
+        # 2) Finger-wrist gate: block finger *closing* while the measured
+        # wrist is still far from the reference wrist; opening always passes.
+        self.finger_wrist_gate = bool(self.cfg.get("finger_wrist_gate", False))
+        self.finger_wrist_gate_engage_m = float(
+            self.cfg.get("finger_wrist_gate_engage_m", 0.06)
+        )
+        self.finger_wrist_gate_release_m = float(
+            self.cfg.get("finger_wrist_gate_release_m", 0.035)
+        )
+        if self.finger_wrist_gate:
+            if not (
+                0.0
+                < self.finger_wrist_gate_release_m
+                <= self.finger_wrist_gate_engage_m
+            ):
+                raise ValueError(
+                    "finger_wrist_gate needs 0 < release_m <= engage_m, got "
+                    f"release={self.finger_wrist_gate_release_m} "
+                    f"engage={self.finger_wrist_gate_engage_m}"
+                )
+            logger.info(
+                "[Online HAT] Finger-wrist gate enabled: closing frozen while "
+                f"wrist error > {self.finger_wrist_gate_engage_m * 100:.1f}cm, "
+                f"released < {self.finger_wrist_gate_release_m * 100:.1f}cm; "
+                "opening always passes."
+            )
+        # 3) Finger chunk source: playback = fingertips ride the same accepted
+        # chunk playback as the body keypoints (pre-existing behaviour);
+        # latest = fingertips follow the newest received chunk on its own
+        # source-timestamp clock, bypassing the min-execution hold.
+        self.finger_chunk_source = str(
+            self.cfg.get("finger_chunk_source", "playback")
+        )
+        if self.finger_chunk_source not in ("playback", "latest"):
+            raise ValueError(
+                "finger_chunk_source must be 'playback' or 'latest', got "
+                f"{self.finger_chunk_source!r}"
+            )
+        if self.finger_chunk_source == "latest":
+            logger.info(
+                "[Online HAT] Finger chunk source: latest (fingers replan "
+                "every received chunk; body hold/RTC/blend unaffected)."
             )
 
     @staticmethod
@@ -367,9 +535,12 @@ class HAT4OnlineMotionTrackingEnv(BaseEnv):
             self.state_buffer["dof_pos_buffer"][0, -1]
             .detach().cpu().numpy().astype(np.float32).copy()
         )
-        if self.prestart_arm_pose == "raised":
+        if self.prestart_arm_pose in PRESTART_ARM_Q:
             joint_names = list(self.metadata_dict["joint_names"])
-            for side, arm_q in RAISED_READY_ARM_Q.items():
+            if self.prestart_arm_pose == "sonic_0904":
+                for name, joint_q in SONIC_0904_READY_LOWER_Q.items():
+                    ready_dof[joint_names.index(name)] = joint_q
+            for side, arm_q in PRESTART_ARM_Q[self.prestart_arm_pose].items():
                 names = [
                     f"{side}_shoulder_pitch_joint",
                     f"{side}_shoulder_roll_joint",
@@ -393,11 +564,14 @@ class HAT4OnlineMotionTrackingEnv(BaseEnv):
             name: (np.array(pos, dtype=np.float32), np.array(quat, dtype=np.float32))
             for name, (pos, quat) in self.current_pose_fk.last_body_poses.items()
         }
+        pose_description = {
+            "raised": "real-G1 two-arm raised pose",
+            "sonic_0904": "Sep-04 SONIC whole-body teleoperation opening pose",
+            "stand": "as-measured stand pose (arms stay down)",
+        }[self.prestart_arm_pose]
         logger.info(
-            "[Online HAT] Pre-start reference uses the fixed "
-            + ("real-G1 raised-arm pose" if self.prestart_arm_pose == "raised"
-               else "as-measured stand pose (arms stay down)")
-            + "; hands remain open until SPACE."
+            f"[Online HAT] Pre-start reference uses the fixed {pose_description}; "
+            "hands remain open until reference playback starts."
         )
         return {
             "root_pos": root_pos[None],
@@ -411,7 +585,7 @@ class HAT4OnlineMotionTrackingEnv(BaseEnv):
             "torso_pos": torso_pos.astype(np.float32)[None],
             "torso_quat_wxyz": torso_quat.astype(np.float32)[None],
             # Ready means open hands.  The first live HAT chunk is deliberately
-            # not used here: it is inferred before SPACE and must not be able
+            # not used here: it is inferred before playback and must not be able
             # to close the fingers while the body is holding the proven frame.
             "left_fingertip_local": self.open_hand_fingertips["lh"][None].copy(),
             "right_fingertip_local": self.open_hand_fingertips["rh"][None].copy(),
@@ -462,9 +636,16 @@ class HAT4OnlineMotionTrackingEnv(BaseEnv):
         if module_root not in sys.path:
             sys.path.insert(0, module_root)
         os.environ["SHENGYIN_SKIP_ISAACGYM_IMPORT"] = "1"
-        from human_policy.twist_hand_gmt_bridge import _PinocchioInspireIK
+        from human_policy.twist_hand_gmt_bridge import (
+            _PinocchioInspireIK, _PinocchioCoupledMotorIK,
+        )
+        ik_mode = str(config.get("hand_ik_mode", "coupled_motor")).lower()
+        if ik_mode not in {"coupled_motor", "independent_joint"}:
+            raise ValueError("hand_ik_mode must be coupled_motor or independent_joint")
+        solver_cls = _PinocchioCoupledMotorIK if ik_mode == "coupled_motor" else _PinocchioInspireIK
+        logger.info("[Online HAT] hand IK mode: {}", ik_mode)
         def make_solver(side):
-            return _PinocchioInspireIK(
+            return solver_cls(
                 side,
                 iters=int(config.get("hand_ik_iters", 20)),
                 damping=float(config.get("hand_ik_damping", 1e-3)),
@@ -474,6 +655,9 @@ class HAT4OnlineMotionTrackingEnv(BaseEnv):
             )
 
         self.hand_ik_solvers = {side: make_solver(side) for side in ("lh", "rh")}
+        # Pinocchio Data is mutable: observation FK must not share it with the
+        # asynchronous IK thread.
+        self.hand_state_fk_solvers = {side: make_solver(side) for side in ("lh", "rh")}
         self.open_hand_fingertips = {
             side: solver._fk_tips(np.zeros(12, dtype=np.float64)).astype(np.float32)
             for side, solver in self.hand_ik_solvers.items()
@@ -495,6 +679,11 @@ class HAT4OnlineMotionTrackingEnv(BaseEnv):
         self.hand_motor_to_dof12 = lambda motor: cmd6_to_dofpos12(
             np.clip(np.asarray(motor, dtype=np.float64), 0.0, 1.0) * 1000.0
         )[ik_from_twist2]
+        self.open_hand_dof12 = self.hand_motor_to_dof12(np.ones(6))
+        self.open_hand_fingertips = {
+            side: solver._fk_tips(self.open_hand_dof12).astype(np.float32)
+            for side, solver in self.hand_state_fk_solvers.items()
+        }
         self.focus_pad_s = float(FOCUS_PAD_S)
         solver_kwargs = {
             "iters": int(config.get("hand_ik_iters", 20)),
@@ -536,7 +725,7 @@ class HAT4OnlineMotionTrackingEnv(BaseEnv):
                 keypoints = {}
                 for side, motor in (("lh", left), ("rh", right)):
                     q12 = self.hand_motor_to_dof12(motor)
-                    tips = self.hand_ik_solvers[side]._fk_tips(q12).astype(np.float32)
+                    tips = self.hand_state_fk_solvers[side]._fk_tips(q12).astype(np.float32)
                     keypoints[side] = np.concatenate(
                         (np.zeros((1, 3), dtype=np.float32), tips), axis=0
                     )
@@ -638,6 +827,8 @@ class HAT4OnlineMotionTrackingEnv(BaseEnv):
         left_hand, left_keypoints, right_hand, right_keypoints = (
             self._measured_hand_state()
         )
+        if hasattr(self.simulator, "get_hand_motor_state") and not self._hand_state_valid:
+            return  # Do not label missing/stale feedback as a real open hand.
         timestamp_ns = monotonic_ns()
         if self._hand_state_valid:
             closure = 1.0 - np.clip(
@@ -763,7 +954,27 @@ class HAT4OnlineMotionTrackingEnv(BaseEnv):
         # are made continuous by sampling both on their source timestamps and
         # blending their overlapping predictions in _sample_reference.
         lower = upper = search_center
-        indices = np.asarray([search_center], dtype=np.int64)
+        if (
+            getattr(self, "chunk_start_reference_continuity", False)
+            and outgoing is not None
+        ):
+            # Deployment experiment (2026-09-09): the state-conditioned model
+            # re-anchors every chunk to the measured (lagging) wrist, so
+            # latency-frame starts pull the reference back a few cm on every
+            # swap.  Score a forward-only window and pick the frame closest to
+            # the outgoing reference; the clock shift that makes it actually
+            # play happens in _accept_latest_chunk.  Forward-only from the
+            # latency frame, so stale frames are never resurrected and the
+            # stream can never rewind; mode changes so the shift is auditable.
+            ahead = int(
+                np.rint(self.continuity_search_ahead_s * float(chunk["fps"]))
+            )
+            upper = int(
+                np.clip(search_center + ahead, search_center, chunk["frame_count"] - 1)
+            )
+            if upper > lower:
+                mode = "reference_continuity"
+        indices = np.arange(lower, upper + 1, dtype=np.int64)
         pose_fields = (
             ("root", "root_pos_world", "root_quat_world_wxyz", 2.0),
             ("head", "head_pos_world", "head_quat_world_wxyz", 1.0),
@@ -910,11 +1121,202 @@ class HAT4OnlineMotionTrackingEnv(BaseEnv):
             "transition_valid": bool(transition_valid),
         }
 
+    def _protocol_alignment(self, candidate, root_pos, root_quat):
+        """Place a ``position_origin_world`` chunk in the robot's world frame.
+
+        The two halves of the transform are not symmetric.
+
+        Positions are already relative: the producer subtracted this session's
+        opening head position and hands it back as ``position_origin_world``,
+        so restoring that exact translation preserves the model's immediate
+        global displacement command (13 cm in the 16:32 real run) instead of
+        erasing it by snapping frame zero onto the measured root.
+
+        Rotations are not.  The dex5 converter leaves them in whatever world
+        frame the training rig happened to use, while this world's yaw zero
+        comes from Vive and ``init_base_quat``; the two share no reference
+        direction.  Consuming the predicted heading as an absolute therefore
+        commands a memorized training-set yaw: on 2026-09-06 the measured
+        opening yaw ranged over -3.9..-46.5 deg across runs while the model
+        asked for the same +3.4 deg every time, and the robot dutifully turned
+        left until it got there.  Anchor the heading once instead, exactly as
+        the pre-protocol path does, and only the model's *relative* turning
+        survives.
+
+        The yaw rotation is taken about predicted frame zero's own root so the
+        aligned frame-zero position is unchanged by it; the anchor is a single
+        rigid transform, so later chunks keep whatever displacement they
+        predict.
+        """
+        origin = np.asarray(candidate["position_origin_world"], dtype=np.float32)
+        anchor = self.protocol_alignment_anchor
+        if self.chunk_alignment == "fixed" and self.reference_playing and anchor is not None:
+            return anchor
+        predicted_pos = np.asarray(candidate["root_pos"][0], dtype=np.float64)
+        predicted_quat = np.asarray(candidate["root_quat_wxyz"][0], dtype=np.float64)
+        align_quat = quat_mul(
+            quat_heading(np.asarray(root_quat, dtype=np.float64)),
+            quat_inv(quat_heading(predicted_quat)),
+        )
+        align_pos = origin + (predicted_pos - quat_apply(align_quat, predicted_pos))
+        align_pos = align_pos.astype(np.float32)
+        align_quat = align_quat.astype(np.float32)
+        if self.chunk_alignment == "fixed":
+            self.protocol_alignment_anchor = (align_pos, align_quat)
+        if not self._logged_protocol_origin:
+            yaw_deg = float(
+                np.degrees(2.0 * np.arctan2(align_quat[3], align_quat[0]))
+            )
+            logger.info(
+                "[Online HAT] Restoring HAT global positions from protocol head "
+                f"origin {origin.tolist()}; heading anchored by {yaw_deg:+.1f} deg "
+                f"({self.chunk_alignment}). Frame 0 position is not re-anchored "
+                "to the measured robot root."
+            )
+            self._logged_protocol_origin = True
+        return align_pos, align_quat
+
+    def _min_execution_hold_active(self, now_ns):
+        """Whether the playing chunk must keep executing before a swap.
+
+        ``min_chunk_execution_fraction`` guarantees each accepted chunk plays
+        at least that fraction of its length (0.66 of a 100-frame 30 Hz chunk
+        = 2.2 s) before the next one is consumed.  Swapping every replan
+        period (0.33 s) only ever executed each chunk's opening frames; with
+        this policy's forward progress living in the chunk tail, that turned
+        walking into a stagnant tug-of-war of restarted prefixes.
+
+        The hold only defers *routine* replacement.  It never blocks the
+        first chunk, R1/outage recovery (``awaiting_fresh_chunk``), a
+        staleness-frozen reference (``held_sample``), or a latched restart --
+        in all of those a fresh chunk is wanted immediately.  It also releases
+        ``chunk_end_margin_s`` before the chunk runs out so the successor is
+        consumed before the reference would clamp on the final frame.  The
+        CONFLATE=1 subscriber keeps only the newest published chunk, so at
+        release the accepted chunk is at most one replan period old.
+        """
+        fraction = float(self.cfg.get("min_chunk_execution_fraction", 0.66))
+        if fraction <= 0.0:
+            return False
+        if (
+            not self.reference_playing
+            or self.awaiting_fresh_chunk
+            or self.localization_paused
+            or self.requires_restart
+            or self.held_sample is not None
+            or self.chunk is None
+            or self.chunk_started_ns is None
+            or self.last_chunk_received_ns is None
+        ):
+            return False
+        fps = float(self.chunk["fps"])
+        frame_count = int(self.chunk["frame_count"])
+        chunk_position_s = self._elapsed(now_ns, self.chunk_started_ns)
+        end_margin_s = float(self.cfg.get("chunk_end_margin_s", 0.5))
+        if chunk_position_s >= frame_count / fps - end_margin_s:
+            return False
+        executed_s = max(0.0, (now_ns - self.last_chunk_received_ns) * 1e-9)
+        return executed_s < fraction * frame_count / fps
+
+    def _apply_rtc_overlap(self, aligned, new_start_frame, now_ns, reset_transition):
+        """Return a new chunk with RTC applied, or the untouched input.
+
+        RTC is deliberately opt-in.  Its disabled path returns the exact same
+        object and does not inspect the old chunk, preserving the established
+        hold + same-time ``chunk_blend_s`` implementation byte-for-byte.
+        """
+        if not bool(self.cfg.get("rtc_enabled", False)):
+            return aligned, None
+
+        state = {"applied": False}
+        if reset_transition:
+            state["bypass_reason"] = "reset_or_not_playing"
+            return aligned, state
+        if self.localization_paused or self.awaiting_fresh_chunk:
+            state["bypass_reason"] = "localization_recovery"
+            return aligned, state
+        if self.requires_restart:
+            state["bypass_reason"] = "latched_restart"
+            return aligned, state
+        if self.held_sample is not None:
+            state["bypass_reason"] = "frozen_reference"
+            return aligned, state
+        if self.chunk is None or self.chunk_started_ns is None:
+            state["bypass_reason"] = "no_old_chunk"
+            return aligned, state
+
+        prefix_frames = int(self.cfg.get("rtc_prefix_frames", 10))
+        hard_frames = int(self.cfg.get("rtc_hard_prefix_frames", 2))
+        blend_frames = int(
+            self.cfg.get("rtc_blend_frames", prefix_frames - hard_frames)
+        )
+        old_fps = float(self.chunk["fps"])
+        new_fps = float(aligned["fps"])
+        if not np.isclose(old_fps, new_fps, rtol=0.0, atol=1e-6):
+            state["bypass_reason"] = "fps_mismatch"
+            return aligned, state
+
+        # ceil selects the first frame strictly not behind the continuous live
+        # playback cursor.  This is the essential RTC index: never old[0:M]
+        # and never a fixed latency guess.
+        old_frame = self._elapsed(now_ns, self.chunk_started_ns) * old_fps
+        old_start_frame = int(np.ceil(old_frame - 1e-9))
+        new_start_frame = int(new_start_frame)
+        if old_start_frame + prefix_frames > int(self.chunk["frame_count"]):
+            state.update({
+                "bypass_reason": "insufficient_old_future",
+                "old_cursor_frame": float(old_frame),
+                "old_start_frame": old_start_frame,
+            })
+            return aligned, state
+        if new_start_frame + prefix_frames > int(aligned["frame_count"]):
+            state.update({
+                "bypass_reason": "insufficient_new_future",
+                "new_start_frame": new_start_frame,
+            })
+            return aligned, state
+
+        blended = rtc_blend_chunk_prefix(
+            self.chunk,
+            aligned,
+            old_start_frame=old_start_frame,
+            new_start_frame=new_start_frame,
+            prefix_frames=prefix_frames,
+            hard_prefix_frames=hard_frames,
+            blend_frames=blend_frames,
+        )
+        state.update({
+            "applied": True,
+            "old_cursor_frame": float(old_frame),
+            "old_start_frame": old_start_frame,
+            "new_start_frame": new_start_frame,
+            "prefix_frames": prefix_frames,
+            "hard_prefix_frames": hard_frames,
+            "blend_frames": blend_frames,
+        })
+        return blended, state
+
     def _accept_latest_chunk(self, now_ns):
+        if self._min_execution_hold_active(now_ns):
+            # Do not even drain the subscriber: CONFLATE retains the newest
+            # chunk for the moment the hold releases.  finger_chunk_source
+            # "latest" must drain anyway (fingers follow every replan), so it
+            # stashes what it drains for body acceptance at hold release.
+            if self.finger_chunk_source == "latest":
+                self._drain_chunk_during_hold(now_ns)
+            return False
         receive_error = self.chunk_subscriber.receive_error()
         if receive_error is not None:
             logger.warning(f"[Online HAT] Rejected invalid chunk: {receive_error}")
         raw = self.chunk_subscriber.receive_latest()
+        # A chunk drained during the hold takes the place CONFLATE retention
+        # would have given it; the subscriber content wins only if newer.
+        pending = self._pending_raw_chunk
+        self._pending_raw_chunk = None
+        if pending is not None and (
+            raw is None or int(pending["sequence_id"]) > int(raw["sequence_id"])
+        ):
+            raw = pending
         if raw is None:
             return False
         try:
@@ -940,25 +1342,9 @@ class HAT4OnlineMotionTrackingEnv(BaseEnv):
             root_pos = self.state_buffer["root_pos_buffer"][0, -1].detach().cpu().numpy()
             root_quat = self.state_buffer["root_quat_wxyz_buffer"][0, -1].detach().cpu().numpy()
             if "position_origin_world" in candidate:
-                # dex5/HAT position channels already share the robot's world
-                # axes; only the fixed opening-head translation was subtracted
-                # during preprocessing.  Restore that exact translation and
-                # leave world rotations unchanged.  Aligning predicted frame
-                # zero to the measured root would erase the model's immediate
-                # global displacement command (13 cm in the 16:32 real run).
-                align_pos = np.asarray(
-                    candidate["position_origin_world"], dtype=np.float32
+                align_pos, align_quat = self._protocol_alignment(
+                    candidate, root_pos, root_quat
                 )
-                align_quat = np.array(
-                    [1.0, 0.0, 0.0, 0.0], dtype=np.float32
-                )
-                if not self._logged_protocol_origin:
-                    logger.info(
-                        "[Online HAT] Restoring HAT global positions from "
-                        f"protocol head origin {align_pos.tolist()}; frame 0 "
-                        "is not re-anchored to the measured robot root."
-                    )
-                    self._logged_protocol_origin = True
             else:
                 # Backward compatibility for recordings/fake producers created
                 # before position_origin_world was added to HatChunkV4.
@@ -1013,8 +1399,8 @@ class HAT4OnlineMotionTrackingEnv(BaseEnv):
                    else f"using latency frame {start_frame}")
                 + f": {exc}"
             )
-        aligned["execution_alignment"] = dict(phase_state)
         if not phase_state.get("transition_valid", True):
+            aligned["execution_alignment"] = dict(phase_state)
             self.last_chunk_sequence_id = candidate["sequence_id"]
             if hasattr(self.simulator, "record_hat_chunk"):
                 self.simulator.record_hat_chunk(candidate, aligned)
@@ -1027,6 +1413,13 @@ class HAT4OnlineMotionTrackingEnv(BaseEnv):
                 f"staleness watchdog remains active."
             )
             return False
+        aligned, rtc_state = self._apply_rtc_overlap(
+            aligned, start_frame, now_ns, reset_transition
+        )
+        phase_state = dict(phase_state)
+        if rtc_state is not None:
+            phase_state["rtc"] = rtc_state
+        aligned["execution_alignment"] = phase_state
         if reset_transition:
             self.previous_chunk = None
             self.previous_chunk_started_ns = None
@@ -1048,15 +1441,65 @@ class HAT4OnlineMotionTrackingEnv(BaseEnv):
             if source_timestamp_ns is not None
             else now_ns - int(phase_state["source_age_s"] * 1e9)
         )
+        continuity_note = ""
+        if phase_state.get("mode") == "reference_continuity":
+            # sample_chunk is purely time-based, so the continuity-selected
+            # frame only actually plays if the clock is shifted back by the
+            # same whole number of frames.  Shifting the source-timestamp
+            # origin (instead of deriving a new clock from the frame index)
+            # preserves the sub-frame latency phase; expected_frame is the
+            # latency frame the default behaviour would have started at.
+            # Forward-only by construction of the search window.  Must happen
+            # before _submit_chunk_focus reads the clock below.
+            shift_frames = int(start_frame) - int(
+                phase_state.get("expected_frame", start_frame)
+            )
+            if shift_frames > 0:
+                self.chunk_started_ns -= int(
+                    round(shift_frames / float(aligned["fps"]) * 1e9)
+                )
+                phase_state["continuity_shift_frames"] = shift_frames
+                continuity_note = (
+                    f" Continuity start: +{shift_frames} frames past latency "
+                    f"frame {phase_state.get('expected_frame')}."
+                )
+        if self.finger_chunk_source == "latest":
+            # Keep the finger stream on the freshest plan: an accepted chunk
+            # is at least as new as anything drained during the hold, and its
+            # (possibly continuity-shifted) clock is authoritative.
+            self._finger_chunk = self.chunk
+            self._finger_chunk_started_ns = self.chunk_started_ns
         self.blend_started_ns = now_ns if self.previous_chunk is not None else None
         self.last_chunk_sequence_id = candidate["sequence_id"]
         self.last_chunk_received_ns = now_ns
+        self._chunk_hold_release_ns = None
         self.held_sample = None
         self.awaiting_fresh_chunk = False
         self.minimum_source_state_sequence_id = None
         if hasattr(self.simulator, "record_hat_chunk"):
             self.simulator.record_hat_chunk(candidate, aligned)
         self._submit_chunk_focus(self.chunk, now_ns)
+        min_execution_fraction = float(
+            self.cfg.get("min_chunk_execution_fraction", 0.66)
+        )
+        hold_note = ""
+        if min_execution_fraction > 0.0 and self.reference_playing:
+            hold_s = (
+                min_execution_fraction
+                * int(candidate["frame_count"])
+                / float(candidate["fps"])
+            )
+            hold_note = f" Executing for at least {hold_s:.2f}s before the next swap."
+        rtc_note = ""
+        if rtc_state is not None and rtc_state.get("applied", False):
+            rtc_note = (
+                f" RTC old[{rtc_state['old_start_frame']}:"
+                f"{rtc_state['old_start_frame'] + rtc_state['prefix_frames']}] -> "
+                f"new[{rtc_state['new_start_frame']}:"
+                f"{rtc_state['new_start_frame'] + rtc_state['prefix_frames']}] "
+                f"(hard={rtc_state['hard_prefix_frames']}, "
+                f"blend={rtc_state['blend_frames']})."
+            )
         logger.info(
             f"[Online HAT] Accepted chunk {self.last_chunk_sequence_id} "
             f"({candidate['frame_count']} frames @ {candidate['fps']:.1f} Hz): "
@@ -1065,6 +1508,7 @@ class HAT4OnlineMotionTrackingEnv(BaseEnv):
             f"root_jump={phase_state.get('root_jump_m')}m, "
             f"backtrack={phase_state.get('backtrack_m')}m, "
             f"pose_cost={phase_state['pose_cost']}."
+            + continuity_note + hold_note + rtc_note
         )
         return True
 
@@ -1101,6 +1545,13 @@ class HAT4OnlineMotionTrackingEnv(BaseEnv):
                     np.array([[0.0, 2.0]], dtype=np.float32), (count, 1)
                 ),
             }
+        if self._latched_hold_active():
+            # Stale-stream latch on a running reference: keep serving the pose
+            # the robot was in when the stream died instead of falling through
+            # to the calibration stand below.
+            return self._repeat_current(
+                self._latched_sample, len(self.future_offsets_s)
+            )
         if (
             self.reference_play_gate
             and not self.reference_playing
@@ -1164,13 +1615,18 @@ class HAT4OnlineMotionTrackingEnv(BaseEnv):
         count = len(self.future_offsets_s)
         link_count = len(self.metadata_dict["selected_body_names"])
         selected_names = list(self.metadata_dict["selected_body_names"])
-        if (
+        if self._latched_hold_active():
+            # Latched after a stale stream while the reference was running: hold
+            # the pose the robot was actually in, not the calibration stand.
+            # Live FK is the frozen measured pose, so it is the right fallback.
+            measured = self._latched_link_poses or self.current_pose_fk.last_body_poses
+        elif (
             self.reference_play_gate
             and not self.reference_playing
             and self._prestart_link_poses is not None
         ):
-            # Holding pre-start (or latched after a stale stream): the entire
-            # reference must be the static snapshot, not live tracker FK.
+            # Holding pre-start: the entire reference must be the static
+            # snapshot, not live tracker FK.
             measured = self._prestart_link_poses
             self._log_prestart_hold_error(measured_root_pos)
         else:
@@ -1385,16 +1841,182 @@ class HAT4OnlineMotionTrackingEnv(BaseEnv):
         else:
             self.simulator.update_marker_pos(pos)
 
+    def _drain_chunk_during_hold(self, now_ns):
+        """finger_chunk_source="latest": consume chunks the hold would defer.
+
+        Draining forfeits the CONFLATE=1 retention _accept_latest_chunk
+        relies on, so the newest drained chunk is stashed in
+        ``_pending_raw_chunk`` and preferred over the subscriber content when
+        the hold releases -- body-chunk acceptance sees exactly what it would
+        have seen undrained.  Fingertips are wrist-local, so the raw
+        (world-unaligned) chunk can drive them directly; the same
+        source-state freshness guards as acceptance apply before the finger
+        stream switches to it.
+        """
+        receive_error = self.chunk_subscriber.receive_error()
+        if receive_error is not None:
+            logger.warning(f"[Online HAT] Rejected invalid chunk: {receive_error}")
+        raw = self.chunk_subscriber.receive_latest()
+        if raw is None:
+            return
+        if int(raw["sequence_id"]) <= self.last_chunk_sequence_id:
+            return
+        pending = self._pending_raw_chunk
+        if pending is None or int(raw["sequence_id"]) > int(pending["sequence_id"]):
+            self._pending_raw_chunk = raw
+        if (
+            self.minimum_source_state_sequence_id is not None
+            and raw["source_state_sequence_id"]
+            < self.minimum_source_state_sequence_id
+        ):
+            return
+        max_lag = int(self.cfg.get("max_source_state_lag", 30))
+        if raw["source_state_sequence_id"] < self.state_sequence_id - max_lag:
+            return
+        source_timestamp_ns = self._source_state_timestamp_ns(
+            raw["source_state_sequence_id"]
+        )
+        self._finger_chunk = raw
+        self._finger_chunk_started_ns = (
+            int(source_timestamp_ns) if source_timestamp_ns is not None else now_ns
+        )
+
+    def _finger_reference_targets(self):
+        """Fingertip targets for the IK worker, honouring finger_chunk_source.
+
+        "playback" is the pre-existing behaviour: fingertips come from the
+        same accepted-chunk playback sample as the body keypoints, so the
+        min-execution hold, RTC and chunk_blend_s all apply to them.
+        "latest" instead samples the newest received chunk on its own
+        source-timestamp clock, replanning the fingers every ~0.34s replan
+        while the body hold keeps executing an older chunk.
+        """
+        sample = self.last_reference_sample
+        left = sample["left_fingertip_local"][0]
+        right = sample["right_fingertip_local"][0]
+        if (
+            getattr(self, "finger_chunk_source", "playback") != "latest"
+            or self._finger_chunk is None
+        ):
+            return left, right
+        if (
+            not self.reference_playing
+            or self.localization_paused
+            or self.held_sample is not None
+        ):
+            # A frozen/held body reference freezes the fingers with it.
+            return left, right
+        chunk = self._finger_chunk
+        elapsed_s = max(
+            0.0, (monotonic_ns() - self._finger_chunk_started_ns) * 1e-9
+        )
+        frame = np.asarray(
+            [
+                np.clip(
+                    elapsed_s * float(chunk["fps"]),
+                    0.0,
+                    int(chunk["frame_count"]) - 1.0,
+                )
+            ],
+            dtype=np.float64,
+        )
+        left = _sample_fingers(chunk["left_fingertip_local"], frame)[0].astype(
+            np.float32
+        )
+        right = _sample_fingers(chunk["right_fingertip_local"], frame)[0].astype(
+            np.float32
+        )
+        return left, right
+
+    @staticmethod
+    def _thumb_index_gap(fingertips_local):
+        """Openness proxy: FINGER_ORDER puts thumb and index tips at 0 and 1."""
+        tips = np.asarray(fingertips_local, dtype=np.float64)
+        return float(np.linalg.norm(tips[0] - tips[1]))
+
+    def _apply_finger_wrist_gate(self, left_target, right_target):
+        """Block finger *closing* while the measured wrist lags the reference.
+
+        2026-09-09 failure mode: HAT closes the fingers on the chunk time
+        schedule while the wrist runs at only 0.12-0.76x the predicted speed,
+        so the hand closes 5-23cm from the predicted grasp point.  While a
+        side's measured wrist (same Vive*FK chain as wrist compensation) is
+        farther than the engage threshold from its reference wrist, that
+        side's thumb-index gap may only grow: opening and aborts always pass,
+        closing waits for the wrist.  Hysteresis prevents chattering at the
+        threshold.
+        """
+        if not getattr(self, "finger_wrist_gate", False) or not self.reference_playing:
+            return left_target, right_target
+        sample = self.last_reference_sample
+        measured = self._measured_wrist_pos_world()
+        if sample is None or measured is None:
+            return left_target, right_target
+        outputs = []
+        for row, side, wrist_key, target in (
+            (0, "left", "left_wrist_pos", left_target),
+            (1, "right", "right_wrist_pos", right_target),
+        ):
+            error_m = float(
+                np.linalg.norm(
+                    np.asarray(sample[wrist_key][0], dtype=np.float64)
+                    - measured[row].cpu().numpy().astype(np.float64)
+                )
+            )
+            blocked = self._finger_gate_blocked[side]
+            if blocked and error_m < self.finger_wrist_gate_release_m:
+                blocked = False
+                logger.info(
+                    f"[Online HAT] Finger gate released ({side}): wrist error "
+                    f"{error_m * 100:.1f}cm < "
+                    f"{self.finger_wrist_gate_release_m * 100:.1f}cm."
+                )
+            elif not blocked and error_m > self.finger_wrist_gate_engage_m:
+                blocked = True
+                logger.info(
+                    f"[Online HAT] Finger gate engaged ({side}): wrist error "
+                    f"{error_m * 100:.1f}cm > "
+                    f"{self.finger_wrist_gate_engage_m * 100:.1f}cm; finger "
+                    "closing frozen until the wrist arrives."
+                )
+            self._finger_gate_blocked[side] = blocked
+            allowed = np.asarray(target, dtype=np.float32)
+            if blocked:
+                hold = self._finger_gate_hold[side]
+                if hold is not None and (
+                    self._thumb_index_gap(allowed) < self._thumb_index_gap(hold)
+                ):
+                    allowed = hold
+            self._finger_gate_hold[side] = allowed
+            outputs.append(allowed)
+        return outputs[0], outputs[1]
+
     def _send_hand_target(self):
+        if (
+            self.reference_play_gate
+            and not self.reference_playing
+            and not self._latched_hold_active()
+        ):
+            # Pre-start (and post-R1-stop) hold: hands open and wait.  A stale
+            # stream latch is excluded -- it must hold the whole body pose the
+            # robot was in, fingers included, instead of dropping whatever is
+            # in the hand.  The normal path below already freezes the fingers
+            # when the body reference is frozen (_finger_reference_targets).
+            if self.hand_ik_worker is not None:
+                self.simulator.set_hand_ik_target(self.open_hand_dof12, self.open_hand_dof12)
+            self._finger_gate_blocked = {"left": False, "right": False}
+            self._finger_gate_hold = {"left": None, "right": None}
+            return
         if self.hand_ik_worker is None or self.last_reference_sample is None:
             return
         solved = self.hand_ik_worker.latest()
         if solved is not None:
             self.simulator.set_hand_ik_target(solved["lh"], solved["rh"])
-        self.hand_ik_worker.submit(
-            self.last_reference_sample["left_fingertip_local"][0],
-            self.last_reference_sample["right_fingertip_local"][0],
+        left_target, right_target = self._finger_reference_targets()
+        left_target, right_target = self._apply_finger_wrist_gate(
+            left_target, right_target
         )
+        self.hand_ik_worker.submit(left_target, right_target)
 
     def _update_localization(self):
         robust = (
@@ -1423,16 +2045,62 @@ class HAT4OnlineMotionTrackingEnv(BaseEnv):
             self._root_transition_index = 0
             logger.info("[Online HAT] Vive recovered: waiting for a fresh HAT chunk.")
 
+    def _latched_hold_active(self):
+        """True only while a *running* reference is latched by the watchdog.
+
+        Before R1 ``requires_restart`` is False and ``_latched_sample`` is None,
+        so this never fires during the genuine pre-start hold; R1 and reset()
+        both clear the pair.  ``held_sample`` is deliberately not used here: a
+        chunk accepted after the stream recovers clears it while the latch is
+        still waiting for R1.
+        """
+        return self.requires_restart and self._latched_sample is not None
+
     def _update_staleness(self, now_ns):
         if self.last_chunk_received_ns is None:
             return
-        age_s = (now_ns - self.last_chunk_received_ns) * 1e-9
+        since_ns = self.last_chunk_received_ns
+        if self.localization_paused or self.awaiting_fresh_chunk:
+            # Arriving chunks are being *deliberately* discarded here -- during
+            # a Vive outage (_accept_latest_chunk drops them) and during the
+            # recovery handshake that waits for a chunk inferred from fresh
+            # state.  last_chunk_received_ns only advances on acceptance, so
+            # counting through this window judges the producer by our own
+            # refusal to consume and latches a healthy HAT stream.  Same
+            # treatment the deliberate min-execution hold already gets below:
+            # pause the clock and restart it when consumption resumes.
+            self._chunk_hold_release_ns = now_ns
+            return
+        if self._min_execution_hold_active(now_ns):
+            # Chunks are deliberately not being consumed, so the stream cannot
+            # be judged stale; remember when the hold was last active so the
+            # staleness clock restarts from the hold's release, not from the
+            # last acceptance.
+            self._chunk_hold_release_ns = now_ns
+            return
+        if self._chunk_hold_release_ns is not None:
+            since_ns = max(since_ns, self._chunk_hold_release_ns)
+        age_s = (now_ns - since_ns) * 1e-9
         soft_s = float(self.cfg.get("chunk_hold_timeout_s", 0.5))
         hard_s = float(self.cfg.get("chunk_latch_timeout_s", 2.0))
         if age_s >= soft_s and self.held_sample is None:
             self.held_sample = self._sample_reference(now_ns)
             logger.warning("[Online HAT] Chunk stream stale: freezing the current reference.")
         if age_s >= hard_s and not self.requires_restart:
+            # Keep holding the pose the robot was in when the stream died.
+            # Without this the reference falls back to prestart_reference_sample
+            # and the robot snaps to the calibration stand in one 20ms step.
+            if self.held_sample is None:
+                self.held_sample = self._sample_reference(now_ns)
+            self._latched_sample = self.held_sample
+            body_poses = getattr(
+                getattr(self, "current_pose_fk", None), "last_body_poses", None
+            )
+            # Never let a missing FK snapshot abort the latch itself.
+            self._latched_link_poses = {
+                name: (np.array(pos, dtype=np.float32), np.array(quat, dtype=np.float32))
+                for name, (pos, quat) in body_poses.items()
+            } if body_poses else None
             self.requires_restart = True
             self.reference_playing = False
             self.chunk_started_ns = None
@@ -1440,6 +2108,22 @@ class HAT4OnlineMotionTrackingEnv(BaseEnv):
                 f"[Online HAT] No chunk for {age_s:.2f}s: latched hold; "
                 f"press {self.reference_play_control} after recovery."
             )
+
+    def _prepare_startup_hands(self):
+        """Open after calibration, before publishing the first HAT observation."""
+        if self.hand_ik_worker is None:
+            return
+        logger.info("[Online HAT] Opening both hands before first HAT state ...")
+        deadline = time.monotonic() + float(self.cfg.get("startup_hand_timeout_s", 8.0))
+        while time.monotonic() < deadline:
+            self.simulator.set_hand_ik_target(self.open_hand_dof12, self.open_hand_dof12)
+            left, right = self.simulator.get_hand_motor_state()
+            motors = np.asarray([left, right])
+            if motors.shape == (2, 6) and np.isfinite(motors).all() and np.all(motors >= 0.95):
+                logger.info("[Online HAT] Both hands open: left={}, right={}", left, right)
+                return
+            time.sleep(0.02)
+        raise RuntimeError("Hands did not report fresh open feedback before HAT startup; check Inspire feedback/actuation")
 
     def _wait_for_first_chunk(self):
         deadline = time.monotonic() + float(self.cfg.get("startup_chunk_timeout_s", 15.0))
@@ -1484,6 +2168,8 @@ class HAT4OnlineMotionTrackingEnv(BaseEnv):
             )
         self.reference_playing = not self.reference_play_gate
         self.requires_restart = False
+        self._latched_sample = None
+        self._latched_link_poses = None
         self.localization_paused = False
         self._wrist_offset = torch.zeros(2, 3)
         self._comp_fade_alpha = 0.0
@@ -1492,6 +2178,12 @@ class HAT4OnlineMotionTrackingEnv(BaseEnv):
         self._root_transition_index = 0
         self._prestart_debug_counter = 0
         self._reset_hand_ik()
+        self._prepare_startup_hands()
+        current = self.simulator.refresh_sim()
+        for key, value in current.items():
+            self.state_buffer[f"{key}_buffer"].copy_(
+                torch.broadcast_to(value, self.state_buffer[f"{key}_buffer"].shape)
+            )
         self.hand_focus_history.clear()
         if self.focus_worker is not None:
             self.focus_worker.latest()
@@ -1502,8 +2194,15 @@ class HAT4OnlineMotionTrackingEnv(BaseEnv):
         self.chunk_phase_state = None
         self.chunk_start_frame = 0
         self.alignment_anchor = None
+        self.protocol_alignment_anchor = None
         self._logged_protocol_origin = False
         self.last_chunk_received_ns = None
+        self._chunk_hold_release_ns = None
+        self._pending_raw_chunk = None
+        self._finger_chunk = None
+        self._finger_chunk_started_ns = None
+        self._finger_gate_blocked = {"left": False, "right": False}
+        self._finger_gate_hold = {"left": None, "right": None}
         self.awaiting_fresh_chunk = True
         self.minimum_source_state_sequence_id = self.state_sequence_id
         self.chunk_subscriber.receive_latest()
@@ -1523,8 +2222,8 @@ class HAT4OnlineMotionTrackingEnv(BaseEnv):
         self._gather_reference_state(monotonic_ns())
         self._send_hand_target()
         logger.info(
-            f"[Online HAT] READY: policy is holding the fixed real-G1 raised-arm pose; "
-            f"press {self.reference_play_control} to start."
+            f"[Online HAT] READY: policy is holding prestart_arm_pose="
+            f"{self.prestart_arm_pose}; press {self.reference_play_control} to start."
             if self.reference_play_gate else "[Online HAT] Online reference started."
         )
         return self._update_observation_manager()
@@ -1601,6 +2300,8 @@ class HAT4OnlineMotionTrackingEnv(BaseEnv):
             self.reference_playing = True
             self.requires_restart = False
             self.held_sample = None
+            self._latched_sample = None
+            self._latched_link_poses = None
             self.takeover_started_ns = now_ns
             # Same handover the GMT env does at R1: the root obs was held on
             # the local pre-start reference, walk it to the live tracker.

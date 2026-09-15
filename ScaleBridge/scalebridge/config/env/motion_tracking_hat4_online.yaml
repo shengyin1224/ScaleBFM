@@ -7,13 +7,18 @@ config:
   # /dev/null only satisfies inherited simulator interpolation; online mode
   # never loads an offline NPZ.
   motion_path: /dev/null
-  # Pre-start uses the raised-arm pose measured from the real G1's L2+A hold
-  # and generated through FK; it does not reuse frame 0 of any task motion.
+  # Pre-start uses a named arm pose and generates its link targets through FK;
+  # it does not consume a live HAT chunk before R1.
   future_idx: [0, 1, 2, 3, 4, 5]
   reference_forcing: False
-  # Pre-R1 hold pose: raised = fixed real-G1 raised-arm ready pose;
+  # Pre-R1 hold pose:
+  # raised = fixed real-G1 two-arm raised pose (existing default);
+  # sonic_0904 = representative whole-body opening pose measured from the
+  #              Sep-04 SONIC teleoperation data (arms, legs, and waist);
   # stand = hold the as-calibrated stand, arms down (old behaviour).
-  prestart_arm_pose: raised
+  prestart_arm_pose: stand
+  # Wait for fresh, physically open Inspire feedback before HAT's first state.
+  startup_hand_timeout_s: 8.0
   # Legacy fallback for producers/recordings without position_origin_world.
   # Current HAT chunks carry their opening-head world origin and bypass this
   # frame-0 anchoring so absolute global displacement is preserved.
@@ -51,3 +56,52 @@ config:
   takeover_blend_s: 0.75
   chunk_hold_timeout_s: 0.50
   chunk_latch_timeout_s: 2.0
+  # Each accepted chunk executes at least this fraction of its length before
+  # the next one is consumed (0.66 of a 100-frame 30 Hz chunk = 2.2 s).
+  # Swapping on every 0.33 s replan only ever played each chunk's opening
+  # frames; the 2026-09-07 audit showed this model's forward progress lives in
+  # the chunk tail, so per-replan swapping stalled walking into restarted
+  # prefixes.  0 restores swap-on-every-replan.  The hold never delays the
+  # first chunk, R1/Vive recovery, or a staleness-frozen reference, and the
+  # staleness watchdog counts from the hold's release instead of the last
+  # acceptance.
+  min_chunk_execution_fraction: 0.66
+  # Release the hold this long before the playing chunk runs out so the
+  # successor (at most one replan period old under CONFLATE) is accepted and
+  # blended in before the reference clamps on the final frame.
+  chunk_end_margin_s: 0.5
+  # Receding Trajectory Correction (RTC) is opt-in so disabling it preserves
+  # the current hold and same-time chunk_blend_s swap path exactly.  On a
+  # routine swap, blend the old chunk's live, unexecuted future into the first
+  # M frames that will actually be played from the latency-aligned new chunk.
+  # First two frames stay 100% old; the following eight ramp old -> new.
+  rtc_enabled: true
+  rtc_prefix_frames: 10
+  rtc_hard_prefix_frames: 2
+  rtc_blend_frames: 8
+  # --- 2026-09-09 grasp-failure deployment experiments.  All three switches
+  # default to the exact pre-existing behaviour. ---
+  # 1) Start each newly accepted chunk at the frame that best continues the
+  # outgoing reference instead of strictly at the latency frame.  The search
+  # is forward-only (latency frame .. +continuity_search_ahead_s) and the
+  # chunk clock is shifted so the selected frame actually plays.  This trades
+  # the pure source-timestamp clock for seam continuity: it removes the
+  # per-swap backtrack where a re-anchored chunk pulls the reference back to
+  # the measured (lagging) wrist.  false restores latency-frame starts.
+  chunk_start_reference_continuity: false
+  continuity_search_ahead_s: 1.0
+  # 2) Freeze finger *closing* while the measured wrist (Vive*FK) is farther
+  # than engage_m from the reference wrist; release below release_m
+  # (hysteresis).  Opening always passes immediately.  Addresses the
+  # 2026-09-09 failure mode: fingers closed on the chunk time schedule while
+  # the wrist ran at 0.12-0.76x predicted speed, closing 5-23cm early.
+  finger_wrist_gate: false
+  finger_wrist_gate_engage_m: 0.06
+  finger_wrist_gate_release_m: 0.035
+  # 3) Where finger targets come from.  playback (pre-existing behaviour):
+  # fingertips are sampled from the same accepted-chunk playback as the body
+  # keypoints, so the min-execution hold, RTC and chunk_blend_s all apply.
+  # latest: fingertips follow the newest *received* chunk on its own
+  # source-timestamp clock, bypassing the hold, so finger plans refresh every
+  # replan (~0.34s) even while the body keeps executing an older chunk.
+  finger_chunk_source: playback

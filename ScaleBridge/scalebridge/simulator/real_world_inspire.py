@@ -24,6 +24,7 @@ class InspireRealWorld(RealWorld):
         self._hand_state_lock = threading.Lock()
         self._hand_left_state = None
         self._hand_right_state = None
+        self._hand_state_at = None
         self._hand_log_enabled = bool(self.cfg.get("deployment_hardening", False))
         self._hand_log_lock = threading.Lock()
         self._hand_log_file = None
@@ -120,9 +121,12 @@ class InspireRealWorld(RealWorld):
                     right = np.asarray(state["right"], dtype=np.float32)
                     if left.shape != (6,) or right.shape != (6,):
                         raise ValueError("hand state must contain six values per side")
+                    if not np.isfinite(left).all() or not np.isfinite(right).all():
+                        raise ValueError("hand state must be finite")
                     with self._hand_state_lock:
                         self._hand_left_state = left
                         self._hand_right_state = right
+                        self._hand_state_at = float(state["measured_at"])
                     self._record_hand("state", left, right)
                 except Exception as exc:
                     logger.warning("[Inspire worker] Invalid state feedback: {}".format(exc))
@@ -132,8 +136,12 @@ class InspireRealWorld(RealWorld):
     def get_hand_motor_state(self):
         """Return measured left/right six-motor positions in standard semantics."""
         with self._hand_state_lock:
-            if self._hand_left_state is None or self._hand_right_state is None:
-                return np.zeros(6, dtype=np.float32), np.zeros(6, dtype=np.float32)
+            if (
+                self._hand_left_state is None or self._hand_right_state is None
+                or self._hand_state_at is None
+                or time.monotonic() - self._hand_state_at > 0.5
+            ):
+                return np.full(6, np.nan, dtype=np.float32), np.full(6, np.nan, dtype=np.float32)
             return self._hand_left_state.copy(), self._hand_right_state.copy()
 
     def set_hand_ik_target(self, left_dof_pos, right_dof_pos):

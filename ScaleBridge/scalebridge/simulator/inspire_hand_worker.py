@@ -13,6 +13,7 @@ Nothing is published until the parent sends the first target.
 import argparse
 import json
 import sys
+import threading
 import time
 
 import numpy as np
@@ -62,7 +63,28 @@ def main():
     publisher = ChannelPublisher("rt/inspire/cmd", MotorCmds_)
     publisher.Init()
     subscriber = ChannelSubscriber("rt/inspire/state", MotorStates_)
-    subscriber.Init()
+    state_lock = threading.Lock()
+    feedback_ready = threading.Event()
+    latest_state = [None]
+    last_report = [0.0]
+
+    def on_state(sample):
+        if len(sample.states) < 12:
+            return
+        now = time.monotonic()
+        with state_lock:
+            latest_state[0] = sample
+        if feedback_ready.is_set() and now - last_report[0] >= 0.02:
+            last_report[0] = now
+            print("STATE " + json.dumps({
+                "left": [float(sample.states[i + 6].q) for i in range(6)],
+                "right": [float(sample.states[i].q) for i in range(6)],
+                "measured_at": now,
+            }, separators=(",", ":")), flush=True)
+
+    # Receive feedback even while the parent waits for R2 / HAT. Never report
+    # the command integrator as though it were measured robot state.
+    subscriber.Init(on_state)
     command = MotorCmds_(
         cmds=[unitree_go_msg_dds__MotorCmd_() for _ in range(12)]
     )
@@ -70,7 +92,8 @@ def main():
     deadline = time.monotonic() + args.state_timeout
     state = None
     while time.monotonic() < deadline:
-        candidate = subscriber.Read()
+        with state_lock:
+            candidate = latest_state[0]
         if candidate is not None and len(candidate.states) >= 12:
             state = candidate
             break
@@ -89,15 +112,10 @@ def main():
     current_left = np.clip(current_left, 0.0, 1.0)
     current_right = np.clip(current_right, 0.0, 1.0)
     print("READY", flush=True)
-    print(
-        "STATE " + json.dumps(
-            {"left": current_left.tolist(), "right": current_right.tolist()},
-            separators=(",", ":"),
-        ),
-        flush=True,
-    )
+    feedback_ready.set()
 
     max_step = max(0.0, float(args.max_step))
+    first_command = True
     for line in sys.stdin:
         try:
             payload = json.loads(line)
@@ -109,6 +127,14 @@ def main():
             target_right = np.clip(
                 dofpos12_to_q6(right12[IK_TO_TWIST2]), 0.0, 1.0
             )
+            if first_command:
+                # Calibration can take arbitrarily long; ramp from the latest
+                # feedback, not the pose measured when the worker booted.
+                with state_lock:
+                    state = latest_state[0]
+                    current_right = np.clip([state.states[i].q for i in range(6)], 0.0, 1.0)
+                    current_left = np.clip([state.states[i + 6].q for i in range(6)], 0.0, 1.0)
+                first_command = False
 
             # Rate-limit the COMMAND integrator only. current_* starts from the
             # measured pose (safe first ramp) and then advances max_step per
@@ -126,28 +152,6 @@ def main():
                 command.cmds[i].q = float(current_right[i])
                 command.cmds[i + 6].q = float(current_left[i])
             publisher.Write(command)
-            measured = subscriber.Read()
-            if measured is not None and len(measured.states) >= 12:
-                measured_right = np.clip(
-                    np.array([measured.states[i].q for i in range(6)], dtype=np.float64),
-                    0.0,
-                    1.0,
-                )
-                measured_left = np.clip(
-                    np.array([measured.states[i + 6].q for i in range(6)], dtype=np.float64),
-                    0.0,
-                    1.0,
-                )
-            else:
-                measured_right = current_right
-                measured_left = current_left
-            print(
-                "STATE " + json.dumps(
-                    {"left": measured_left.tolist(), "right": measured_right.tolist()},
-                    separators=(",", ":"),
-                ),
-                flush=True,
-            )
         except Exception as exc:
             print("ERROR {}".format(exc), flush=True)
 

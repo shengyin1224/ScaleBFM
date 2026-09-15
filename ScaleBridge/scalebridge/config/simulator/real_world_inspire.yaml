@@ -4,6 +4,9 @@ defaults:
 _target_: simulator.real_world_inspire.InspireRealWorld
 _recursive_: False
 config:
+  # Keep the last commanded whole-body pose when the robot state/NIC freezes.
+  # This preserves the SONIC-style hold instead of dropping to damping.
+  state_watchdog_hold_last_target: True
   # This is the PC interface connected to the G1.  It is the same interface
   # used by SONIC/TWIST2 on this workstation.
   hand_network: enp4s0
@@ -24,6 +27,9 @@ config:
   # packaged tip targets live rather than replaying the dof angles an offline
   # pass already solved from them.  Set to False to replay those angles.
   hand_realtime_ik: True
+  # coupled_motor enforces the six physical Inspire actuators (default).
+  # independent_joint retains the legacy 12-DOF IK for A/B comparison.
+  hand_ik_mode: coupled_motor
   hand_ik_module_root: /home/nerv/qingyaoxu/ScaleBFM/MyScaleBFM
   # Warm-started from the previous command, 20 iterations reproduce the offline
   # 120-iteration solution exactly at a fifth of the cost.
