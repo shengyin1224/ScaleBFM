@@ -316,6 +316,9 @@ public:
         rc_command.right_upper_switch = remote_key_data.btn.components.R1;
         rc_command.left_lower_left_switch = remote_key_data.btn.components.L2;
         rc_command.left_upper_switch = remote_key_data.btn.components.L1;
+        // Preserve Unitree B/X in the two spare LCM switch fields.
+        rc_command.left_lower_right_switch = remote_key_data.btn.components.B;
+        rc_command.right_lower_left_switch = remote_key_data.btn.components.X;
 
         _simpleLCM.publish("robot_state_data", &robot_state_simple);
         _simpleLCM.publish("rc_command_data", &rc_command);

@@ -87,7 +87,7 @@ def validate_robot_state(message: dict) -> dict:
     timestamp_ns = int(message["timestamp_ns"])
     if sequence_id < 0 or timestamp_ns < 0:
         raise ValueError("RobotState sequence_id and timestamp_ns must be non-negative")
-    return {
+    result = {
         "type": ROBOT_STATE_TYPE,
         "version": PROTOCOL_VERSION,
         "sequence_id": sequence_id,
@@ -114,6 +114,17 @@ def validate_robot_state(message: dict) -> dict:
             "right_hand_keypoints_local",
         ).astype(np.float32),
     }
+    if "reference_plan_active" in message:
+        active = message["reference_plan_active"]
+        if not isinstance(active, bool):
+            raise ValueError("reference_plan_active must be a boolean")
+        result["reference_plan_active"] = active
+    if "reference_plan_epoch" in message:
+        epoch = int(message["reference_plan_epoch"])
+        if epoch < 0:
+            raise ValueError("reference_plan_epoch must be non-negative")
+        result["reference_plan_epoch"] = epoch
+    return result
 
 
 def make_robot_state(
@@ -123,6 +134,7 @@ def make_robot_state(
     right_wrist_pos_world, right_wrist_quat_world_wxyz,
     body_q19, left_arm_q, left_hand_q, left_hand_keypoints_local,
     right_arm_q, right_hand_q, right_hand_keypoints_local,
+    reference_plan_active=None, reference_plan_epoch=None,
 ):
     raw = {
         "type": ROBOT_STATE_TYPE,
@@ -145,6 +157,10 @@ def make_robot_state(
         "right_hand_q": np.asarray(right_hand_q).tolist(),
         "right_hand_keypoints_local": np.asarray(right_hand_keypoints_local).tolist(),
     }
+    if reference_plan_active is not None:
+        raw["reference_plan_active"] = reference_plan_active
+    if reference_plan_epoch is not None:
+        raw["reference_plan_epoch"] = reference_plan_epoch
     checked = validate_robot_state(raw)
     return {key: value.tolist() if isinstance(value, np.ndarray) else value for key, value in checked.items()}
 
@@ -199,6 +215,12 @@ def validate_hat_chunk(message: dict) -> dict:
     if "position_origin_world" in message:
         result["position_origin_world"] = _array(
             message["position_origin_world"], (3,), "position_origin_world"
+        ).astype(np.float32)
+    if "frame_heading_world_wxyz" in message:
+        if "position_origin_world" not in message:
+            raise ValueError("frame_heading_world_wxyz requires position_origin_world")
+        result["frame_heading_world_wxyz"] = _quat_wxyz(
+            message["frame_heading_world_wxyz"], (4,), "frame_heading_world_wxyz"
         ).astype(np.float32)
     return result
 

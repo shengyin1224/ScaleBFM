@@ -2,7 +2,7 @@ import json
 import logging
 import socket
 from threading import Lock, Thread
-from typing import List, Optional, Tuple
+from typing import Any, Dict, List, Optional, Tuple
 
 import numpy as np
 
@@ -20,6 +20,38 @@ def _validate_payload(payload) -> List[List[float]]:
     return payload
 
 
+def _decode_payload(payload) -> Tuple[List[List[float]], Dict[str, Any]]:
+    """Decode the versioned sender format while retaining legacy array support."""
+    if isinstance(payload, dict):
+        rows = _validate_payload(payload.get("rows"))
+        device_names = payload.get("device_names", [])
+        requested_names = payload.get("requested_device_names", [])
+        if not isinstance(device_names, list) or not all(isinstance(name, str) for name in device_names):
+            raise ValueError("device_names must be an array of strings.")
+        if len(device_names) != len(rows):
+            raise ValueError(
+                f"device_names has length {len(device_names)}, expected {len(rows)}."
+            )
+        if not isinstance(requested_names, list) or not all(isinstance(name, str) for name in requested_names):
+            raise ValueError("requested_device_names must be an array of strings.")
+        metadata = {
+            "schema_version": int(payload.get("schema_version", 2)),
+            "source_timestamp": float(payload.get("timestamp", 0.0)),
+            "device_names": list(device_names),
+            "requested_device_names": list(requested_names),
+        }
+        return rows, metadata
+
+    rows = _validate_payload(payload)
+    source_timestamp = float(rows[0][-1]) if rows else 0.0
+    return rows, {
+        "schema_version": 1,
+        "source_timestamp": source_timestamp,
+        "device_names": [],
+        "requested_device_names": [],
+    }
+
+
 class ViveTrackerReceiver:
 
     def __init__(self, host: str = "0.0.0.0", port: int = 5001, timeout: float = 3.0):
@@ -29,6 +61,7 @@ class ViveTrackerReceiver:
 
         self.data: Optional[np.ndarray] = None
         self.frame_count: int = 0
+        self.frame_metadata: Dict[str, Any] = {}
         self._frame_lock = Lock()
 
         self.server_socket: Optional[socket.socket] = None
@@ -56,13 +89,25 @@ class ViveTrackerReceiver:
                 continue
             try:
                 payload = json.loads(raw_message.decode("utf-8"))
-                rows = _validate_payload(payload)
+                rows, metadata = _decode_payload(payload)
                 with self._frame_lock:
                     self.data = np.array(rows, dtype=np.float64)
+                    self.frame_metadata = metadata
                     self.frame_count += 1
             except (json.JSONDecodeError, ValueError) as e:
                 logging.debug(f"Vive tracker parse error: {e}")
         return buffer
+
+    def latest_frame(self) -> Optional[Dict[str, Any]]:
+        """Return one internally consistent copy of the newest received frame."""
+        with self._frame_lock:
+            if self.data is None:
+                return None
+            return {
+                "frame_count": int(self.frame_count),
+                "data": self.data.copy(),
+                **self.frame_metadata,
+            }
 
     def socket_receiver(self) -> None:
         assert self.client_socket is not None

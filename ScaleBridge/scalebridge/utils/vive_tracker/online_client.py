@@ -343,7 +343,16 @@ class ViveTrackerOnlineClient:
                     self.max_position_step > 0 or self.max_position_speed > 0
                 ) and len(self.buffer):
                     previous = self.buffer.latest()[1]
-                    dt = max(t_mono - self.buffer.latest()[0], 1e-4)
+                    # Speed must use the SENDER's capture timestamps. TCP
+                    # delivers frames in bursts, so the local arrival gap can
+                    # be 2-3ms for poses that are ~8ms of real motion apart;
+                    # dividing by arrival dt inflated speed 3-10x and falsely
+                    # rejected up to half of all frames during squat/walk.
+                    source_ts = float(frame.get("source_timestamp", 0.0))
+                    if source_ts > 0.0 and self._last_source_timestamp is not None:
+                        dt = max(source_ts - self._last_source_timestamp, 1e-3)
+                    else:
+                        dt = max(t_mono - self.buffer.latest()[0], 1e-3)
                     jump = np.linalg.norm(processed_data[:3] - previous[:3])
                     speed = jump / dt
                     jump_invalid = self._recovery_smoothing_remaining == 0 and (

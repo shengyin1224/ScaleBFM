@@ -30,6 +30,13 @@ config:
   # coupled_motor enforces the six physical Inspire actuators (default).
   # independent_joint retains the legacy 12-DOF IK for A/B comparison.
   hand_ik_mode: coupled_motor
+  # HAT predictions only: invert thumb_rot in motor space before DDS output.
+  # [] disables; [right] corrects only the right hand; [left, right] corrects both.
+  # Startup/open-hand commands and the IK warm start keep their original values.
+  hand_thumb_rot_invert_sides: []
+  # Undo Inspire G1's feedback inversion before reconstructing HAT fingertips.
+  # [] disables; [left] / [right] selects one hand; [left, right] selects both.
+  hand_fk_thumb_rot_invert_sides: [left, right]
   hand_ik_module_root: /home/nerv/qingyaoxu/ScaleBFM/MyScaleBFM
   # Warm-started from the previous command, 20 iterations reproduce the offline
   # 120-iteration solution exactly at a fifth of the cost.

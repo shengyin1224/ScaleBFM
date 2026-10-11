@@ -29,7 +29,6 @@ def pack_raw_tracker_array(devices: Dict[str, dict], device_names: Optional[Sequ
         row.extend(_vector_components(device_data.get("angular_velocity"), ("x", "y", "z")))
         row.append(sample_timestamp)
         rows.append(row)
-        print(f"Packed device '{device_name}' into row: {row}")
     return rows
 
 

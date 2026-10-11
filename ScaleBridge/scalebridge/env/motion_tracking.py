@@ -452,6 +452,11 @@ class MotionTrackingEnv(BaseEnv):
                     logger.info('[Env] Global localization recovered: resuming reference playback.')
 
         self.action.copy_(action)
+        if hasattr(self.simulator, 'record_reference_target'):
+            self.simulator.record_reference_target(
+                self.body_pos_w_future[0, 0].detach().cpu().numpy(),
+                self.body_quat_w_wxyz_future[0, 0].detach().cpu().numpy(),
+            )
         if hasattr(self.simulator, 'record_policy_step'):
             self.simulator.record_policy_step(
                 tgt_dof_pos.detach().cpu().numpy(),

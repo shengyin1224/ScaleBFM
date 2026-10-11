@@ -56,7 +56,15 @@ def main():
                         pass
 
             device_names, payload, timestamp = read_raw_tracker_array(reader, device_names=selected_devices)
-            sender.send_message(payload)
+            sender.send_message(
+                {
+                    "schema_version": 2,
+                    "timestamp": timestamp,
+                    "requested_device_names": list(selected_devices),
+                    "device_names": device_names,
+                    "rows": payload,
+                }
+            )
             sent_arrays += 1
 
             if sent_arrays == 1 or sent_arrays % max(args.status_every, 1) == 0:

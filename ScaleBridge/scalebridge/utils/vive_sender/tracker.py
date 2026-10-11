@@ -116,11 +116,43 @@ def convert_to_euler(pose_mat):
 
 #Convert the standard 3x4 position/rotation matrix to a x,y,z location and the appropriate Quaternion
 def convert_to_quaternion(pose_mat):
-    # Per issue #2, adding a abs() so that sqrt only results in real numbers
-    r_w = math.sqrt(abs(1 + pose_mat[0][0] + pose_mat[1][1] + pose_mat[2][2])) / 2
-    r_x = (pose_mat[2][1] - pose_mat[1][2]) / (4 * r_w)
-    r_y = (pose_mat[0][2] - pose_mat[2][0]) / (4 * r_w)
-    r_z = (pose_mat[1][0] - pose_mat[0][1]) / (4 * r_w)
+    # Select the numerically stable branch from the largest matrix diagonal.
+    # The trace-only formula divides by quaternion w and is singular for a
+    # valid 180-degree rotation, where w is exactly zero.
+    m00, m01, m02 = pose_mat[0][0], pose_mat[0][1], pose_mat[0][2]
+    m10, m11, m12 = pose_mat[1][0], pose_mat[1][1], pose_mat[1][2]
+    m20, m21, m22 = pose_mat[2][0], pose_mat[2][1], pose_mat[2][2]
+    trace = m00 + m11 + m22
+
+    if trace > 0.0:
+        scale = 2.0 * math.sqrt(max(trace + 1.0, 0.0))
+        r_w = 0.25 * scale
+        r_x = (m21 - m12) / scale
+        r_y = (m02 - m20) / scale
+        r_z = (m10 - m01) / scale
+    elif m00 > m11 and m00 > m22:
+        scale = 2.0 * math.sqrt(max(1.0 + m00 - m11 - m22, 0.0))
+        r_w = (m21 - m12) / scale
+        r_x = 0.25 * scale
+        r_y = (m01 + m10) / scale
+        r_z = (m02 + m20) / scale
+    elif m11 > m22:
+        scale = 2.0 * math.sqrt(max(1.0 + m11 - m00 - m22, 0.0))
+        r_w = (m02 - m20) / scale
+        r_x = (m01 + m10) / scale
+        r_y = 0.25 * scale
+        r_z = (m12 + m21) / scale
+    else:
+        scale = 2.0 * math.sqrt(max(1.0 + m22 - m00 - m11, 0.0))
+        r_w = (m10 - m01) / scale
+        r_x = (m02 + m20) / scale
+        r_y = (m12 + m21) / scale
+        r_z = 0.25 * scale
+
+    norm = math.sqrt(r_w * r_w + r_x * r_x + r_y * r_y + r_z * r_z)
+    if norm <= 1e-12:
+        raise ValueError("Invalid rotation matrix: cannot construct a quaternion")
+    r_w, r_x, r_y, r_z = (value / norm for value in (r_w, r_x, r_y, r_z))
 
     x = pose_mat[0][3]
     y = pose_mat[1][3]
@@ -362,8 +394,10 @@ class vr_tracking_reference(vr_tracked_device):
 class triad_openvr():
     def __init__(self, configfile_path=None):
         # Initialize OpenVR in the
+        self._openvr_initialized = False
         ensure_openvr_available()
         self.vr = openvr.init(openvr.VRApplication_Other)
+        self._openvr_initialized = True
         self.vrsystem = openvr.VRSystem()
 
         # Initializing object to hold indexes for various tracked objects
@@ -399,7 +433,9 @@ class triad_openvr():
                     self.add_tracked_device(i)
 
     def __del__(self):
-        openvr.shutdown()
+        if getattr(self, "_openvr_initialized", False) and openvr is not None:
+            self._openvr_initialized = False
+            openvr.shutdown()
 
     def get_pose(self):
         return get_pose(self.vr)

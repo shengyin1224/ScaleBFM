@@ -9,7 +9,7 @@ import sys
 
 import numpy as np
 
-from scalebridge.online.focus import derive_chunk_focus_phase
+from scalebridge.online.focus import derive_chunk_focus_phase, derive_hand_focus_events, focus_phase_from_mask
 from scalebridge.online.protocol import INSPIRE_DDS_TO_HAT_QPOS
 
 
@@ -77,6 +77,11 @@ def _focus_worker_main(task_queue, result_queue, worker_config):
             motor_open = np.asarray(
                 dofpos12_to_q6(q[IK_TO_TWIST2]), dtype=np.float32
             )
+            # Match _hand_prediction_target's DDS convention, including the
+            # thumb-rotation inversion used by actual feedback/FK.
+            side_name = "left" if side == "lh" else "right"
+            if side_name in worker_config.get("thumb_rot_invert_sides", ()):
+                motor_open[5] = 1.0 - motor_open[5]
             # History is recorded in HAT's training order.  Keep the predicted
             # columns in that same order so a chunk boundary cannot compare one
             # physical finger against another.
@@ -116,7 +121,20 @@ def _focus_worker_main(task_queue, result_queue, worker_config):
                 focus_from_hand_state,
                 focus_pad_s=worker_config["focus_pad_s"],
             )
-            _replace_queue_item(result_queue, ("result", sequence, phase))
+            hands = {
+                side: derive_hand_focus_events(
+                    history[:, offset:offset + 6], predicted[:, offset:offset + 6],
+                    fps, pad_s=worker_config["focus_pad_s"],
+                ) for side, offset in (("left", 0), ("right", 6))
+            }
+            # Keep the model's one binary phase interface. Handoff gates and
+            # lifecycle consume the separate hand events, never this union.
+            event_phase = focus_phase_from_mask(
+                np.logical_or(hands["left"]["phase"][:, 0] >= .5,
+                              hands["right"]["phase"][:, 0] >= .5), fps,
+            )
+            _replace_queue_item(result_queue, ("result", sequence,
+                                dict(phase=phase, hand_phase=event_phase, hands=hands)))
         except Exception as exc:
             _replace_queue_item(result_queue, ("error", sequence, repr(exc)))
 
@@ -124,7 +142,8 @@ def _focus_worker_main(task_queue, result_queue, worker_config):
 class LatestFocusProcess:
     """Latest-only FOCUS worker in a spawn process, safe beside CUDA/50 Hz."""
 
-    def __init__(self, *, module_root, mapping_path, solver_kwargs, focus_pad_s):
+    def __init__(self, *, module_root, mapping_path, solver_kwargs, focus_pad_s,
+                 thumb_rot_invert_sides=()):
         context = mp.get_context("spawn")
         self._task_queue = context.Queue(maxsize=2)
         self._result_queue = context.Queue(maxsize=2)
@@ -133,6 +152,7 @@ class LatestFocusProcess:
             "mapping_path": str(mapping_path),
             "solver_kwargs": dict(solver_kwargs),
             "focus_pad_s": float(focus_pad_s),
+            "thumb_rot_invert_sides": tuple(thumb_rot_invert_sides),
         }
         self._process = context.Process(
             target=_focus_worker_main,

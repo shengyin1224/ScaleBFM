@@ -12,3 +12,7 @@ config:
   hand_ik_search_dir: /home/nerv/qingyaoxu/ScaleBFM/MyScaleBFM/ScaleTrack/action_error_results
   hand_online_targets: False
   hand_mapping_path: /home/nerv/qingyaoxu/TWIST2/deploy_real
+  # Apply the same optional HAT prediction correction as the real DDS backend.
+  hand_thumb_rot_invert_sides: []
+  # MuJoCo feedback already uses the model's motor convention.
+  hand_fk_thumb_rot_invert_sides: []

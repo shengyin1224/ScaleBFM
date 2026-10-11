@@ -1,8 +1,9 @@
 #!/usr/bin/env python3
 """Canonical grasp-derived FOCUS definition used by the TWIST data pipeline.
 
-FOCUS covers a window around each grasp-enter and grasp-release endpoint.  It
-does not cover the entire interval during which an object is held.
+FOCUS starts around closing intent, before the grasp-enter threshold, and
+keeps the existing grasp-enter/release window ends. It does not cover the
+entire interval during which an object is held.
 """
 
 from __future__ import annotations
@@ -13,7 +14,9 @@ import numpy as np
 HAND_REDUCE = "max"
 GRASP_ENTER = 0.5
 GRASP_EXIT = 0.45
+FOCUS_ENTER = 0.1
 FOCUS_PAD_S = 1.0
+FOCUS_PRE_PAD_S = 0.0
 
 
 def hand_signal(hand: np.ndarray, reduce: str = HAND_REDUCE) -> tuple[np.ndarray, np.ndarray]:
@@ -84,8 +87,56 @@ def focus_from_hand_state(
     grasp_enter: float = GRASP_ENTER,
     grasp_exit: float = GRASP_EXIT,
     focus_pad_s: float = FOCUS_PAD_S,
+    focus_enter: float = FOCUS_ENTER,
+    focus_pre_pad_s: float | None = None,
 ) -> tuple[np.ndarray, np.ndarray]:
-    """Return ``(focus_mask, grasp_mask)`` from source ``hand_state`` frames."""
+    """Return closing-intent FOCUS and the unchanged grasp-state mask.
+
+    The lower ``focus_enter`` threshold advances only the grasp FOCUS start.
+    A confirmed grasp still ends its enter window at ``grasp_start + pad``;
+    release windows retain the original definition. An attempt that returns
+    below ``focus_enter`` without becoming a grasp ends after the same pad.
+    Closing FOCUS starts at intent by default; release padding is unchanged.
+    """
+    if not 0.0 < focus_enter <= grasp_enter:
+        raise ValueError("focus_enter must satisfy 0 < focus_enter <= grasp_enter")
+    if not np.isfinite(fps) or fps <= 0:
+        raise ValueError("fps must be positive")
+    pre_pad_s = FOCUS_PRE_PAD_S if focus_pre_pad_s is None else focus_pre_pad_s
+    if not np.isfinite(focus_pad_s) or focus_pad_s < 0:
+        raise ValueError("focus_pad_s must be non-negative")
+    if not np.isfinite(pre_pad_s) or pre_pad_s < 0:
+        raise ValueError("focus_pre_pad_s must be non-negative")
     signal, _ = hand_signal(hand, HAND_REDUCE)
     grasp = hysteresis(signal, grasp_enter, grasp_exit)
-    return focus_window(grasp, fps, focus_pad_s), grasp
+    if focus_enter == grasp_enter and pre_pad_s == focus_pad_s:
+        return focus_window(grasp, fps, focus_pad_s), grasp
+    pad = int(round(focus_pad_s * fps))
+    pre_pad = int(round(pre_pad_s * fps))
+    focus = np.zeros(len(grasp), dtype=bool)
+    grasp_segments = true_segments(grasp)
+    intent_segments = true_segments(signal >= focus_enter)
+    intent_starts = np.asarray([start for start, _ in intent_segments], dtype=int)
+    intent_ends = np.asarray([end for _, end in intent_segments], dtype=int)
+    confirmed_intents = set()
+    previous_end = -1
+
+    for start, end in grasp_segments:
+        intent_index = int(np.searchsorted(intent_starts, start, side="right") - 1)
+        onset = start
+        if intent_index >= 0 and start <= intent_ends[intent_index]:
+            # Do not reuse the beginning of an earlier grasp if the hand only
+            # partially opened before grasping again.
+            intent_start = int(intent_starts[intent_index])
+            onset = max(intent_start, previous_end + 1)
+            confirmed_intents.add(intent_index)
+        focus[max(0, onset - pre_pad) : min(len(focus), start + pad + 1)] = True
+        focus[max(0, end - pad) : min(len(focus), end + pad + 1)] = True
+        previous_end = end
+
+    for index, (start, end) in enumerate(intent_segments):
+        if index not in confirmed_intents and not np.any(grasp[start : end + 1]):
+            # A low-amplitude closing attempt also deserves attention, even
+            # when a later abort means the grasp threshold is never reached.
+            focus[max(0, start - pre_pad) : min(len(focus), end + pad + 1)] = True
+    return focus, grasp

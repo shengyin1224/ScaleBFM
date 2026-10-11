@@ -97,6 +97,65 @@ class RealWorld(BaseSimulator):
         self._deployment_record = None
         self._deployment_record_lock = threading.Lock()
         self._last_deployment_record_flush_mono = 0.0
+        self._pico_episode_file = None
+        self._pico_episode_path = None
+        self._pico_episode_lock = threading.Lock()
+        self._pico_controls = None
+        self._pico_reference_target = None
+        self._pico_reference_horizon = None
+        self._pico_policy_body_pos = None
+        self._pico_policy_body_quat = None
+        self._pico_future_time_offsets = None
+        self._pico_focus_phase = None
+        self._pico_dataset_recorder = None
+        self._pico_tracker_recorder = None
+        self._pico_tracker_episode_index = 0
+        self._vive_record_client = None
+        self._vive_record_thread = None
+        # Dataset capture is opt-in. The dedicated Pico launcher enables it;
+        # ordinary real-world deployments must retain the original behavior.
+        self._pico_recording_enabled = str(
+            os.environ.get("PICO_DATASET_RECORD", "0")
+        ).lower() not in {"0", "false", "no"}
+        if self._pico_recording_enabled:
+            try:
+                from scalebridge.utils.pico_dataset_recorder import PicoDatasetRecorder
+                dataset_root = os.environ.get("PICO_DATASET_ROOT")
+                if not dataset_root:
+                    dataset_root = os.path.join(os.getcwd(), "outputs", f"pico_scalebfm_{time.strftime('%Y%m%d_%H%M%S')}")
+                self._pico_dataset_recorder = PicoDatasetRecorder(
+                    dataset_root,
+                    fps=float(self.cfg.get("record_fps", 50.0)),
+                    task=str(os.environ.get(
+                        "PICO_RECORD_TASK",
+                        self.cfg.get("record_task", "pico_scalebfm"),
+                    )),
+                    body_joint_names=list(self.metadata_dict["joint_names"]),
+                    body_action_names=list(
+                        self.metadata_dict.get("target_joint_names")
+                        or self.metadata_dict["action_names"]
+                    ),
+                )
+                logger.info(f"[PICO DATA] Dataset output: {os.path.abspath(dataset_root)}")
+                if str(os.environ.get("PICO_VIVE_TRACKER_RECORD", "1")).lower() not in {"0", "false", "no"}:
+                    tracker_url = os.environ.get("PICO_TRACKER_RECORDER_URL", "").strip()
+                    if tracker_url:
+                        from scalebridge.utils.pico_tracker_recorder_client import PicoTrackerRecorderClient
+                        self._pico_tracker_recorder = PicoTrackerRecorderClient(
+                            tracker_url,
+                            os.path.basename(os.path.abspath(dataset_root)),
+                            hz=float(os.environ.get("PICO_TRACKER_HZ", "120")),
+                        )
+                        logger.info(f"[Vive] SONIC recorder control: {tracker_url}")
+                    else:
+                        self._start_vive_tracker_recorder(dataset_root)
+            except Exception as exc:
+                # Recording was explicitly requested. Continuing without the
+                # canonical SONIC writer would silently create an incomplete
+                # hardware run, so fail before robot control starts.
+                raise RuntimeError(
+                    f"[PICO DATA] Canonical SONIC dataset recorder unavailable: {exc}"
+                ) from exc
         self._hat_chunk_record = None
         self._hat_chunk_record_lock = threading.Lock()
         self._hat_chunk_record_queue = queue.Queue(maxsize=64)
@@ -105,6 +164,9 @@ class RealWorld(BaseSimulator):
         self._hat_chunk_record_failed = False
         self._last_hat_chunk_record_flush_mono = 0.0
         atexit.register(self._close_deployment_record)
+        atexit.register(self._close_pico_episode)
+        atexit.register(self._close_pico_dataset)
+        atexit.register(self._close_vive_tracker_recorder)
         atexit.register(self._close_hat_chunk_record)
         atexit.register(self._close_voice_worker)
 
@@ -123,7 +185,10 @@ class RealWorld(BaseSimulator):
             "record_type": "metadata", "started_at": time.time(),
             "fields": ["policy_action", "target_dof_pos", "dof_pos", "dof_vel",
                        "root_quat_wxyz", "base_ang_vel", "global_root_pos",
-                       "localization_healthy", "localization_paused"],
+                       "localization_healthy", "localization_paused", "body_target",
+                       "body_target_future", "policy_target_body_pos_future_to_robot_base",
+                       "policy_target_body_quat_future_to_robot_base", "future_time_offsets",
+                       "focus_phase"],
         }, separators=(",", ":")) + "\n")
         self._deployment_record.flush()
         logger.info(f"[Simulator] Recording real-world controls to {path}")
@@ -131,6 +196,242 @@ class RealWorld(BaseSimulator):
     def _close_deployment_record(self):
         with self._deployment_record_lock:
             stream, self._deployment_record = self._deployment_record, None
+            if stream is not None:
+                try:
+                    stream.flush()
+                    stream.close()
+                except OSError:
+                    pass
+
+    def _pico_output_dir(self):
+        try:
+            from hydra.core.hydra_config import HydraConfig
+            return os.path.abspath(HydraConfig.get().runtime.output_dir)
+        except (ImportError, ValueError):
+            return os.getcwd()
+
+    def pico_record_toggle(self):
+        """Handle a rising Unitree remote B edge: start or save an episode."""
+        if not self._pico_recording_enabled:
+            return
+        with self._pico_episode_lock:
+            if self._pico_episode_file is None:
+                output_dir = self._pico_output_dir()
+                os.makedirs(output_dir, exist_ok=True)
+                stamp = time.strftime("%Y%m%d_%H%M%S") + f"_{time.time_ns() % 1_000_000_000:09d}"
+                path = os.path.join(output_dir, f"pico_episode_{stamp}.jsonl")
+                self._pico_episode_file = open(path, "w", encoding="utf-8", buffering=1)
+                self._pico_episode_path = path
+                self._pico_episode_file.write(json.dumps({
+                    "record_type": "metadata",
+                    "started_at": time.time(),
+                    "source": "pico_scalebfm",
+                    "controls": "Unitree remote B toggles recording; Unitree remote X discards",
+                }, separators=(",", ":")) + "\n")
+                self._pico_episode_file.flush()
+                if self._pico_dataset_recorder is not None:
+                    try:
+                        self._pico_dataset_recorder.start()
+                    except Exception as exc:
+                        raise RuntimeError(
+                            f"[PICO DATA] Failed to start SONIC dataset episode: {exc}"
+                        ) from exc
+                if self._pico_tracker_recorder is not None:
+                    if not self._pico_tracker_recorder.start(self._pico_tracker_episode_index):
+                        logger.warning("[Vive] SONIC tracker recorder did not start")
+                logger.info(f"[Remote B] started episode recording at {path}")
+                return
+
+            path = self._pico_episode_path
+            stream, self._pico_episode_file = self._pico_episode_file, None
+            self._pico_episode_path = None
+            try:
+                stream.flush()
+                stream.close()
+            except OSError:
+                pass
+            saved_dataset = False
+            if self._pico_dataset_recorder is not None:
+                try:
+                    saved_dataset = self._pico_dataset_recorder.save() is not None
+                except Exception as exc:
+                    raise RuntimeError(
+                        f"[PICO DATA] Failed to save SONIC dataset episode: {exc}"
+                    ) from exc
+            if self._pico_tracker_recorder is not None:
+                if saved_dataset:
+                    if not self._pico_tracker_recorder.stop():
+                        logger.warning("[Vive] SONIC tracker recorder did not stop cleanly")
+                else:
+                    self._pico_tracker_recorder.discard()
+            if saved_dataset:
+                self._pico_tracker_episode_index += 1
+                logger.info(f"[Remote B] saved episode {path}")
+            else:
+                try:
+                    if path:
+                        os.unlink(path)
+                except OSError:
+                    pass
+                logger.warning("[Remote B] no synchronized frames; episode was not saved")
+
+    def record_pico_controls(self, controls):
+        """Keep the latest Pico hand/button values for the next control frame."""
+        if not self._pico_recording_enabled:
+            return
+        values = np.asarray(controls, dtype=np.float32).reshape(-1)
+        if values.shape == (8,) and np.isfinite(values).all():
+            self._pico_controls = values.copy()
+
+    def record_reference_target(
+        self,
+        body_pos,
+        body_quat,
+        *,
+        policy_body_pos=None,
+        policy_body_quat=None,
+        future_time_offsets=None,
+        focus_phase=None,
+    ):
+        """Keep the exact ScaleBFM reference and policy inputs for the next action."""
+        if not self._pico_recording_enabled:
+            return
+        try:
+            pos = np.asarray(body_pos, dtype=np.float32)
+            quat = np.asarray(body_quat, dtype=np.float32)
+            if (
+                pos.ndim == 3
+                and quat.ndim == 3
+                and pos.shape[:-1] == quat.shape[:-1]
+                and pos.shape[-1] == 3
+                and quat.shape[-1] == 4
+            ):
+                horizon = np.concatenate([pos, quat], axis=-1)
+                self._pico_reference_horizon = horizon.copy()
+                self._pico_reference_target = horizon[0].copy()
+            elif (
+                pos.ndim == 2
+                and quat.ndim == 2
+                and pos.shape[0] == quat.shape[0]
+                and pos.shape[-1] == 3
+                and quat.shape[-1] == 4
+            ):
+                self._pico_reference_target = np.concatenate([pos, quat], axis=-1).copy()
+                self._pico_reference_horizon = self._pico_reference_target[None].copy()
+            else:
+                raise ValueError(f"invalid ScaleBFM target shapes: {pos.shape}, {quat.shape}")
+
+            def cpu_array(value):
+                if value is None:
+                    return None
+                if hasattr(value, "detach"):
+                    value = value.detach().cpu().numpy()
+                return np.asarray(value).copy()
+
+            self._pico_policy_body_pos = cpu_array(policy_body_pos)
+            self._pico_policy_body_quat = cpu_array(policy_body_quat)
+            self._pico_future_time_offsets = cpu_array(future_time_offsets)
+            self._pico_focus_phase = cpu_array(focus_phase)
+        except (TypeError, ValueError):
+            self._pico_reference_target = None
+            self._pico_reference_horizon = None
+            self._pico_policy_body_pos = None
+            self._pico_policy_body_quat = None
+            self._pico_future_time_offsets = None
+            self._pico_focus_phase = None
+
+    def pico_record_discard(self):
+        """Handle a rising Unitree remote X edge by discarding an episode."""
+        if not self._pico_recording_enabled:
+            return
+        with self._pico_episode_lock:
+            stream, path = self._pico_episode_file, self._pico_episode_path
+            self._pico_episode_file = None
+            self._pico_episode_path = None
+            if stream is None:
+                logger.info("[Remote X] no episode is currently recording")
+                return
+            try:
+                stream.close()
+            except OSError:
+                pass
+            try:
+                if path:
+                    os.unlink(path)
+            except OSError as exc:
+                logger.warning(f"[Remote X] failed to remove {path}: {exc}")
+            if self._pico_dataset_recorder is not None:
+                try:
+                    self._pico_dataset_recorder.discard()
+                except Exception as exc:
+                    logger.warning(f"[PICO DATA] Failed to discard dataset episode: {exc}")
+            if self._pico_tracker_recorder is not None:
+                self._pico_tracker_recorder.discard()
+            logger.info(f"[Remote X] discarded episode {path}")
+
+    # Generic names used by non-Pico input paths; retain the old aliases above
+    # for compatibility with previously recorded Pico test streams.
+    record_toggle = pico_record_toggle
+    record_discard = pico_record_discard
+
+    def _close_pico_dataset(self):
+        if self._pico_tracker_recorder is not None:
+            self._pico_tracker_recorder.stop()
+        recorder, self._pico_dataset_recorder = self._pico_dataset_recorder, None
+        if recorder is not None:
+            try:
+                recorder.close()
+            except Exception as exc:
+                logger.warning(f"[PICO DATA] Failed to close dataset recorder: {exc}")
+
+    def _start_vive_tracker_recorder(self, dataset_root):
+        """Start a raw Vive recorder without touching the tracking pipeline."""
+        try:
+            from scalebridge.utils.vive_tracker.online_client import ViveTrackerOnlineClient
+            host = str(os.environ.get("PICO_VIVE_TRACKER_HOST", "0.0.0.0"))
+            port = int(os.environ.get("PICO_VIVE_TRACKER_PORT", "5000"))
+            client = ViveTrackerOnlineClient(host=host, port=port)
+            client.listen()
+            self._vive_record_client = client
+            output_dir = os.path.join(os.path.abspath(dataset_root), "tracker_data")
+            os.makedirs(output_dir, exist_ok=True)
+            output_path = os.path.join(
+                output_dir,
+                f"pico_scalebfm_vive_{time.strftime('%Y%m%d_%H%M%S')}.jsonl",
+            )
+
+            def accept_and_record():
+                try:
+                    client.accept_blocking()
+                    client.start()
+                    client.start_recording(output_path)
+                    logger.info(f"[Vive] Raw two-tracker recording: {output_path}")
+                except Exception as exc:
+                    logger.warning(f"[Vive] Recorder unavailable on {host}:{port}: {exc}")
+
+            self._vive_record_thread = threading.Thread(
+                target=accept_and_record, name="vive-tracker-recorder", daemon=True
+            )
+            self._vive_record_thread.start()
+            logger.info(f"[Vive] Waiting for tracker stream on {host}:{port} (record-only)")
+        except Exception as exc:
+            logger.warning(f"[Vive] Failed to initialize record-only client: {exc}")
+
+    def _close_vive_tracker_recorder(self):
+        client, self._vive_record_client = self._vive_record_client, None
+        if client is not None:
+            try:
+                client.stop()
+            except Exception as exc:
+                logger.warning(f"[Vive] Failed to close recorder: {exc}")
+        thread, self._vive_record_thread = self._vive_record_thread, None
+        if thread is not None and thread.is_alive():
+            thread.join(timeout=1.0)
+
+    def _close_pico_episode(self):
+        with self._pico_episode_lock:
+            stream, self._pico_episode_file = self._pico_episode_file, None
+            self._pico_episode_path = None
             if stream is not None:
                 try:
                     stream.flush()
@@ -259,35 +560,75 @@ class RealWorld(BaseSimulator):
             pass
 
     def _record_control_frame(self, target_dof_pos, policy_action=None, localization_paused=None):
+        root_pos = None
+        if self.localization_module is not None:
+            root_pos = self.localization_module.get_root_pos().tolist()
+        record = {
+            "record_type": "control_frame",
+            "time": time.time(),
+            "monotonic": time.monotonic(),
+            "target_dof_pos": np.asarray(target_dof_pos).reshape(-1).tolist(),
+            "policy_action": (
+                None if policy_action is None
+                else np.asarray(policy_action).reshape(-1).tolist()
+            ),
+            "dof_pos": self.dof_pos_tmp.copy()[self.sim_to_env_joint_idx].tolist(),
+            "dof_vel": self.dof_vel_tmp.copy()[self.sim_to_env_joint_idx].tolist(),
+            "root_quat_wxyz": self.root_quat_tmp.tolist(),
+            "base_ang_vel": self.base_ang_vel_tmp.tolist(),
+            "global_root_pos": root_pos,
+            "localization_healthy": self.is_localization_healthy(),
+            "localization_paused": localization_paused,
+        }
+        if self._pico_recording_enabled:
+            record.update({
+                "pico_controls": (
+                    None if self._pico_controls is None
+                    else self._pico_controls.tolist()
+                ),
+                "body_target": (
+                    None if self._pico_reference_target is None
+                    else self._pico_reference_target.tolist()
+                ),
+                "body_target_future": (
+                    None if self._pico_reference_horizon is None
+                    else self._pico_reference_horizon.tolist()
+                ),
+                "policy_target_body_pos_future_to_robot_base": (
+                    None if self._pico_policy_body_pos is None
+                    else self._pico_policy_body_pos.tolist()
+                ),
+                "policy_target_body_quat_future_to_robot_base": (
+                    None if self._pico_policy_body_quat is None
+                    else self._pico_policy_body_quat.tolist()
+                ),
+                "future_time_offsets": (
+                    None if self._pico_future_time_offsets is None
+                    else self._pico_future_time_offsets.tolist()
+                ),
+                "focus_phase": (
+                    None if self._pico_focus_phase is None
+                    else self._pico_focus_phase.tolist()
+                ),
+            })
         with self._deployment_record_lock:
             stream = self._deployment_record
-            if stream is None:
-                return
-            root_pos = None
-            if self.localization_module is not None:
-                root_pos = self.localization_module.get_root_pos().tolist()
-            record = {
-                "record_type": "control_frame",
-                "time": time.time(),
-                "monotonic": time.monotonic(),
-                "target_dof_pos": np.asarray(target_dof_pos).reshape(-1).tolist(),
-                "policy_action": (
-                    None if policy_action is None
-                    else np.asarray(policy_action).reshape(-1).tolist()
-                ),
-                "dof_pos": self.dof_pos_tmp.copy()[self.sim_to_env_joint_idx].tolist(),
-                "dof_vel": self.dof_vel_tmp.copy()[self.sim_to_env_joint_idx].tolist(),
-                "root_quat_wxyz": self.root_quat_tmp.tolist(),
-                "base_ang_vel": self.base_ang_vel_tmp.tolist(),
-                "global_root_pos": root_pos,
-                "localization_healthy": self.is_localization_healthy(),
-                "localization_paused": localization_paused,
-            }
-            stream.write(json.dumps(record, separators=(",", ":")) + "\n")
-            now_mono = record["monotonic"]
-            if now_mono - self._last_deployment_record_flush_mono >= 1.0:
-                stream.flush()
-                self._last_deployment_record_flush_mono = now_mono
+            if stream is not None:
+                stream.write(json.dumps(record, separators=(",", ":")) + "\n")
+                now_mono = record["monotonic"]
+                if now_mono - self._last_deployment_record_flush_mono >= 1.0:
+                    stream.flush()
+                    self._last_deployment_record_flush_mono = now_mono
+        with self._pico_episode_lock:
+            if self._pico_episode_file is not None:
+                self._pico_episode_file.write(
+                    json.dumps(record, separators=(",", ":")) + "\n"
+                )
+        if self._pico_dataset_recorder is not None:
+            try:
+                self._pico_dataset_recorder.append(record)
+            except Exception as exc:
+                logger.warning(f"[PICO DATA] Dropped frame: {exc}")
 
     def _start_voice_worker(self):
         worker = os.path.join(os.path.dirname(__file__), "g1_voice_worker.py")
@@ -422,7 +763,16 @@ class RealWorld(BaseSimulator):
         if not self.firstReceiveRemoteController:
             self.firstReceiveRemoteController = True
             logger.info('[Simulator] Communication build successfully between the policy and the remote controller!')
-        
+
+        # Keep B/X diagnostics at the LCM boundary.  These buttons are carried
+        # in spare switch fields by the low-level controller, so this makes it
+        # immediately clear whether a missing episode is an input-path issue
+        # or a recorder/write issue without logging every steady-state frame.
+        if msg.left_lower_right_switch and not self.left_lower_right_switch:
+            logger.info('[Remote] B pressed (LCM spare left_lower_right_switch)')
+        if msg.right_lower_left_switch and not self.right_lower_left_switch:
+            logger.info('[Remote] X pressed (LCM spare right_lower_left_switch)')
+
         self.left_upper_switch_pressed = ((msg.left_upper_switch and not self.left_upper_switch) or self.left_upper_switch_pressed)
         self.left_lower_left_switch_pressed = ((msg.left_lower_left_switch and not self.left_lower_left_switch) or self.left_lower_left_switch_pressed)
         self.left_lower_right_switch_pressed = ((msg.left_lower_right_switch and not self.left_lower_right_switch) or self.left_lower_right_switch_pressed)

@@ -7,6 +7,9 @@ from scalebridge.online.protocol import (
     make_hat_chunk,
     make_robot_state,
     validate_hat_chunk,
+    validate_robot_state,
+    encode_message,
+    decode_message,
 )
 from scalebridge.online.reference import (
     align_chunk_to_root,
@@ -16,7 +19,7 @@ from scalebridge.online.reference import (
 )
 
 
-def robot_state(sequence_id=3):
+def robot_state(sequence_id=3, **kwargs):
     return make_robot_state(
         sequence_id=sequence_id,
         timestamp_ns=100,
@@ -35,6 +38,7 @@ def robot_state(sequence_id=3):
         right_arm_q=np.arange(7) + 10,
         right_hand_q=np.arange(6) + 10,
         right_hand_keypoints_local=np.arange(18).reshape(6, 3) * -0.01,
+        **kwargs,
     )
 
 
@@ -68,6 +72,18 @@ def chunk(n=64, sequence_id=1):
 
 
 class HATOnlineProtocolTest(unittest.TestCase):
+    def test_reference_plan_lifecycle_survives_wire_validation(self):
+        for active in (False, True):
+            message = robot_state(reference_plan_active=active, reference_plan_epoch=3)
+            checked = validate_robot_state(decode_message(encode_message(message)))
+            self.assertEqual(checked["reference_plan_active"], active)
+            self.assertEqual(checked["reference_plan_epoch"], 3)
+        self.assertNotIn("reference_plan_active", validate_robot_state(robot_state()))
+        with self.assertRaisesRegex(ValueError, "reference_plan_active"):
+            robot_state(reference_plan_active="false")
+        with self.assertRaisesRegex(ValueError, "reference_plan_epoch"):
+            robot_state(reference_plan_epoch=-1)
+
     def test_hat_chunk_preserves_action_representation(self):
         original = validate_hat_chunk(chunk())
         self.assertEqual(original["action_representation"], "original")
@@ -100,6 +116,16 @@ class HATOnlineProtocolTest(unittest.TestCase):
             checked["root_pos"][0] + checked["position_origin_world"],
             atol=1e-6,
         )
+
+    def test_hat_chunk_preserves_explicit_frame_heading_on_wire(self):
+        raw = chunk()
+        raw["position_origin_world"] = [.1, .2, 1.2]
+        raw["frame_heading_world_wxyz"] = [np.cos(.3), 0, 0, np.sin(.3)]
+        checked = validate_hat_chunk(decode_message(encode_message(make_hat_chunk(**raw))))
+        np.testing.assert_allclose(checked["frame_heading_world_wxyz"], raw["frame_heading_world_wxyz"])
+        del raw["position_origin_world"]
+        with self.assertRaisesRegex(ValueError, "requires position_origin_world"):
+            validate_hat_chunk(raw)
 
     @staticmethod
     def _phase_env(checked, frame, source_timestamp_ns=1_000_000_000):

@@ -233,6 +233,10 @@ class RobotController {
             rc_command.right_upper_switch = remote_key_data.btn.components.R1;
             rc_command.left_lower_left_switch = remote_key_data.btn.components.L2;
             rc_command.left_upper_switch = remote_key_data.btn.components.L1;
+            // The LCM schema has two spare lower switches.  Preserve the
+            // Unitree face-button edges for ScaleBFM episode recording.
+            rc_command.left_lower_right_switch = remote_key_data.btn.components.B;
+            rc_command.right_lower_left_switch = remote_key_data.btn.components.X;
 
             _simpleLCM.publish("robot_state_data", &robot_state_simple);
             _simpleLCM.publish("rc_command_data", &rc_command);
@@ -303,7 +307,29 @@ class RobotController {
                     remote_key_data.btn.components.A = 0;
                     remote_key_data.btn.components.B = 0;
                     remote_key_data.btn.components.L2 = 0;
+                    remote_key_data.btn.components.select = 0;
                     _firstRun = false;
+                }
+
+                // [select]: one press kills this controller.  Damping is written
+                // and flushed first so the robot is limp before the process dies
+                // instead of free-falling with the last position command latched.
+                if((int) remote_key_data.btn.components.select == 1){
+                    for(int i=0; i<NUM_MOTOR; i++){
+                        low_cmd.motor_cmd()[i].q() = 0;
+                        low_cmd.motor_cmd()[i].dq() = 0;
+                        low_cmd.motor_cmd()[i].kp() = 0;
+                        low_cmd.motor_cmd()[i].kd() = 10;
+                        low_cmd.motor_cmd()[i].tau() = 0;
+                    }
+                    low_cmd.crc() = Crc32Core((uint32_t *)&low_cmd, (sizeof(low_cmd)>>2)-1);
+                    for(int i=0; i<10; i++){
+                        lowcmd_publisher_->Write(low_cmd);
+                        usleep(20000);
+                    }
+                    std::cout << "[select] pressed: damping applied, killing the controller."
+                              << std::endl;
+                    exit(0);
                 }
 
                 if(((int) remote_key_data.btn.components.B ==1 && (int) remote_key_data.btn.components.L2 == 1)){
@@ -358,6 +384,7 @@ int main(int argc, char const *argv[]) {
   std::cout << "Make sure the robot is hung up!" << std::endl
             << "You should not run the deploy code until the robot has moved to default positions!" <<std::endl
             << "Remote-control safety actions:" << std::endl
+            << "  Press [select]: damping mode, then kill this controller." << std::endl
             << "  Single press [L2 + B]: switch the robot to damping mode." << std::endl
             << "  Double press [L2 + B]: terminate the controller after entering damping mode." << std::endl
             << "Press Enter to continue ..." <<std::endl;

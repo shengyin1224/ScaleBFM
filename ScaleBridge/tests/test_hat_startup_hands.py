@@ -61,13 +61,14 @@ class CoupledMotorDirectionTest(unittest.TestCase):
 class StartupHandGateTest(unittest.TestCase):
     def env(self):
         env = HAT4OnlineMotionTrackingEnv.__new__(HAT4OnlineMotionTrackingEnv)
-        env.cfg = {"startup_hand_timeout_s": 1.0}
+        env.cfg = {"startup_hand_timeout_s": 1.0, "startup_hand_check_enabled": True}
         env.reference_play_gate = True
         env.reference_playing = False
         env.requires_restart = False
         env._latched_sample = None
         env.hand_ik_worker = Mock()
         env.open_hand_dof12 = np.zeros(12)
+        env.startup_hand_motor_target = np.ones(6)
         env.last_reference_sample = {
             "left_fingertip_local": np.zeros((1, 5, 3)),
             "right_fingertip_local": np.zeros((1, 5, 3)),
@@ -108,9 +109,74 @@ class StartupHandGateTest(unittest.TestCase):
             env._prepare_startup_hands()
         self.assertEqual(env.simulator.set_hand_ik_target.call_count, 4)
 
+    def test_disabled_startup_check_sends_pose_without_reading_feedback(self):
+        for enabled in (False, None):
+            with self.subTest(enabled=enabled):
+                env = self.env()
+                if enabled is None:
+                    env.cfg.pop("startup_hand_check_enabled")
+                else:
+                    env.cfg["startup_hand_check_enabled"] = enabled
+                env.simulator.get_hand_motor_state.side_effect = AssertionError(
+                    "Disabled startup check must not read motor feedback"
+                )
+                env._prepare_startup_hands()
+                env.simulator.set_hand_ik_target.assert_called_once_with(
+                    env.open_hand_dof12, env.open_hand_dof12,
+                )
+                env.simulator.get_hand_motor_state.assert_not_called()
+
+    def test_different_right_startup_pose_is_sent_and_held(self):
+        env = self.env()
+        env.cfg["startup_hand_check_enabled"] = False
+        env.startup_right_hand_motor_target = np.ones(6)
+        env.startup_right_hand_dof12 = np.full(12, 0.25)
+        env._prepare_startup_hands()
+        env._send_hand_target()
+        for call in env.simulator.set_hand_ik_target.call_args_list:
+            np.testing.assert_array_equal(call.args[0], env.open_hand_dof12)
+            np.testing.assert_array_equal(call.args[1], env.startup_right_hand_dof12)
+
+    def test_different_left_right_startup_feedback_is_accepted(self):
+        env = self.env()
+        env.startup_hand_motor_target = np.array([1., 1., 1., 1., 1., 0.])
+        env.startup_right_hand_motor_target = np.ones(6)
+        env.startup_right_hand_dof12 = np.full(12, 0.25)
+        env.simulator.get_hand_motor_state.return_value = (
+            env.startup_hand_motor_target, env.startup_right_hand_motor_target,
+        )
+        env._prepare_startup_hands()
+        env.simulator.set_hand_ik_target.assert_called_once()
+
     def test_startup_timeout_does_not_accept_closed_hand(self):
         env = self.env()
         env.simulator.get_hand_motor_state.return_value = (np.zeros(6), np.zeros(6))
+        with patch("scalebridge.env.motion_tracking_hat4_online.time.monotonic", side_effect=[0, 0, 2]), patch("scalebridge.env.motion_tracking_hat4_online.time.sleep"):
+            with self.assertRaisesRegex(RuntimeError, "fresh open feedback"):
+                env._prepare_startup_hands()
+
+    def test_configured_thumb_pose_accepts_matching_fresh_feedback(self):
+        env = self.env()
+        env.startup_hand_motor_target = np.array([1., 1., 1., 1., 1., 0.])
+        env.simulator.get_hand_motor_state.return_value = (
+            np.array([1., 1., 1., 1., 0.995, 0.]),
+            np.array([1., 1., 1., 1., 0.992, 0.]),
+        )
+        env._prepare_startup_hands()
+        env.simulator.set_hand_ik_target.assert_called_once()
+
+    def test_configured_thumb_pose_rejects_wrong_thumb_endpoint(self):
+        env = self.env()
+        env.startup_hand_motor_target = np.array([1., 1., 1., 1., 1., 0.])
+        env.simulator.get_hand_motor_state.return_value = (np.ones(6), env.startup_hand_motor_target)
+        with patch("scalebridge.env.motion_tracking_hat4_online.time.monotonic", side_effect=[0, 0, 2]), patch("scalebridge.env.motion_tracking_hat4_online.time.sleep"):
+            with self.assertRaisesRegex(RuntimeError, "target=.*left/right="):
+                env._prepare_startup_hands()
+
+    def test_configured_thumb_pose_rejects_stale_feedback(self):
+        env = self.env()
+        env.startup_hand_motor_target = np.array([1., 1., 1., 1., 1., 0.])
+        env.simulator.get_hand_motor_state.return_value = (np.full(6, np.nan), env.startup_hand_motor_target)
         with patch("scalebridge.env.motion_tracking_hat4_online.time.monotonic", side_effect=[0, 0, 2]), patch("scalebridge.env.motion_tracking_hat4_online.time.sleep"):
             with self.assertRaisesRegex(RuntimeError, "fresh open feedback"):
                 env._prepare_startup_hands()

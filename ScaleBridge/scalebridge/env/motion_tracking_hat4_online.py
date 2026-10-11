@@ -17,6 +17,8 @@ from loguru import logger
 from scalebridge.env.base_env import BaseEnv
 from scalebridge.online.current_pose import G1CurrentPoseFK
 from scalebridge.online.focus_worker import LatestFocusProcess
+from scalebridge.online.focus_handoff import FocusHandoff, FocusAdaptiveExecution, PerHandFocusHandoff, GraspFingerChunkControl, rebase_wrist_chunk
+from scalebridge.online.focus import HAND_BEND_COLUMNS, focus_phase_from_mask
 from scalebridge.online.protocol import (
     HAT_BODY_JOINT_NAMES,
     inspire_motor_to_hat_hand_q,
@@ -118,27 +120,32 @@ class _AsyncBilateralHandIK:
         self._targets = None
         self._submitted_sequence = -1
         self._result = None
+        self._result_sequence = -1
         self._error = None
         self._thread = threading.Thread(
             target=self._run, name="hat-hand-ik", daemon=True
         )
         self._thread.start()
 
-    def submit(self, left, right):
+    def submit(self, left, right, context=None):
         with self._condition:
             self._submitted_sequence += 1
             self._targets = {
                 "lh": np.asarray(left, dtype=np.float32).copy(),
                 "rh": np.asarray(right, dtype=np.float32).copy(),
+                "context": context,
             }
             self._condition.notify()
+            return self._submitted_sequence
 
-    def latest(self):
+    def latest(self, min_sequence=None):
         with self._condition:
             if self._error is not None:
                 error = self._error
                 self._error = None
                 raise RuntimeError(f"Online hand IK worker failed: {error}")
+            if min_sequence is not None and self._result_sequence < min_sequence:
+                return None
             return self._result
 
     def _run(self):
@@ -154,6 +161,8 @@ class _AsyncBilateralHandIK:
                 targets = self._targets
             try:
                 solved = {}
+                if targets["context"] is not None:
+                    solved["_context"] = targets["context"]
                 for side in ("lh", "rh"):
                     q, _ = self.solvers[side].solve_frame(
                         targets[side], self._state[side]
@@ -164,6 +173,7 @@ class _AsyncBilateralHandIK:
                     solved[side] = q
                 with self._condition:
                     self._result = solved
+                    self._result_sequence = sequence
             except Exception as exc:
                 with self._condition:
                     self._error = exc
@@ -218,6 +228,8 @@ class HAT4OnlineMotionTrackingEnv(BaseEnv):
         self.takeover_started_ns = None
         self.takeover_alpha = 1.0
         self.requires_restart = False
+        self.reference_plan_epoch = 0
+        self._reference_start_pending = False
         self.awaiting_fresh_chunk = False
         self.localization_paused = False
         self._chunk_hold_release_ns = None
@@ -229,6 +241,14 @@ class HAT4OnlineMotionTrackingEnv(BaseEnv):
         self.hand_focus_history = deque(maxlen=250)
         self._hand_state_valid = False
         self._focus_result_logged = False
+        self.focus_handoff = None
+        self.focus_adaptive = None
+        self._focus_prediction_chunks = {}
+        self._focus_phase_prediction = None
+        self._handoff_hand_hold = None
+        self._handoff_ik_min_sequence = None
+        self._handoff_finger_control = GraspFingerChunkControl(
+            config.get("focus_handoff_finger_mode", "off"))
         self._closed_online = False
         self.alignment_anchor = None
         self.protocol_alignment_anchor = None
@@ -470,6 +490,33 @@ class HAT4OnlineMotionTrackingEnv(BaseEnv):
                 "[Online HAT] Finger chunk source: latest (fingers replan "
                 "every received chunk; body hold/RTC/blend unaffected)."
             )
+        if bool(self.cfg.get("focus_adaptive_enabled", False)):
+            if self.cfg.get("focus_handoff_enabled", False):
+                raise ValueError("Enable either focus_adaptive_enabled or focus_handoff_enabled")
+            self.focus_adaptive = FocusAdaptiveExecution(
+                approach_frames=self.cfg.get("focus_adaptive_approach_frames", 30),
+                near_frames=self.cfg.get("focus_adaptive_near_frames", 10),
+                near_distance_m=float(self.cfg.get("focus_adaptive_near_distance_m", .045)),
+                consensus_chunks=self.cfg.get("focus_adaptive_consensus_chunks", 3),
+                sides=self.cfg.get("focus_adaptive_sides", ["right"]),
+            )
+            logger.info("[Online HAT] Adaptive FOCUS execution enabled: 30/10-frame approach/near cadence; fingers move only inside FOCUS after measured arrival.")
+        if bool(self.cfg.get("focus_handoff_enabled", False)):
+            if not self.chunk_phase_alignment:
+                raise ValueError("focus_handoff_enabled requires chunk_phase_alignment: true")
+            self.chunk_start_reference_continuity = True
+            self.focus_handoff = PerHandFocusHandoff(
+                sides=self.cfg.get("focus_handoff_sides", ["left", "right"]),
+                position_tolerance_m=float(self.cfg.get("focus_handoff_position_tolerance_m", 0.03)),
+                rotation_tolerance_deg=float(self.cfg.get("focus_handoff_rotation_tolerance_deg", 10.0)),
+                consensus_chunks=self.cfg.get("focus_handoff_consensus_chunks", 2),
+                timeout_s=float(self.cfg.get("focus_handoff_timeout_s", 5.0)),
+                completion_hold_s=float(self.cfg.get("focus_handoff_completion_hold_s", 1.0)),
+            )
+            logger.info("[Online HAT] FOCUS handoff enabled: fingers locked from startup; "
+                        "independent hand events, measured-pose entry, fresh chunk, "
+                        "continuous wrist increments and feedback-confirmed completion.")
+            logger.info(f"[Online HAT] Grasp finger chunk mode: {self._handoff_finger_control.mode}")
 
     @staticmethod
     def _quat_pitch_roll_deg(quat_wxyz):
@@ -630,6 +677,24 @@ class HAT4OnlineMotionTrackingEnv(BaseEnv):
             logger.warning("[Online HAT] Simulator has no Inspire hand target interface.")
             return
         config = self.cfg.simulator.config
+        self.hand_thumb_rot_invert_sides = tuple(
+            config.get("hand_thumb_rot_invert_sides", [])
+        )
+        if any(side not in {"left", "right"} for side in self.hand_thumb_rot_invert_sides):
+            raise ValueError("hand_thumb_rot_invert_sides must be a list of left/right")
+        logger.info(
+            "[Online HAT] Predicted thumb-rot command inversion: {}",
+            self.hand_thumb_rot_invert_sides,
+        )
+        self.hand_fk_thumb_rot_invert_sides = tuple(
+            config.get("hand_fk_thumb_rot_invert_sides", [])
+        )
+        if any(side not in {"left", "right"} for side in self.hand_fk_thumb_rot_invert_sides):
+            raise ValueError("hand_fk_thumb_rot_invert_sides must be a list of left/right")
+        logger.info(
+            "[Online HAT] Measured FK thumb-rot inversion: {}",
+            self.hand_fk_thumb_rot_invert_sides,
+        )
         module_root = str(config.get(
             "hand_ik_module_root", "/home/nerv/qingyaoxu/ScaleBFM/MyScaleBFM"
         ))
@@ -669,6 +734,7 @@ class HAT4OnlineMotionTrackingEnv(BaseEnv):
         if mapping_path not in sys.path:
             sys.path.insert(0, mapping_path)
         from cmd_to_dofpos import cmd6_to_dofpos12
+        from dofpos2cmd import dofpos12_to_q6
         from focus_definition import FOCUS_PAD_S
         # cmd_to_dofpos uses TWIST2 joint order.  Pinocchio's hand model uses
         # index, middle, pinky, ring, then thumb.
@@ -676,12 +742,43 @@ class HAT4OnlineMotionTrackingEnv(BaseEnv):
             [8, 9, 10, 11, 0, 1, 2, 3, 6, 7, 4, 5], dtype=np.int64
         )
         ik_from_twist2 = np.argsort(twist2_from_ik)
+        self.hand_dof12_to_motor = lambda q: dofpos12_to_q6(
+            np.asarray(q, dtype=np.float64)[twist2_from_ik]
+        )
         self.hand_motor_to_dof12 = lambda motor: cmd6_to_dofpos12(
             np.clip(np.asarray(motor, dtype=np.float64), 0.0, 1.0) * 1000.0
         )[ik_from_twist2]
-        self.open_hand_dof12 = self.hand_motor_to_dof12(np.ones(6))
+        self.startup_hand_motor_target = np.asarray(
+            self.cfg.get("startup_hand_motor_target", [1.0] * 6), dtype=np.float64,
+        )
+        if (
+            self.startup_hand_motor_target.shape != (6,)
+            or not np.isfinite(self.startup_hand_motor_target).all()
+            or np.any(self.startup_hand_motor_target < 0.0)
+            or np.any(self.startup_hand_motor_target > 1.0)
+        ):
+            raise ValueError("startup_hand_motor_target must contain six finite DDS values in [0, 1]")
+        self.startup_right_hand_motor_target = np.asarray(
+            self.cfg.get("startup_right_hand_motor_target", self.startup_hand_motor_target),
+            dtype=np.float64,
+        )
+        if (
+            self.startup_right_hand_motor_target.shape != (6,)
+            or not np.isfinite(self.startup_right_hand_motor_target).all()
+            or np.any(self.startup_right_hand_motor_target < 0.0)
+            or np.any(self.startup_right_hand_motor_target > 1.0)
+        ):
+            raise ValueError("startup_right_hand_motor_target must contain six finite DDS values in [0, 1]")
+        self.open_hand_dof12 = self.hand_motor_to_dof12(self.startup_hand_motor_target)
+        self.startup_right_hand_dof12 = self.hand_motor_to_dof12(self.startup_right_hand_motor_target)
         self.open_hand_fingertips = {
-            side: solver._fk_tips(self.open_hand_dof12).astype(np.float32)
+            side: solver._fk_tips(
+                self.hand_motor_to_dof12(self._hand_fk_motor_state(
+                    self.startup_hand_motor_target if side == "lh"
+                    else self.startup_right_hand_motor_target,
+                    "left" if side == "lh" else "right",
+                ))
+            ).astype(np.float32)
             for side, solver in self.hand_state_fk_solvers.items()
         }
         self.focus_pad_s = float(FOCUS_PAD_S)
@@ -697,6 +794,7 @@ class HAT4OnlineMotionTrackingEnv(BaseEnv):
             mapping_path=mapping_path,
             solver_kwargs=solver_kwargs,
             focus_pad_s=self.focus_pad_s,
+            thumb_rot_invert_sides=self.hand_thumb_rot_invert_sides,
         )
         logger.info("[Online HAT] Warm-started bilateral Pinocchio hand IK enabled.")
         logger.info(
@@ -709,6 +807,13 @@ class HAT4OnlineMotionTrackingEnv(BaseEnv):
             self.hand_ik_worker = None
         if self.hand_ik_solvers is not None:
             self.hand_ik_worker = _AsyncBilateralHandIK(self.hand_ik_solvers)
+
+    def _hand_fk_motor_state(self, motor, side):
+        """Convert DDS feedback to the motor convention used by hand FK."""
+        model_motor = np.asarray(motor, dtype=np.float64).copy()
+        if side in getattr(self, "hand_fk_thumb_rot_invert_sides", ()):
+            model_motor[5] = 1.0 - model_motor[5]
+        return model_motor
 
     def _measured_hand_state(self):
         self._hand_state_valid = False
@@ -724,7 +829,10 @@ class HAT4OnlineMotionTrackingEnv(BaseEnv):
                     left = right = np.ones(6, dtype=np.float32)
                 keypoints = {}
                 for side, motor in (("lh", left), ("rh", right)):
-                    q12 = self.hand_motor_to_dof12(motor)
+                    model_motor = self._hand_fk_motor_state(
+                        motor, "left" if side == "lh" else "right",
+                    )
+                    q12 = self.hand_motor_to_dof12(model_motor)
                     tips = self.hand_state_fk_solvers[side]._fk_tips(q12).astype(np.float32)
                     keypoints[side] = np.concatenate(
                         (np.zeros((1, 3), dtype=np.float32), tips), axis=0
@@ -791,7 +899,9 @@ class HAT4OnlineMotionTrackingEnv(BaseEnv):
             chunk["sequence_id"],
             chunk["left_fingertip_local"],
             chunk["right_fingertip_local"],
-            self._focus_history_snapshot(now_ns, chunk["fps"]),
+            self._focus_history_snapshot(
+                chunk.get("_focus_source_started_ns", now_ns), chunk["fps"]
+            ),
             chunk["fps"],
         )
 
@@ -801,7 +911,35 @@ class HAT4OnlineMotionTrackingEnv(BaseEnv):
         result = self.focus_worker.latest()
         if result is None:
             return
-        sequence_id, phase = result
+        sequence_id, payload = result
+        handoff = getattr(self, "focus_handoff", None)
+        adaptive = getattr(self, "focus_adaptive", None)
+        independent = isinstance(handoff, PerHandFocusHandoff)
+        phase = (payload["hand_phase"] if independent else payload["phase"]) if isinstance(payload, dict) else payload
+        if handoff is not None or adaptive is not None:
+            prediction = self._focus_prediction_chunks.get(sequence_id)
+            if prediction is not None:
+                prediction["focus_phase"] = phase
+                if isinstance(payload, dict):
+                    prediction["hand_focus"] = payload["hands"]
+                if (self._focus_phase_prediction is None
+                        or sequence_id > self._focus_phase_prediction["sequence_id"]):
+                    self._focus_phase_prediction = prediction
+                if handoff is not None:
+                    handoff.observe_prediction(prediction, payload if independent else phase)
+                if adaptive is not None:
+                    adaptive_phase = phase
+                    if isinstance(payload, dict):
+                        # The canonical union can contain the tail of a
+                        # historical grasp at row zero, even with no new hand
+                        # event. It must not select the current wrist as a
+                        # future grasp entry and prematurely release the hold.
+                        mask = np.logical_or.reduce([
+                            payload["hands"][side]["phase"][:, 0] >= .5
+                            for side in adaptive.estimator.sides
+                        ])
+                        adaptive_phase = focus_phase_from_mask(mask, prediction["fps"])
+                    adaptive.observe_prediction(prediction, adaptive_phase)
         candidates = [self.chunk, self.previous_chunk]
         seen = set()
         for candidate in candidates:
@@ -822,6 +960,17 @@ class HAT4OnlineMotionTrackingEnv(BaseEnv):
                     )
                     self._focus_result_logged = True
                 return
+
+    def _reference_plan_active(self):
+        pending = getattr(self, "_reference_start_pending", False)
+        return bool(
+            (getattr(self, "reference_playing", False) or pending)
+            and not getattr(self, "localization_paused", False)
+            and (pending or (
+                not getattr(self, "requires_restart", False)
+                and getattr(self, "held_sample", None) is None
+            ))
+        )
 
     def _publish_robot_state(self):
         left_hand, left_keypoints, right_hand, right_keypoints = (
@@ -852,6 +1001,8 @@ class HAT4OnlineMotionTrackingEnv(BaseEnv):
             right_arm_q=self._arm_q("right"),
             right_hand_q=right_hand,
             right_hand_keypoints_local=right_keypoints,
+            reference_plan_active=self._reference_plan_active(),
+            reference_plan_epoch=getattr(self, "reference_plan_epoch", 0),
         )
         if hasattr(self.simulator, "record_hat_robot_state"):
             self.simulator.record_hat_robot_state(message)
@@ -957,6 +1108,9 @@ class HAT4OnlineMotionTrackingEnv(BaseEnv):
         if (
             getattr(self, "chunk_start_reference_continuity", False)
             and outgoing is not None
+            and not (getattr(self, "focus_handoff", None) is not None
+                     and self.focus_handoff.bypass_continuity
+                     and not isinstance(self.focus_handoff, PerHandFocusHandoff))
         ):
             # Deployment experiment (2026-09-09): the state-conditioned model
             # re-anchors every chunk to the measured (lagging) wrist, so
@@ -1149,6 +1303,14 @@ class HAT4OnlineMotionTrackingEnv(BaseEnv):
         predict.
         """
         origin = np.asarray(candidate["position_origin_world"], dtype=np.float32)
+        if "frame_heading_world_wxyz" in candidate:
+            # The producer explicitly specifies p_hat = R0^-1(p_world-origin).
+            # Its inverse is origin + R0*p_hat. Rotating about predicted root
+            # adds a spurious translation; inferring R0 from predicted root
+            # yaw also removes part of the policy's commanded root rotation.
+            return origin, np.asarray(
+                candidate["frame_heading_world_wxyz"], dtype=np.float32
+            )
         anchor = self.protocol_alignment_anchor
         if self.chunk_alignment == "fixed" and self.reference_playing and anchor is not None:
             return anchor
@@ -1187,6 +1349,9 @@ class HAT4OnlineMotionTrackingEnv(BaseEnv):
         while keeping an explicit override for hardware experiments.
         """
         chunk = self.chunk if chunk is None else chunk
+        adaptive = getattr(self, "focus_adaptive", None)
+        if adaptive is not None and chunk is not None:
+            return min(1.0, adaptive.execution_frames / int(chunk["frame_count"]))
         if (
             chunk is not None
             and chunk.get("action_representation", "original") == "relative_chunk"
@@ -1215,6 +1380,9 @@ class HAT4OnlineMotionTrackingEnv(BaseEnv):
         CONFLATE=1 subscriber keeps only the newest published chunk, so at
         release the accepted chunk is at most one replan period old.
         """
+        handoff = getattr(self, "focus_handoff", None)
+        if handoff is not None and handoff.bypass_continuity:
+            return False
         fraction = self._chunk_execution_fraction()
         if fraction <= 0.0:
             return False
@@ -1317,12 +1485,14 @@ class HAT4OnlineMotionTrackingEnv(BaseEnv):
         return blended, state
 
     def _accept_latest_chunk(self, now_ns):
-        if self._min_execution_hold_active(now_ns):
+        handoff = getattr(self, "focus_handoff", None)
+        if not (handoff is not None and handoff.bypass_continuity) and self._min_execution_hold_active(now_ns):
             # Do not even drain the subscriber: CONFLATE retains the newest
             # chunk for the moment the hold releases.  finger_chunk_source
             # "latest" must drain anyway (fingers follow every replan), so it
             # stashes what it drains for body acceptance at hold release.
-            if self.finger_chunk_source == "latest":
+            if (self.finger_chunk_source == "latest" or getattr(self, "focus_adaptive", None) is not None
+                    or handoff is not None):
                 self._drain_chunk_during_hold(now_ns)
             return False
         receive_error = self.chunk_subscriber.receive_error()
@@ -1341,6 +1511,8 @@ class HAT4OnlineMotionTrackingEnv(BaseEnv):
             return False
         try:
             candidate = raw
+            if handoff is not None and not handoff.accepts(candidate):
+                return False
             if candidate["sequence_id"] <= self.last_chunk_sequence_id:
                 return False
             if (
@@ -1433,9 +1605,45 @@ class HAT4OnlineMotionTrackingEnv(BaseEnv):
                 f"staleness watchdog remains active."
             )
             return False
-        aligned, rtc_state = self._apply_rtc_overlap(
-            aligned, start_frame, now_ns, reset_transition
-        )
+        adaptive = getattr(self, "focus_adaptive", None)
+        if (adaptive is not None and not reset_transition
+                and self.last_reference_sample is not None):
+            source_ns = self._source_state_timestamp_ns(candidate["source_state_sequence_id"])
+            elapsed = ((now_ns - source_ns) * 1e-9 if source_ns is not None
+                       else phase_state["source_age_s"])
+            aligned = rebase_wrist_chunk(
+                aligned, max(0.0, elapsed), self._sample_reference(now_ns),
+                ("left", "right"), positions_only=True,
+            )
+        focus_prediction = dict(aligned)
+        if isinstance(handoff, PerHandFocusHandoff) and handoff.bypass_continuity:
+            # Keep the ordinary body/other-hand continuity clock. Each hand
+            # participating in a handoff gets its own raw source-time playback
+            # overlay, so a left event cannot rewind the right wrist or fingers.
+            source_ns = self._source_state_timestamp_ns(candidate["source_state_sequence_id"])
+            elapsed = max(0., (now_ns - source_ns) * 1e-9) if source_ns is not None else phase_state["source_age_s"]
+            playback = handoff.rebase(aligned, elapsed, self._sample_reference(now_ns))
+            for c in handoff.controllers.values():
+                if (c.active or (c.state == "await_chunk"
+                                 and candidate["source_state_sequence_id"] >= c.source_fence)):
+                    c.playback = playback
+                    c.playback_started_ns = (int(source_ns) if source_ns is not None
+                                             else now_ns - int(elapsed * 1e9))
+            aligned, rtc_state = self._apply_rtc_overlap(aligned, start_frame, now_ns, reset_transition)
+            phase_state = dict(phase_state, focus_handoff_sides=handoff.bypass_sides)
+        elif handoff is not None and handoff.bypass_continuity:
+            # Finger/wrist motion must start from this fresh chunk's latency
+            # cursor; RTC's copied old prefix could execute a closing frame.
+            source_ns = self._source_state_timestamp_ns(candidate["source_state_sequence_id"])
+            elapsed = max(0.0, (now_ns - source_ns) * 1e-9) if source_ns is not None else phase_state["source_age_s"]
+            outgoing = handoff.hold if handoff.state == "await_chunk" else self._sample_reference(now_ns)
+            aligned = rebase_wrist_chunk(aligned, elapsed, outgoing, handoff.sides)
+            rtc_state = {"applied": False, "bypass_reason": "focus_handoff"}
+            phase_state = dict(phase_state, focus_handoff=True)
+        else:
+            aligned, rtc_state = self._apply_rtc_overlap(
+                aligned, start_frame, now_ns, reset_transition
+            )
         phase_state = dict(phase_state)
         if rtc_state is not None:
             phase_state["rtc"] = rtc_state
@@ -1484,11 +1692,11 @@ class HAT4OnlineMotionTrackingEnv(BaseEnv):
                     f"frame {phase_state.get('expected_frame')}."
                 )
         if self.finger_chunk_source == "latest":
-            # Keep the finger stream on the freshest plan: an accepted chunk
-            # is at least as new as anything drained during the hold, and its
-            # (possibly continuity-shifted) clock is authoritative.
-            self._finger_chunk = self.chunk
-            self._finger_chunk_started_ns = self.chunk_started_ns
+            # A body continuity search may jump one second into its chunk.
+            # Latest fingers follow the raw prediction's source clock, not
+            # that shifted body clock or its RTC-modified prefix.
+            self._set_latest_finger_chunk(candidate, source_timestamp_ns, now_ns,
+                                          source_age_s=phase_state["source_age_s"])
         self.blend_started_ns = now_ns if self.previous_chunk is not None else None
         self.last_chunk_sequence_id = candidate["sequence_id"]
         self.last_chunk_received_ns = now_ns
@@ -1496,12 +1704,44 @@ class HAT4OnlineMotionTrackingEnv(BaseEnv):
         self.held_sample = None
         self.awaiting_fresh_chunk = False
         self.minimum_source_state_sequence_id = None
+        if getattr(self, "_reference_start_pending", False):
+            # The source-state fence above guarantees this prediction was
+            # inferred after R1, with the new plan epoch, rather than while
+            # the robot was still waiting in its startup hold.
+            self._start_reference_playback(now_ns)
         if hasattr(self.simulator, "record_hat_chunk"):
             self.simulator.record_hat_chunk(candidate, aligned)
-        self._submit_chunk_focus(self.chunk, now_ns)
+        if handoff is not None or adaptive is not None:
+            focus_prediction["_focus_source_started_ns"] = (
+                int(source_timestamp_ns) if source_timestamp_ns is not None
+                else now_ns - int(phase_state["source_age_s"] * 1e9)
+            )
+            prior = self._focus_prediction_chunks.get(candidate["sequence_id"])
+            self._focus_prediction_chunks[candidate["sequence_id"]] = focus_prediction
+            while len(self._focus_prediction_chunks) > 32:
+                self._focus_prediction_chunks.pop(next(iter(self._focus_prediction_chunks)))
+            # A held preview may already have been processed. Keep its phase
+            # on the accepted chunk; otherwise submit the accepted prediction.
+            if prior is not None and "focus_phase" in prior:
+                self.chunk["focus_phase"] = prior["focus_phase"]
+                focus_prediction["focus_phase"] = prior["focus_phase"]
+            self._submit_chunk_focus(focus_prediction, now_ns)
+            if isinstance(handoff, PerHandFocusHandoff):
+                started = handoff.start_fresh(candidate, now_ns)
+                for side in started:
+                    if self._handoff_ik_min_sequence is not None:
+                        self._handoff_ik_min_sequence[side] = None
+                    logger.info(f"[Online HAT] {side} FOCUS handoff entered on fresh chunk {candidate['sequence_id']}; only {side} fingers unlocked.")
+            elif handoff is not None and handoff.state == "await_chunk":
+                handoff.start()
+                self._handoff_ik_min_sequence = None
+                logger.info(f"[Online HAT] FOCUS handoff entered on fresh chunk {candidate['sequence_id']}; fingers unlocked.")
+        else:
+            self._submit_chunk_focus(self.chunk, now_ns)
         min_execution_fraction = self._chunk_execution_fraction(candidate)
         hold_note = ""
-        if min_execution_fraction > 0.0 and self.reference_playing:
+        if (min_execution_fraction > 0.0 and self.reference_playing
+                and not (handoff is not None and handoff.bypass_continuity)):
             hold_s = (
                 min_execution_fraction
                 * int(candidate["frame_count"])
@@ -1610,6 +1850,12 @@ class HAT4OnlineMotionTrackingEnv(BaseEnv):
                 for key in current:
                     if key == "focus_phase":
                         continue
+                    handoff = getattr(self, "focus_handoff", None)
+                    active_sides = (handoff.active_sides if isinstance(handoff, PerHandFocusHandoff)
+                                    else handoff.sides if handoff is not None and handoff.active else ())
+                    if any(key.startswith(f"{side}_wrist_") or key == f"{side}_fingertip_local"
+                           for side in active_sides):
+                        continue
                     if "quat" in key:
                         current[key] = quat_slerp(previous[key], current[key], np.full(len(self.future_offsets_s), alpha)).astype(np.float32)
                     else:
@@ -1620,7 +1866,80 @@ class HAT4OnlineMotionTrackingEnv(BaseEnv):
             ):
                 self.previous_chunk = None
                 self.previous_chunk_started_ns = None
+        handoff = getattr(self, "focus_handoff", None)
+        if handoff is not None:
+            controllers = (handoff.controllers.items() if isinstance(handoff, PerHandFocusHandoff)
+                           else ((side, handoff) for side in handoff.sides))
+            for side, controller in controllers:
+                if (isinstance(handoff, PerHandFocusHandoff) and controller.active
+                        and controller.playback is not None):
+                    hand_sample = sample_chunk(controller.playback,
+                        self._elapsed(now_ns, controller.playback_started_ns), self.future_offsets_s)
+                    for key in (f"{side}_wrist_pos", f"{side}_wrist_quat_wxyz", f"{side}_fingertip_local"):
+                        current[key] = hand_sample[key]
+                if controller.state == "await_chunk":
+                    for suffix in ("pos", "quat_wxyz"):
+                        key = f"{side}_wrist_{suffix}"
+                        current[key] = np.repeat(controller.hold[key][0:1], len(self.future_offsets_s), axis=0)
+            if handoff.active:
+                phase = self._focus_handoff_phase(now_ns)
+                if phase is not None:
+                    current["focus_phase"] = phase
+            else:
+                current["focus_phase"] = np.tile(np.array([[0.0, 2.0]], dtype=np.float32), (len(self.future_offsets_s), 1))
         return current
+
+    def _focus_handoff_phase(self, now_ns):
+        """Sample a known post-arrival phase even if its IK result arrived late."""
+        handoff = self.focus_handoff
+        if isinstance(handoff, PerHandFocusHandoff):
+            active = [c for c in handoff.controllers.values() if c.active]
+            if not active:
+                return None
+            # Completion follows measured fingers. A late or replaced chunk's
+            # binary phase must not make the active event disappear.
+            remaining = max(c.timeout_s - (now_ns - c.started_ns) * 1e-9 for c in active)
+            return np.tile(np.array([[1., -min(2., max(0., remaining))]], dtype=np.float32),
+                           (len(self.future_offsets_s), 1))
+        prediction = getattr(self, "_focus_phase_prediction", None)
+        if (prediction is None or handoff.source_fence is None
+                or prediction["source_state_sequence_id"] < handoff.source_fence):
+            return None
+        elapsed = max(0.0, (now_ns - prediction["_focus_source_started_ns"]) * 1e-9)
+        return sample_chunk(prediction, elapsed, self.future_offsets_s)["focus_phase"]
+
+    def _maybe_begin_focus_handoff(self, now_ns):
+        handoff = getattr(self, "focus_handoff", None)
+        if (handoff is None or not self.reference_playing or self.localization_paused
+                or self.awaiting_fresh_chunk or self.requires_restart or self.held_sample is not None):
+            return
+        poses = getattr(self.current_pose_fk, "last_body_poses", None) or {}
+        if isinstance(handoff, PerHandFocusHandoff):
+            actual = self._handoff_measured_bends(now_ns)
+            for side, controller in handoff.controllers.items():
+                if controller.arrive(poses, self.state_sequence_id, self.last_reference_sample, actual.get(side)):
+                    self.reference_plan_epoch += 1
+                    logger.info(f"[Online HAT] Actual {side} wrist reached {controller.event['kind']} entry; only {side} held until source state >= {controller.source_fence}.")
+            return
+        if handoff.arrive(poses, self.state_sequence_id, self.last_reference_sample):
+            self.reference_plan_epoch += 1
+            logger.info(f"[Online HAT] Actual wrist reached FOCUS entry; holding wrist target and fingers until source state >= {handoff.source_fence}.")
+
+    def _handoff_measured_bends(self, now_ns):
+        history = getattr(self, "hand_focus_history", ())
+        if not history or (now_ns - history[-1][0]) * 1e-9 > .5:
+            return {}
+        value = np.asarray(history[-1][1])
+        return {side: value[offset + HAND_BEND_COLUMNS]
+                for side, offset in (("left", 0), ("right", 6))}
+
+    def _rejoin_handoff_wrist(self, side, sample, now_ns):
+        """Resume the ordinary clock at the outgoing per-hand wrist target."""
+        self.chunk = rebase_wrist_chunk(self.chunk,
+            self._elapsed(now_ns, self.chunk_started_ns), sample, (side,))
+        if self.previous_chunk is not None and self.previous_chunk_started_ns is not None:
+            self.previous_chunk = rebase_wrist_chunk(self.previous_chunk,
+                self._elapsed(now_ns, self.previous_chunk_started_ns), sample, (side,))
 
     def _gather_reference_state(self, now_ns):
         # Grab the measured root before the forcing block at the end of this
@@ -1629,6 +1948,46 @@ class HAT4OnlineMotionTrackingEnv(BaseEnv):
         # _update_state_manager ran first in _compute_observation.
         measured_root_pos = self.state_buffer["root_pos_buffer"][:, -1].clone()
         sample = self._sample_reference(now_ns)
+        adaptive = getattr(self, "focus_adaptive", None)
+        if adaptive is not None:
+            running = (self.reference_playing and not self.localization_paused
+                       and not self.requires_restart and not self.awaiting_fresh_chunk
+                       and self.held_sample is None)
+            adaptive.update(now_ns, self.current_pose_fk.last_body_poses or {}, running=running)
+            if adaptive.active:
+                elapsed = (now_ns - adaptive.prediction["_focus_source_started_ns"]) * 1e-9
+                sample["focus_phase"] = sample_chunk(
+                    adaptive.prediction, elapsed, self.future_offsets_s,
+                )["focus_phase"]
+            else:
+                sample["focus_phase"] = np.tile(
+                    np.array([[0.0, 2.0]], dtype=np.float32),
+                    (len(self.future_offsets_s), 1),
+                )
+        handoff = getattr(self, "focus_handoff", None)
+        if isinstance(handoff, PerHandFocusHandoff):
+            actual = self._handoff_measured_bends(now_ns)
+            for side, controller in handoff.controllers.items():
+                if controller.update_actual(now_ns, actual.get(side)):
+                    # Rejoin the ordinary continuity playback at the last
+                    # overlaid wrist target, preserving subsequent increments.
+                    self._rejoin_handoff_wrist(side, sample, now_ns)
+                    logger.info(f"[Online HAT] {side} FOCUS handoff ended ({controller.end_reason}); only {side} fingers locked at last command.")
+            phase = self._focus_handoff_phase(now_ns)
+            sample["focus_phase"] = (phase if phase is not None else
+                np.tile(np.array([[0., 2.]], dtype=np.float32), (len(self.future_offsets_s), 1)))
+        elif handoff is not None and handoff.active:
+            phase = self._focus_handoff_phase(now_ns)
+            if phase is not None and not handoff.seen_focus:
+                # A full-chunk IK result can arrive after the enter window.
+                # Do not wait indefinitely for a rising edge already passed.
+                prediction = self._focus_phase_prediction
+                elapsed = max(0.0, (now_ns - prediction["_focus_source_started_ns"]) * 1e-9)
+                index = min(int(elapsed * prediction["fps"]), prediction["frame_count"] - 1)
+                handoff.seen_focus = bool(np.any(prediction["focus_phase"][:index + 1, 0] >= .5))
+            if phase is not None and handoff.update_phase(phase[0, 0] >= .5, self.chunk["sequence_id"]):
+                sample["focus_phase"] = np.tile(np.array([[0.0, 2.0]], dtype=np.float32), (len(self.future_offsets_s), 1))
+                logger.info("[Online HAT] FOCUS handoff ended: fingers locked at last command; continuity resumed.")
         self.last_reference_sample = sample
         count = len(self.future_offsets_s)
         link_count = len(self.metadata_dict["selected_body_names"])
@@ -1808,6 +2167,21 @@ class HAT4OnlineMotionTrackingEnv(BaseEnv):
             "cmd_lw": body_pos[0, 0, wrist_indices[0]].tolist(),
             "cmd_rw": body_pos[0, 0, wrist_indices[1]].tolist(),
         }
+        handoff = getattr(self, "focus_handoff", None)
+        if handoff is not None:
+            self._comp_last["focus_handoff_state"] = handoff.state
+            self._comp_last["fingers_locked"] = not handoff.active
+            self._comp_last["focus_entry"] = (
+                {k: v.tolist() for k, v in handoff.entry.items()}
+                if handoff.entry is not None else None
+            )
+            if isinstance(handoff, PerHandFocusHandoff):
+                self._comp_last["focus_handoff_hands"] = {
+                    side: dict(state=c.state, fingers_locked=not c.active,
+                               event=c.event["kind"] if c.event else None,
+                               end_reason=c.end_reason)
+                    for side, c in handoff.controllers.items()
+                }
         if measured_wrists is None:
             measured_wrists = self._measured_wrist_pos_world()
         if measured_wrists is not None:
@@ -1894,9 +2268,42 @@ class HAT4OnlineMotionTrackingEnv(BaseEnv):
         source_timestamp_ns = self._source_state_timestamp_ns(
             raw["source_state_sequence_id"]
         )
+        if (getattr(self, "focus_adaptive", None) is not None
+                or getattr(self, "focus_handoff", None) is not None):
+            self._preview_chunk_focus(raw, source_timestamp_ns, now_ns)
+        self._set_latest_finger_chunk(raw, source_timestamp_ns, now_ns)
+
+    def _preview_chunk_focus(self, raw, source_ns, now_ns):
+        """Inspect incoming predictions during a body hold without accepting them."""
+        if raw["sequence_id"] in self._focus_prediction_chunks:
+            return
+        root_pos = self.state_buffer["root_pos_buffer"][0, -1].detach().cpu().numpy()
+        root_quat = self.state_buffer["root_quat_wxyz_buffer"][0, -1].detach().cpu().numpy()
+        if "position_origin_world" in raw:
+            p, q = self._protocol_alignment(raw, root_pos, root_quat)
+        elif self.alignment_anchor is not None:
+            p, q = self.alignment_anchor
+        else:
+            p, q = alignment_transform(raw, root_pos, root_quat)
+        prediction = apply_alignment(raw, p, q)
+        source_ns = int(source_ns) if source_ns is not None else now_ns
+        if getattr(self, "focus_adaptive", None) is not None and self.last_reference_sample is not None:
+            prediction = rebase_wrist_chunk(
+                prediction, max(0., (now_ns - source_ns) * 1e-9),
+                self._sample_reference(now_ns), ("left", "right"), positions_only=True,
+            )
+        prediction["_focus_source_started_ns"] = source_ns
+        self._focus_prediction_chunks[raw["sequence_id"]] = prediction
+        while len(self._focus_prediction_chunks) > 32:
+            self._focus_prediction_chunks.pop(next(iter(self._focus_prediction_chunks)))
+        self._submit_chunk_focus(prediction, now_ns)
+
+    def _set_latest_finger_chunk(self, raw, source_timestamp_ns, now_ns, *, source_age_s=0.0):
+        """Keep fresh fingers independent of body phase search and RTC."""
         self._finger_chunk = raw
         self._finger_chunk_started_ns = (
-            int(source_timestamp_ns) if source_timestamp_ns is not None else now_ns
+            int(source_timestamp_ns) if source_timestamp_ns is not None
+            else int(now_ns) - int(source_age_s * 1e9)
         )
 
     def _finger_reference_targets(self):
@@ -1910,9 +2317,15 @@ class HAT4OnlineMotionTrackingEnv(BaseEnv):
         while the body hold keeps executing an older chunk.
         """
         sample = self.last_reference_sample
+        adaptive = getattr(self, "focus_adaptive", None)
+        if adaptive is not None and adaptive.active and adaptive.finger_sample is not None:
+            sample = adaptive.finger_sample
+            return sample["left_fingertip_local"][0], sample["right_fingertip_local"][0]
         left = sample["left_fingertip_local"][0]
         right = sample["right_fingertip_local"][0]
         if (
+            (getattr(self, "focus_handoff", None) is not None and self.focus_handoff.active)
+            or
             getattr(self, "finger_chunk_source", "playback") != "latest"
             or self._finger_chunk is None
         ):
@@ -2009,7 +2422,124 @@ class HAT4OnlineMotionTrackingEnv(BaseEnv):
             outputs.append(allowed)
         return outputs[0], outputs[1]
 
+    def _hand_prediction_target(self, q12, side):
+        """Correct predicted thumb rotation in motor space before DDS conversion."""
+        if side not in getattr(self, "hand_thumb_rot_invert_sides", ()):
+            return q12
+        motor = np.clip(self.hand_dof12_to_motor(q12), 0.0, 1.0)
+        # DDS order: pinky, ring, middle, index, thumb_bend, thumb_rot.
+        # Convert back to q12 for the simulator interface; its inverse LUT
+        # recovers this corrected command. Keep the IK warm start unmodified.
+        motor[5] = 1.0 - motor[5]
+        return self.hand_motor_to_dof12(motor)
+
     def _send_hand_target(self):
+        handoff = getattr(self, "focus_handoff", None)
+        adaptive = getattr(self, "focus_adaptive", None)
+        if isinstance(handoff, PerHandFocusHandoff) and self.hand_ik_worker is not None:
+            finger_control = getattr(self, "_handoff_finger_control", None)
+            # Chunk stitching is grasp-only. A release window must stay free to
+            # open: hold_progress clamps the bending motors against reopening,
+            # which would hold a release shut for its whole window.
+            stitching = ()
+            if finger_control is not None and finger_control.mode != "off":
+                stitching = tuple(
+                    side for side in handoff.active_sides
+                    if handoff.controllers[side].event is not None
+                    and handoff.controllers[side].event["kind"] == "close"
+                )
+            if finger_control is not None:
+                for side in ("left", "right"):
+                    if side not in stitching:
+                        finger_control.reset(side)
+            if self._handoff_hand_hold is None:
+                self._handoff_hand_hold = (
+                    np.asarray(self.open_hand_dof12).copy(),
+                    np.asarray(self.startup_right_hand_dof12).copy(),
+                )
+            if self._handoff_ik_min_sequence is None:
+                self._handoff_ik_min_sequence = {"left": None, "right": None}
+            enabled = (self.reference_playing and not self.localization_paused
+                       and not self.requires_restart and not self.awaiting_fresh_chunk
+                       and self.held_sample is None and self.last_reference_sample is not None)
+            # Only a side inside its own handoff window may move its fingers;
+            # every other side holds its last command. Closing AND opening
+            # therefore both require a window -- an idle hand is never handed
+            # back to the raw prediction.
+            allowed = {side: enabled and side in handoff.active_sides
+                       for side in ("left", "right")}
+            for side in allowed:
+                if not allowed[side]:
+                    self._handoff_ik_min_sequence[side] = None
+            if any(allowed.values()):
+                left, right = self._finger_reference_targets()
+                if stitching:
+                    # Capture provenance at submission: the latest accepted
+                    # chunk may change before this asynchronous IK finishes.
+                    context = {}
+                    for side in stitching:
+                        controller = handoff.controllers[side]
+                        context[side] = (controller.started_ns,
+                                         int(controller.playback["sequence_id"]))
+                    sequence = self.hand_ik_worker.submit(left, right, context=context)
+                else:
+                    sequence = self.hand_ik_worker.submit(left, right)
+                for side in allowed:
+                    if allowed[side] and self._handoff_ik_min_sequence[side] is None:
+                        self._handoff_ik_min_sequence[side] = sequence
+                # Use the NEWEST unlock fence when both sides are active. A
+                # solution generated before either unlock cannot leak into it.
+                fence = max(self._handoff_ik_min_sequence[side]
+                            for side in allowed if allowed[side])
+                solved = self.hand_ik_worker.latest(min_sequence=fence)
+                if solved is not None:
+                    command = list(self._handoff_hand_hold)
+                    for i, side, key in ((0, "left", "lh"), (1, "right", "rh")):
+                        if not allowed[side]:
+                            continue
+                        target = self._hand_prediction_target(solved[key], side)
+                        if side in stitching:
+                            provenance = solved.get("_context", {}).get(side)
+                            if (provenance is None or provenance[0] !=
+                                    handoff.controllers[side].started_ns):
+                                # An IK solution from before this grasp cannot
+                                # establish its continuity anchor or move it.
+                                continue
+                            motor = finger_control.apply(
+                                side, *provenance, self.hand_dof12_to_motor(target),
+                                self.hand_dof12_to_motor(command[i]))
+                            target = self.hand_motor_to_dof12(motor)
+                        command[i] = np.asarray(target).copy()
+                    self._handoff_hand_hold = tuple(command)
+            self.simulator.set_hand_ik_target(*self._handoff_hand_hold)
+            return
+        if (handoff is not None or adaptive is not None) and self.hand_ik_worker is not None:
+            if self._handoff_hand_hold is None:
+                self._handoff_hand_hold = (
+                    np.asarray(self.open_hand_dof12).copy(),
+                    np.asarray(self.startup_right_hand_dof12).copy(),
+                )
+            active = adaptive.active if adaptive is not None else handoff.active
+            running = (active and self.reference_playing and not self.localization_paused
+                       and not self.requires_restart and not self.awaiting_fresh_chunk
+                       and self.held_sample is None)
+            if not running or self.last_reference_sample is None:
+                # Hold motor commands directly, including stale/late IK results;
+                # locking only submitted fingertips would leak old solutions.
+                self.simulator.set_hand_ik_target(*self._handoff_hand_hold)
+                self._handoff_ik_min_sequence = None
+                return
+            left, right = self._finger_reference_targets()
+            sequence = self.hand_ik_worker.submit(left, right)
+            if self._handoff_ik_min_sequence is None:
+                self._handoff_ik_min_sequence = sequence
+            solved = self.hand_ik_worker.latest(min_sequence=self._handoff_ik_min_sequence)
+            if solved is not None:
+                command = (self._hand_prediction_target(solved["lh"], "left"),
+                           self._hand_prediction_target(solved["rh"], "right"))
+                self._handoff_hand_hold = tuple(np.asarray(q).copy() for q in command)
+            self.simulator.set_hand_ik_target(*self._handoff_hand_hold)
+            return
         if (
             self.reference_play_gate
             and not self.reference_playing
@@ -2021,7 +2551,10 @@ class HAT4OnlineMotionTrackingEnv(BaseEnv):
             # in the hand.  The normal path below already freezes the fingers
             # when the body reference is frozen (_finger_reference_targets).
             if self.hand_ik_worker is not None:
-                self.simulator.set_hand_ik_target(self.open_hand_dof12, self.open_hand_dof12)
+                self.simulator.set_hand_ik_target(
+                    self.open_hand_dof12,
+                    getattr(self, "startup_right_hand_dof12", self.open_hand_dof12),
+                )
             self._finger_gate_blocked = {"left": False, "right": False}
             self._finger_gate_hold = {"left": None, "right": None}
             return
@@ -2029,7 +2562,10 @@ class HAT4OnlineMotionTrackingEnv(BaseEnv):
             return
         solved = self.hand_ik_worker.latest()
         if solved is not None:
-            self.simulator.set_hand_ik_target(solved["lh"], solved["rh"])
+            self.simulator.set_hand_ik_target(
+                self._hand_prediction_target(solved["lh"], "left"),
+                self._hand_prediction_target(solved["rh"], "right"),
+            )
         left_target, right_target = self._finger_reference_targets()
         left_target, right_target = self._apply_finger_wrist_gate(
             left_target, right_target
@@ -2042,7 +2578,9 @@ class HAT4OnlineMotionTrackingEnv(BaseEnv):
             and hasattr(self.simulator, "robust_tracking_enabled")
             and self.simulator.robust_tracking_enabled()
         )
-        if not robust or not self.reference_playing:
+        if not robust or not (
+            self.reference_playing or getattr(self, "_reference_start_pending", False)
+        ):
             return
         healthy = self.simulator.is_localization_healthy()
         if not healthy and not self.localization_paused:
@@ -2053,6 +2591,7 @@ class HAT4OnlineMotionTrackingEnv(BaseEnv):
             logger.warning("[Online HAT] Vive unavailable: holding reference and discarding chunks.")
         elif healthy and self.localization_paused:
             self.localization_paused = False
+            self.reference_plan_epoch = getattr(self, "reference_plan_epoch", 0) + 1
             self.awaiting_fresh_chunk = True
             # _compute_observation publishes this next sequence after recovery;
             # reject anything inferred from outage-era state.
@@ -2128,20 +2667,49 @@ class HAT4OnlineMotionTrackingEnv(BaseEnv):
             )
 
     def _prepare_startup_hands(self):
-        """Open after calibration, before publishing the first HAT observation."""
+        """Send the startup pose, optionally waiting for matching feedback."""
         if self.hand_ik_worker is None:
             return
-        logger.info("[Online HAT] Opening both hands before first HAT state ...")
+        targets = np.stack((
+            self.startup_hand_motor_target,
+            getattr(self, "startup_right_hand_motor_target", self.startup_hand_motor_target),
+        ))
+        if not self.cfg.get("startup_hand_check_enabled", False):
+            self.simulator.set_hand_ik_target(
+                self.open_hand_dof12,
+                getattr(self, "startup_right_hand_dof12", self.open_hand_dof12),
+            )
+            logger.info(
+                "[Online HAT] Sent startup hand DDS target {}; startup pose check disabled.",
+                targets.tolist(),
+            )
+            return
+        logger.info(
+            "[Online HAT] Moving both hands to startup DDS target {} before first HAT state ...",
+            targets.tolist(),
+        )
         deadline = time.monotonic() + float(self.cfg.get("startup_hand_timeout_s", 8.0))
+        motors = np.full((2, 6), np.nan)
         while time.monotonic() < deadline:
-            self.simulator.set_hand_ik_target(self.open_hand_dof12, self.open_hand_dof12)
+            self.simulator.set_hand_ik_target(
+                self.open_hand_dof12,
+                getattr(self, "startup_right_hand_dof12", self.open_hand_dof12),
+            )
             left, right = self.simulator.get_hand_motor_state()
             motors = np.asarray([left, right])
-            if motors.shape == (2, 6) and np.isfinite(motors).all() and np.all(motors >= 0.95):
-                logger.info("[Online HAT] Both hands open: left={}, right={}", left, right)
+            if (
+                motors.shape == (2, 6)
+                and np.isfinite(motors).all()
+                and np.all(np.abs(motors - targets) <= 0.05 + 1e-6)
+            ):
+                logger.info("[Online HAT] Both hands at startup pose: left={}, right={}", left, right)
                 return
             time.sleep(0.02)
-        raise RuntimeError("Hands did not report fresh open feedback before HAT startup; check Inspire feedback/actuation")
+        raise RuntimeError(
+            "Hands did not report fresh open feedback at the configured startup pose; "
+            f"target={targets.tolist()}, left/right={motors.tolist()}; "
+            "check Inspire feedback/actuation"
+        )
 
     def _wait_for_first_chunk(self):
         deadline = time.monotonic() + float(self.cfg.get("startup_chunk_timeout_s", 15.0))
@@ -2185,6 +2753,8 @@ class HAT4OnlineMotionTrackingEnv(BaseEnv):
                 torch.broadcast_to(value, self.state_buffer[f"{key}_buffer"].shape)
             )
         self.reference_playing = not self.reference_play_gate
+        self._reference_start_pending = False
+        self.reference_plan_epoch = getattr(self, "reference_plan_epoch", 0) + 1
         self.requires_restart = False
         self._latched_sample = None
         self._latched_link_poses = None
@@ -2197,6 +2767,19 @@ class HAT4OnlineMotionTrackingEnv(BaseEnv):
         self._prestart_debug_counter = 0
         self._reset_hand_ik()
         self._prepare_startup_hands()
+        if getattr(self, "focus_handoff", None) is not None:
+            self.focus_handoff.reset()
+            self._focus_prediction_chunks.clear()
+            self._focus_phase_prediction = None
+            self._handoff_hand_hold = None
+            self._handoff_ik_min_sequence = None
+            self._handoff_finger_control.reset()
+        if getattr(self, "focus_adaptive", None) is not None:
+            self.focus_adaptive.reset()
+            self._focus_prediction_chunks.clear()
+            self._focus_phase_prediction = None
+            self._handoff_hand_hold = None
+            self._handoff_ik_min_sequence = None
         current = self.simulator.refresh_sim()
         for key, value in current.items():
             self.state_buffer[f"{key}_buffer"].copy_(
@@ -2295,40 +2878,65 @@ class HAT4OnlineMotionTrackingEnv(BaseEnv):
         self._publish_robot_state()
         now_ns = monotonic_ns()
         self._update_chunk_focus()
+        adaptive = getattr(self, "focus_adaptive", None)
+        if adaptive is not None and self.reference_playing:
+            adaptive.update_distance(self.current_pose_fk.last_body_poses or {})
+        self._maybe_begin_focus_handoff(now_ns)
         self._accept_latest_chunk(now_ns)
         self._update_chunk_focus()
         self._update_staleness(now_ns)
         self._gather_reference_state(now_ns)
         return self._update_observation_manager()
 
+    def _start_reference_playback(self, now_ns):
+        if getattr(self, "focus_adaptive", None) is not None:
+            self.focus_adaptive.reset()
+            self._focus_prediction_chunks.clear()
+            self._focus_phase_prediction = None
+        self._reference_start_pending = False
+        self.reference_playing = True
+        self.requires_restart = False
+        self.held_sample = None
+        self._latched_sample = None
+        self._latched_link_poses = None
+        self.takeover_started_ns = now_ns
+        self._root_transition_active = (
+            self.local_to_global_transition_steps > 0
+            and not self.reference_forcing
+        )
+        self._root_transition_index = 0
+        logger.info(f"[Online HAT] {self.reference_play_control}: starting closed loop.")
+
+    def _request_reference_playback(self, tgt_dof_pos, now_ns):
+        self.takeover_hold_dof_pos = (
+            tgt_dof_pos if self.prestart_last_target is None
+            else self.prestart_last_target
+        ).detach().clone()
+        if self.chunk.get("action_representation", "original") == "relative_chunk":
+            self.reference_plan_epoch = getattr(self, "reference_plan_epoch", 0) + 1
+            self._reference_start_pending = True
+            self.awaiting_fresh_chunk = True
+            self.minimum_source_state_sequence_id = self.state_sequence_id
+            self._pending_raw_chunk = None
+            logger.info(
+                f"[Online HAT] {self.reference_play_control} pressed: holding pose "
+                "until a fresh HuMI startup chunk arrives."
+            )
+        else:
+            self._start_reference_playback(now_ns)
+
     def step(self, tgt_dof_pos, action):
         now_ns = monotonic_ns()
         if (
             self.reference_play_gate
             and not self.reference_playing
+            and not getattr(self, "_reference_start_pending", False)
             and self.chunk is not None
             and self.last_chunk_received_ns is not None
             and (now_ns - self.last_chunk_received_ns) * 1e-9 < float(self.cfg.get("chunk_hold_timeout_s", 0.5))
             and self.simulator.consume_reference_play_request()
         ):
-            self.takeover_hold_dof_pos = (
-                tgt_dof_pos if self.prestart_last_target is None
-                else self.prestart_last_target
-            ).detach().clone()
-            self.reference_playing = True
-            self.requires_restart = False
-            self.held_sample = None
-            self._latched_sample = None
-            self._latched_link_poses = None
-            self.takeover_started_ns = now_ns
-            # Same handover the GMT env does at R1: the root obs was held on
-            # the local pre-start reference, walk it to the live tracker.
-            self._root_transition_active = (
-                self.local_to_global_transition_steps > 0
-                and not self.reference_forcing
-            )
-            self._root_transition_index = 0
-            logger.info(f"[Online HAT] {self.reference_play_control} pressed: starting closed loop.")
+            self._request_reference_playback(tgt_dof_pos, now_ns)
         self._update_localization()
         self._send_hand_target()
         applied_target, self.takeover_alpha = self._select_applied_target(
