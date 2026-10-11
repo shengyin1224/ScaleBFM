@@ -9,7 +9,8 @@ import numpy as np
 HAND_BEND_COLUMNS = np.array([0, 1, 2, 3, 5])
 
 
-def derive_hand_focus_events(history, predicted, fps, *, pad_s=1.0):
+def derive_hand_focus_events(history, predicted, fps, *, pad_s=1.0,
+                             entry_mode="legacy"):
     """Physical, per-hand intentions, relative to the measured source hand.
 
     Unlike a full-motion training label, an online event must not normalize a
@@ -19,6 +20,8 @@ def derive_hand_focus_events(history, predicted, fps, *, pad_s=1.0):
     """
     predicted = np.asarray(predicted, dtype=np.float32)
     history = np.asarray(history, dtype=np.float32)
+    if entry_mode not in ("legacy", "v2"):
+        raise ValueError(f"Invalid focus_handoff_version {entry_mode!r}")
     if predicted.ndim != 2 or predicted.shape[1] != 6 or not len(predicted):
         raise ValueError("Expected a nonempty (frames, 6) hand prediction")
     if (history.ndim != 2 or history.shape[1] != 6 or not np.isfinite(fps) or fps <= 0
@@ -29,6 +32,16 @@ def derive_hand_focus_events(history, predicted, fps, *, pad_s=1.0):
               if len(history) else np.zeros(5, dtype=np.float32))
     close = np.sum((bend >= .1) & (bend - actual >= .05), axis=1) >= 2
     opening = np.sum(actual - bend >= .1, axis=1) >= 2
+    if entry_mode == "v2":
+        # Values are closure = 1 - motor action. Only frame-zero intent
+        # qualifies; a future closing edge cannot arm this version.
+        horizon = max(1, int(round(.3 * fps)))
+        intent = np.sum((bend[0] >= .1) & (bend[0] - actual >= .03)) >= 2
+        progress = (horizon < len(bend)
+                    and np.sum(bend[horizon] - bend[0] >= .05) >= 2)
+        close[:] = intent and progress
+        # A qualified close takes priority over opposing finger motion.
+        opening[close] = False
     # A frame can request opposing individual fingers. Prefer the larger
     # coordinated displacement rather than allowing two simultaneous events.
     both = close & opening

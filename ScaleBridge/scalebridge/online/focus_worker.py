@@ -125,6 +125,7 @@ def _focus_worker_main(task_queue, result_queue, worker_config):
                 side: derive_hand_focus_events(
                     history[:, offset:offset + 6], predicted[:, offset:offset + 6],
                     fps, pad_s=worker_config["focus_pad_s"],
+                    entry_mode=worker_config.get("handoff_version", "legacy"),
                 ) for side, offset in (("left", 0), ("right", 6))
             }
             # Keep the model's one binary phase interface. Handoff gates and
@@ -143,7 +144,9 @@ class LatestFocusProcess:
     """Latest-only FOCUS worker in a spawn process, safe beside CUDA/50 Hz."""
 
     def __init__(self, *, module_root, mapping_path, solver_kwargs, focus_pad_s,
-                 thumb_rot_invert_sides=()):
+                 thumb_rot_invert_sides=(), handoff_version="legacy"):
+        if handoff_version not in ("legacy", "v2"):
+            raise ValueError(f"Invalid focus_handoff_version {handoff_version!r}")
         context = mp.get_context("spawn")
         self._task_queue = context.Queue(maxsize=2)
         self._result_queue = context.Queue(maxsize=2)
@@ -153,6 +156,7 @@ class LatestFocusProcess:
             "solver_kwargs": dict(solver_kwargs),
             "focus_pad_s": float(focus_pad_s),
             "thumb_rot_invert_sides": tuple(thumb_rot_invert_sides),
+            "handoff_version": handoff_version,
         }
         self._process = context.Process(
             target=_focus_worker_main,

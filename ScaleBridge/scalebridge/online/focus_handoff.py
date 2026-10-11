@@ -286,7 +286,13 @@ class GraspFingerChunkControl:
 class HandEventHandoff(FocusHandoff):
     """One hand's measured-pose entry and feedback-confirmed completion."""
 
-    def __init__(self, *, side, timeout_s=5.0, completion_hold_s=1.0, **kwargs):
+    def __init__(self, *, side, timeout_s=5.0, completion_hold_s=1.0,
+                 handoff_version="legacy", **kwargs):
+        if handoff_version not in ("legacy", "v2"):
+            raise ValueError(f"Invalid focus_handoff_version {handoff_version!r}")
+        self.handoff_version = handoff_version
+        if handoff_version == "v2":
+            kwargs["consensus_chunks"] = max(2, kwargs.get("consensus_chunks", 2))
         self.side = side
         self.timeout_s = float(timeout_s)
         self.completion_hold_s = float(completion_hold_s)
@@ -312,6 +318,8 @@ class HandEventHandoff(FocusHandoff):
         sequence = int(chunk["sequence_id"])
         if self.latest_prediction is not None and sequence <= self.latest_prediction[0]["sequence_id"]:
             return
+        previous_sequence = (None if self.latest_prediction is None
+                             else int(self.latest_prediction[0]["sequence_id"]))
         self.latest_prediction = (chunk, hand)
         if self.bypass_continuity:
             return
@@ -321,6 +329,19 @@ class HandEventHandoff(FocusHandoff):
         # what clears that state and it is unreachable when events is empty.
         events = [event for event in hand["events"]
                   if self.last_kind is None or event["kind"] != self.last_kind]
+        if self.handoff_version == "v2":
+            # The worker tests finger intent; use the unrebased prediction's
+            # wrist displacement here, before measured-pose arrival gating.
+            horizon = max(1, int(round(.3 * chunk["fps"])))
+            wrist = np.asarray(chunk[f"{self.side}_wrist_pos"])
+            steady = (horizon < len(wrist) and np.isfinite(wrist[[0, horizon]]).all()
+                      and np.linalg.norm(wrist[horizon] - wrist[0]) <= .012)
+            events = [event for event in events
+                      if event["kind"] != "close" or (event["start"] == 0 and steady)]
+            if (events and events[0]["kind"] == "close"
+                    and previous_sequence is not None and sequence != previous_sequence + 1):
+                self.predictions.clear()
+                self.entry = None
         if not events:
             self.entry = None
             self.predictions.clear()
@@ -378,7 +399,7 @@ class HandEventHandoff(FocusHandoff):
                          (direction * (self.event["goal"] - actual) <= .12)) >= 2
         # Prediction edges alone NEVER complete a grasp/release. Keep the
         # state across replans until fresh physical feedback shows progress.
-        if confirmed or reached:
+        if confirmed or (self.handoff_version == "legacy" and reached):
             if self.completion_since_ns is None:
                 self.completion_since_ns = int(now_ns)
             if (now_ns - self.completion_since_ns) * 1e-9 >= self.completion_hold_s:

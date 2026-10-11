@@ -512,11 +512,13 @@ class HAT4OnlineMotionTrackingEnv(BaseEnv):
                 consensus_chunks=self.cfg.get("focus_handoff_consensus_chunks", 2),
                 timeout_s=float(self.cfg.get("focus_handoff_timeout_s", 5.0)),
                 completion_hold_s=float(self.cfg.get("focus_handoff_completion_hold_s", 1.0)),
+                handoff_version=self.cfg.get("focus_handoff_version", "legacy"),
             )
             logger.info("[Online HAT] FOCUS handoff enabled: fingers locked from startup; "
                         "independent hand events, measured-pose entry, fresh chunk, "
                         "continuous wrist increments and feedback-confirmed completion.")
             logger.info(f"[Online HAT] Grasp finger chunk mode: {self._handoff_finger_control.mode}")
+            logger.info(f"[Online HAT] FOCUS handoff version: {self.cfg.get('focus_handoff_version', 'legacy')}")
 
     @staticmethod
     def _quat_pitch_roll_deg(quat_wxyz):
@@ -795,6 +797,8 @@ class HAT4OnlineMotionTrackingEnv(BaseEnv):
             solver_kwargs=solver_kwargs,
             focus_pad_s=self.focus_pad_s,
             thumb_rot_invert_sides=self.hand_thumb_rot_invert_sides,
+            handoff_version=(self.cfg.get("focus_handoff_version", "legacy")
+                             if self.cfg.get("focus_handoff_enabled", False) else "legacy"),
         )
         logger.info("[Online HAT] Warm-started bilateral Pinocchio hand IK enabled.")
         logger.info(
@@ -2178,6 +2182,7 @@ class HAT4OnlineMotionTrackingEnv(BaseEnv):
             if isinstance(handoff, PerHandFocusHandoff):
                 self._comp_last["focus_handoff_hands"] = {
                     side: dict(state=c.state, fingers_locked=not c.active,
+                               version=c.handoff_version,
                                event=c.event["kind"] if c.event else None,
                                end_reason=c.end_reason)
                     for side, c in handoff.controllers.items()

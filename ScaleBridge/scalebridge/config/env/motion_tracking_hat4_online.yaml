@@ -128,6 +128,14 @@ config:
   # move inside a window. Each window relocks after measured progress +
   # completion hold, or on timeout.
   focus_handoff_enabled: false
+  # A/B switch: legacy keeps the previous entry/completion behavior.
+  # v2 close entry: >=2 bend motors request action <=0.9 at frame zero,
+  # >=0.03 closing from feedback; >=2 close another 0.05 by 0.3s;
+  # wrist displacement by 0.3s <=1.2cm; >=2 consecutive chunk IDs agree.
+  # v2 completion: >=2 bend motors progress >=0.05 from entry and reach
+  # action <=0.5, held for completion_hold_s. No goal-proximity shortcut.
+  # Release retains its absolute feedback threshold; timeout remains an abort.
+  focus_handoff_version: "legacy"
   # Bending-motor stitching inside a CLOSE window only, per hand (a release
   # window is never stitched -- hold_progress would clamp it shut):
   # off: raw IK targets; continuity: anchor each new chunk to the applied
