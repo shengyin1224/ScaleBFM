@@ -19,6 +19,7 @@ from scalebridge.online.current_pose import G1CurrentPoseFK
 from scalebridge.online.focus_worker import LatestFocusProcess
 from scalebridge.online.focus_handoff import FocusHandoff, FocusAdaptiveExecution, PerHandFocusHandoff, GraspFingerChunkControl, rebase_wrist_chunk
 from scalebridge.online.focus import HAND_BEND_COLUMNS, focus_phase_from_mask
+from scalebridge.online.trajectory_continuity import continuity_mode, match_wrist_trajectory
 from scalebridge.online.protocol import (
     HAT_BODY_JOINT_NAMES,
     inspire_motor_to_hat_hand_q,
@@ -210,6 +211,8 @@ class HAT4OnlineMotionTrackingEnv(BaseEnv):
         self.blend_started_ns = None
         self.chunk_start_frame = 0
         self.chunk_phase_state = None
+        self._trajectory_source_chunk = None
+        self._trajectory_source_start_frame = None
         self.held_sample = None
         self.last_reference_sample = None
         # finger_chunk_source="latest": newest received-but-not-accepted chunk
@@ -428,9 +431,9 @@ class HAT4OnlineMotionTrackingEnv(BaseEnv):
         # forward of the latency frame and shift the chunk clock so the
         # best-continuing frame actually plays (sample_chunk is purely
         # time-based).  Forward-only, so the stream can never rewind.
-        self.chunk_start_reference_continuity = bool(
-            self.cfg.get("chunk_start_reference_continuity", False)
-        )
+        self.continuity_mode = continuity_mode(
+            self.cfg.get("chunk_start_reference_continuity", False))
+        self.chunk_start_reference_continuity = self.continuity_mode != "off"
         self.continuity_search_ahead_s = max(
             0.0, float(self.cfg.get("continuity_search_ahead_s", 1.0))
         )
@@ -441,12 +444,18 @@ class HAT4OnlineMotionTrackingEnv(BaseEnv):
                     "chunk_phase_alignment: true (it reuses the phase-match "
                     "cost to score candidate start frames)"
                 )
-            logger.info(
-                "[Online HAT] Reference-continuity chunk starts enabled: "
-                f"forward search of {self.continuity_search_ahead_s:.2f}s past "
-                "the latency frame; the chunk clock is shifted to the selected "
-                "frame."
-            )
+            if self.continuity_mode != "trajectory":
+                logger.info(
+                    "[Online HAT] Reference-continuity chunk starts enabled: "
+                    f"forward search of {self.continuity_search_ahead_s:.2f}s past "
+                    "the latency frame; the chunk clock is shifted to the selected "
+                    "frame."
+                )
+        if self.continuity_mode == "trajectory":
+            logger.info("[Online HAT] Continuity mode: trajectory; match the consumed "
+                        "raw right-wrist segment, continue at its matched end, "
+                        "and anchor the wrist to the outgoing reference. "
+                        "Unmatched swaps fall back to legacy continuity.")
         # 2) Finger-wrist gate: block finger *closing* while the measured
         # wrist is still far from the reference wrist; opening always passes.
         self.finger_wrist_gate = bool(self.cfg.get("finger_wrist_gate", False))
@@ -1051,6 +1060,44 @@ class HAT4OnlineMotionTrackingEnv(BaseEnv):
         frame = int(np.rint(age_s * float(chunk["fps"])))
         return int(np.clip(frame, 0, chunk["frame_count"] - 1)), age_s, source
 
+    def _trajectory_match_start_frame(self, chunk, outgoing, outgoing_frame,
+                                      latency_frame, source_age_s, time_source):
+        """Opt-in ordered history matching; legacy point scoring stays below."""
+        old = getattr(self, "_trajectory_source_chunk", None)
+        start = getattr(self, "_trajectory_source_start_frame", None)
+        handoff = getattr(self, "focus_handoff", None)
+        if (old is None or start is None or outgoing is None
+                or getattr(self, "held_sample", None) is not None
+                or getattr(self, "requires_restart", False)
+                or (handoff is not None and handoff.bypass_continuity)
+                or getattr(self, "focus_adaptive", None) is not None):
+            return None
+        reserve_s = max(.5, float(self.cfg.get("chunk_end_margin_s", .5)))
+        match = match_wrist_trajectory(old, chunk, start, outgoing_frame,
+                                       latency_frame, reserve_s=reserve_s)
+        if match is None:
+            return None
+        selected = match["selected_frame"]
+        root_delta = np.asarray(chunk["root_pos"][selected]) - outgoing["root_pos"][0]
+        root_jump = float(np.linalg.norm(root_delta))
+        if root_jump > self.phase_max_root_jump_m:
+            return None
+        tangent = outgoing["root_pos"][1] - outgoing["root_pos"][0]
+        norm = float(np.linalg.norm(tangent))
+        return selected, dict(
+            mode="trajectory_continuity", expected_frame=latency_frame,
+            selected_frame=selected, source_age_s=source_age_s,
+            time_source=time_source, outgoing_frame=float(outgoing_frame),
+            search_range=match["search_range"],
+            pose_cost=match["position_error_m"],
+            rotation_cost_rad=match["rotation_error_rad"],
+            velocity_cost_mps=match["velocity_error_mps"], total_cost=match["cost"],
+            root_jump_m=root_jump,
+            backtrack_m=float(root_delta @ (tangent / norm)) if norm > 1e-5 else 0.,
+            transition_valid=True,
+            trajectory_match=dict(match, old_sequence_id=int(old["sequence_id"])),
+        )
+
     def _phase_match_start_frame(self, chunk, now_ns):
         """Select the source-timestamp frame and diagnose its outgoing seam.
 
@@ -1090,6 +1137,12 @@ class HAT4OnlineMotionTrackingEnv(BaseEnv):
                 "pose_cost": None,
                 "transition_valid": True,
             }
+
+        if getattr(self, "continuity_mode", "legacy") == "trajectory":
+            matched = self._trajectory_match_start_frame(
+                chunk, outgoing, outgoing_frame, latency_frame, source_age_s, time_source)
+            if matched is not None:
+                return matched
 
         # Every HAT inference is a fresh receding-horizon prediction whose
         # frame zero belongs to its own source-state timestamp.  Frame numbers
@@ -1620,6 +1673,13 @@ class HAT4OnlineMotionTrackingEnv(BaseEnv):
                 ("left", "right"), positions_only=True,
             )
         focus_prediction = dict(aligned)
+        # Keep raw poses for the next segment match BEFORE any wrist anchor,
+        # FOCUS overlay, or RTC prefix can flatten their predicted progress.
+        trajectory_source = dict(aligned)
+        if phase_state.get("mode") == "trajectory_continuity":
+            anchor_time = start_frame / aligned["fps"]
+            aligned = rebase_wrist_chunk(
+                aligned, anchor_time, self._sample_reference(now_ns), ("right",))
         if isinstance(handoff, PerHandFocusHandoff) and handoff.bypass_continuity:
             # Keep the ordinary body/other-hand continuity clock. Each hand
             # participating in a handoff gets its own raw source-time playback
@@ -1695,12 +1755,27 @@ class HAT4OnlineMotionTrackingEnv(BaseEnv):
                     f" Continuity start: +{shift_frames} frames past latency "
                     f"frame {phase_state.get('expected_frame')}."
                 )
+        elif phase_state.get("mode") == "trajectory_continuity":
+            # This mode identifies a concrete matched endpoint, rather than
+            # rounding the source clock. Start exactly at that endpoint so a
+            # fractional latency phase cannot replay its already-matched tail.
+            self.chunk_started_ns = now_ns - int(round(start_frame / aligned["fps"] * 1e9))
+            phase_state["trajectory_clock_start_frame"] = start_frame
+            continuity_note = f" Trajectory continuation at matched end frame {start_frame}."
         if self.finger_chunk_source == "latest":
             # A body continuity search may jump one second into its chunk.
             # Latest fingers follow the raw prediction's source clock, not
             # that shifted body clock or its RTC-modified prefix.
             self._set_latest_finger_chunk(candidate, source_timestamp_ns, now_ns,
                                           source_age_s=phase_state["source_age_s"])
+        if getattr(self, "continuity_mode", "legacy") == "trajectory":
+            if handoff is not None and handoff.bypass_continuity:
+                self._trajectory_source_chunk = None
+                self._trajectory_source_start_frame = None
+            else:
+                self._trajectory_source_chunk = trajectory_source
+                self._trajectory_source_start_frame = max(
+                    0., (now_ns - self.chunk_started_ns) * 1e-9 * aligned["fps"])
         self.blend_started_ns = now_ns if self.previous_chunk is not None else None
         self.last_chunk_sequence_id = candidate["sequence_id"]
         self.last_chunk_received_ns = now_ns
@@ -2800,6 +2875,8 @@ class HAT4OnlineMotionTrackingEnv(BaseEnv):
         self.chunk_phase_state = None
         self.chunk_start_frame = 0
         self.alignment_anchor = None
+        self._trajectory_source_chunk = None
+        self._trajectory_source_start_frame = None
         self.protocol_alignment_anchor = None
         self._logged_protocol_origin = False
         self.last_chunk_received_ns = None

@@ -101,6 +101,12 @@ config:
   # per-swap backtrack where a re-anchored chunk pulls the reference back to
   # the measured (lagging) wrist.  false restores latency-frame starts.
   chunk_start_reference_continuity: false
+  # Same switch accepts "trajectory": match the consumed raw right-wrist
+  # XYZ/rotation/velocity segment in the new prediction and start at its END.
+  # Search the available chunk (not just continuity_search_ahead_s), retaining
+  # >=0.5s/chunk_end_margin_s future; anchor the wrist to the outgoing reference.
+  # true retains the original point-based implementation; false disables it.
+  # Missing history or a poor match (>3cm RMS / >10deg RMS) falls back to true.
   continuity_search_ahead_s: 1.0
   # 2) Freeze finger *closing* while the measured wrist (Vive*FK) is farther
   # than engage_m from the reference wrist; release below release_m
