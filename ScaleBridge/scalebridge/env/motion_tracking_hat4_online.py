@@ -1273,6 +1273,18 @@ class HAT4OnlineMotionTrackingEnv(BaseEnv):
             chunk["fps"],
         )
 
+    def _on_chunk_focus_result(self, sequence_id, payload):
+        """Optional environment hook for per-hand FOCUS metadata."""
+        return None
+
+    def _raw_hand_ik_context(self):
+        """Optional provenance attached to ordinary asynchronous hand IK."""
+        return None
+
+    def _filter_raw_hand_targets(self, targets, solved):
+        """Optional post-IK command filter; the default is byte-for-byte raw."""
+        return targets
+
     def _update_chunk_focus(self):
         if self.focus_worker is None:
             return
@@ -1280,6 +1292,7 @@ class HAT4OnlineMotionTrackingEnv(BaseEnv):
         if result is None:
             return
         sequence_id, payload = result
+        self._on_chunk_focus_result(sequence_id, payload)
         handoff = getattr(self, "focus_handoff", None)
         adaptive = getattr(self, "focus_adaptive", None)
         independent = isinstance(handoff, PerHandFocusHandoff)
@@ -3579,15 +3592,19 @@ class HAT4OnlineMotionTrackingEnv(BaseEnv):
             return
         solved = self.hand_ik_worker.latest()
         if solved is not None:
-            self.simulator.set_hand_ik_target(
+            targets = (
                 self._hand_prediction_target(solved["lh"], "left"),
                 self._hand_prediction_target(solved["rh"], "right"),
             )
+            targets = self._filter_raw_hand_targets(targets, solved)
+            self.simulator.set_hand_ik_target(*targets)
         left_target, right_target = self._finger_reference_targets()
         left_target, right_target = self._apply_finger_wrist_gate(
             left_target, right_target
         )
-        self.hand_ik_worker.submit(left_target, right_target)
+        self.hand_ik_worker.submit(
+            left_target, right_target, context=self._raw_hand_ik_context()
+        )
 
     def _update_localization(self):
         robust = (

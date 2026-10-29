@@ -84,6 +84,10 @@ class HAT4AdaptiveMotionTrackingEnv(HAT4OnlineMotionTrackingEnv):
                 return True
         return False
 
+    def _adaptive_schedule_boundary(self, boundary, start):
+        """CLOSE scheduling policy; adaptive2 overrides only this hook."""
+        return boundary if boundary > start else None
+
     def _adaptive_horizon(self, now_ns):
         # _play_now_ns integrates a monotonic clock; asking it for an older
         # timestamp returns NOW, not the historical phase. Use the parent's
@@ -106,7 +110,7 @@ class HAT4AdaptiveMotionTrackingEnv(HAT4OnlineMotionTrackingEnv):
                 min_travel_m=float(self.cfg.get("adaptive_min_wrist_travel_m", .05)),
                 # When the event is already here, near cadence + handoff owns
                 # it. A future event always limits coarse execution.
-                boundary=boundary if boundary > start else None,
+                boundary=self._adaptive_schedule_boundary(boundary, start),
             )
             self._adaptive_key = key
             logger.info(f"[Adaptive HAT] chunk={key[0]} near={near} "

@@ -1,0 +1,31 @@
+# Small, opt-in revision of adaptive. The original adaptive config is unchanged.
+defaults:
+  - motion_tracking_hat4_adaptive
+  - _self_
+
+_target_: env.motion_tracking_hat4_adaptive2.HAT4Adaptive2MotionTrackingEnv
+config:
+  # Near cadence is 8-12 frames. A five-frame RTC leaves at least 3-7 frames
+  # of the accepted prediction instead of spending nearly the whole interval
+  # in the old-prefix correction.
+  rtc_enabled: true
+  rtc_prefix_frames: 5
+  rtc_hard_prefix_frames: 1
+  rtc_blend_frames: 4
+
+  # Keep the successful adaptive scheduler and continuity mechanism. CLOSE no
+  # longer caps scheduler horizon while full FOCUS handoff is disabled; it
+  # still caps stall lookahead in _sample_reference.
+  focus_handoff_enabled: false
+
+  # Finger grasp progress is independent of full wrist/FOCUS handoff. It
+  # survives chunk replacement, releases on a per-hand OPEN event, and has a
+  # safety timeout so a false CLOSE cannot clamp indefinitely.
+  adaptive2_independent_hold_progress: true
+  focus_handoff_finger_mode: "hold_progress"
+  adaptive2_hold_progress_timeout_s: 15.0
+
+  # Preserve only a small accumulated stall rescue across a directionally
+  # consistent replan. A reversal or an indeterminate path resets it.
+  adaptive2_stall_carry_max_m: 0.02
+  adaptive2_stall_carry_min_cosine: 0.5
