@@ -1,0 +1,5 @@
+# @package _global_
+# Exact alias of the legacy simulation B1, preserving its original behavior.
+defaults:
+- b1
+- _self_

@@ -1,0 +1,10 @@
+# @package _global_
+defaults:
+- a1_real
+- _self_
+exec_comp:
+  method: b
+  mode: shadow
+  update_period_s: 0.5
+  result_max_age_s: 0.45
+  artifact: /home/nerv/qingyaoxu/ScaleBFM/exec_comp/releases/real_robot_20261027/world_real.pt

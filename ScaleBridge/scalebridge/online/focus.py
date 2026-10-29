@@ -17,10 +17,15 @@ def derive_hand_focus_events(history, predicted, fps, *, pad_s=1.0,
     small twitch to a complete grasp, or invent an enter edge at history start.
     Rotation is deliberately not a closing channel. Frame zero is valid when
     several predicted fingers actually request motion from the measured hand.
+
+    "v3" derives exactly the same events as "legacy"; it filters them later,
+    in the handoff, using the wrist travel the chunk still predicts before the
+    grasp frame. Keeping that gate out of here leaves this function a pure
+    description of the prediction.
     """
     predicted = np.asarray(predicted, dtype=np.float32)
     history = np.asarray(history, dtype=np.float32)
-    if entry_mode not in ("legacy", "v2"):
+    if entry_mode not in ("legacy", "v2", "v3"):
         raise ValueError(f"Invalid focus_handoff_version {entry_mode!r}")
     if predicted.ndim != 2 or predicted.shape[1] != 6 or not len(predicted):
         raise ValueError("Expected a nonempty (frames, 6) hand prediction")

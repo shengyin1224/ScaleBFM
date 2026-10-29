@@ -20,6 +20,30 @@ def rotation_error_deg(a, b):
     return float(np.degrees(2 * np.arccos(np.clip(dot, 0, 1))))
 
 
+def closure_approach_distance(chunk, side, *, spread_m):
+    """Wrist travel this chunk still predicts before its own grasp frame.
+
+    The grasp frame is the first one whose four non-thumb fingertips sit
+    within ``spread_m`` of the thumb tip. The returned distance is the
+    straight-line wrist displacement from frame zero to that frame, so it is
+    invariant to the rigid alignment applied to a chunk.
+
+    A prediction that asks to close while still several centimetres short of
+    its own grasp pose is describing a future grasp, not the present one.
+    Returns ``None`` when the chunk never reaches the closed spread.
+    """
+    tips = np.asarray(chunk[f"{side}_fingertip_local"], dtype=np.float64)
+    wrist = np.asarray(chunk[f"{side}_wrist_pos"], dtype=np.float64)
+    if (tips.ndim != 3 or tips.shape[1:] != (5, 3) or wrist.shape != (len(tips), 3)
+            or not len(tips) or not np.isfinite(tips).all() or not np.isfinite(wrist).all()):
+        return None
+    spread = np.linalg.norm(tips[:, 1:] - tips[:, :1], axis=2).mean(axis=1)
+    closed = np.flatnonzero(spread < spread_m)
+    if not len(closed):
+        return None
+    return float(np.linalg.norm(wrist[int(closed[0])] - wrist[0]))
+
+
 def rebase_wrist_chunk(chunk, elapsed_s, outgoing, sides, *, positions_only=False):
     """Apply one fixed pose offset per chunk, preserving its wrist increments."""
     rebased = dict(chunk)
@@ -246,14 +270,24 @@ class GraspFingerChunkControl:
     applied command, then preserves that chunk's increments. Progress hold
     instead rejects opening on each bending motor. Thumb rotation is neither
     ordered nor rebased. State belongs to one grasp of one hand only.
+
+    "probe" discards the prediction for the whole grasp and ramps every
+    bending motor shut over ``probe_close_s`` from the pose held at entry.
+    The aim is a measurement rather than a firmer grip: against a bottle the
+    fingers stall at its radius, in free air they reach the commanded close.
+    No other mode can show this, because completion freezes the command as
+    soon as two motors pass halfway, before anything is actually loaded.
     """
 
-    MODES = ("off", "continuity", "hold_progress")
+    MODES = ("off", "continuity", "hold_progress", "probe")
 
-    def __init__(self, mode="off"):
+    def __init__(self, mode="off", probe_close_s=0.5):
         if mode not in self.MODES:
             raise ValueError(f"Invalid focus_handoff_finger_mode {mode!r}; expected {self.MODES}")
         self.mode = mode
+        self.probe_close_s = float(probe_close_s)
+        if not (np.isfinite(self.probe_close_s) and self.probe_close_s > 0):
+            raise ValueError("focus_probe_close_s must be positive")
         self.states = {}
 
     def reset(self, side=None):
@@ -262,15 +296,27 @@ class GraspFingerChunkControl:
         else:
             self.states.pop(side, None)
 
-    def apply(self, side, event_id, chunk_id, proposed, previous):
+    def apply(self, side, event_id, chunk_id, proposed, previous, now_ns=None):
         proposed = np.clip(np.asarray(proposed, dtype=np.float64), 0., 1.).copy()
         previous = np.clip(np.asarray(previous, dtype=np.float64), 0., 1.)
         if self.mode == "off":
             return proposed
         state = self.states.get(side)
         if state is None or state["event_id"] != event_id:
-            state = dict(event_id=event_id, chunk_id=None, offset=np.zeros(5))
+            state = dict(event_id=event_id, chunk_id=None, offset=np.zeros(5),
+                         probe_start=previous[:5].copy())
             self.states[side] = state
+        if self.mode == "probe":
+            # event_id is this grasp's started_ns, so the ramp needs no extra
+            # clock. Chunk identity is ignored on purpose: a replan that
+            # reopens its first frames is exactly what this mode removes.
+            if now_ns is None or event_id is None:
+                return previous.copy()
+            elapsed = max(0., (int(now_ns) - int(event_id)) * 1e-9)
+            remaining = max(0., 1. - elapsed / self.probe_close_s)
+            proposed[:5] = np.clip(state["probe_start"] * remaining, 0., 1.)
+            state["chunk_id"] = chunk_id
+            return proposed
         if state["chunk_id"] is not None and chunk_id < state["chunk_id"]:
             return previous.copy()
         if self.mode == "continuity":
@@ -287,10 +333,28 @@ class HandEventHandoff(FocusHandoff):
     """One hand's measured-pose entry and feedback-confirmed completion."""
 
     def __init__(self, *, side, timeout_s=5.0, completion_hold_s=1.0,
-                 handoff_version="legacy", **kwargs):
-        if handoff_version not in ("legacy", "v2"):
+                 handoff_version="legacy", v3_closed_spread_m=0.11,
+                 v3_max_approach_m=0.02, probe_s=0.0, probe_empty_closure=0.85,
+                 probe_release_on_empty=True, **kwargs):
+        if handoff_version not in ("legacy", "v2", "v3"):
             raise ValueError(f"Invalid focus_handoff_version {handoff_version!r}")
         self.handoff_version = handoff_version
+        self.v3_closed_spread_m = float(v3_closed_spread_m)
+        self.v3_max_approach_m = float(v3_max_approach_m)
+        if not (np.isfinite(self.v3_closed_spread_m) and self.v3_closed_spread_m > 0
+                and np.isfinite(self.v3_max_approach_m) and self.v3_max_approach_m >= 0):
+            raise ValueError("Invalid v3 closure spread or approach distance")
+        # probe_s == 0 disables the probe and leaves completion untouched.
+        self.probe_s = float(probe_s)
+        self.probe_empty_closure = float(probe_empty_closure)
+        self.probe_release_on_empty = bool(probe_release_on_empty)
+        if not (np.isfinite(self.probe_s) and self.probe_s >= 0
+                and np.isfinite(self.probe_empty_closure)
+                and 0 < self.probe_empty_closure <= 1):
+            raise ValueError("Invalid FOCUS probe duration or empty-grasp closure")
+        # An unreachable probe would abort every grasp on the timeout instead.
+        if self.probe_s >= float(timeout_s):
+            raise ValueError("focus_probe_decide_s must be below focus_handoff_timeout_s")
         if handoff_version == "v2":
             kwargs["consensus_chunks"] = max(2, kwargs.get("consensus_chunks", 2))
         self.side = side
@@ -311,8 +375,17 @@ class HandEventHandoff(FocusHandoff):
         self.completion_since_ns = None
         self.end_reason = None
         self.latest_prediction = None
+        # Last v3 gate measurement, for logging only.
+        self.v3_last_approach = None
+        # Mean measured closure the probe read, and the request it raises when
+        # that reading says the hand shut on nothing.
+        self.probe_closure = None
+        self.reopen_request = False
         self.playback = None
         self.playback_started_ns = None
+        # Wall-clock twin of playback_started_ns, used when the reference clock
+        # is slowed but the fingers must keep the trained rate.
+        self.playback_started_real_ns = None
 
     def observe_event(self, chunk, hand):
         sequence = int(chunk["sequence_id"])
@@ -342,6 +415,24 @@ class HandEventHandoff(FocusHandoff):
                     and previous_sequence is not None and sequence != previous_sequence + 1):
                 self.predictions.clear()
                 self.entry = None
+        elif self.handoff_version == "v3":
+            # Legacy arms on any closing edge in the chunk, including one
+            # several seconds and centimetres ahead, then drives the wrist to
+            # that stale pose. Keep only predictions whose own grasp frame is
+            # already here. Rejecting a close the chunk cannot locate is
+            # deliberate: an unmeasurable entry is what v3 exists to remove.
+            self.v3_last_approach = None
+            kept = []
+            for event in events:
+                if event["kind"] != "close":
+                    kept.append(event)
+                    continue
+                travel = closure_approach_distance(
+                    chunk, self.side, spread_m=self.v3_closed_spread_m)
+                self.v3_last_approach = travel
+                if travel is not None and travel <= self.v3_max_approach_m:
+                    kept.append(event)
+            events = kept
         if not events:
             self.entry = None
             self.predictions.clear()
@@ -365,6 +456,40 @@ class HandEventHandoff(FocusHandoff):
         self.baseline = np.asarray(actual, dtype=np.float32).copy()
         return True
 
+    def request_external(self, kind, source_fence, outgoing, actual):
+        """Enter the existing fresh-chunk handoff from an external supervisor.
+
+        GPT has already decided that the measured hand is at the semantic
+        grasp/release point, so this deliberately bypasses only the keypoint
+        event detector and measured-entry proximity test.  The established
+        wrist hold, source-state fence, fresh-chunk rebase, finger unlock and
+        continuity rejoin paths remain unchanged.
+        """
+        if kind not in ("close", "open"):
+            raise ValueError(f"external hand event must be close/open, got {kind!r}")
+        if self.state in ("await_chunk", "focus") or outgoing is None:
+            return False
+        actual = np.asarray(actual, dtype=np.float32)
+        if actual.shape != (5,) or not np.isfinite(actual).all():
+            return False
+        self.event = {
+            "kind": kind,
+            "start": 0,
+            "end": 0,
+            "goal": np.ones_like(actual) if kind == "close" else np.zeros_like(actual),
+            "source": "gpt",
+        }
+        self.state = "await_chunk"
+        self.source_fence = int(source_fence)
+        self.hold = {key: np.asarray(value).copy() for key, value in outgoing.items()}
+        self.baseline = actual.copy()
+        self.started_ns = None
+        self.completion_since_ns = None
+        self.end_reason = None
+        self.entry = None
+        self.predictions.clear()
+        return True
+
     def start(self, now_ns):
         super().start()
         self.started_ns = int(now_ns)
@@ -374,11 +499,36 @@ class HandEventHandoff(FocusHandoff):
     def finish(self, reason):
         self.state = "cooldown"
         # A timed-out attempt did not complete; allow a new consensus to retry.
-        self.last_kind = self.event["kind"] if reason == "feedback_complete" else None
+        # "closed_empty" is likewise not a completed grasp, so it must leave
+        # last_kind clear and let the next close arm without first waiting for
+        # HAT to predict a release it has no reason to predict.
+        self.last_kind = (self.event["kind"]
+                          if reason in ("feedback_complete", "grasp_confirmed")
+                          else None)
         self.end_reason = reason
         self.entry = None
         self.predictions.clear()
         self.hold = None
+
+    def _finish_probe(self, now_ns, actual):
+        """Classify the grasp once the commanded close has had its window.
+
+        Returns True once the probe has decided. Until then it withholds the
+        ordinary completion tests, whose edge-based pass would end the window
+        before the fingers ever reach the object.
+        """
+        if (now_ns - self.started_ns) * 1e-9 < self.probe_s:
+            return None
+        closure = float(np.mean(actual))
+        self.probe_closure = closure
+        if closure >= self.probe_empty_closure:
+            # Commanded shut and nothing stopped the fingers.
+            self.finish("closed_empty")
+            if self.probe_release_on_empty:
+                self.reopen_request = True
+        else:
+            self.finish("grasp_confirmed")
+        return True
 
     def update_actual(self, now_ns, actual):
         if not self.active:
@@ -391,6 +541,10 @@ class HandEventHandoff(FocusHandoff):
             return False
         actual = np.asarray(actual, dtype=np.float32)
         closing = self.event["kind"] == "close"
+        if closing and self.probe_s > 0:
+            # A release still completes on its own feedback; only the grasp is
+            # decided by the commanded probe.
+            return bool(self._finish_probe(now_ns, actual))
         direction = 1.0 if closing else -1.0
         moved = direction * (actual - self.baseline) >= .05
         confirmed = np.sum(moved & (actual >= .5 if closing else actual < .45)) >= 2
@@ -399,7 +553,9 @@ class HandEventHandoff(FocusHandoff):
                          (direction * (self.event["goal"] - actual) <= .12)) >= 2
         # Prediction edges alone NEVER complete a grasp/release. Keep the
         # state across replans until fresh physical feedback shows progress.
-        if confirmed or (self.handoff_version == "legacy" and reached):
+        # v3 changes the entry gate only, so it keeps the legacy exit intact
+        # and stays a clean A/B against legacy.
+        if confirmed or (self.handoff_version in ("legacy", "v3") and reached):
             if self.completion_since_ns is None:
                 self.completion_since_ns = int(now_ns)
             if (now_ns - self.completion_since_ns) * 1e-9 >= self.completion_hold_s:
@@ -468,6 +624,13 @@ class PerHandFocusHandoff:
                 c.start(now_ns)
                 started.append(side)
         return started
+
+    def request_external(self, side, kind, source_fence, outgoing, actual):
+        if side not in self.controllers:
+            return False
+        return self.controllers[side].request_external(
+            kind, source_fence, outgoing, actual,
+        )
 
     def rebase(self, chunk, elapsed_s, outgoing):
         for side, c in self.controllers.items():

@@ -6,6 +6,7 @@ from hydra.core.hydra_config import HydraConfig
 from hydra.utils import instantiate
 from omegaconf import DictConfig
 from loguru import logger
+from scalebridge.online.controller_watchdog import ControllerWatchdog
 
 @hydra.main(
     version_base=None,
@@ -13,7 +14,8 @@ from loguru import logger
     config_name="base"
 )
 def main(cfg: DictConfig) -> None:
-    
+    ControllerWatchdog().start()
+
     hydra_log_path = os.path.join(HydraConfig.get().runtime.output_dir, 'run.log')
     logger.remove()
     logger.add(hydra_log_path, level='DEBUG')

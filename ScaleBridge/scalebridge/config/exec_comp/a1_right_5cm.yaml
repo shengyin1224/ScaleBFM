@@ -1,0 +1,16 @@
+# @package _global_
+exec_comp:
+  enable: true
+  method: a1
+  scope: right
+  variant: a1_right_5cm
+  mode: shadow
+  artifact: /home/nerv/qingyaoxu/ScaleBFM/exec_comp/releases/real_robot_four5_20261027/a1_right_5cm.pt
+  release: /home/nerv/qingyaoxu/ScaleBFM/exec_comp/releases/real_robot_four5_20261027/matrix.json
+  cerebellum_model: ${agent.config.checkpoint}
+  total_offset_cap_m: 0.05
+env:
+  _target_: env.motion_tracking_five_comp.HAT4FiveCompEnv
+  execution_base_environment: ${hydra:runtime.choices.env}
+  config:
+    five_exec: ${exec_comp}

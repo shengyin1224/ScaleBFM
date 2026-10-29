@@ -1,0 +1,5 @@
+# @package _global_
+# Real-data A1, root/head/both-wrist position correction,5cm per point.
+defaults:
+- a1_four_5cm
+- _self_

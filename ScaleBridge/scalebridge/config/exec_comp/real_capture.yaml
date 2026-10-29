@@ -1,0 +1,11 @@
+# @package _global_
+# Append to the existing command. Records raw execution; no correction model.
+exec_comp:
+  enable: false
+  capture: true
+env:
+  _target_: env.motion_tracking_real_capture.HAT4RealCaptureEnv
+  execution_base_environment: ${hydra:runtime.choices.env}
+  config:
+    real_capture_checkpoint: ${agent.config.checkpoint}
+    real_capture_agent: ${agent.config}

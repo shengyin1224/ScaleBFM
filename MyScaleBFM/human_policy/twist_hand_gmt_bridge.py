@@ -515,8 +515,14 @@ class _PinocchioInspireIK:
 class _PinocchioCoupledMotorIK(_PinocchioInspireIK):
     """Tip IK whose six normalized motor values are the optimization variables."""
 
-    def __init__(self, side: str, **kwargs):
+    def __init__(self, side: str, *, fixed_thumb_rot=None, **kwargs):
         super().__init__(side, **kwargs)
+        # Normalized model motor convention, before any DDS-side inversion.
+        if fixed_thumb_rot is not None and (
+            not np.isfinite(fixed_thumb_rot) or not 0.0 <= fixed_thumb_rot <= 1.0
+        ):
+            raise ValueError("fixed_thumb_rot must be None or a finite motor value in [0, 1]")
+        self.fixed_thumb_rot = fixed_thumb_rot
         mapping_root = _TWIST_ROOT.parent / "TWIST2" / "deploy_real"
         if not mapping_root.exists():
             mapping_root = Path("/home/nerv/qingyaoxu/TWIST2/deploy_real")
@@ -537,14 +543,17 @@ class _PinocchioCoupledMotorIK(_PinocchioInspireIK):
             raise ValueError("Expected a finite five-tip target shaped (5, 3)")
         q_previous = np.zeros(12) if q_prev is None else np.asarray(q_prev, dtype=np.float64)
         motor = np.clip(self._q_to_motor(q_previous[self._twist2_from_ik]), 0.0, 1.0)
+        if self.fixed_thumb_rot is not None:
+            motor[5] = self.fixed_thumb_rot
         previous_motor = motor.copy()
-        eye = np.eye(6)
+        active = 6 if self.fixed_thumb_rot is None else 5
+        eye = np.eye(active)
         for _ in range(self.iters):
             q = self._q_from_motor(motor)
             pred = self._fk_tips(q)
             err = (target - pred).reshape(-1)
-            jac = np.empty((15, 6), dtype=np.float64)
-            for j in range(6):
+            jac = np.empty((15, active), dtype=np.float64)
+            for j in range(active):
                 lo, hi = motor.copy(), motor.copy()
                 lo[j] = max(0.0, motor[j] - 1e-4)
                 hi[j] = min(1.0, motor[j] + 1e-4)
@@ -557,8 +566,12 @@ class _PinocchioCoupledMotorIK(_PinocchioInspireIK):
                 ).reshape(-1) / (hi[j] - lo[j])
             lhs = jac.T @ jac + (self.damping**2 + self.smooth_w + self.reg_w) * eye
             # Zero joint angles correspond to motor=1 (open), not motor=0.
-            rhs = jac.T @ err - self.smooth_w * (motor - previous_motor) - self.reg_w * (motor - 1.0)
-            motor = np.clip(motor + self.step * np.linalg.solve(lhs, rhs), 0.0, 1.0)
+            rhs = (jac.T @ err
+                   - self.smooth_w * (motor[:active] - previous_motor[:active])
+                   - self.reg_w * (motor[:active] - 1.0))
+            motor[:active] = np.clip(
+                motor[:active] + self.step * np.linalg.solve(lhs, rhs), 0.0, 1.0
+            )
             if np.mean(np.linalg.norm(target - self._fk_tips(self._q_from_motor(motor)), axis=1)) < 1e-4:
                 break
         q = self._q_from_motor(motor)

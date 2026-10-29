@@ -30,6 +30,11 @@ config:
   # coupled_motor enforces the six physical Inspire actuators (default).
   # independent_joint retains the legacy 12-DOF IK for A/B comparison.
   hand_ik_mode: coupled_motor
+  # Optional bilateral fixed thumb rotation in DDS motor coordinates [0,1].
+  # null preserves free IK; 0.0 selects the fixed-zero motor experiment.
+  # Coupled IK optimizes the other five motors with this constraint; startup
+  # and FOCUS predictions use the same value, after command-side inversion.
+  hand_ik_fixed_thumb_rot: null
   # HAT predictions only: invert thumb_rot in motor space before DDS output.
   # [] disables; [right] corrects only the right hand; [left, right] corrects both.
   # Startup/open-hand commands and the IK warm start keep their original values.

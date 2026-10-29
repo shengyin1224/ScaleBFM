@@ -1,0 +1,16 @@
+defaults:
+  - _self_
+  - asset: g1_29dof
+  - agent: hat4_bfm_agent
+  - simulator: real_world
+  - observation: hat4_bfm
+  - env: motion_tracking_pico
+
+device: cuda
+
+# HAT-4 receives the same 14-link Pico stream as ordinary BFM.  Its control
+# mode masks that tensor to pelvis, both wrists and torso_link internally.
+env:
+  config:
+    hat4_mode: true
+    future_idx: [0, 1, 2, 3, 4, 5]

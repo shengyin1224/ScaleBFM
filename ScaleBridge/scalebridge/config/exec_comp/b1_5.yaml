@@ -1,0 +1,5 @@
+# @package _global_
+# Real-data B1, right-wrist position correction,5cm per point.
+defaults:
+- b1_right_5cm
+- _self_

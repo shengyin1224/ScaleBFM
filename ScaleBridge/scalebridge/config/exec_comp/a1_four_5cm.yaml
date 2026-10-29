@@ -1,0 +1,8 @@
+# @package _global_
+defaults:
+- a1_right_5cm
+- _self_
+exec_comp:
+  scope: four
+  variant: a1_four_5cm
+  artifact: /home/nerv/qingyaoxu/ScaleBFM/exec_comp/releases/real_robot_four5_20261027/a1_four_5cm.pt

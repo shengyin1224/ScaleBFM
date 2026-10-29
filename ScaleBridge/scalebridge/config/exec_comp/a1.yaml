@@ -1,0 +1,27 @@
+# @package _global_
+# Opt-in only: append +exec_comp=a1 to the existing command.
+exec_comp:
+  enable: true
+  method: a1
+  model: /home/nerv/qingyaoxu/ScaleBFM/exec_comp/releases/a1_round3/a1_correct_kp.pt
+  cerebellum_model: ${agent.config.checkpoint}
+  log_baseline: false
+  mode: stepwise
+  cuda_graph: false
+  coefficient_transition: false
+  activation_ramp: false
+  residual_lowpass: true
+  total_offset_cap_m: 0.05
+  grasp_release_ramp_s: 0.15
+  seam_crossfade_s: 0.12
+  fallback_ramp_s: 0.15
+  cap_hold_s: 1.0
+  cap_guard: residual
+  keep_lookahead: true
+  max_step_cm: 1.0
+  log_dir: /home/nerv/qingyaoxu/ScaleBFM/exec_comp/runs/round4/deployment_logs
+env:
+  _target_: env.motion_tracking_exec_comp.HAT4ExecCompEnv
+  execution_base_environment: ${hydra:runtime.choices.env}
+  config:
+    exec_comp: ${exec_comp}

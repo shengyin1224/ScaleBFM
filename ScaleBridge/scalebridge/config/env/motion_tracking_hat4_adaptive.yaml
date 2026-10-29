@@ -1,0 +1,20 @@
+# Opt-in environment; the original online configuration is never edited.
+defaults:
+  - motion_tracking_hat4_online
+  - _self_
+
+_target_: env.motion_tracking_hat4_adaptive.HAT4AdaptiveMotionTrackingEnv
+config:
+  # Single env override replaces the fixed fraction + continuity CLI options.
+  chunk_start_reference_continuity: true
+  min_chunk_execution_fraction: 0.0
+  adaptive_far_min_frames: 25
+  adaptive_far_max_frames: 50
+  adaptive_near_min_frames: 8
+  adaptive_near_max_frames: 12
+  adaptive_near_distance_m: 0.05
+  adaptive_min_wrist_travel_m: 0.05
+  adaptive_stall_frames: 10
+  adaptive_stall_motion_m: 0.005
+  adaptive_stall_increment_m: 0.005
+  adaptive_stall_max_lookahead_m: 0.05

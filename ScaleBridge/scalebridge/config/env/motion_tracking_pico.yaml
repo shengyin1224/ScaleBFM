@@ -1,0 +1,36 @@
+defaults:
+  - base_env
+
+_target_: env.motion_tracking_pico.MotionTrackingPicoEnv
+_recursive_: False
+config:
+  # Same receding-horizon layout the Xsens teleop path uses. The last entry
+  # sets how far the reference is delayed: 10 policy steps at 50 Hz = 200 ms.
+  future_idx: [0, 1, 2, 3, 4, 10]
+
+  pico_endpoint: tcp://127.0.0.1:5571
+  # Generous: this is the window in which you start the sender and stand up.
+  pico_timeout_s: 120.0
+  # Sender and ScaleBridge share CLOCK_MONOTONIC when they run on the same
+  # host, so the sender's sample time is used as-is. Set true only if they are
+  # split across machines or containers.
+  pico_stamp_on_recv: false
+
+  # The sender publishes poses already in robot scale (GMR applied
+  # actual_human_height), so no further scaling. Inherited from the Xsens env,
+  # which is why it keeps the xsens_ prefix; the PICO client never reads it.
+  xsens_scale_factor: 1.0
+
+  # The policy remains body-only.  Pico trigger/grip values are carried in the
+  # PSB1 side channel and consumed by the existing Inspire hand bridge.
+  has_hand: False
+  pico_hand_controls: True
+
+  # Match the existing Skill BFM startup: after the second R2, hold the
+  # robot's as-calibrated stand (arms down) until a fresh R1 starts Pico.
+  prestart_arm_pose: stand
+
+  # True forces the robot root onto the reference root, which is what you want
+  # in MuJoCo and for a first look. For a real robot this must be False and
+  # root localization must be running.
+  reference_forcing: True

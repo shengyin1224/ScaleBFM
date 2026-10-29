@@ -1,0 +1,17 @@
+# @package _global_
+exec_comp:
+  enable: true
+  method: a1
+  mode: shadow
+  artifact: /home/nerv/qingyaoxu/ScaleBFM/exec_comp/releases/real_robot_20261027/a1_coefficients_cpu.pt
+  release: /home/nerv/qingyaoxu/ScaleBFM/exec_comp/releases/real_robot_20261027/release.json
+  cerebellum_model: ${agent.config.checkpoint}
+  total_offset_cap_m: 0.002
+  residual_rate_m_s: 0.01
+  update_period_s: 0.1
+  result_max_age_s: 0.25
+env:
+  _target_: env.motion_tracking_real_comp.HAT4RealCompEnv
+  execution_base_environment: ${hydra:runtime.choices.env}
+  config:
+    real_exec: ${exec_comp}

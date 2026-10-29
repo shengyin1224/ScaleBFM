@@ -1,0 +1,8 @@
+# @package _global_
+defaults:
+- a1_real
+- _self_
+exec_comp:
+  method: b1
+  mode: shadow
+  artifact: /home/nerv/qingyaoxu/ScaleBFM/exec_comp/releases/real_robot_20261027/b1_coefficients_cpu.pt

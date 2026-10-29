@@ -1,0 +1,11 @@
+# @package _global_
+# Append +focus_handoff=v4 AFTER +exec_comp=a1, if A1 is used.
+# env=motion_tracking_hat4_online or env=motion_tracking_hat4_adaptive
+# independently selects the existing wrist execution implementation.
+env:
+  _target_: env.motion_tracking_hat4_v4.HAT4FocusV4Env
+  focus_v4_base_environment: ${hydra:runtime.choices.env}
+  config:
+    focus_handoff_enabled: true
+    focus_handoff_version: v4
+    focus_v4_v1_position_tolerance_m: 0.025

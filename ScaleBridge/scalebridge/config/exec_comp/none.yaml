@@ -1,0 +1,4 @@
+# @package _global_
+# The original environment remains selected.
+exec_comp:
+  enable: false

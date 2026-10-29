@@ -48,15 +48,22 @@ def _focus_worker_main(task_queue, result_queue, worker_config):
             if path not in sys.path:
                 sys.path.insert(0, path)
 
-        from human_policy.twist_hand_gmt_bridge import _PinocchioInspireIK
+        from human_policy.twist_hand_gmt_bridge import _PinocchioInspireIK, _PinocchioCoupledMotorIK
         from dofpos2cmd import dofpos12_to_q6
         from focus_definition import focus_from_hand_state
 
         solver_kwargs = worker_config["solver_kwargs"]
-        solvers = {
-            side: _PinocchioInspireIK(side, **solver_kwargs)
-            for side in ("lh", "rh")
-        }
+        fixed = worker_config.get("fixed_thumb_rot")
+        solvers = {}
+        for side in ("lh", "rh"):
+            side_name = "left" if side == "lh" else "right"
+            if fixed is None:
+                solvers[side] = _PinocchioInspireIK(side, **solver_kwargs)
+            else:
+                model_fixed = 1.0 - fixed if side_name in worker_config.get("thumb_rot_invert_sides", ()) else fixed
+                solvers[side] = _PinocchioCoupledMotorIK(
+                    side, fixed_thumb_rot=model_fixed, **solver_kwargs
+                )
     except Exception as exc:
         _replace_queue_item(result_queue, ("error", -1, repr(exc)))
         return
@@ -82,6 +89,8 @@ def _focus_worker_main(task_queue, result_queue, worker_config):
             side_name = "left" if side == "lh" else "right"
             if side_name in worker_config.get("thumb_rot_invert_sides", ()):
                 motor_open[5] = 1.0 - motor_open[5]
+            if worker_config.get("fixed_thumb_rot") is not None:
+                motor_open[5] = worker_config["fixed_thumb_rot"]
             # History is recorded in HAT's training order.  Keep the predicted
             # columns in that same order so a chunk boundary cannot compare one
             # physical finger against another.
@@ -144,8 +153,10 @@ class LatestFocusProcess:
     """Latest-only FOCUS worker in a spawn process, safe beside CUDA/50 Hz."""
 
     def __init__(self, *, module_root, mapping_path, solver_kwargs, focus_pad_s,
-                 thumb_rot_invert_sides=(), handoff_version="legacy"):
-        if handoff_version not in ("legacy", "v2"):
+                 thumb_rot_invert_sides=(), handoff_version="legacy", fixed_thumb_rot=None):
+        # "v3" derives legacy events here; its extra gate lives in the handoff,
+        # which is the only place with the chunk's wrist and fingertip tracks.
+        if handoff_version not in ("legacy", "v2", "v3"):
             raise ValueError(f"Invalid focus_handoff_version {handoff_version!r}")
         context = mp.get_context("spawn")
         self._task_queue = context.Queue(maxsize=2)
@@ -156,6 +167,7 @@ class LatestFocusProcess:
             "solver_kwargs": dict(solver_kwargs),
             "focus_pad_s": float(focus_pad_s),
             "thumb_rot_invert_sides": tuple(thumb_rot_invert_sides),
+            "fixed_thumb_rot": fixed_thumb_rot,
             "handoff_version": handoff_version,
         }
         self._process = context.Process(

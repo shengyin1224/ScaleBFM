@@ -57,6 +57,36 @@ class CoupledMotorDirectionTest(unittest.TestCase):
         with self.assertRaises(ValueError):
             self.solver("lh").solve_frame(np.full((5, 3), np.nan))
 
+    def test_fixed_rotation_solves_other_five_motors_from_opposite_seed(self):
+        for side in ("lh", "rh"):
+            for fixed in (0.0, 0.4, 1.0):
+                solver = _PinocchioCoupledMotorIK(
+                    side, fixed_thumb_rot=fixed, iters=30, damping=.001,
+                    step=.7, smooth_w=.01, reg_w=.0001,
+                )
+                target_motor = np.array([.2, .4, .3, .5, .35, fixed])
+                target = solver._fk_tips(solver._q_from_motor(target_motor))
+                seed_motor = np.array([1., 1., 1., 1., 1., 1. - fixed])
+                q = solver._q_from_motor(seed_motor)
+                initial = np.linalg.norm(target - solver._fk_tips(q), axis=1).mean()
+                for _ in range(12):
+                    previous = q.copy()
+                    input_q = q
+                    q, error = solver.solve_frame(target, q)
+                    motor = solver._q_to_motor(q[solver._twist2_from_ik])
+                    self.assertAlmostEqual(motor[5], fixed, places=6)
+                    np.testing.assert_array_equal(input_q, previous)
+                self.assertLess(error, initial * .05)
+                np.testing.assert_allclose(motor[:5], target_motor[:5], atol=.03)
+
+    def test_fixed_rotation_rejects_invalid_motor_values(self):
+        for value in (-.1, 1.1, float("nan"), float("inf")):
+            with self.assertRaises(ValueError):
+                _PinocchioCoupledMotorIK(
+                    "lh", fixed_thumb_rot=value, iters=20, damping=.001,
+                    step=.7, smooth_w=.01, reg_w=.0001,
+                )
+
 
 class StartupHandGateTest(unittest.TestCase):
     def env(self):
