@@ -83,3 +83,25 @@ class HandEventHandoffV4(HandEventHandoff):
             return super().update_actual(now_ns, actual)
         finally:
             self.handoff_version = "v4"
+
+
+def upgrade_per_hand_handoff_v4(handoff, config):
+    """Replace v3 controllers with v4 while preserving configured lifecycle."""
+    for side, original in handoff.controllers.items():
+        handoff.controllers[side] = HandEventHandoffV4(
+            side=side,
+            position_tolerance_m=original.position_tolerance_m,
+            rotation_tolerance_deg=original.rotation_tolerance_deg,
+            consensus_chunks=original.consensus_chunks,
+            timeout_s=original.timeout_s,
+            completion_hold_s=original.completion_hold_s,
+            v3_closed_spread_m=original.v3_closed_spread_m,
+            v3_max_approach_m=original.v3_max_approach_m,
+            probe_s=original.probe_s,
+            probe_empty_closure=original.probe_empty_closure,
+            probe_release_on_empty=original.probe_release_on_empty,
+            v1_position_tolerance_m=float(config.get(
+                "focus_v4_v1_position_tolerance_m", .025
+            )),
+        )
+    return handoff

@@ -9,7 +9,7 @@ from importlib import import_module
 
 from loguru import logger
 
-from scalebridge.online.focus_handoff_v4 import HandEventHandoffV4
+from scalebridge.online.focus_handoff_v4 import upgrade_per_hand_handoff_v4
 
 
 @contextmanager
@@ -34,22 +34,7 @@ class FocusV4Mixin:
             raise ValueError("FOCUS v4 OR entry requires the keypoints source")
         with _legacy_worker_version(self.cfg):
             super()._setup_metadata()
-        for side, original in self.focus_handoff.controllers.items():
-            self.focus_handoff.controllers[side] = HandEventHandoffV4(
-                side=side,
-                position_tolerance_m=original.position_tolerance_m,
-                rotation_tolerance_deg=original.rotation_tolerance_deg,
-                consensus_chunks=original.consensus_chunks,
-                timeout_s=original.timeout_s,
-                completion_hold_s=original.completion_hold_s,
-                v3_closed_spread_m=original.v3_closed_spread_m,
-                v3_max_approach_m=original.v3_max_approach_m,
-                probe_s=original.probe_s,
-                probe_empty_closure=original.probe_empty_closure,
-                probe_release_on_empty=original.probe_release_on_empty,
-                v1_position_tolerance_m=float(self.cfg.get(
-                    "focus_v4_v1_position_tolerance_m", .025)),
-            )
+        upgrade_per_hand_handoff_v4(self.focus_handoff, self.cfg)
         logger.info("[Online HAT] FOCUS v4 enabled: full v3 gate OR legacy "
                     "measured-entry gate at {} m; execution env unchanged.",
                     self.cfg.get("focus_v4_v1_position_tolerance_m", .025))

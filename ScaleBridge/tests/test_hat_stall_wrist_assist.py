@@ -8,6 +8,7 @@ from omegaconf import OmegaConf
 
 from scalebridge.env.motion_tracking_hat4_online import HAT4OnlineMotionTrackingEnv, ACTIVE_LINKS
 from scalebridge.online.focus_handoff import rebase_wrist_chunk
+from scalebridge.online.focus_handoff_v4 import HandEventHandoffV4
 from scalebridge.online.reference import sample_chunk
 from scalebridge.online.stall_wrist_assist import StallWristAssist, finger_intent_entry
 import test_hat_focus_handoff as base
@@ -80,7 +81,7 @@ class FingerIntentTests(unittest.TestCase):
 
 class IntegrationTests(unittest.TestCase):
     def test_focus_respects_configured_continuity_independently_of_assist(self):
-        for version in ("legacy", "v2", "v3"):
+        for version in ("legacy", "v2", "v3", "v4"):
             for assist in (False, True):
                 with self.subTest(version=version, assist=assist):
                     env = metadata_env(assist, focus_handoff_version=version)
@@ -97,6 +98,14 @@ class IntegrationTests(unittest.TestCase):
         for cont in (True, "trajectory"):
             with self.assertRaises(ValueError):
                 metadata_env(True, cont)
+
+    def test_plain_environment_natively_enables_v4(self):
+        env = metadata_env(focus_handoff_version="v4")
+        self.assertTrue(all(
+            isinstance(controller, HandEventHandoffV4)
+            for controller in env.focus_handoff.controllers.values()
+        ))
+        self.assertEqual(env.cfg.focus_handoff_version, "v4")
 
     def test_focus_with_false_never_searches_ahead_of_latency_frame(self):
         for assist in (False, True):

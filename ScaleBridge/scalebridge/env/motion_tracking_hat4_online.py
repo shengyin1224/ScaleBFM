@@ -564,6 +564,10 @@ class HAT4OnlineMotionTrackingEnv(BaseEnv):
         if bool(self.cfg.get("focus_handoff_enabled", False)):
             if not self.chunk_phase_alignment:
                 raise ValueError("focus_handoff_enabled requires chunk_phase_alignment: true")
+            handoff_version = self.cfg.get("focus_handoff_version", "legacy")
+            if (handoff_version == "v4"
+                    and self.cfg.get("focus_handoff_source", "keypoints") != "keypoints"):
+                raise ValueError("FOCUS v4 OR entry requires the keypoints source")
             # FOCUS owns per-hand hold/rebase overlays, not the body's chunk
             # start mode. Respect false/true/trajectory as configured above.
             self.focus_handoff = PerHandFocusHandoff(
@@ -573,7 +577,9 @@ class HAT4OnlineMotionTrackingEnv(BaseEnv):
                 consensus_chunks=self.cfg.get("focus_handoff_consensus_chunks", 2),
                 timeout_s=float(self.cfg.get("focus_handoff_timeout_s", 5.0)),
                 completion_hold_s=float(self.cfg.get("focus_handoff_completion_hold_s", 1.0)),
-                handoff_version=self.cfg.get("focus_handoff_version", "legacy"),
+                # v4 reuses the unchanged v3 detector/lifecycle, then replaces
+                # only its per-hand entry controller below.
+                handoff_version="v3" if handoff_version == "v4" else handoff_version,
                 v3_closed_spread_m=float(self.cfg.get("focus_v3_closed_spread_m", 0.11)),
                 v3_max_approach_m=float(self.cfg.get("focus_v3_max_approach_m", 0.02)),
                 # The probe decides a grasp only when it also drives one.
@@ -582,6 +588,9 @@ class HAT4OnlineMotionTrackingEnv(BaseEnv):
                 probe_empty_closure=float(self.cfg.get("focus_probe_empty_closure", 0.85)),
                 probe_release_on_empty=bool(self.cfg.get("focus_probe_release_on_empty", True)),
             )
+            if handoff_version == "v4":
+                from scalebridge.online.focus_handoff_v4 import upgrade_per_hand_handoff_v4
+                upgrade_per_hand_handoff_v4(self.focus_handoff, self.cfg)
             logger.info("[Online HAT] FOCUS handoff enabled: fingers locked from startup; "
                         "independent hand events, measured-pose entry, fresh chunk, "
                         "continuous wrist increments and feedback-confirmed completion.")
@@ -594,13 +603,18 @@ class HAT4OnlineMotionTrackingEnv(BaseEnv):
                     f"(closure >= {float(self.cfg.get('focus_probe_empty_closure', 0.85)):.2f} means empty). "
                     "The empty threshold is uncalibrated; read the logged probe closure values."
                 )
-            logger.info(f"[Online HAT] FOCUS handoff version: {self.cfg.get('focus_handoff_version', 'legacy')}")
-            if self.cfg.get("focus_handoff_version", "legacy") == "v3":
+            logger.info(f"[Online HAT] FOCUS handoff version: {handoff_version}")
+            if handoff_version == "v3":
                 logger.info(
                     "[Online HAT] FOCUS v3 entry gate: a close arms only while the chunk's own "
                     f"grasp frame (fingertip spread < {float(self.cfg.get('focus_v3_closed_spread_m', 0.11)):.3f} m) "
                     f"is within {float(self.cfg.get('focus_v3_max_approach_m', 0.02)):.3f} m of wrist travel. "
                     "Exit is unchanged from legacy."
+                )
+            elif handoff_version == "v4":
+                logger.info(
+                    "[Online HAT] FOCUS v4 entry gate: full v3 gate OR legacy "
+                    f"measured entry within {float(self.cfg.get('focus_v4_v1_position_tolerance_m', .025)):.3f} m."
                 )
         if bool(self.cfg.get("continuity_hand_event_guard", False)):
             if not isinstance(self.focus_handoff, PerHandFocusHandoff):
@@ -1013,6 +1027,13 @@ class HAT4OnlineMotionTrackingEnv(BaseEnv):
             "[Online HAT] Current global head/wrist FK enabled from measured G1 state."
         )
 
+    def _focus_detector_version(self):
+        """v4 changes entry only; its asynchronous event detector is v3."""
+        if not self.cfg.get("focus_handoff_enabled", False):
+            return "legacy"
+        version = self.cfg.get("focus_handoff_version", "legacy")
+        return "v3" if version == "v4" else version
+
     def _setup_hand_ik(self):
         self.hand_ik_solvers = None
         if not hasattr(self.simulator, "set_hand_ik_target"):
@@ -1159,8 +1180,7 @@ class HAT4OnlineMotionTrackingEnv(BaseEnv):
             focus_pad_s=self.focus_pad_s,
             thumb_rot_invert_sides=self.hand_thumb_rot_invert_sides,
             fixed_thumb_rot=self.hand_ik_fixed_thumb_rot,
-            handoff_version=(self.cfg.get("focus_handoff_version", "legacy")
-                             if self.cfg.get("focus_handoff_enabled", False) else "legacy"),
+            handoff_version=self._focus_detector_version(),
         )
         logger.info("[Online HAT] Warm-started bilateral Pinocchio hand IK enabled.")
         logger.info(

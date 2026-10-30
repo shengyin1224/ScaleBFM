@@ -187,6 +187,36 @@ class V4IntegrationTests(unittest.TestCase):
                 self.assertEqual(c.env.config.min_chunk_execution_fraction,
                                  0. if name.endswith("adaptive") else .66)
 
+    def test_direct_true_and_v4_keep_plain_target_for_native_activation(self):
+        from hydra import compose, initialize_config_dir
+        root = Path(__file__).resolve().parents[1] / "scalebridge/config"
+        for name in ("motion_tracking_hat4_online", "motion_tracking_hat4_adaptive"):
+            with initialize_config_dir(version_base=None, config_dir=str(root)):
+                config = compose(
+                    config_name="hat4_online",
+                    overrides=[
+                        f"env={name}",
+                        "env.config.focus_handoff_enabled=true",
+                        "env.config.focus_handoff_version=v4",
+                        "env.config.focus_handoff_source=keypoints",
+                    ],
+                )
+            self.assertEqual(
+                config.env._target_, f"env.{name}."
+                + ("HAT4AdaptiveMotionTrackingEnv" if name.endswith("adaptive")
+                   else "HAT4OnlineMotionTrackingEnv"),
+            )
+            self.assertTrue(config.env.config.focus_handoff_enabled)
+            self.assertEqual(config.env.config.focus_handoff_version, "v4")
+
+    def test_native_v4_uses_v3_event_detector(self):
+        from scalebridge.env.motion_tracking_hat4_online import HAT4OnlineMotionTrackingEnv
+        env = HAT4OnlineMotionTrackingEnv.__new__(HAT4OnlineMotionTrackingEnv)
+        env.cfg = dict(focus_handoff_enabled=True, focus_handoff_version="v4")
+        self.assertEqual(env._focus_detector_version(), "v3")
+        env.cfg["focus_handoff_enabled"] = False
+        self.assertEqual(env._focus_detector_version(), "legacy")
+
 
 if __name__ == "__main__":
     unittest.main()
