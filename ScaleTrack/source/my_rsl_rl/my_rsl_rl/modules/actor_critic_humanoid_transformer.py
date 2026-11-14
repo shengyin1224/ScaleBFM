@@ -6,6 +6,7 @@ import torch.nn as nn
 from tensordict import TensorDict
 from torch.distributions import Normal
 from typing import Any, NoReturn
+from collections import OrderedDict
 
 from my_rsl_rl.networks import MLP, HumanoidTransformer, TaskEmbedder
 
@@ -46,11 +47,13 @@ class ActorCriticHumanoidTransformer(nn.Module):
         num_critic_prop_obs = obs['critic'].shape[-1]
         num_critic_task_obs = obs['critic_task'].shape[-1]
         
+        self.num_mode_obs = 0
         if "mode" in obs:
             assert "mode_mapping" in obs, f"You have to ensure that the mapping is defined between mode and task observation."
             assert obs["mode_mapping"].shape[-1] == num_actor_task_obs, f"The mode mapping does not have the aligned dimension as task observation."
             print(f"Mode Strategy Activated!")
             num_mode_obs = obs['mode'].shape[-1]
+            self.num_mode_obs = num_mode_obs
             num_actor_task_obs += num_mode_obs
 
         self.state_dependent_std = state_dependent_std
@@ -270,8 +273,66 @@ class ActorCriticHumanoidTransformer(nn.Module):
             Whether this training resumes a previous training. This flag is used by the :func:`load` function of
                 :class:`OnPolicyRunner` to determine how to load further parameters (relevant for, e.g., distillation).
         """
-        super().load_state_dict(state_dict, strict=strict)
-        return True
+        # F3/F2o append exactly two phase scalars to policy_task and
+        # critic_task.  Warm-starting from the factory checkpoint therefore
+        # only changes the input width of the two task projections.  Preserve
+        # every old parameter bit-for-bit and initialize the new columns to
+        # zero, so iteration-0 actions are exactly the factory actions.
+        target_state = super().state_dict()
+        expanded_state = OrderedDict(state_dict)
+        expanded_keys: list[str] = []
+        projection_keys = (
+            "actor_task_embedder.task_projection.weight",
+            "critic_task_embedder.task_projection.weight",
+        )
+        for key in projection_keys:
+            if key not in expanded_state or key not in target_state:
+                continue
+            source = expanded_state[key]
+            target = target_state[key]
+            if source.shape == target.shape:
+                continue
+            if (
+                source.ndim == 2
+                and target.ndim == 2
+                and source.shape[0] == target.shape[0]
+                and target.shape[1] == source.shape[1] + 2
+            ):
+                widened = source.new_zeros(target.shape)
+                if (
+                    key == "actor_task_embedder.task_projection.weight"
+                    and self.num_mode_obs
+                ):
+                    # Input order is [task, mode].  Phase is appended to task,
+                    # so the new order is [task, phase(2), mode].  Preserve the
+                    # old mode columns by shifting them, rather than naively
+                    # appending zeros after mode.
+                    task_width = source.shape[1] - self.num_mode_obs
+                    widened[:, :task_width].copy_(source[:, :task_width])
+                    widened[:, task_width + 2 :].copy_(
+                        source[:, task_width:]
+                    )
+                else:
+                    widened[:, : source.shape[1]].copy_(source)
+                expanded_state[key] = widened
+                expanded_keys.append(key)
+            else:
+                raise RuntimeError(
+                    f"Unsupported warm-start shape change for {key}: "
+                    f"checkpoint={tuple(source.shape)}, model={tuple(target.shape)}"
+                )
+
+        super().load_state_dict(expanded_state, strict=strict)
+        self.last_load_zero_expanded_keys = tuple(expanded_keys)
+        if expanded_keys:
+            print(
+                "[INFO] Zero-expanded phase-observation checkpoint columns: "
+                + ", ".join(expanded_keys)
+            )
+        # Returning False tells OnPolicyRunner that this is a warm start, not
+        # a same-run resume.  In particular it must not restore optimizer
+        # tensors whose projection shapes no longer match.
+        return not bool(expanded_keys)
     
     @property
     def actor_parameters(self):

@@ -15,6 +15,12 @@ parser = argparse.ArgumentParser(description="Train an RL agent with RSL-RL.")
 parser.add_argument("--video", action="store_true", default=False, help="Record videos during training.")
 parser.add_argument("--video_length", type=int, default=200, help="Length of the recorded video (in steps).")
 parser.add_argument(
+    "--video_folder",
+    type=str,
+    default=None,
+    help="Optional explicit video output directory (useful for batch rendering).",
+)
+parser.add_argument(
     "--disable_fabric", action="store_true", default=False, help="Disable fabric and use USD I/O operations."
 )
 parser.add_argument("--num_envs", type=int, default=None, help="Number of environments to simulate.")
@@ -131,6 +137,7 @@ def main(env_cfg: ManagerBasedRLEnvCfg | DirectRLEnvCfg | DirectMARLEnvCfg, agen
             )
         mode_name, link_names = mode_candidates[args_cli.mode_index]
         env_cfg.commands.motion.mode_candidates = {mode_name: link_names}
+        env_cfg.commands.motion.mode_sampling_weights = {mode_name: 1.0}
         print(f"[INFO]: Using fixed mode index {args_cli.mode_index}: {mode_name} ({link_names})")
     if args_cli.local_tracking:
         if args_cli.mode_index is None:
@@ -177,7 +184,11 @@ def main(env_cfg: ManagerBasedRLEnvCfg | DirectRLEnvCfg | DirectMARLEnvCfg, agen
     # wrap for video recording
     if args_cli.video:
         video_kwargs = {
-            "video_folder": os.path.join(log_dir, "videos", "play"),
+            "video_folder": (
+                os.path.abspath(args_cli.video_folder)
+                if args_cli.video_folder is not None
+                else os.path.join(log_dir, "videos", "play")
+            ),
             "step_trigger": lambda step: step == 0,
             "video_length": args_cli.video_length,
             "disable_logger": True,

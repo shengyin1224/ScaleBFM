@@ -78,7 +78,31 @@ def mode(env: ManagerBasedEnv, command_name: str) -> torch.Tensor:
     command: MotionCommand = env.command_manager.get_term(command_name)
     return command.mode
 
-def mode_mapping(env: ManagerBasedEnv, command_name: str, feature_dims_per_link: List[int], with_time: bool = False) -> torch.Tensor:
+def focus_phase(
+    env: ManagerBasedEnv,
+    command_name: str,
+    token_count: int,
+) -> torch.Tensor:
+    """Append current [in_focus, next-edge seconds] to every task token."""
+    command: MotionCommand = env.command_manager.get_term(command_name)
+    valid = command.focus_valid
+    in_focus = command.focus_flag & valid
+    next_edge = torch.where(
+        valid,
+        command.focus_time_to_next_edge_s.clamp(-2.0, 2.0),
+        torch.full((env.num_envs,), 2.0, device=command.device),
+    )
+    phase = torch.stack((in_focus.float(), next_edge.float()), dim=-1)
+    return phase.unsqueeze(1).expand(-1, token_count, -1)
+
+
+def mode_mapping(
+    env: ManagerBasedEnv,
+    command_name: str,
+    feature_dims_per_link: List[int],
+    with_time: bool = False,
+    extra_unmasked_dims: int = 0,
+) -> torch.Tensor:
     command: MotionCommand = env.command_manager.get_term(command_name)
     mode = command.mode
     
@@ -91,6 +115,15 @@ def mode_mapping(env: ManagerBasedEnv, command_name: str, feature_dims_per_link:
     if with_time:
         mappings.append(
             torch.ones(mode.shape[0], 1, device=mode.device, dtype=torch.float)
+        )
+    if extra_unmasked_dims:
+        mappings.append(
+            torch.ones(
+                mode.shape[0],
+                extra_unmasked_dims,
+                device=mode.device,
+                dtype=torch.float,
+            )
         )
 
     return torch.cat(mappings, dim=-1)

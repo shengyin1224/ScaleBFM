@@ -1,6 +1,13 @@
 from isaaclab.utils import configclass
 from isaaclab_rl.rsl_rl import RslRlOnPolicyRunnerCfg, RslRlPpoActorCriticCfg, RslRlPpoAlgorithmCfg
 
+BASE_EVAL_METRIC_KEYS = [
+    "error_anchor_height", "error_anchor_rot", "error_anchor_pos",
+    "error_anchor_lin_vel", "error_anchor_ang_vel", "error_body_pos_g",
+    "error_body_pos", "error_body_pos_relative", "error_body_rot",
+    "error_body_rot_relative", "error_joint_pos", "error_joint_vel",
+]
+
 @configclass
 class CompleteRslRlPpoActorCriticCfg(RslRlPpoActorCriticCfg): # weishuai: This is to use the DoubleHead term for policy
     state_dependent_std: bool = False
@@ -29,11 +36,7 @@ class G1BFMTransformerPPORunnerCfg(RslRlOnPolicyRunnerCfg):
     empirical_normalization = False
     eval_during_training=True
     eval_interval=200
-    eval_metric_keys=[
-        "error_anchor_height","error_anchor_rot", "error_anchor_pos", 
-        "error_anchor_lin_vel", "error_anchor_ang_vel", "error_body_pos_g", 
-        "error_body_pos", "error_body_pos_relative", 'error_body_rot', "error_body_rot_relative", 'error_joint_pos', "error_joint_vel"
-    ]
+    eval_metric_keys = BASE_EVAL_METRIC_KEYS
     eval_max_steps=1000
     success_metric_dict={
         "error_body_pos_g": 0.5
@@ -71,3 +74,78 @@ class G1BFMMlpPPORunnerCfg(G1BFMTransformerPPORunnerCfg):
         activation="elu",
         state_dependent_std=False, # weishuai: DoubleHead
     )
+
+
+@configclass
+class G1HAT4FinetunePPORunnerCfg(G1BFMTransformerPPORunnerCfg):
+    """Common schedule for all HAT-4 finetuning ablations."""
+
+    max_iterations = 20000
+    save_interval = 2000
+    eval_during_training = True
+    eval_interval = 2000
+    experiment_name = "g1_hat4_focus_finetune"
+    run_name = "F1"
+    seed = 42
+    eval_metric_keys = BASE_EVAL_METRIC_KEYS + [
+        "error_left_wrist_pelvis_local_pos",
+        "error_left_wrist_pelvis_local_rot",
+        "error_right_wrist_pelvis_local_pos",
+        "error_right_wrist_pelvis_local_rot",
+        "error_head_proxy_pelvis_local_pos",
+        "error_head_proxy_pelvis_local_rot",
+    ]
+    eval_focus_metric_keys = [
+        "error_left_wrist_pelvis_local_pos",
+        "error_left_wrist_pelvis_local_rot",
+        "error_right_wrist_pelvis_local_pos",
+        "error_right_wrist_pelvis_local_rot",
+        "error_head_proxy_pelvis_local_pos",
+        "error_head_proxy_pelvis_local_rot",
+    ]
+
+
+@configclass
+class G1HAT4F2FinetunePPORunnerCfg(G1HAT4FinetunePPORunnerCfg):
+    run_name = "F2"
+
+
+@configclass
+class G1HAT4F3FinetunePPORunnerCfg(G1HAT4FinetunePPORunnerCfg):
+    run_name = "F3"
+
+
+@configclass
+class G1HAT4F3W4FinetunePPORunnerCfg(G1HAT4FinetunePPORunnerCfg):
+    run_name = "F3w4"
+
+
+@configclass
+class G1HAT4F3HeadFinetunePPORunnerCfg(G1HAT4FinetunePPORunnerCfg):
+    run_name = "F3h"
+
+
+@configclass
+class G1HAT4F3HeadW4FinetunePPORunnerCfg(G1HAT4F3HeadFinetunePPORunnerCfg):
+    run_name = "F3hw4"
+
+
+@configclass
+class G1HAT4F3HeadW4OnlyFinetunePPORunnerCfg(G1HAT4F3HeadW4FinetunePPORunnerCfg):
+    run_name = "F3hw4m"
+
+
+@configclass
+class G1HAT4F2ObsFinetunePPORunnerCfg(G1HAT4FinetunePPORunnerCfg):
+    run_name = "F2o"
+
+
+@configclass
+class G1HAT4OnlyFinetunePPORunnerCfg(G1HAT4FinetunePPORunnerCfg):
+    run_name = "F1m"
+
+
+@configclass
+class G1HAT4F3SeedFinetunePPORunnerCfg(G1HAT4F3FinetunePPORunnerCfg):
+    run_name = "F3s"
+    seed = 3407

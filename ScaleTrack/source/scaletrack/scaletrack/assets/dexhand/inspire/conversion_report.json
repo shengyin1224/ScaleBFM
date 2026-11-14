@@ -1,0 +1,20 @@
+{
+  "mode": "hands",
+  "input_root": "/root/shengyin/TWIST/assets/inspire_hand",
+  "converted": [
+    {
+      "urdf": "/root/shengyin/TWIST/assets/inspire_hand/inspire_hand_right.urdf",
+      "usd": "/root/shengyin/ScaleBFM/ScaleTrack/source/scaletrack/scaletrack/assets/dexhand/inspire/inspire_hand_right.usd"
+    },
+    {
+      "urdf": "/root/shengyin/TWIST/assets/inspire_hand/inspire_hand_left.urdf",
+      "usd": "/root/shengyin/ScaleBFM/ScaleTrack/source/scaletrack/scaletrack/assets/dexhand/inspire/inspire_hand_left.usd"
+    }
+  ],
+  "failed": [],
+  "coverage": {
+    "urdf_count": 2,
+    "converted_count": 2,
+    "failed_count": 0
+  }
+}

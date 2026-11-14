@@ -6,7 +6,7 @@ import torch.optim as optim
 from itertools import chain
 from tensordict import TensorDict
 
-from my_rsl_rl.modules import ActorCritic, ActorCriticHumanoidTransformer
+from my_rsl_rl.modules import ActorCritic, ActorCriticDexHand, ActorCriticHumanoidTransformer
 from my_rsl_rl.storage import RolloutStorage
 from my_rsl_rl.utils import string_to_callable
 
@@ -14,12 +14,12 @@ from my_rsl_rl.utils import string_to_callable
 class PPO:
     """Proximal Policy Optimization algorithm (https://arxiv.org/abs/1707.06347)."""
 
-    policy: ActorCritic | ActorCriticHumanoidTransformer
+    policy: ActorCritic | ActorCriticDexHand | ActorCriticHumanoidTransformer
     """The actor critic module."""
 
     def __init__(
         self,
-        policy: ActorCritic | ActorCriticHumanoidTransformer,
+        policy: ActorCritic | ActorCriticDexHand | ActorCriticHumanoidTransformer,
         num_learning_epochs: int = 5,
         num_mini_batches: int = 4,
         clip_param: float = 0.2,
@@ -33,6 +33,11 @@ class PPO:
         use_clipped_value_loss: bool = True,
         schedule: str = "adaptive",
         desired_kl: float = 0.01,
+        bc_anchor_coef: float = 0.0,
+        bc_anchor_final_coef: float = 0.0,
+        bc_anchor_decay_updates: int = 0,
+        entropy_final_coef: float | None = None,
+        entropy_decay_updates: int = 0,
         device: str = "cpu",
         # Distributed training parameters
         multi_gpu_cfg: dict | None = None,
@@ -68,6 +73,13 @@ class PPO:
         self.num_mini_batches = num_mini_batches
         self.value_loss_coef = value_loss_coef
         self.entropy_coef = entropy_coef
+        self.entropy_initial_coef = entropy_coef
+        self.entropy_final_coef = entropy_coef if entropy_final_coef is None else entropy_final_coef
+        self.entropy_decay_updates = entropy_decay_updates
+        self.bc_anchor_coef = bc_anchor_coef
+        self.bc_anchor_final_coef = bc_anchor_final_coef
+        self.bc_anchor_decay_updates = bc_anchor_decay_updates
+        self.update_counter = 0
         self.gamma = gamma
         self.lam = lam
         self.max_grad_norm = max_grad_norm
@@ -136,6 +148,21 @@ class PPO:
         mean_value_loss = 0
         mean_surrogate_loss = 0
         mean_entropy = 0
+        mean_bc_anchor_loss = 0
+        schedule_fraction = min(
+            self.update_counter / max(self.bc_anchor_decay_updates, 1),
+            1.0,
+        )
+        current_bc_coef = self.bc_anchor_coef + schedule_fraction * (
+            self.bc_anchor_final_coef - self.bc_anchor_coef
+        )
+        entropy_fraction = min(
+            self.update_counter / max(self.entropy_decay_updates, 1),
+            1.0,
+        )
+        current_entropy_coef = self.entropy_initial_coef + entropy_fraction * (
+            self.entropy_final_coef - self.entropy_initial_coef
+        )
 
         generator = self.storage.mini_batch_generator(self.num_mini_batches, self.num_learning_epochs)
 
@@ -224,7 +251,20 @@ class PPO:
             else:
                 value_loss = (returns_batch - value_batch).pow(2).mean()
 
-            loss = surrogate_loss + self.value_loss_coef * value_loss - self.entropy_coef * entropy_batch.mean()
+            if current_bc_coef > 0:
+                if "bc_target" not in obs_batch.keys():
+                    raise KeyError("bc_anchor_coef > 0 requires a 'bc_target' observation group")
+                bc_target = obs_batch["bc_target"].flatten(start_dim=1)
+                bc_anchor_loss = torch.mean(torch.square(mu_batch - bc_target[:original_batch_size]))
+            else:
+                bc_anchor_loss = torch.zeros((), device=self.device)
+
+            loss = (
+                surrogate_loss
+                + self.value_loss_coef * value_loss
+                - current_entropy_coef * entropy_batch.mean()
+                + current_bc_coef * bc_anchor_loss
+            )
 
             # Compute the gradients for PPO
             self.actor_optimizer.zero_grad()
@@ -244,12 +284,15 @@ class PPO:
             mean_value_loss += value_loss.item()
             mean_surrogate_loss += surrogate_loss.item()
             mean_entropy += entropy_batch.mean().item()
+            mean_bc_anchor_loss += bc_anchor_loss.item()
             
         # Divide the losses by the number of updates
         num_updates = self.num_learning_epochs * self.num_mini_batches
         mean_value_loss /= num_updates
         mean_surrogate_loss /= num_updates
         mean_entropy /= num_updates
+        mean_bc_anchor_loss /= num_updates
+        self.update_counter += 1
 
         # Clear the storage
         self.storage.clear()
@@ -259,6 +302,9 @@ class PPO:
             "value_function": mean_value_loss,
             "surrogate": mean_surrogate_loss,
             "entropy": mean_entropy,
+            "bc_anchor": mean_bc_anchor_loss,
+            "bc_anchor_coef": current_bc_coef,
+            "entropy_coef": current_entropy_coef,
         }
 
         return loss_dict

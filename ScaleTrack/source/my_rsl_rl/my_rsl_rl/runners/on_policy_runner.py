@@ -21,6 +21,7 @@ from my_rsl_rl.algorithms import PPO
 from my_rsl_rl.env import VecEnv
 from my_rsl_rl.modules import (
     ActorCritic, 
+    ActorCriticDexHand,
     ActorCriticHumanoidTransformer,
 )
 from my_rsl_rl.utils import resolve_obs_groups, store_code_state
@@ -66,6 +67,7 @@ class OnPolicyRunner:
         self.eval_during_training = self.cfg["eval_during_training"]
         self.eval_interval = self.cfg["eval_interval"]
         self.eval_metric_keys = self.cfg.get('eval_metric_keys', [])
+        self.eval_focus_metric_keys = self.cfg.get('eval_focus_metric_keys', [])
         self.eval_max_steps = self.cfg.get('eval_max_steps', None)
         self.success_metric_dict = self.cfg.get('success_metric_dict', {})
         self.command_name = self.cfg.get('command_name', 'motion')
@@ -143,7 +145,9 @@ class OnPolicyRunner:
 
             stop = time.time()
             learn_time = stop - start
-            self.current_learning_iteration = it
+            # Store the next iteration, so a resumed run does not repeat the
+            # last completed rollout/update.
+            self.current_learning_iteration = it + 1
 
             if self.eval_during_training and (it + 1) % self.eval_interval == 0:
                 if self.log_dir is not None and not self.disable_logs:
@@ -159,9 +163,25 @@ class OnPolicyRunner:
             if self.log_dir is not None and not self.disable_logs:
                 # Log information
                 self.log(locals())
-                # Save model
-                if it % self.save_interval == 0:
-                    self.save(os.path.join(self.log_dir, f"model_{it}.pt"))
+                # Name periodic checkpoints by the number of completed updates.
+                # The former ``it % interval`` branch overwrote ``model_N``
+                # after update N+1 when the evaluation branch had already saved
+                # ``model_N`` after update N.  Besides being off by one, that
+                # created a race for external evaluators watching the file.
+                completed_updates = it + 1
+                eval_already_saved = (
+                    self.eval_during_training
+                    and completed_updates % self.eval_interval == 0
+                )
+                if (
+                    completed_updates % self.save_interval == 0
+                    and not eval_already_saved
+                ):
+                    self.save(
+                        os.path.join(
+                            self.log_dir, f"model_{completed_updates}.pt"
+                        )
+                    )
 
             # Clear episode infos
             ep_infos.clear()
@@ -275,22 +295,22 @@ class OnPolicyRunner:
             for key, value in locs["loss_dict"].items():
                 log_string += f"""{f"{key}:":>{pad}} {value:.4f}\n"""
 
+        eta_seconds = int(
+            self.tot_time
+            / (locs["it"] - locs["start_iter"] + 1)
+            * (locs["start_iter"] + locs["num_learning_iterations"] - locs["it"])
+        )
+        eta_days, eta_remainder = divmod(eta_seconds, 24 * 60 * 60)
+        eta_clock = time.strftime("%H:%M:%S", time.gmtime(eta_remainder))
+        eta_string = f"{eta_days}d {eta_clock}" if eta_days else eta_clock
+
         log_string += ep_string
         log_string += (
             f"""{"-" * width}\n"""
             f"""{"Total timesteps:":>{pad}} {self.tot_timesteps}\n"""
             f"""{"Iteration time:":>{pad}} {iteration_time:.2f}s\n"""
             f"""{"Time elapsed:":>{pad}} {time.strftime("%H:%M:%S", time.gmtime(self.tot_time))}\n"""
-            f"""{"ETA:":>{pad}} {
-                time.strftime(
-                    "%H:%M:%S",
-                    time.gmtime(
-                        self.tot_time
-                        / (locs["it"] - locs["start_iter"] + 1)
-                        * (locs["start_iter"] + locs["num_learning_iterations"] - locs["it"])
-                    ),
-                )
-            }\n"""
+            f"""{"ETA:":>{pad}} {eta_string}\n"""
         )
         print(log_string)
 
@@ -462,10 +482,18 @@ class OnPolicyRunner:
 
         metrics = {}
         metrics["motion_ids"] = motion_range
+        output_metric_keys = list(self.eval_metric_keys)
         for k in self.eval_metric_keys:
             metrics[k] = torch.zeros(num_motions_to_eval)
             metrics[f"{k}_max"] = torch.zeros(num_motions_to_eval)
             # metrics[f"{k}_min"] = torch.zeros(num_motions)
+        if self.eval_focus_metric_keys:
+            metrics["focus_frame_count"] = torch.zeros(num_motions_to_eval)
+            for k in self.eval_focus_metric_keys:
+                focus_key = f"{k}_focus"
+                output_metric_keys.append(focus_key)
+                metrics[focus_key] = torch.zeros(num_motions_to_eval)
+                metrics[f"{focus_key}_max"] = torch.zeros(num_motions_to_eval)
 
         motion_map = []
         for i in range(0, len(motion_range), self.env.num_envs):
@@ -518,12 +546,46 @@ class OnPolicyRunner:
                     #     metrics[f"{k}_min"][motion_ids[clip_not_done]],
                     #     metric[clip_not_done]
                     # )
+                if self.eval_focus_metric_keys:
+                    command = self.env.unwrapped.command_manager.get_term(
+                        self.command_name
+                    )
+                    focus = (
+                        command.focus_flag & command.focus_valid
+                    ).cpu()[:num_motions_this_iter]
+                    active_focus = focus & clip_not_done
+                    metrics["focus_frame_count"][
+                        local_idx[active_focus]
+                    ] += 1
+                    for k in self.eval_focus_metric_keys:
+                        if k not in env_metric_dict:
+                            raise ValueError(
+                                f"focus metric key {k} not found in command manager!"
+                            )
+                        value = env_metric_dict[k].cpu()[:num_motions_this_iter]
+                        focus_key = f"{k}_focus"
+                        metrics[focus_key][local_idx[active_focus]] += value[
+                            active_focus
+                        ]
+                        metrics[f"{focus_key}_max"][
+                            local_idx[active_focus]
+                        ] = torch.maximum(
+                            metrics[f"{focus_key}_max"][
+                                local_idx[active_focus]
+                            ],
+                            value[active_focus],
+                        )
                     
         motion_lengths = self.env.unwrapped.command_manager.get_term(self.command_name).time_totals[motion_range]
         if self.eval_max_steps:
             motion_lengths = torch.clamp(motion_lengths, max=self.eval_max_steps*torch.ones_like(motion_lengths))
         for k in self.eval_metric_keys:
             metrics[k] =  metrics[k] / motion_lengths
+        if self.eval_focus_metric_keys:
+            focus_denominator = metrics["focus_frame_count"].clamp_min(1.0)
+            for k in self.eval_focus_metric_keys:
+                focus_key = f"{k}_focus"
+                metrics[focus_key] = metrics[focus_key] / focus_denominator
 
         if self.success_metric_dict:
             tracking_failures = torch.zeros(num_motions_to_eval, dtype=torch.bool)
@@ -544,6 +606,12 @@ class OnPolicyRunner:
             with open(fail_save_path, 'w') as f:
                 for index in failed_motions_id:
                     f.write(f"{motion_names[index]}\n")
+
+        def valid_metric_mask(metric_key):
+            """Exclude motions with no FOCUS frames from FOCUS-only averages."""
+            if metric_key.endswith("_focus"):
+                return metrics["focus_frame_count"] > 0
+            return torch.ones_like(metrics[metric_key], dtype=torch.bool)
 
         if self.is_distributed:
             with open(os.path.join(self.log_dir, f"{self.gpu_global_rank}_metrics.pt"), "wb") as f:
@@ -596,16 +664,21 @@ class OnPolicyRunner:
                     tracking_failures = tracking_failures.float()
                     metric_dict["success_rate"] = 1.0 - tracking_failures.detach().mean().item()
 
-                    for k in self.eval_metric_keys:
-                        mask = (tracking_failures == 0)
+                    for k in output_metric_keys:
+                        mask = (tracking_failures == 0) & valid_metric_mask(k)
                         if mask.any():
                             result = metrics[k][mask].detach().mean().item()
                         else:
                             result = 0.0
                         metric_dict[f"{k}_success"] = result
 
-                for k in self.eval_metric_keys:
-                    metric_dict[k] = metrics[k].detach().mean().item()
+                for k in output_metric_keys:
+                    mask = valid_metric_mask(k)
+                    metric_dict[k] = (
+                        metrics[k][mask].detach().mean().item()
+                        if mask.any()
+                        else float("nan")
+                    )
             
             if not test_set and self.success_metric_dict:
                 if self.gpu_global_rank == 0:
@@ -635,8 +708,8 @@ class OnPolicyRunner:
                         tracking_failures = torch.logical_or(tracking_failures, metrics[f"{k}_max"] > self.success_metric_dict[k])
                 tracking_failures = tracking_failures.float()
                 metric_dict["success_rate"] = 1.0 - tracking_failures.detach().mean().item()
-                for k in self.eval_metric_keys:
-                    mask = (tracking_failures == 0)
+                for k in output_metric_keys:
+                    mask = (tracking_failures == 0) & valid_metric_mask(k)
                     if mask.any():
                         result = metrics[k][mask].detach().mean().item()
                     else:
@@ -650,8 +723,13 @@ class OnPolicyRunner:
                     new_sampling_prob[~failed_idx] *= success_discount
                     new_sampling_prob.clamp_(min=0.03, max=1.0)
                     self.env.unwrapped.command_manager.get_term(self.command_name).motion_sampling_prob[:] = new_sampling_prob
-            for k in self.eval_metric_keys:
-                metric_dict[k] = metrics[k].detach().mean().item()
+            for k in output_metric_keys:
+                mask = valid_metric_mask(k)
+                metric_dict[k] = (
+                    metrics[k][mask].detach().mean().item()
+                    if mask.any()
+                    else float("nan")
+                )
     
         self._set_env_no_evaluating(test_set)
 
