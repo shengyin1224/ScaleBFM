@@ -489,6 +489,11 @@ class OnPolicyRunner:
             # metrics[f"{k}_min"] = torch.zeros(num_motions)
         if self.eval_focus_metric_keys:
             metrics["focus_frame_count"] = torch.zeros(num_motions_to_eval)
+            command = self.env.unwrapped.command_manager.get_term(self.command_name)
+            independent_focus = hasattr(command, "focus_flag_lr")
+            if independent_focus:
+                metrics["focus_frame_count_left"] = torch.zeros(num_motions_to_eval)
+                metrics["focus_frame_count_right"] = torch.zeros(num_motions_to_eval)
             for k in self.eval_focus_metric_keys:
                 focus_key = f"{k}_focus"
                 output_metric_keys.append(focus_key)
@@ -557,23 +562,34 @@ class OnPolicyRunner:
                     metrics["focus_frame_count"][
                         local_idx[active_focus]
                     ] += 1
+                    side_masks = {}
+                    if independent_focus:
+                        valid_lr = (command.focus_flag_lr & command.focus_valid_lr).cpu()[:num_motions_this_iter]
+                        for hand, side in enumerate(("left", "right")):
+                            side_masks[side] = valid_lr[:, hand] & clip_not_done
+                            metrics[f"focus_frame_count_{side}"][local_idx[side_masks[side]]] += 1
                     for k in self.eval_focus_metric_keys:
+                        metric_focus = active_focus
+                        if independent_focus:
+                            for side in ("left", "right"):
+                                if k.startswith(f"error_{side}_wrist"):
+                                    metric_focus = side_masks[side]
                         if k not in env_metric_dict:
                             raise ValueError(
                                 f"focus metric key {k} not found in command manager!"
                             )
                         value = env_metric_dict[k].cpu()[:num_motions_this_iter]
                         focus_key = f"{k}_focus"
-                        metrics[focus_key][local_idx[active_focus]] += value[
-                            active_focus
+                        metrics[focus_key][local_idx[metric_focus]] += value[
+                            metric_focus
                         ]
                         metrics[f"{focus_key}_max"][
-                            local_idx[active_focus]
+                            local_idx[metric_focus]
                         ] = torch.maximum(
                             metrics[f"{focus_key}_max"][
-                                local_idx[active_focus]
+                                local_idx[metric_focus]
                             ],
-                            value[active_focus],
+                            value[metric_focus],
                         )
                     
         motion_lengths = self.env.unwrapped.command_manager.get_term(self.command_name).time_totals[motion_range]
@@ -585,7 +601,12 @@ class OnPolicyRunner:
             focus_denominator = metrics["focus_frame_count"].clamp_min(1.0)
             for k in self.eval_focus_metric_keys:
                 focus_key = f"{k}_focus"
-                metrics[focus_key] = metrics[focus_key] / focus_denominator
+                denominator = focus_denominator
+                if independent_focus:
+                    for side in ("left", "right"):
+                        if k.startswith(f"error_{side}_wrist"):
+                            denominator = metrics[f"focus_frame_count_{side}"].clamp_min(1.)
+                metrics[focus_key] = metrics[focus_key] / denominator
 
         if self.success_metric_dict:
             tracking_failures = torch.zeros(num_motions_to_eval, dtype=torch.bool)
@@ -607,9 +628,15 @@ class OnPolicyRunner:
                 for index in failed_motions_id:
                     f.write(f"{motion_names[index]}\n")
 
+        self.last_eval_per_motion_metrics = {k: v.detach().cpu().clone() for k, v in metrics.items()}
+
         def valid_metric_mask(metric_key):
             """Exclude motions with no FOCUS frames from FOCUS-only averages."""
             if metric_key.endswith("_focus"):
+                if independent_focus:
+                    for side in ("left", "right"):
+                        if metric_key.startswith(f"error_{side}_wrist"):
+                            return metrics[f"focus_frame_count_{side}"] > 0
                 return metrics["focus_frame_count"] > 0
             return torch.ones_like(metrics[metric_key], dtype=torch.bool)
 

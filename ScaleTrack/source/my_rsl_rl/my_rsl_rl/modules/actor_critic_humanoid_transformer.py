@@ -273,8 +273,8 @@ class ActorCriticHumanoidTransformer(nn.Module):
             Whether this training resumes a previous training. This flag is used by the :func:`load` function of
                 :class:`OnPolicyRunner` to determine how to load further parameters (relevant for, e.g., distillation).
         """
-        # F3/F2o append exactly two phase scalars to policy_task and
-        # critic_task.  Warm-starting from the factory checkpoint therefore
+        # F3/F2o append two phase scalars; BrainFocusLR appends four.
+        # The configured run warms both interfaces from the factory checkpoint.  Warm-starting from the factory checkpoint therefore
         # only changes the input width of the two task projections.  Preserve
         # every old parameter bit-for-bit and initialize the new columns to
         # zero, so iteration-0 actions are exactly the factory actions.
@@ -296,7 +296,7 @@ class ActorCriticHumanoidTransformer(nn.Module):
                 source.ndim == 2
                 and target.ndim == 2
                 and source.shape[0] == target.shape[0]
-                and target.shape[1] == source.shape[1] + 2
+                and target.shape[1] - source.shape[1] in (2, 4)
             ):
                 widened = source.new_zeros(target.shape)
                 if (
@@ -304,12 +304,12 @@ class ActorCriticHumanoidTransformer(nn.Module):
                     and self.num_mode_obs
                 ):
                     # Input order is [task, mode].  Phase is appended to task,
-                    # so the new order is [task, phase(2), mode].  Preserve the
+                    # so the new order is [task, phase(2 or 4), mode]. Preserve the
                     # old mode columns by shifting them, rather than naively
                     # appending zeros after mode.
                     task_width = source.shape[1] - self.num_mode_obs
                     widened[:, :task_width].copy_(source[:, :task_width])
-                    widened[:, task_width + 2 :].copy_(
+                    widened[:, task_width + (target.shape[1] - source.shape[1]) :].copy_(
                         source[:, task_width:]
                     )
                 else:

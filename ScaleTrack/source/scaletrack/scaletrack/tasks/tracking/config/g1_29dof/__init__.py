@@ -82,3 +82,6 @@ gym.register(
         "rsl_rl_cfg_entry_point": f"{agents.__name__}.rsl_rl_ppo_cfg:G1BFMMlpPPORunnerCfg",
     },
 )
+
+from .brain_focus_lr_env_cfg import BrainFocusLREnvCfg, BrainFocusLRRunnerCfg
+gym.register(id="G1-HAT4-BrainFocusLR-Finetune", entry_point="isaaclab.envs:ManagerBasedRLEnv", disable_env_checker=True, kwargs={"env_cfg_entry_point": BrainFocusLREnvCfg, "rsl_rl_cfg_entry_point": BrainFocusLRRunnerCfg})
