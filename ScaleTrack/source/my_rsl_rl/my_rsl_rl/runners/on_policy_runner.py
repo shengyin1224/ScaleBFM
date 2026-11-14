@@ -490,7 +490,7 @@ class OnPolicyRunner:
         if self.eval_focus_metric_keys:
             metrics["focus_frame_count"] = torch.zeros(num_motions_to_eval)
             command = self.env.unwrapped.command_manager.get_term(self.command_name)
-            independent_focus = hasattr(command, "focus_flag_lr")
+            independent_focus = hasattr(type(command), "focus_flag_lr")
             if independent_focus:
                 metrics["focus_frame_count_left"] = torch.zeros(num_motions_to_eval)
                 metrics["focus_frame_count_right"] = torch.zeros(num_motions_to_eval)

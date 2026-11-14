@@ -95,7 +95,8 @@ def train_command(world_size, iterations, run_name, benchmark=False):
 def main():
     status('waiting_for_ablation_gpu')
     gpus, locks = reserve(1)
-    run_process('focus_input_ablation', [PY,str(SCRIPT / 'eval_focus_input_ablation.py'),
+    if not (RUN / 'ablation/comparison.json').is_file():
+        run_process('focus_input_ablation', [PY,str(SCRIPT / 'eval_focus_input_ablation.py'),
         '--output-dir',str(RUN / 'ablation'),
         '--motion-file',str(ORIGINAL / 'ScaleTrack/data/hat4_unifolm_focus_v2/manifests/unifolm_hat4_heldout.yaml'),
         '--july-checkpoint',str(ORIGINAL / 'ScaleTrack/logs/rsl_rl/g1_hat4_focus_finetune/formal_core5_20260728b_F3h/model_20000.pt'),
@@ -109,6 +110,24 @@ def main():
     status('waiting_for_training_smoke_gpu')
     gpus, locks = reserve(1)
     smoke = train_command(1,5,'brain_focus_lr_smoke_20261114')
+    import yaml
+    source_manifest_dir = CORPUS / 'manifests'
+    smoke_dir = RUN / 'smoke_manifests'
+    smoke_dir.mkdir(exist_ok=True)
+    for split, per_family in [('train',2),('heldout',1)]:
+        full = yaml.safe_load((source_manifest_dir / f'unifolm_hat4_{split}.yaml').read_text())
+        selected = {}
+        counts = {}
+        for name, path in full.items():
+            family = name.rsplit('_ep_',1)[0]
+            if counts.get(family,0) < per_family:
+                selected[name] = path
+                counts[family] = counts.get(family,0) + 1
+        assert len(counts) == 10
+        dest = smoke_dir / f'{split}.yaml'
+        dest.write_text(yaml.safe_dump(selected))
+        flag = '--motion_file' if split == 'train' else '--test_motion_file'
+        smoke[smoke.index(flag)+1] = str(dest)
     smoke[smoke.index('--num_envs')+1] = '64'
     smoke += ['agent.eval_interval=5','agent.eval_max_steps=50']
     run_process('training_smoke',smoke,gpus)
