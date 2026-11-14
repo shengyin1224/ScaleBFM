@@ -483,6 +483,7 @@ class OnPolicyRunner:
         metrics = {}
         metrics["motion_ids"] = motion_range
         output_metric_keys = list(self.eval_metric_keys)
+        independent_focus = False
         for k in self.eval_metric_keys:
             metrics[k] = torch.zeros(num_motions_to_eval)
             metrics[f"{k}_max"] = torch.zeros(num_motions_to_eval)
@@ -508,6 +509,10 @@ class OnPolicyRunner:
         num_iterations = len(motion_map)
 
         policy = self.get_inference_policy(device=self.device)
+        if independent_focus:
+            # New LR training is evaluated through the deployed HAT-4 mask,
+            # not the legacy inference path that substitutes all 14 links.
+            policy = lambda obs: self.alg.policy.act_inference(obs, respect_mode=True)
 
         for iter in track(
             range(num_iterations), total=num_iterations, description="Evaluting..."

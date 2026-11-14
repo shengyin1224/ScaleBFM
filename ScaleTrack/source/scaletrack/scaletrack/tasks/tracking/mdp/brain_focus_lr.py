@@ -37,6 +37,13 @@ class BrainFocusLRMotionCommand(MotionCommand):
             self._lr_active = self._lr_sets['test' if train_to_test else 'train']
 
     @property
+    def mode(self):
+        if getattr(self, 'is_evaluating', False):
+            index = list(self.cfg.mode_candidates).index('HAT-4')
+            return self._mode_table[index:index+1].expand(self.num_envs,-1)
+        return super().mode
+
+    @property
     def focus_flag_lr(self):
         return self._lr_active['focus_mask_lr'][self._global_time_index()].to(self.device)
 

@@ -53,6 +53,7 @@ assert torch.equal(scope['weighted_errors_lr'](errors,names,flags,1.),errors.mea
 runner_file = ROOT / 'ScaleTrack/source/my_rsl_rl/my_rsl_rl/runners/on_policy_runner.py'
 runner_tree = ast.parse(runner_file.read_text())
 check = next(n for n in ast.walk(runner_tree) if isinstance(n,ast.Assign)
+             and isinstance(n.value,ast.Call)
              and any(isinstance(t,ast.Name) and t.id == 'independent_focus' for t in n.targets))
 class SwitchingCommand:
     @property
@@ -62,11 +63,32 @@ expression = compile(ast.Expression(body=check.value), str(runner_file), 'eval')
 assert eval(expression, {'command':SwitchingCommand()}) is True
 assert eval(expression, {'command':object()}) is False
 
+# Exercise the actual actor inference implementation without starting a GPU.
+actor_file = ROOT / 'ScaleTrack/source/my_rsl_rl/my_rsl_rl/modules/actor_critic_humanoid_transformer.py'
+actor_tree = ast.parse(actor_file.read_text())
+inference = next(n for n in ast.walk(actor_tree) if isinstance(n,ast.FunctionDef) and n.name == 'act_inference')
+scope = {'torch':torch,'TensorDict':object}
+exec(compile(ast.Module(body=[inference],type_ignores=[]),str(actor_file),'exec'),scope)
+class DummyActor:
+    state_dependent_std = False
+    def get_actor_obs(self, obs, inference):
+        self.inference = inference
+        return None, torch.zeros(1,4), None
+    def actor_task_embedder(self, task):
+        return task
+    def actor(self, prop, action, task):
+        return torch.zeros(1,29)
+dummy = DummyActor()
+scope['act_inference'](dummy,{})
+assert dummy.inference is True
+scope['act_inference'](dummy,{},respect_mode=True)
+assert dummy.inference is False
+
 audit = json.loads((RUN / 'corpus/audit.json').read_text())
 assert audit['episodes'] == 3000 and audit['detector_ast_sha256'] == digest
 assert (RUN / 'corpus/READY').read_text().strip() == digest
 report = dict(detector_parity=True, independent_hands=True, no_stationary_hand_events=True,
               exact_window_padding=True, signed_edges=True, independent_reward_gates=True,
-              torso_union_gate=True, dataset_switch_property_guard=True, validated_corpus_episodes=audit['episodes'])
+              torso_union_gate=True, dataset_switch_property_guard=True, evaluation_respects_sparse_mode=True, validated_corpus_episodes=audit['episodes'])
 (RUN / 'contract_test.json').write_text(json.dumps(report,indent=2))
 print(json.dumps(report,indent=2))

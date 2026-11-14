@@ -67,7 +67,10 @@ Training-time focus wrist metrics use their own hand's mask and frame count;
 head metrics use the union. CPU tests cover hand separation, no spurious events
 for a stationary hand, padding, signed times, independent reward gates and the
 torso union. A simulator smoke run exercises training and held-out evaluation
-before any full run is launched.
+before any full run is launched. The smoke manifests contain two training and one
+held-out motion per family (20/10 total); the full corpus is independently audited.
+Periodic new-task evaluation fixes HAT-4 and explicitly respects its sparse mask,
+while legacy actor inference retains its original default behavior.
 
 ## GPU queue and multi-GPU measurement
 
@@ -94,3 +97,8 @@ training trajectories across GPU counts is made.
 Observe `queue_status.json`, `queue.log`, `focus_input_ablation.log`,
 `training_smoke.log`, `benchmark_*gpu.log`, `multi_gpu_benchmark.json`, and
 `formal_training.log` under `experiments/focus_brain_20261114/`.
+
+The four-condition phase ablation completed successfully; labels and statistical
+frame counts matched exactly. There were 482 common successful motions, of which
+479 had statistical focus frames. Results are in `ablation/comparison.json`.
+The corrected simulator smoke passed both dataset-switch and fixed-HAT4 checks.

@@ -186,8 +186,8 @@ class ActorCriticHumanoidTransformer(nn.Module):
         self._update_distribution(actor_prop_obs, actor_task_obs, actor_action_obs)
         return self.distribution.sample()
 
-    def act_inference(self, obs: TensorDict) -> torch.Tensor:
-        actor_prop_obs, actor_task_obs, actor_action_obs = self.get_actor_obs(obs, inference=True)
+    def act_inference(self, obs: TensorDict, respect_mode: bool = False) -> torch.Tensor:
+        actor_prop_obs, actor_task_obs, actor_action_obs = self.get_actor_obs(obs, inference=not respect_mode)
         actor_task_tokens = self.actor_task_embedder(actor_task_obs)
         if self.state_dependent_std:
             mean_and_std = self.actor(actor_prop_obs, actor_action_obs, actor_task_tokens)
