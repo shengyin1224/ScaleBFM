@@ -48,11 +48,25 @@ expected = torch.tensor([10.,16.,17.,19.])/4.
 torch.testing.assert_close(actual,expected)
 assert torch.equal(scope['weighted_errors_lr'](errors,names,flags,1.),errors.mean(-1))
 
+# A dataset switch happens before evaluation resets the previous motion IDs.
+# Capability detection must not call a property with those transient IDs.
+runner_file = ROOT / 'ScaleTrack/source/my_rsl_rl/my_rsl_rl/runners/on_policy_runner.py'
+runner_tree = ast.parse(runner_file.read_text())
+check = next(n for n in ast.walk(runner_tree) if isinstance(n,ast.Assign)
+             and any(isinstance(t,ast.Name) and t.id == 'independent_focus' for t in n.targets))
+class SwitchingCommand:
+    @property
+    def focus_flag_lr(self):
+        raise IndexError('old train motion id exceeds held-out set')
+expression = compile(ast.Expression(body=check.value), str(runner_file), 'eval')
+assert eval(expression, {'command':SwitchingCommand()}) is True
+assert eval(expression, {'command':object()}) is False
+
 audit = json.loads((RUN / 'corpus/audit.json').read_text())
 assert audit['episodes'] == 3000 and audit['detector_ast_sha256'] == digest
 assert (RUN / 'corpus/READY').read_text().strip() == digest
 report = dict(detector_parity=True, independent_hands=True, no_stationary_hand_events=True,
               exact_window_padding=True, signed_edges=True, independent_reward_gates=True,
-              torso_union_gate=True, validated_corpus_episodes=audit['episodes'])
+              torso_union_gate=True, dataset_switch_property_guard=True, validated_corpus_episodes=audit['episodes'])
 (RUN / 'contract_test.json').write_text(json.dumps(report,indent=2))
 print(json.dumps(report,indent=2))
