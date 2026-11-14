@@ -107,35 +107,40 @@ def main():
     status('waiting_for_validated_training_code_and_labels')
     while not (RUN / 'CODE_READY').is_file() or not (CORPUS / 'READY').is_file():
         time.sleep(15)
-    status('waiting_for_training_smoke_gpu')
-    gpus, locks = reserve(1)
-    smoke = train_command(1,5,'brain_focus_lr_smoke_20261114')
-    import yaml
-    source_manifest_dir = CORPUS / 'manifests'
-    smoke_dir = RUN / 'smoke_manifests'
-    smoke_dir.mkdir(exist_ok=True)
-    for split, per_family in [('train',2),('heldout',1)]:
-        full = yaml.safe_load((source_manifest_dir / f'unifolm_hat4_{split}.yaml').read_text())
-        selected = {}
-        counts = {}
-        for name, path in full.items():
-            family = name.rsplit('_ep_',1)[0]
-            if counts.get(family,0) < per_family:
-                selected[name] = path
-                counts[family] = counts.get(family,0) + 1
-        assert len(counts) == 10
-        dest = smoke_dir / f'{split}.yaml'
-        dest.write_text(yaml.safe_dump(selected))
-        flag = '--motion_file' if split == 'train' else '--test_motion_file'
-        smoke[smoke.index(flag)+1] = str(dest)
-    smoke[smoke.index('--num_envs')+1] = '64'
-    smoke += ['agent.eval_interval=5','agent.eval_max_steps=50']
-    run_process('training_smoke',smoke,gpus)
-    for lock in locks:
-        lock.close()
+    if not (RUN / 'FIXED_HAT4_SMOKE_PASSED').is_file():
+        status('waiting_for_training_smoke_gpu')
+        gpus, locks = reserve(1)
+        smoke = train_command(1,5,'brain_focus_lr_smoke_20261114')
+        import yaml
+        source_manifest_dir = CORPUS / 'manifests'
+        smoke_dir = RUN / 'smoke_manifests'
+        smoke_dir.mkdir(exist_ok=True)
+        for split, per_family in [('train',2),('heldout',1)]:
+            full = yaml.safe_load((source_manifest_dir / f'unifolm_hat4_{split}.yaml').read_text())
+            selected = {}
+            counts = {}
+            for name, path in full.items():
+                family = name.rsplit('_ep_',1)[0]
+                if counts.get(family,0) < per_family:
+                    selected[name] = path
+                    counts[family] = counts.get(family,0) + 1
+            assert len(counts) == 10
+            dest = smoke_dir / f'{split}.yaml'
+            dest.write_text(yaml.safe_dump(selected))
+            flag = '--motion_file' if split == 'train' else '--test_motion_file'
+            smoke[smoke.index(flag)+1] = str(dest)
+        smoke[smoke.index('--num_envs')+1] = '64'
+        smoke += ['agent.eval_interval=5','agent.eval_max_steps=50']
+        run_process('training_smoke',smoke,gpus)
+        for lock in locks:
+            lock.close()
     results = {}
+    if (RUN / 'multi_gpu_benchmark.json').is_file():
+        results = {int(k):v for k,v in json.loads((RUN / 'multi_gpu_benchmark.json').read_text()).items()}
     # Compare equal global batch sizes: 4096 environments in all cases.
     for world in (1,2,4):
+        if world in results:
+            continue
         status(f'waiting_for_{world}_gpu_benchmark')
         gpus, locks = reserve(world)
         name = f'benchmark_{world}gpu'
@@ -149,10 +154,13 @@ def main():
         (RUN / 'multi_gpu_benchmark.json').write_text(json.dumps(results,indent=2))
         for lock in locks:
             lock.close()
-    chosen = min(results, key=lambda n: results[n]['median_iteration_seconds'])
-    # Require a measured 5% gain before using extra GPUs.
-    if results[chosen]['median_iteration_seconds'] > .95 * results[1]['median_iteration_seconds']:
-        chosen = 1
+    chosen = 1
+    # Require a measured 5% gain for each increase in GPU count, avoiding
+    # allocating twice as many GPUs for marginal short-benchmark variation.
+    for world in (2,4):
+        if results[world]['median_iteration_seconds'] < .95 * results[chosen]['median_iteration_seconds']:
+            chosen = world
+    (RUN / 'formal_launch_selection.json').write_text(json.dumps(dict(selected_gpu_count=chosen, minimum_incremental_speedup=0.05, benchmarks=results),indent=2))
     status('waiting_for_formal_training', selected_gpu_count=chosen, benchmarks=results)
     gpus, locks = reserve(chosen)
     run_process('formal_training', train_command(chosen,20000,'brain_focus_lr_20261114'), gpus)
