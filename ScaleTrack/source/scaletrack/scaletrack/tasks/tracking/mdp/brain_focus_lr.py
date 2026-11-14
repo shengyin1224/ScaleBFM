@@ -28,6 +28,8 @@ class BrainFocusLRMotionCommand(MotionCommand):
                         arrays[key].append(value)
             self._lr_sets[split] = {k: torch.from_numpy(np.concatenate(v)) for k,v in arrays.items()}
         self._lr_active = self._lr_sets['train']
+        counts = self._lr_active['focus_mask_lr'].sum(0).tolist()
+        print(f'[BrainFocusLR] sidecar_root={root}; hand_order=left,right; focus_frames={counts}; phase_dims=4', flush=True)
 
     def switch_motion_set(self, train_to_test=True):
         super().switch_motion_set(train_to_test)
