@@ -1,0 +1,35 @@
+{
+  "package_files_created": true,
+  "enable": false,
+  "ready_for_robot": false,
+  "offline_evaluations": {
+    "brain": {
+      "status": "passed",
+      "gates": {
+        "actual_above_5hz_ratio": true,
+        "action_difference_ratio": true,
+        "joint_velocity_rms_ratio": true,
+        "plan_seam_excess_p95_cm": true,
+        "wrist_error_reduction": true,
+        "fallback_fraction": true
+      },
+      "fallback_fraction": 0.0030125018828136767,
+      "metrics_sha256": "cdd62072941f723ba46bf331e237129171a4536675348fbd373825270c664071",
+      "metrics_file": "/home/nerv/qingyaoxu/ScaleBFM/exec_comp/runs/round4/brain_evaluation/b1_lowdim_coeffblend_v1/metrics.json"
+    },
+    "motion": {
+      "status": "pending"
+    },
+    "dr": {
+      "status": "pending"
+    }
+  },
+  "offline_all_gates_passed": false,
+  "pending": [
+    "motion:pending",
+    "dr:pending",
+    "4080S latency deferred until user notifies idle window"
+  ],
+  "a1_lowdim_training": "skipped per user",
+  "caps": "deferred per user"
+}

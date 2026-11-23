@@ -1,0 +1,46 @@
+{
+  "synthetic": {
+    "claim_scope": "coordinate-chain synthetic test only; no dynamics, policy, or hardware tracking is represented",
+    "reference": "/root/shengyin/ScaleBFM/ScaleTrack/source/scaletrack/data/unifolm_10class_ep0000_processed/G1_WBT_Brainco_Pickup_Pillow_ep_0000.npz",
+    "translation_direction_xyz": [
+      1.0,
+      0.0,
+      0.0
+    ],
+    "drifts": {
+      "5cm": {
+        "reanchor_off_endpoint_error": {
+          "mean_m": 0.050000001470471435,
+          "p95_m": 0.05000000928082833,
+          "max_m": 0.050000030147570845
+        },
+        "reanchor_on_reconstruction_error": {
+          "mean_m": 2.7888460592619483e-09,
+          "p95_m": 1.3234149827264073e-08,
+          "max_m": 6.026130359095403e-08
+        }
+      },
+      "10cm": {
+        "reanchor_off_endpoint_error": {
+          "mean_m": 0.10000000147047154,
+          "p95_m": 0.10000000928082843,
+          "max_m": 0.10000003014756982
+        },
+        "reanchor_on_reconstruction_error": {
+          "mean_m": 2.7108412928577476e-09,
+          "p95_m": 1.2305176547367245e-08,
+          "max_m": 5.940837390134361e-08
+        }
+      }
+    }
+  },
+  "static_acceptance": {
+    "status": "NOT RUN: --static-trace was not supplied",
+    "required_schema": [
+      "target_world_pos[T,K,3]",
+      "endpoint_world_pos[T,K,3]",
+      "measured_pelvis_pos[T,3]",
+      "measured_pelvis_quat_wxyz[T,4]"
+    ]
+  }
+}

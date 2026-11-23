@@ -1,0 +1,113 @@
+{
+  "release": "a1_round3",
+  "format": "TorchScript FP32",
+  "interface": "correct_kp(Dict[str,Tensor] state_hist, Tensor[100,4,9] K_star_chunk) -> Tensor[100,4,9]",
+  "history": 10,
+  "keypoint_order": [
+    "root",
+    "head",
+    "left_wrist",
+    "right_wrist"
+  ],
+  "rotation": "x/z matrix columns",
+  "position_residual_bound_m": 0.05,
+  "artifact_sha256": "04d26da27ab0cec348e018e5f5592a36f2321a350879053b18febcb3ae054d76",
+  "a1_training_checkpoint": "/root/shengyin/ScaleBFM/exec_comp/runs/models/inverse_smooth_r2_best.pt",
+  "a1_checkpoint_sha256": "d66342ee52192ef42ba4c9e9c97805ac5a3bece8e5c8df17001d2422a760d8ba",
+  "frozen_cerebellum_raw_sha256": "c9c65cfb60bea8e4a254abaa8a60496e8fd0b9703751a0d70c3d322789766393",
+  "network_identical_to": "releases/a1_round2/a1_correct_kp.pt (same weights and interface)",
+  "deployed_chunk": {
+    "fps": 15.0,
+    "frame_count": 100,
+    "replan_interval_s_median": 0.4075247598811984,
+    "source": "measured from the recorded closed-loop runs, not assumed"
+  },
+  "a1_input_window": {
+    "frames": 100,
+    "spacing_hz": 30,
+    "built_from": "the stitched command stream the deployed switcher produces, not a chunk",
+    "padding": "frames past the playing chunk's end repeat its last frame; the host counts how often that happens"
+  },
+  "call_mode": {
+    "selected": "stepwise",
+    "available": [
+      "stepwise",
+      "switch_event"
+    ],
+    "stepwise": "one call per 50 Hz control step, then the 20 ms residual low pass",
+    "switch_event": "one call per accepted chunk switch, with a linear residual crossfade over seam_crossfade_s triggered by the switch itself",
+    "selected_by": "A1_stepwise_stall-on",
+    "seam_crossfade_s": 0.12
+  },
+  "grasp_behaviour": {
+    "freeze": true,
+    "triggers": [
+      "FOCUS handoff window",
+      "hand-event guard boundary",
+      "stall wrist assist",
+      "the brain's own predicted close boundary"
+    ],
+    "release_ramp_s": 0.15,
+    "on_exit": "linear ramp back to the live residual over 150 ms",
+    "never": "the residual is never set to zero in a single control step"
+  },
+  "shared_cap": {
+    "total_offset_cap_m": 0.05,
+    "applies_to": "anti-stall lookahead offset plus A1 residual, measured against raw K*",
+    "rule": "project the vector sum onto the5cm ball; opposing residual/lookahead can cancel"
+  },
+  "lookahead_policy": {
+    "keep": true,
+    "note": "when disabled, the independent post-switch stage strips the original lookahead; switching code is not altered"
+  },
+  "mutual_exclusion": {
+    "wrist_compensation": "none",
+    "enforced_in": "exec_comp/round3/deployment_env.py before the robot starts"
+  },
+  "safety_fallback": {
+    "ramp_s": 0.15,
+    "nan": "any non-finite residual",
+    "sustained_cap_s": 1.0,
+    "cap_guard_reading": "residual",
+    "single_step_jump_cm": 1.0,
+    "recovery": "after the fade the stage rejoins the live residual through the same ramp",
+    "logged": "each trigger is counted and the first step of each fade carries the counters"
+  },
+  "logging": "per control step: raw K*, corrected command, measured keypoints, switch event, grasp phase, residual, total offset and fallback state",
+  "residual_lowpass_50hz": true,
+  "lowpass_delay_ms": 20,
+  "fingertips": "the host wrapper passes every fingertip field through unchanged",
+  "enabled_by_default": false,
+  "real_robot_run": false,
+  "host_executor_sha256": "142a6c3def86b3924c9b02ec71dc0cb59e2b3dce7cbca2f092769fcd59b6d64b",
+  "host_hooks_sha256": "039f6d8b690df35d156d730bad95b38f2854855b2b242b9e9020d4b6839f7a35",
+  "host_adapter_sha256": "114ebd0860c2ab31877a21210b7eb696bc8b49a9d4880e72d86e3263991ea8f1",
+  "acceptance_status": "failed_simulation_gates",
+  "eager_max_abs": 0.0,
+  "max_position_residual_m": 0.05000004172325134,
+  "acceptance_gates": {
+    "motion300": {
+      "actual_above_5hz_ratio": true,
+      "action_difference_ratio": true,
+      "joint_velocity_rms_ratio": true,
+      "plan_seam_excess_p95_cm": true,
+      "wrist_error_reduction": true
+    },
+    "DR300": {
+      "actual_above_5hz_ratio": true,
+      "action_difference_ratio": true,
+      "joint_velocity_rms_ratio": true,
+      "plan_seam_excess_p95_cm": true,
+      "wrist_error_reduction": true
+    },
+    "brain10": {
+      "actual_above_5hz_ratio": false,
+      "action_difference_ratio": true,
+      "joint_velocity_rms_ratio": true,
+      "plan_seam_excess_p95_cm": true,
+      "wrist_error_reduction": false
+    }
+  },
+  "cerebellum_deployment_path": "/home/nerv/qingyaoxu/ScaleBFM/MyScaleBFM/ScaleTrack/releases/hat4_focus_release_v1/model_20000_scalebridge_tensorrt_4080s.pt",
+  "cerebellum_deployment_sha256": "24d10e69d30d253f87d65465c9fa2a0be756d67d17b3a4a08299b0084576aacf"
+}

@@ -1,0 +1,332 @@
+defaults:
+  - base_env
+
+_target_: env.motion_tracking_hat4_online.HAT4OnlineMotionTrackingEnv
+_recursive_: False
+config:
+  # /dev/null only satisfies inherited simulator interpolation; online mode
+  # never loads an offline NPZ.
+  motion_path: /dev/null
+  # Pre-start uses a named arm pose and generates its link targets through FK;
+  # it does not consume a live HAT chunk before R1.
+  future_idx: [0, 1, 2, 3, 4, 5]
+  reference_forcing: False
+  # Pre-R1 hold pose:
+  # raised = fixed real-G1 two-arm raised pose (existing default);
+  # sonic_0904 = representative whole-body opening pose measured from the
+  #              Sep-04 SONIC teleoperation data (arms, legs, and waist);
+  # stand = hold the as-calibrated stand, arms down (old behaviour).
+  prestart_arm_pose: stand
+  # Optional: default_raised uses policy-default legs/waist and measured raised
+  # arm joint targets to build the complete pre-R1 FK reference.
+  # default_stand keeps the same default legs/waist, with arms as measured at R2.
+  # upright_stand preserves all measured joints (arms down), builds a level-root
+  # FK reference, and uses WholeBody-14 before R1; HAT-4 resumes after R1.
+  # Startup DDS order: pinky, ring, middle, index, thumb bend, thumb rotation.
+  # Left keeps rotation 0; right sends rotation 1. Inspire G1 flips rotation
+  # at the serial boundary, so the native targets are left 1 and right 0.
+  startup_hand_motor_target: [1.0, 1.0, 1.0, 1.0, 1.0, 0.0]
+  startup_right_hand_motor_target: [1.0, 1.0, 1.0, 1.0, 1.0, 1.0]
+  # Send the startup pose without blocking on every motor reaching its target.
+  # Enable to require fresh feedback within 0.05 of every motor target.
+  startup_hand_check_enabled: false
+  startup_hand_timeout_s: 8.0
+  # Legacy fallback for producers/recordings without position_origin_world.
+  # Current HAT chunks carry their opening-head world origin and bypass this
+  # frame-0 anchoring so absolute global displacement is preserved.
+  # fixed locks the fallback transform; follow recomputes it every chunk.
+  chunk_alignment: fixed
+  # Closed-loop wrist landing compensation (offline-validated 5.2 -> 2.3cm):
+  # none | offset.  Online it is FOCUS-gated with a fade; measured wrist =
+  # T_pelvis(Vive) * FK(measured q) via current_pose_fk, same chain in sim.
+  wrist_compensation: none
+  # 0 = feedforward (clamped root error, weak); >0 integrates the measured
+  # world wrist residual per step.  Validated: gain 0.1, clamp 0.15.
+  wrist_compensation_gain: 0.1
+  wrist_compensation_clamp_m: 0.15
+  wrist_compensation_fade_s: 0.4
+  state_endpoint: tcp://127.0.0.1:5561
+  chunk_endpoint: tcp://127.0.0.1:5562
+  max_source_state_lag: 30
+  startup_chunk_timeout_s: 15.0
+  # Receding-horizon time alignment: every new chunk starts at its own source
+  # timestamp, so first discard its latency-stale prefix. Sample adjacent old
+  # and new chunks at the same absolute target time, then overlap-blend them.
+  # Pose is diagnostic only and cannot alter the clock. Never inherit an old
+  # chunk's frame index: old frame 80 can correspond to new frame 1.
+  chunk_phase_alignment: true
+  phase_rotation_weight: 0.08
+  phase_velocity_weight: 0.03
+  phase_measured_weight: 0.15
+  # Emergency corruption guard only. Normal 1--9 cm re-prediction differences
+  # are time-aligned and blended; rejecting them would recreate endpoint lock.
+  phase_max_root_jump_m: 0.20
+  # Recorded HAT replans arrive no faster than 0.239 s.  A 0.22 s overlap
+  # finishes before the next chunk, preventing nested-blend discontinuities
+  # while still smoothing ordinary centimetre-scale re-prediction changes.
+  chunk_blend_s: 0.22
+  takeover_blend_s: 0.75
+  # Opt in for the two new-checkpoint commands; preserve the old controller history.
+  takeover_sync_action_history: false
+  chunk_hold_timeout_s: 0.50
+  chunk_latch_timeout_s: 2.0
+  # Each accepted chunk executes at least this fraction of its length before
+  # the next one is consumed (0.66 of a 100-frame 30 Hz chunk = 2.2 s).
+  # Swapping on every 0.33 s replan only ever played each chunk's opening
+  # frames; the 2026-09-07 audit showed this model's forward progress lives in
+  # the chunk tail, so per-replan swapping stalled walking into restarted
+  # prefixes.  0 restores swap-on-every-replan.  The hold never delays the
+  # first chunk, R1/Vive recovery, or a staleness-frozen reference, and the
+  # staleness watchdog counts from the hold's release instead of the last
+  # acceptance.
+  min_chunk_execution_fraction: 0.66
+  # HuMI relative_chunk already advances a scheduled absolute anchor on every
+  # HAT replan. Consume those chunks at replan cadence instead of applying the
+  # 2.2 s legacy execution floor and discarding most scheduled updates.
+  # Set this equal to min_chunk_execution_fraction only for an explicit A/B.
+  relative_chunk_min_execution_fraction: 0.0
+  # Release the hold this long before the playing chunk runs out so the
+  # successor (at most one replan period old under CONFLATE) is accepted and
+  # blended in before the reference clamps on the final frame.
+  chunk_end_margin_s: 0.5
+  # Receding Trajectory Correction (RTC) is opt-in so disabling it preserves
+  # the current hold and same-time chunk_blend_s swap path exactly.  On a
+  # routine swap, blend the old chunk's live, unexecuted future into the first
+  # M frames that will actually be played from the latency-aligned new chunk.
+  # First two frames stay 100% old; the following eight ramp old -> new.
+  rtc_enabled: true
+  rtc_prefix_frames: 10
+  rtc_hard_prefix_frames: 2
+  rtc_blend_frames: 8
+  # --- 2026-09-09 grasp-failure deployment experiments.  All three switches
+  # default to the exact pre-existing behaviour. ---
+  # 1) Start each newly accepted chunk at the frame that best continues the
+  # outgoing reference instead of strictly at the latency frame.  The search
+  # is forward-only (latency frame .. +continuity_search_ahead_s) and the
+  # chunk clock is shifted so the selected frame actually plays.  This trades
+  # the pure source-timestamp clock for seam continuity: it removes the
+  # per-swap backtrack where a re-anchored chunk pulls the reference back to
+  # the measured (lagging) wrist.  false restores latency-frame starts.
+  chunk_start_reference_continuity: false
+  # Same switch accepts "trajectory": match the consumed raw right-wrist
+  # XYZ/rotation/velocity segment in the new prediction and start at its END.
+  # Search the available chunk (not just continuity_search_ahead_s), retaining
+  # >=0.5s/chunk_end_margin_s future; anchor the wrist to the outgoing reference.
+  # true retains the original point-based implementation; false disables it.
+  # Missing history or a poor match (>3cm RMS / >10deg RMS) falls back to true.
+  continuity_search_ahead_s: 1.0
+  # Optional, removable guard. false never loads its module.
+  # Requires focus_handoff_enabled. Bounds legacy/trajectory continuity when
+  # >=2 locked bending fingers cross a sustained change from the latency pose
+  # and disagree with measured feedback. Pre-bend is allowed. Missing same-
+  # chunk IK/feedback defers replacement: inspect one pinned candidate while
+  # the old chunk plays; newer arrivals stay pending. Timeout drops the
+  # unchecked candidate. Freshness/staleness checks are never extended.
+  # Known events also cap that
+  # locked hand's playback cursor, RTC inputs and every future token. Reaching
+  # a boundary latches its pose across replans until await_chunk/FOCUS unlocks
+  # the hand. Body/source clocks and other hands continue independently.
+  # FOCUS entry/completion and fresh handoff overlays retain their own logic.
+  # These are experimental conflict thresholds, NOT grasp-success thresholds.
+  continuity_hand_event_guard: false
+  continuity_hand_event_feedback_delta: 0.25
+  continuity_hand_event_interval_delta: 0.10
+  continuity_hand_event_sustain_s: 0.15
+  continuity_hand_event_check_timeout_s: 0.4
+  # Opt-in rescue for a wrist stuck before grasp/release. Requires continuity
+  # false and focus_handoff_enabled true. FOCUS respects the configured
+  # continuity mode independently of whether this assist is enabled.
+  # Fresh FK moving <=5mm over 2s arms a 5mm/s world-position translation
+  # towards the newest prediction's first opposite finger-bend intent.
+  # Arrival uses measured FK, so the reference may lead past that entry.
+  # Tracking error > max_tracking_error_m pauses integration and retains the
+  # offset until the measured wrist catches up; max_offset_m bounds total shift.
+  # Default right only; translation affects every wrist future token equally.
+  # FOCUS's measured entry/fresh-chunk fence/finger commands remain unchanged.
+  # At await_chunk/focus, stop adding; keep signed progress in the last approach
+  # direction until the UNREBASED prediction catches up. No XYZ max/min.
+  stall_wrist_assist: false
+  stall_wrist_assist_sides: [right]
+  stall_wrist_assist_stall_s: 2.0
+  stall_wrist_assist_motion_m: 0.005
+  stall_wrist_assist_speed_m_s: 0.005
+  stall_wrist_assist_max_offset_m: 0.15
+  stall_wrist_assist_max_tracking_error_m: 0.05
+  stall_wrist_assist_max_prediction_age_s: 0.75
+  # 2) Freeze finger *closing* while the measured wrist (Vive*FK) is farther
+  # than engage_m from the reference wrist; release below release_m
+  # (hysteresis).  Opening always passes immediately.  Addresses the
+  # 2026-09-09 failure mode: fingers closed on the chunk time schedule while
+  # the wrist ran at 0.12-0.76x predicted speed, closing 5-23cm early.
+  finger_wrist_gate: false
+  finger_wrist_gate_engage_m: 0.06
+  finger_wrist_gate_release_m: 0.035
+  # 3) Where finger targets come from.  playback (pre-existing behaviour):
+  # fingertips are sampled from the same accepted-chunk playback as the body
+  # keypoints, so the min-execution hold, RTC and chunk_blend_s all apply.
+  # latest: fingertips follow the newest *received* chunk on its own
+  # source-timestamp clock, bypassing the hold, so finger plans refresh every
+  # replan (~0.34s) even while the body keeps executing an older chunk.
+  finger_chunk_source: playback
+  # Measured-pose grasp handoff. Off retains existing chunk/hand execution.
+  # On blocks BOTH hands from closing at startup. Each side independently estimates
+  # its entry from physical bending intent (not thumb rotation or the other
+  # hand), and waits for ONLY its own measured wrist to arrive.
+  # Then a post-arrival chunk uses latency time, bypasses RTC/continuity,
+  # and adds wrist increments to the outgoing target without a position jump.
+  # Close and release each get their own handoff window and strictly alternate.
+  # Outside its window a hand holds its last command, so the fingers only ever
+  # move inside a window. Each window relocks after measured progress +
+  # completion hold, or on timeout.
+  focus_handoff_enabled: false
+  # A/B switch: legacy keeps the previous entry/completion behavior.
+  # v2 close entry: >=2 bend motors request action <=0.9 at frame zero,
+  # >=0.03 closing from feedback; >=2 close another 0.05 by 0.3s;
+  # wrist displacement by 0.3s <=1.2cm; >=2 consecutive chunk IDs agree.
+  # v2 completion: >=2 bend motors progress >=0.05 from entry and reach
+  # action <=0.5, held for completion_hold_s. No goal-proximity shortcut.
+  # Release retains its absolute feedback threshold; timeout remains an abort.
+  #
+  # v3 = legacy entry events + legacy exit, plus one extra close-entry gate.
+  # Legacy arms on any closing edge in the chunk, including one 40-70 frames
+  # and 5-10cm ahead, then drives the wrist to that already-stale pose. v3
+  # keeps a close only when the chunk's OWN grasp frame is already here:
+  # locate the first frame whose four fingertips sit within
+  # focus_v3_closed_spread_m of the thumb tip, and require the straight-line
+  # wrist displacement from frame zero to that frame to be at most
+  # focus_v3_max_approach_m. The distance is a norm, so it does not depend on
+  # which axis points forward. A close whose grasp frame cannot be located at
+  # all is rejected.
+  #
+  # Defaults are calibrated on 29 hand-labelled close entries from 1011/1012/
+  # 1014 (13 confirmed insertions, 16 confirmed closes on air): they keep
+  # 13/13 insertions and reject 8/16 air closes. Largest kept insertion
+  # measured 0.0195 m, smallest rejected air close 0.0295 m. The remaining 8
+  # air closes have a grasp frame at frame zero and cannot be separated here.
+  focus_handoff_version: "legacy"
+  focus_v3_closed_spread_m: 0.11
+  focus_v3_max_approach_m: 0.02
+  # Bending-motor stitching inside a CLOSE window only, per hand (a release
+  # window is never stitched -- hold_progress would clamp it shut):
+  # off: raw IK targets; continuity: anchor each new chunk to the applied
+  # target and preserve increments; hold_progress: never reopen during grasp.
+  # Thumb rotation is unchanged. Leaving the window clears the stitching state.
+  # "off" is the 2026-10-08 behaviour: the whole stitching branch is skipped
+  # and apply() is never called. Keep it the default so an un-overridden run
+  # is comparable with 2026-10-08. hold_progress targets the 2026-10-08
+  # symptom where a new chunk's finger prediction lagged the achieved grasp
+  # and loosened it mid-window; enable it explicitly to A/B that.
+  #
+  # "probe" stops following the finger prediction for the whole close window
+  # and ramps the five bending motors shut over focus_probe_close_s, then
+  # reads feedback at focus_probe_decide_s and ends the window itself:
+  #   mean measured closure >= focus_probe_empty_closure -> "closed_empty"
+  #   otherwise                                          -> "grasp_confirmed"
+  # Against a bottle the fingers stall at its radius; in free air they reach
+  # the commanded close. No other mode exposes that difference, because the
+  # ordinary exit freezes the command once two motors pass halfway -- 29
+  # hand-labelled 1011/1012/1014 grasps showed completely overlapping finger
+  # plateaus for real and empty closes for exactly this reason.
+  # "probe" also fixes the separate failure where every replan reopened the
+  # predicted fingers: 6 labelled attempts had the hand correctly around the
+  # bottle and still timed out with the fingers never moving.
+  # focus_probe_release_on_empty reopens that hand on "closed_empty" and
+  # clears last_kind, so the next close arms without first waiting for a
+  # release HAT has no reason to predict.
+  # WARNING: focus_probe_empty_closure is NOT yet calibrated on hardware --
+  # no recording contains a commanded full close. Read the "probe closure"
+  # value logged on every grasp for one run and set the threshold between the
+  # loaded and empty populations before trusting the classification.
+  focus_handoff_finger_mode: "off"
+  focus_probe_close_s: 0.5
+  focus_probe_decide_s: 0.6
+  focus_probe_empty_closure: 0.85
+  focus_probe_release_on_empty: true
+  focus_handoff_sides: [left, right]
+  focus_handoff_position_tolerance_m: 0.03
+  focus_handoff_rotation_tolerance_deg: 10.0
+  focus_handoff_consensus_chunks: 2
+  focus_handoff_completion_hold_s: 1.0
+  focus_handoff_timeout_s: 5.0
+  # One switch selects who decides FOCUS timing. "keypoints" is the complete
+  # existing/manual path and remains the default. "gpt_shadow" keeps that path
+  # active while GPT only records decisions. "gpt" disables keypoint entry and
+  # feedback completion, and applies validated GPT decisions through the same
+  # measured hold -> fresh chunk -> rebase -> continuity-rejoin interfaces.
+  focus_handoff_source: keypoints
+  gpt_focus_side: right
+  gpt_task_instruction: "pick up the bottle and place it"
+  gpt_model: gpt-6.1-sol
+  gpt_reasoning_effort: low
+  # "api" calls the Responses endpoint from ~/.codex2/config.toml directly and
+  # reads its OPENAI_API_KEY from ~/.codex2/auth.json. "codex" keeps the old CLI.
+  gpt_backend: api
+  gpt_codex_home: ~/.codex2
+  # Null means use model_providers.<active>.base_url from codex2 config.
+  gpt_api_base_url: null
+  # codeccs currently rejects json_schema for gpt-6.1-sol. JSON mode plus the
+  # local strict validator preserves the same decision safety checks.
+  gpt_api_response_format: json_object
+  gpt_api_timeout_s: 60.0
+  gpt_api_retries: 1
+  gpt_image_detail: low
+  gpt_max_output_tokens: 256
+  # CLI-only compatibility settings.
+  gpt_fast_mode: true
+  gpt_command: codex2
+  gpt_fallback_command: codex
+  gpt_codex_timeout_s: 60.0
+  gpt_min_interval_s: 0.5
+  # 512 px keeps enough visual detail while limiting request size.
+  gpt_image_max_side: 512
+  gpt_camera_endpoint: tcp://192.168.123.164:5555
+  gpt_camera_topic: realsense
+  gpt_camera_max_age_s: 1.0
+  # Direct Responses API + 6.1 Sol low measured about 18-31s on this gateway.
+  # Trigger drift and decision age still reject unsafe/stale transitions.
+  gpt_prompt_latency_s: 20.0
+  gpt_max_decision_age_s: 20.0
+  gpt_trigger_max_drift_m: 0.02
+  gpt_min_focus_time_s: 0.5
+  # Must exceed one fresh post-transition vision round trip (~20-22s here).
+  gpt_focus_timeout_s: 30.0
+  gpt_min_confidence_state: 0.6
+  gpt_speed_levels: [1.0, 0.5, 0.25]
+  gpt_speed_slew_per_s: 1.5
+  gpt_horizon_s: 15.0
+  # Approach slowdown (requires focus_handoff_enabled). Scales the reference
+  # playback clock in distance bands, where d is the
+  # measured wrist distance to that hand's agreed FOCUS entry wrist position --
+  # the same keypoint the handoff already requires the wrist to reach.
+  # d >= 40cm: 1.0x; 30cm < d < 40cm: 0.8x;
+  # 20cm < d <= 30cm: 0.6x; d <= 20cm: 0.4x. Far away
+  # the reference plays at the trained rate; near the entry it crawls, so the
+  # hand has time to land between the bottle's sides. The scale is frozen at
+  # its unlock value while a window runs (unlocking consumes the entry pose)
+  # and is retained if entry is absent, including after the window ends.
+  # When entry returns, recompute from the current distance (slower or faster).
+  # Stop/reset clears the remembered rates. Release windows use the same
+  # machinery, so they slow down too. Prediction rate, control rate, gains and
+  # every FOCUS criterion are untouched; the latency cursor and min-execution
+  # hold share the slowed clock, so an accepted chunk cannot skip back the
+  # frames the slowdown saved. Policy future horizons sample scaled trajectory
+  # offsets, keeping their wall-time labels. fingers_full_speed keeps an active window's
+  # fingertip targets on the wall clock while the wrist stays slowed.
+  # NOTE: focus_handoff_timeout_s/completion_hold_s stay wall-clock -- raise
+  # the timeout roughly by 1/min(band_scales) when enabling this.
+  approach_slowdown: false
+  approach_slowdown_distance_bands_m: [0.20, 0.30, 0.40]
+  approach_slowdown_band_scales: [0.4, 0.6, 0.8]
+  approach_slowdown_fingers_full_speed: true
+  # Applies identically to real, real_wrist and actual. Producer replans stay
+  # unchanged. Inspect incoming chunks even while playing a longer approach.
+  # Canonical FOCUS retains FOCUS_ENTER=0.1 (grasp intent, not phase amplitude).
+  # Hold both hand motor commands outside FOCUS; after a window, retain the
+  # last grasp/release command until the next window. Near cadence stays latched
+  # until restart. Mutually exclusive with focus_handoff_enabled above.
+  focus_adaptive_enabled: false
+  focus_adaptive_approach_frames: 30
+  focus_adaptive_near_frames: 10
+  focus_adaptive_near_distance_m: 0.045
+  focus_adaptive_consensus_chunks: 3
+  focus_adaptive_sides: [right]

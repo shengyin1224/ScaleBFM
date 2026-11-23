@@ -1,0 +1,56 @@
+{
+  "package_files_created": true,
+  "enable": false,
+  "ready_for_robot": false,
+  "offline_evaluations": {
+    "brain": {
+      "status": "passed",
+      "gates": {
+        "actual_above_5hz_ratio": true,
+        "action_difference_ratio": true,
+        "joint_velocity_rms_ratio": true,
+        "plan_seam_excess_p95_cm": true,
+        "wrist_error_reduction": true,
+        "fallback_fraction": true
+      },
+      "fallback_fraction": 0.0030125018828136767,
+      "metrics_sha256": "ffa8fb87b567a5a9f702c90f343be857034de484dc767a1bda90d8c22fbe6d3a",
+      "metrics_file": "/home/nerv/qingyaoxu/ScaleBFM/exec_comp/runs/round4/brain_evaluation/b1_lowdim/metrics.json"
+    },
+    "motion": {
+      "status": "passed",
+      "gates": {
+        "actual_above_5hz_ratio": true,
+        "action_difference_ratio": true,
+        "joint_velocity_rms_ratio": true,
+        "plan_seam_excess_p95_cm": true,
+        "wrist_error_reduction": true,
+        "fallback_fraction": true
+      },
+      "fallback_fraction": 0.01667798406730817,
+      "metrics_sha256": "d26c6cc4a43b777aff46b05eebbedfc8150b5dcc03b725cfc973c68cded56664",
+      "metrics_file": "/home/nerv/qingyaoxu/ScaleBFM/exec_comp/runs/round4/closed_loop/b1_lowdim/metrics.json"
+    },
+    "dr": {
+      "status": "failed",
+      "gates": {
+        "actual_above_5hz_ratio": true,
+        "action_difference_ratio": true,
+        "joint_velocity_rms_ratio": true,
+        "plan_seam_excess_p95_cm": true,
+        "wrist_error_reduction": true,
+        "fallback_fraction": false
+      },
+      "fallback_fraction": 0.050091642418531444,
+      "metrics_sha256": "4620618dd2edfd570663cdd9f92740e9ce2a935ba63e828b584229f6f3ba6b0f",
+      "metrics_file": "/home/nerv/qingyaoxu/ScaleBFM/exec_comp/runs/round4/closed_loop/b1_lowdim_dr/metrics.json"
+    }
+  },
+  "offline_all_gates_passed": false,
+  "pending": [
+    "dr:failed",
+    "4080S latency deferred until user notifies idle window"
+  ],
+  "a1_lowdim_training": "skipped per user",
+  "caps": "deferred per user"
+}

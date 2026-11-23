@@ -1,0 +1,128 @@
+[
+  {
+    "variant": "F1",
+    "gpu": 0,
+    "command": [
+      "/root/miniconda3/envs/isaaclab_sonic/bin/python",
+      "/root/shengyin/ScaleBFM/ScaleTrack/scripts/pretrain/rsl_rl/train.py",
+      "--task",
+      "G1-HAT4-F1-Finetune",
+      "--motion_file",
+      "/root/shengyin/ScaleBFM/ScaleTrack/data/hat4_unifolm/manifests/unifolm_hat4_train.yaml",
+      "--test_motion_file",
+      "/root/shengyin/ScaleBFM/ScaleTrack/data/hat4_unifolm/manifests/unifolm_hat4_heldout.yaml",
+      "--pretrained_checkpoint",
+      "/root/shengyin/ScaleBFM/ScaleTrack/logs/rsl_rl/g1_bfm_tracking_exp/humanoid_transformer_m/model_22200.pt",
+      "--num_envs",
+      "4096",
+      "--max_iterations",
+      "20000",
+      "--run_name",
+      "formal_core5_20260728_F1",
+      "--device",
+      "cuda:0",
+      "--headless"
+    ]
+  },
+  {
+    "variant": "F2",
+    "gpu": 1,
+    "command": [
+      "/root/miniconda3/envs/isaaclab_sonic/bin/python",
+      "/root/shengyin/ScaleBFM/ScaleTrack/scripts/pretrain/rsl_rl/train.py",
+      "--task",
+      "G1-HAT4-F2-Finetune",
+      "--motion_file",
+      "/root/shengyin/ScaleBFM/ScaleTrack/data/hat4_unifolm/manifests/unifolm_hat4_train.yaml",
+      "--test_motion_file",
+      "/root/shengyin/ScaleBFM/ScaleTrack/data/hat4_unifolm/manifests/unifolm_hat4_heldout.yaml",
+      "--pretrained_checkpoint",
+      "/root/shengyin/ScaleBFM/ScaleTrack/logs/rsl_rl/g1_bfm_tracking_exp/humanoid_transformer_m/model_22200.pt",
+      "--num_envs",
+      "4096",
+      "--max_iterations",
+      "20000",
+      "--run_name",
+      "formal_core5_20260728_F2",
+      "--device",
+      "cuda:1",
+      "--headless"
+    ]
+  },
+  {
+    "variant": "F2o",
+    "gpu": 2,
+    "command": [
+      "/root/miniconda3/envs/isaaclab_sonic/bin/python",
+      "/root/shengyin/ScaleBFM/ScaleTrack/scripts/pretrain/rsl_rl/train.py",
+      "--task",
+      "G1-HAT4-F2O-Finetune",
+      "--motion_file",
+      "/root/shengyin/ScaleBFM/ScaleTrack/data/hat4_unifolm/manifests/unifolm_hat4_train.yaml",
+      "--test_motion_file",
+      "/root/shengyin/ScaleBFM/ScaleTrack/data/hat4_unifolm/manifests/unifolm_hat4_heldout.yaml",
+      "--pretrained_checkpoint",
+      "/root/shengyin/ScaleBFM/ScaleTrack/logs/rsl_rl/g1_bfm_tracking_exp/humanoid_transformer_m/model_22200.pt",
+      "--num_envs",
+      "4096",
+      "--max_iterations",
+      "20000",
+      "--run_name",
+      "formal_core5_20260728_F2o",
+      "--device",
+      "cuda:2",
+      "--headless"
+    ]
+  },
+  {
+    "variant": "F3",
+    "gpu": 3,
+    "command": [
+      "/root/miniconda3/envs/isaaclab_sonic/bin/python",
+      "/root/shengyin/ScaleBFM/ScaleTrack/scripts/pretrain/rsl_rl/train.py",
+      "--task",
+      "G1-HAT4-F3-Finetune",
+      "--motion_file",
+      "/root/shengyin/ScaleBFM/ScaleTrack/data/hat4_unifolm/manifests/unifolm_hat4_train.yaml",
+      "--test_motion_file",
+      "/root/shengyin/ScaleBFM/ScaleTrack/data/hat4_unifolm/manifests/unifolm_hat4_heldout.yaml",
+      "--pretrained_checkpoint",
+      "/root/shengyin/ScaleBFM/ScaleTrack/logs/rsl_rl/g1_bfm_tracking_exp/humanoid_transformer_m/model_22200.pt",
+      "--num_envs",
+      "4096",
+      "--max_iterations",
+      "20000",
+      "--run_name",
+      "formal_core5_20260728_F3",
+      "--device",
+      "cuda:3",
+      "--headless"
+    ]
+  },
+  {
+    "variant": "F3h",
+    "gpu": 5,
+    "command": [
+      "/root/miniconda3/envs/isaaclab_sonic/bin/python",
+      "/root/shengyin/ScaleBFM/ScaleTrack/scripts/pretrain/rsl_rl/train.py",
+      "--task",
+      "G1-HAT4-F3H-Finetune",
+      "--motion_file",
+      "/root/shengyin/ScaleBFM/ScaleTrack/data/hat4_unifolm/manifests/unifolm_hat4_train.yaml",
+      "--test_motion_file",
+      "/root/shengyin/ScaleBFM/ScaleTrack/data/hat4_unifolm/manifests/unifolm_hat4_heldout.yaml",
+      "--pretrained_checkpoint",
+      "/root/shengyin/ScaleBFM/ScaleTrack/logs/rsl_rl/g1_bfm_tracking_exp/humanoid_transformer_m/model_22200.pt",
+      "--num_envs",
+      "4096",
+      "--max_iterations",
+      "20000",
+      "--run_name",
+      "formal_core5_20260728_F3h",
+      "--device",
+      "cuda:5",
+      "--headless"
+    ]
+  }
+]
+Dry run only; pass --execute to launch.

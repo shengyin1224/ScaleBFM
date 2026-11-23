@@ -1,0 +1,391 @@
+{
+  "simulator": "MuJoCo",
+  "control_mode": {
+    "index": 8,
+    "name": "HAT-4",
+    "active_links": [
+      "pelvis",
+      "left_wrist_yaw_link",
+      "right_wrist_yaw_link",
+      "torso_link"
+    ]
+  },
+  "actor_task_input_dim": 269,
+  "focus_phase_observation_active": true,
+  "checkpoint": "/root/shengyin/ScaleBFM/ScaleTrack/logs/rsl_rl/g1_hat4_focus_finetune/formal_core5_20260728b_F3/model_20000.pt",
+  "reference": "/root/shengyin/ScaleBFM/ScaleTrack/source/scaletrack/data/unifolm_10class_ep0000_processed/G1_WBT_Brainco_Pickup_Pillow_ep_0000.npz",
+  "hand_reference_ik": null,
+  "xml": "/root/shengyin/TWIST/assets/g1inspire/g1_29dof_inspire_hand.xml",
+  "pelvis_gyro_sensor": "imu-pelvis-angular-velocity",
+  "control_dt": 0.02,
+  "simulation_dt": 0.001,
+  "reanchor_ablation": {
+    "mode": "on",
+    "injected_initial_root_drift_xyz_m": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "evaluation_reference": "original fixed world reference",
+    "policy_reference": "original fixed world reference"
+  },
+  "wrist_compensation": {
+    "mode": "none",
+    "gain": 0.1,
+    "clamp_m": 0.15,
+    "mean_offset_norm_m": 0.0,
+    "max_abs_component_m": 0.0
+  },
+  "evaluated_transitions": 774,
+  "duration_sec": 15.48,
+  "future_offsets": [
+    0,
+    1,
+    2,
+    3,
+    4,
+    32
+  ],
+  "active_link_pose_vs_reference": {
+    "pelvis": {
+      "position_m": {
+        "mean": 0.04300733704657838,
+        "rmse": 0.05180072535917601,
+        "p95": 0.1019457848157448,
+        "max": 0.11588578980942656
+      },
+      "rotation_deg": {
+        "mean": 4.15456980531286,
+        "rmse": 5.206596472015266,
+        "p95": 10.682640052081842,
+        "max": 12.33700900610925
+      }
+    },
+    "left_wrist_yaw_link": {
+      "position_m": {
+        "mean": 0.04525483499359384,
+        "rmse": 0.05304186808974967,
+        "p95": 0.09596217902268343,
+        "max": 0.10320449508469372
+      },
+      "rotation_deg": {
+        "mean": 4.131551436702121,
+        "rmse": 4.475703983239702,
+        "p95": 7.492587416842564,
+        "max": 10.07699943864322
+      }
+    },
+    "right_wrist_yaw_link": {
+      "position_m": {
+        "mean": 0.0423005132452241,
+        "rmse": 0.04835940022193655,
+        "p95": 0.08330415888619702,
+        "max": 0.1082264499108782
+      },
+      "rotation_deg": {
+        "mean": 4.279349942450678,
+        "rmse": 4.915226067618983,
+        "p95": 8.466062048712514,
+        "max": 10.71742044637242
+      }
+    },
+    "torso_link": {
+      "position_m": {
+        "mean": 0.04144673719055631,
+        "rmse": 0.04942473261609932,
+        "p95": 0.09511900689369332,
+        "max": 0.10932573344585673
+      },
+      "rotation_deg": {
+        "mean": 2.7035290096769002,
+        "rmse": 3.0181964732731297,
+        "p95": 4.991612483305449,
+        "max": 7.070552656112151
+      }
+    }
+  },
+  "active_link_pose_local_heading_aligned": {
+    "pelvis": {
+      "position_m": {
+        "mean": 0.010480160884913409,
+        "rmse": 0.013164106064308099,
+        "p95": 0.028184233284615307,
+        "max": 0.03571685998926177
+      },
+      "rotation_deg": {
+        "mean": 3.5542063923731124,
+        "rmse": 4.398252679312019,
+        "p95": 8.811624201279416,
+        "max": 9.82788247076657
+      }
+    },
+    "left_wrist_yaw_link": {
+      "position_m": {
+        "mean": 0.032648810729268264,
+        "rmse": 0.03750348427385125,
+        "p95": 0.06700015428047063,
+        "max": 0.07246561964952
+      },
+      "rotation_deg": {
+        "mean": 4.624076407660832,
+        "rmse": 5.085345419517765,
+        "p95": 8.73831160280088,
+        "max": 11.24020702746662
+      }
+    },
+    "right_wrist_yaw_link": {
+      "position_m": {
+        "mean": 0.03777254976379969,
+        "rmse": 0.04412017718924014,
+        "p95": 0.08490292335903643,
+        "max": 0.09311810161005603
+      },
+      "rotation_deg": {
+        "mean": 5.429392980058073,
+        "rmse": 6.315762036063672,
+        "p95": 11.309786154128357,
+        "max": 16.53220682594817
+      }
+    },
+    "torso_link": {
+      "position_m": {
+        "mean": 0.011202069662863239,
+        "rmse": 0.013503219519697227,
+        "p95": 0.02802709570918182,
+        "max": 0.03543578894951559
+      },
+      "rotation_deg": {
+        "mean": 3.9367814233566807,
+        "rmse": 4.654960030960834,
+        "p95": 9.166674537376219,
+        "max": 9.595689238219252
+      }
+    }
+  },
+  "active_link_pose_pelvis_frame_local_twist": {
+    "pelvis": {
+      "position_m": {
+        "mean": 0.0,
+        "rmse": 0.0,
+        "p95": 0.0,
+        "max": 0.0
+      },
+      "rotation_deg": {
+        "mean": 6.465264097861315e-05,
+        "rmse": 0.0014070578067532345,
+        "p95": 0.0,
+        "max": 0.03789896089950888
+      }
+    },
+    "left_wrist_yaw_link": {
+      "position_m": {
+        "mean": 0.033457736730867556,
+        "rmse": 0.0426200096964415,
+        "p95": 0.08355039725161208,
+        "max": 0.09003197181239507
+      },
+      "rotation_deg": {
+        "mean": 6.84691488793157,
+        "rmse": 8.20008373679009,
+        "p95": 16.581588596422737,
+        "max": 17.343121513111086
+      }
+    },
+    "right_wrist_yaw_link": {
+      "position_m": {
+        "mean": 0.041050132838913234,
+        "rmse": 0.05180874608003845,
+        "p95": 0.1077486232050374,
+        "max": 0.11414496362535867
+      },
+      "rotation_deg": {
+        "mean": 6.408894194837311,
+        "rmse": 7.500208867313902,
+        "p95": 13.443966256439676,
+        "max": 18.166662919863885
+      }
+    },
+    "torso_link": {
+      "position_m": {
+        "mean": 0.00019338325020383987,
+        "rmse": 0.0002675377123734433,
+        "p95": 0.0006127930433306283,
+        "max": 0.000637086028385287
+      },
+      "rotation_deg": {
+        "mean": 5.666596832626591,
+        "rmse": 6.3621110024910665,
+        "p95": 11.095903508650743,
+        "max": 11.716183831678944
+      }
+    }
+  },
+  "active_link_position_root_relative_no_heading_alignment": {
+    "pelvis": {
+      "mean": 0.0,
+      "rmse": 0.0,
+      "p95": 0.0,
+      "max": 0.0
+    },
+    "left_wrist_yaw_link": {
+      "mean": 0.020098284244445347,
+      "rmse": 0.022269517813668524,
+      "p95": 0.03779952240124102,
+      "max": 0.04639469457017016
+    },
+    "right_wrist_yaw_link": {
+      "mean": 0.024932310020561246,
+      "rmse": 0.02925842993609195,
+      "p95": 0.05617104548070522,
+      "max": 0.07962352459498034
+    },
+    "torso_link": {
+      "mean": 0.0026882703096622364,
+      "rmse": 0.003343681700295537,
+      "p95": 0.006742871732480828,
+      "max": 0.0075109858040958224
+    }
+  },
+  "head_link_proxy": {
+    "mujoco_body": "head_mocap",
+    "note": "The TWIST XML merges the visual head_link mesh into torso_link; head_mocap is its fixed tracking body.",
+    "global": {
+      "position_m": {
+        "mean": 0.045918316986063475,
+        "rmse": 0.05420534151612605,
+        "p95": 0.09740998536528271,
+        "max": 0.1107809294535561
+      },
+      "rotation_deg": {
+        "mean": 2.7035290096769002,
+        "rmse": 3.0181964732731297,
+        "p95": 4.991612483305449,
+        "max": 7.070552656112151
+      }
+    },
+    "pelvis_frame_local": {
+      "position_m": {
+        "mean": 0.033591202450444536,
+        "rmse": 0.03724431796518795,
+        "p95": 0.05851931964736721,
+        "max": 0.06755661917404752
+      },
+      "rotation_deg": {
+        "mean": 5.666596832626591,
+        "rmse": 6.3621110024910665,
+        "p95": 11.095903508650743,
+        "max": 11.716183831678944
+      }
+    },
+    "fixed_transform_audit": {
+      "parent_body": "torso_link",
+      "configured_parent_local_position_m": [
+        0.0,
+        0.0,
+        0.4
+      ],
+      "configured_parent_local_quaternion_wxyz": [
+        1.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "runtime_position_error_m": {
+        "mean": 3.957197773508739e-16,
+        "rmse": 4.551255258931133e-16,
+        "p95": 8.253622189129466e-16,
+        "max": 1.1996863954553213e-15
+      },
+      "runtime_rotation_error_deg": {
+        "mean": 1.855926694886449e-06,
+        "rmse": 2.9511832366631887e-06,
+        "p95": 6.15664931839995e-06,
+        "max": 7.0403978477281e-06
+      }
+    }
+  },
+  "inspire_hand_ik_fingertips": null,
+  "focus_evaluation": null,
+  "trace_out": "/root/shengyin/ScaleBFM/ScaleTrack/action_error_results/wrist_compensation_mujoco_eval/smoke_pillow_f3_20k/none_trace.npz",
+  "rotation_metric_audit": {
+    "max_quaternion_vs_rotation_matrix_difference_deg": 0.0052687832306540505,
+    "reference_motion_frames_over_30_deg_s": {
+      "pelvis": {
+        "frames": 51,
+        "global_rotation_deg": {
+          "mean": 2.6071510913496625,
+          "rmse": 2.95467854332176,
+          "p95": 4.9584222851397985,
+          "max": 6.717875436495917
+        },
+        "local_rotation_deg": {
+          "mean": 2.229347091999066,
+          "rmse": 2.556384145493883,
+          "p95": 4.5925524825449955,
+          "max": 6.309037459145727
+        }
+      },
+      "left_wrist_yaw_link": {
+        "frames": 201,
+        "global_rotation_deg": {
+          "mean": 4.183490203882429,
+          "rmse": 4.430440946085792,
+          "p95": 6.433358460847918,
+          "max": 9.054814734829804
+        },
+        "local_rotation_deg": {
+          "mean": 4.557495345368481,
+          "rmse": 4.827748213944392,
+          "p95": 7.8771945988523,
+          "max": 9.879511628520152
+        }
+      },
+      "right_wrist_yaw_link": {
+        "frames": 220,
+        "global_rotation_deg": {
+          "mean": 4.693711562815722,
+          "rmse": 5.341249296493848,
+          "p95": 8.929980151976826,
+          "max": 10.633773051530106
+        },
+        "local_rotation_deg": {
+          "mean": 5.836708392976999,
+          "rmse": 6.634623937216806,
+          "p95": 12.043014437734964,
+          "max": 16.3096541668693
+        }
+      },
+      "torso_link": {
+        "frames": 127,
+        "global_rotation_deg": {
+          "mean": 2.808475140236776,
+          "rmse": 3.0405499530654176,
+          "p95": 5.031571827775393,
+          "max": 5.289533405917363
+        },
+        "local_rotation_deg": {
+          "mean": 2.909122823423225,
+          "rmse": 3.163321179723475,
+          "p95": 5.037404309342736,
+          "max": 5.881885648506543
+        }
+      }
+    }
+  },
+  "joint_rmse_rad": {
+    "mean": 0.0866579561821245,
+    "rmse": 0.09215943722917475,
+    "p95": 0.13939439967297249,
+    "max": 0.15305697088109696
+  },
+  "max_active_link_position_m": {
+    "mean": 0.049658662531984706,
+    "rmse": 0.0566167804311905,
+    "p95": 0.1019457848157448,
+    "max": 0.11588578980942656
+  },
+  "success_threshold_m": 0.5,
+  "success_rate_frames": 1.0,
+  "first_failure_frame": null,
+  "video": null
+}

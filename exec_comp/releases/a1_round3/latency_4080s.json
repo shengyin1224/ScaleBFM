@@ -1,0 +1,32 @@
+{
+  "gpu": "NVIDIA GeForce RTX 4080 SUPER",
+  "torch": "2.8.0+cu128",
+  "mode": "stepwise",
+  "torchscript_network": {
+    "mean_ms": 0.3721983989328146,
+    "median_ms": 0.3652479946613312,
+    "p95_ms": 0.4258319869637489,
+    "batch": 1,
+    "warmup": 50,
+    "measured_calls": 200,
+    "timing": "CUDA events; GPU tensors already resident; excludes disk logging and CPU conversion"
+  },
+  "full_stage": {
+    "mean_ms": 2.8206478152424097,
+    "median_ms": 2.777429763227701,
+    "p95_ms": 3.139626933261752,
+    "batch": 1,
+    "warmup": 50,
+    "measured_calls": 200,
+    "timing": "host wall clock + CUDA synchronization; GPU-resident resampled window/history; network/crossfade/freeze/ramp/cap/fallback included; forces refresh each call (event-mode upper bound); excludes upstream CPU reference sampler, FK/history collection and disk logging"
+  },
+  "offline_host_stage": {
+    "mean_ms": 7.951697846874595,
+    "median_ms": 7.630906067788601,
+    "p95_ms": 8.32706717774272,
+    "batch": 1,
+    "warmup": 20,
+    "measured_calls": 100,
+    "timing": "offline saved-state fixture; host wall clock incl FK/history, original extra100@30Hz reference sampler, CPU/GPU conversion, released TorchScript and guards; excludes baseline6-token sampling and disk logs; forced refresh every call"
+  }
+}

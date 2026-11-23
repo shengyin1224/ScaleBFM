@@ -1,0 +1,87 @@
+{
+  "simulator": "MuJoCo",
+  "control_mode": {
+    "index": 2,
+    "name": "VR-3",
+    "active_links": [
+      "pelvis",
+      "left_wrist_yaw_link",
+      "right_wrist_yaw_link"
+    ]
+  },
+  "checkpoint": "/root/shengyin/ScaleBFM/ScaleTrack/logs/rsl_rl/g1_bfm_tracking_exp/humanoid_transformer_m/model_22200.pt",
+  "reference": "/root/shengyin/ScaleBFM/ScaleTrack/source/scaletrack/data/unifolm_pickup_ep0000_processed/G1_WBT_Brainco_Pickup_Pillow_ep_0000.npz",
+  "xml": "/root/shengyin/ScaleBFM/ScaleTrack/source/scaletrack/scaletrack/assets/robots/g1_29dof/g1_29dof.xml",
+  "control_dt": 0.02,
+  "simulation_dt": 0.001,
+  "evaluated_transitions": 774,
+  "duration_sec": 15.48,
+  "future_offsets": [
+    0,
+    1,
+    2,
+    3,
+    4,
+    15
+  ],
+  "active_link_pose_vs_reference": {
+    "pelvis": {
+      "position_m": {
+        "mean": 0.0764769650686301,
+        "rmse": 0.09100479660823249,
+        "p95": 0.18486561636432158,
+        "max": 0.19174035719712834
+      },
+      "rotation_deg": {
+        "mean": 4.898046416537469,
+        "rmse": 5.216958457269502,
+        "p95": 8.128514600621214,
+        "max": 11.307171478600713
+      }
+    },
+    "left_wrist_yaw_link": {
+      "position_m": {
+        "mean": 0.11725959333801922,
+        "rmse": 0.12937377660571106,
+        "p95": 0.2132609300337182,
+        "max": 0.21868150007516435
+      },
+      "rotation_deg": {
+        "mean": 48.720094645400394,
+        "rmse": 50.07277178397445,
+        "p95": 56.18463085614811,
+        "max": 57.17351038502033
+      }
+    },
+    "right_wrist_yaw_link": {
+      "position_m": {
+        "mean": 0.12598337054428668,
+        "rmse": 0.13783923562258776,
+        "p95": 0.23366642004120886,
+        "max": 0.24195921109271679
+      },
+      "rotation_deg": {
+        "mean": 48.75800485704627,
+        "rmse": 51.91833620733962,
+        "p95": 65.71051702802204,
+        "max": 67.18159804637698
+      }
+    }
+  },
+  "joint_rmse_rad": {
+    "mean": 0.41773163233191535,
+    "rmse": 0.4296349116661192,
+    "p95": 0.48532078458339395,
+    "max": 0.5249901229350034
+  },
+  "max_active_link_position_m": {
+    "mean": 0.13010483826882338,
+    "rmse": 0.14170330463350087,
+    "p95": 0.23366642004120886,
+    "max": 0.24195921109271679
+  },
+  "success_threshold_m": 0.5,
+  "success_rate_frames": 1.0,
+  "first_failure_frame": null,
+  "video": "/root/shengyin/TWIST/deploy_real/videos/0726_scalebfm_transformer_m_vr3_pickup_pillow_ep0000_mujoco.mp4"
+}

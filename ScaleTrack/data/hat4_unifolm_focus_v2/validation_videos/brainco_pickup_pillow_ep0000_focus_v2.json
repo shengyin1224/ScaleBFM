@@ -1,0 +1,22 @@
+{
+  "hdf5": "/mnt/nvme0n1/DATASETS/human_policy/convert_UnifoLM_WBT/G1_WBT_Brainco_Pickup_Pillow_ep_0000.hdf5",
+  "focus_source": "/root/shengyin/ScaleBFM/ScaleTrack/data/hat4_unifolm_focus_v2/raw/G1_WBT_Brainco_Pickup_Pillow_ep_0000.pkl",
+  "video": "/root/shengyin/ScaleBFM/ScaleTrack/data/hat4_unifolm_focus_v2/validation_videos/brainco_pickup_pillow_ep0000_focus_v2.mp4",
+  "fps": 30.0,
+  "frames": 466,
+  "duration_s": 15.533333333333333,
+  "focus_segments": [
+    {
+      "start_frame": 193,
+      "end_frame_inclusive": 256,
+      "start_s": 6.433333333333334,
+      "end_s_exclusive": 8.566666666666666
+    },
+    {
+      "start_frame": 370,
+      "end_frame_inclusive": 434,
+      "start_s": 12.333333333333334,
+      "end_s_exclusive": 14.5
+    }
+  ]
+}

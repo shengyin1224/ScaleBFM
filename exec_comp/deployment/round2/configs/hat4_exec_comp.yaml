@@ -1,0 +1,16 @@
+defaults:
+- hat4_online
+- _self_
+hydra:
+  searchpath:
+  - file:///home/nerv/qingyaoxu/ScaleBFM/ScaleBridge/scalebridge/config
+exec_comp:
+  enable: false
+  model: /home/nerv/qingyaoxu/ScaleBFM/exec_comp/releases/a1_round2/a1_correct_kp.pt
+  cerebellum_model: ${agent.config.checkpoint}
+  residual_lowpass: true
+  log_dir: /home/nerv/qingyaoxu/ScaleBFM/exec_comp/runs/deployment_logs
+env:
+  _target_: exec_comp.deployment_env.ExecCompOnlineEnv
+  config:
+    exec_comp: ${exec_comp}

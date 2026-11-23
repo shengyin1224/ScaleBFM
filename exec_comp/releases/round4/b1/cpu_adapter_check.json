@@ -1,0 +1,12 @@
+{
+  "actual_export_loads": true,
+  "corrected_shape": [
+    1,
+    6,
+    4,
+    9
+  ],
+  "finite": true,
+  "device": "cpu",
+  "real_robot_run": false
+}

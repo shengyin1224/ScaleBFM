@@ -1,0 +1,49 @@
+{
+  "new_config": "/home/nerv/qingyaoxu/ScaleBFM/exec_comp/deployment/configs/hat4_exec_comp_round3.yaml",
+  "checks": {
+    "canonical_config_alias_matches_round3": true,
+    "baseline_logging_readonly": true,
+    "exec_comp_disabled_by_default": true,
+    "env_sees_the_same_switch": true,
+    "target_is_the_round3_env": true,
+    "wrist_compensation_is_none": true,
+    "adaptive_switching_preserved": true,
+    "call_mode_present": true,
+    "shared_cap_present": true
+  },
+  "copied_originals": {
+    "hat4_online.yaml": {
+      "source": "/home/nerv/qingyaoxu/ScaleBFM/ScaleBridge/scalebridge/config/hat4_online.yaml",
+      "sha256": "3661b68c5f776eae36a6f73e34a6080f482ed42c33c94cf36928a4282b19f462",
+      "copy": "/home/nerv/qingyaoxu/ScaleBFM/exec_comp/deployment/configs/hat4_online.yaml",
+      "copy_sha256": "3661b68c5f776eae36a6f73e34a6080f482ed42c33c94cf36928a4282b19f462"
+    },
+    "env/motion_tracking_hat4_adaptive.yaml": {
+      "source": "/home/nerv/qingyaoxu/ScaleBFM/ScaleBridge/scalebridge/config/env/motion_tracking_hat4_adaptive.yaml",
+      "sha256": "8f8bc1dcc00e2a217732fe2b76c63b90ede5aa6d7300a1e86570b65b5c260bd8",
+      "copy": "/home/nerv/qingyaoxu/ScaleBFM/exec_comp/deployment/configs/env/motion_tracking_hat4_adaptive.yaml",
+      "copy_sha256": "8f8bc1dcc00e2a217732fe2b76c63b90ede5aa6d7300a1e86570b65b5c260bd8"
+    },
+    "env/motion_tracking_hat4_online.yaml": {
+      "source": "/home/nerv/qingyaoxu/ScaleBFM/ScaleBridge/scalebridge/config/env/motion_tracking_hat4_online.yaml",
+      "sha256": "4663537de7121673e2a423d048a20e70c22d678af02bf6f3657bbfb98a6eefdd",
+      "copy": "/home/nerv/qingyaoxu/ScaleBFM/exec_comp/deployment/configs/env/motion_tracking_hat4_online.yaml",
+      "copy_sha256": "4663537de7121673e2a423d048a20e70c22d678af02bf6f3657bbfb98a6eefdd"
+    }
+  },
+  "originals_unmodified": true,
+  "deployed_overrides_reproduced": {
+    "env": "motion_tracking_hat4_adaptive",
+    "env.config.reference_forcing": false,
+    "env.config.min_chunk_execution_fraction": 0.1,
+    "env.config.chunk_start_reference_continuity": true,
+    "env.config.focus_handoff_enabled": true,
+    "env.config.focus_handoff_version": "v3",
+    "env.config.focus_handoff_source": "keypoints",
+    "env.config.focus_handoff_finger_mode": "hold_progress"
+  },
+  "instantiated_robot_or_sockets": false,
+  "mutual_exclusion": "exec_comp.enable with wrist_compensation != none raises before the environment is built; see exec_comp/round3/deployment_env.py",
+  "grasp_overlays": "FOCUS handoff, hand-event guard, stall assist and the predicted close boundary freeze the residual and ramp back over 150 ms; round 2 bypassed A1 in those states, which dropped the residual to zero in one control step",
+  "real_robot_run": false
+}

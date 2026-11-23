@@ -1,0 +1,17 @@
+{
+  "inverse": {
+    "update": 9500,
+    "validation_loss": 0.07880960730835795,
+    "position_cm": 2.0565477088093758
+  },
+  "forward": {
+    "update": 9500,
+    "validation_loss": 0.04637947375886142,
+    "position_cm": 1.5608393624424934
+  },
+  "adapter": {
+    "update": 5000,
+    "validation_loss": 0.007289115397725254,
+    "position_cm": 0.5159681532531977
+  }
+}

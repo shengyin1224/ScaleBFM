@@ -1,0 +1,6 @@
+{
+  "actual_export_loads": true,
+  "coefficient_expansion_matches_correct_kp_max_abs_m": 5.960464477539063e-08,
+  "device": "cpu",
+  "real_robot_run": false
+}

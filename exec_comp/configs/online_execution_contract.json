@@ -1,0 +1,413 @@
+{
+  "source": "ScaleBridge recorded closed-loop runs (read-only); no deployment file modified",
+  "since": "2026-10-16",
+  "runs": 120,
+  "run_list": [
+    "outputs/2026-10-21/15-00-46",
+    "outputs/2026-10-21/15-01-42",
+    "outputs/2026-10-21/15-03-25",
+    "outputs/2026-10-21/15-04-23",
+    "outputs/2026-10-21/15-05-02",
+    "outputs/2026-10-21/15-05-41",
+    "outputs/2026-10-21/15-06-35",
+    "outputs/2026-10-21/15-07-16",
+    "outputs/2026-10-21/15-07-57",
+    "outputs/2026-10-21/15-08-46",
+    "outputs/2026-10-21/15-09-31",
+    "outputs/2026-10-21/15-10-04",
+    "outputs/2026-10-21/15-10-37",
+    "outputs/2026-10-21/15-11-15",
+    "outputs/2026-10-21/15-11-53",
+    "outputs/2026-10-21/15-15-07",
+    "outputs/2026-10-21/15-15-57",
+    "outputs/2026-10-21/15-18-24",
+    "outputs/2026-10-21/15-19-04",
+    "outputs/2026-10-21/15-19-56",
+    "outputs/2026-10-21/15-20-33",
+    "outputs/2026-10-21/15-21-33",
+    "outputs/2026-10-21/15-22-03",
+    "outputs/2026-10-21/15-22-40",
+    "outputs/2026-10-21/15-23-26",
+    "outputs/2026-10-21/15-24-17",
+    "outputs/2026-10-21/15-26-43",
+    "outputs/2026-10-21/15-27-26",
+    "outputs/2026-10-21/15-28-09",
+    "outputs/2026-10-21/15-28-51",
+    "outputs/2026-10-21/15-29-29",
+    "outputs/2026-10-21/19-30-34",
+    "outputs/2026-10-21/19-31-50",
+    "outputs/2026-10-21/19-33-27",
+    "outputs/2026-10-21/19-34-17",
+    "outputs/2026-10-21/19-35-00",
+    "outputs/2026-10-21/19-35-55",
+    "outputs/2026-10-21/19-36-36",
+    "outputs/2026-10-21/19-37-41",
+    "outputs/2026-10-21/19-38-29",
+    "outputs/2026-10-21/19-39-49",
+    "outputs/2026-10-21/19-43-44",
+    "outputs/2026-10-22/14-11-11",
+    "outputs/2026-10-22/14-12-22",
+    "outputs/2026-10-22/14-13-15",
+    "outputs/2026-10-22/14-14-14",
+    "outputs/2026-10-22/14-15-17",
+    "outputs/2026-10-22/14-16-30",
+    "outputs/2026-10-22/14-17-27",
+    "outputs/2026-10-22/14-18-11",
+    "outputs/2026-10-22/14-18-50",
+    "outputs/2026-10-22/14-19-25",
+    "outputs/2026-10-22/14-20-10",
+    "outputs/2026-10-22/14-21-14",
+    "outputs/2026-10-22/14-21-55",
+    "outputs/2026-10-22/14-24-00",
+    "outputs/2026-10-22/14-39-42",
+    "outputs/2026-10-22/14-44-28",
+    "outputs/2026-10-22/14-45-59",
+    "outputs/2026-10-22/14-46-49",
+    "outputs/2026-10-22/14-47-44",
+    "outputs/2026-10-22/14-51-05",
+    "outputs/2026-10-22/14-52-07",
+    "outputs/2026-10-22/14-52-50",
+    "outputs/2026-10-22/14-53-33",
+    "outputs/2026-10-22/14-54-15",
+    "outputs/2026-10-22/14-55-06",
+    "outputs/2026-10-22/14-55-57",
+    "outputs/2026-10-22/14-56-38",
+    "outputs/2026-10-22/14-57-19",
+    "outputs/2026-10-22/14-58-25",
+    "outputs/2026-10-22/14-59-41",
+    "outputs/2026-10-22/15-00-37",
+    "outputs/2026-10-22/15-01-37",
+    "outputs/2026-10-22/15-02-24",
+    "outputs/2026-10-22/15-03-44",
+    "outputs/2026-10-22/15-04-24",
+    "outputs/2026-10-22/15-05-37",
+    "outputs/2026-10-22/15-06-16",
+    "outputs/2026-10-22/15-07-21",
+    "outputs/2026-10-22/15-08-05",
+    "outputs/2026-10-22/15-09-16",
+    "outputs/2026-10-22/15-10-24",
+    "outputs/2026-10-22/15-12-19",
+    "outputs/2026-10-22/15-13-07",
+    "outputs/2026-10-22/15-14-52",
+    "outputs/2026-10-22/15-15-37",
+    "outputs/2026-10-22/15-16-43",
+    "outputs/2026-10-22/15-17-24",
+    "outputs/2026-10-22/15-18-41",
+    "outputs/2026-10-22/15-20-07",
+    "outputs/2026-10-22/15-21-00",
+    "outputs/2026-10-22/15-21-59",
+    "outputs/2026-10-22/15-23-09",
+    "outputs/2026-10-22/15-33-31",
+    "outputs/2026-10-22/15-34-51",
+    "outputs/2026-10-22/15-35-28",
+    "outputs/2026-10-22/15-36-40",
+    "outputs/2026-10-22/15-37-29",
+    "outputs/2026-10-22/15-38-18",
+    "outputs/2026-10-22/15-39-06",
+    "outputs/2026-10-22/15-40-20",
+    "outputs/2026-10-22/15-41-39",
+    "outputs/2026-10-22/15-42-30",
+    "outputs/2026-10-22/15-43-14",
+    "outputs/2026-10-22/15-44-02",
+    "outputs/2026-10-22/18-42-32",
+    "outputs/2026-10-22/18-44-02",
+    "outputs/2026-10-22/18-45-16",
+    "outputs/2026-10-22/18-46-18",
+    "outputs/2026-10-22/18-47-19",
+    "outputs/2026-10-22/18-48-27",
+    "outputs/2026-10-22/18-49-38",
+    "outputs/2026-10-22/18-50-36",
+    "outputs/2026-10-22/18-56-03",
+    "outputs/2026-10-22/18-56-58",
+    "outputs/2026-10-22/18-57-50",
+    "outputs/2026-10-22/18-59-09",
+    "outputs/2026-10-22/18-59-53",
+    "outputs/2026-10-22/19-01-52"
+  ],
+  "environment_class_counts": {
+    "env.motion_tracking_hat4_online.HAT4OnlineMotionTrackingEnv": 189,
+    "env.motion_tracking_hat4_adaptive.HAT4AdaptiveMotionTrackingEnv": 128
+  },
+  "environment_class": "env.motion_tracking_hat4_adaptive.HAT4AdaptiveMotionTrackingEnv",
+  "environment_class_note": "Both the base online env and the adaptive env appear in this window. The adaptive subclass is the one that implements the PACE horizon, the near cadence, the anti-stall lookahead and the close boundary, so it is the contract round 3 reproduces.",
+  "chunk_fps": 15.0,
+  "chunk_frame_count": 100,
+  "chunk_span_s": 6.666666666666667,
+  "replan_interval_s": {
+    "count": 5209,
+    "mean": 0.6470300260531476,
+    "min": 0.015013007447123528,
+    "max": 3.3522112276405096,
+    "p5": 0.12005171719938516,
+    "p25": 0.33807474840432405,
+    "p50": 0.4075247598811984,
+    "p75": 0.7584449164569378,
+    "p95": 2.018516008928416
+  },
+  "replan_hz_from_median": 2.4538386337348435,
+  "source_age_s": {
+    "count": 5329,
+    "mean": 0.14009051940101333,
+    "min": 0.022643096,
+    "max": 0.463974763,
+    "p5": 0.028169229200000007,
+    "p25": 0.044924551,
+    "p50": 0.105299759,
+    "p75": 0.21610637000000002,
+    "p95": 0.3437701904
+  },
+  "selected_start_frame": {
+    "count": 5329,
+    "mean": 13.9981234753237,
+    "min": 0.0,
+    "max": 22.0,
+    "p5": 3.0,
+    "p25": 11.0,
+    "p50": 16.0,
+    "p75": 17.0,
+    "p95": 20.0
+  },
+  "continuity_shift_frames": {
+    "count": 4942,
+    "mean": 12.733913395386484,
+    "min": 1.0,
+    "max": 15.0,
+    "p5": 3.0,
+    "p25": 12.0,
+    "p50": 15.0,
+    "p75": 15.0,
+    "p95": 15.0
+  },
+  "backtrack_m": {
+    "count": 5329,
+    "mean": -0.0005513926218962475,
+    "min": -0.08687624879832095,
+    "max": 0.044238347165001364,
+    "p5": -0.008252988329048616,
+    "p25": -0.0027785124742044248,
+    "p50": -0.0006639291556685173,
+    "p75": 0.0015372603962474664,
+    "p95": 0.007932752909551881
+  },
+  "alignment_modes": {
+    "reference_continuity": 5328,
+    "measured_pose": 1
+  },
+  "rtc_outcomes": {
+    "applied": 5327,
+    "frozen_reference": 1,
+    "reset_or_not_playing": 1
+  },
+  "switching_parameters": {
+    "min_chunk_execution_fraction": {
+      "value": 0.1,
+      "agreement": 1.0,
+      "observed": null
+    },
+    "relative_chunk_min_execution_fraction": {
+      "value": 0.0,
+      "agreement": 1.0,
+      "observed": null
+    },
+    "chunk_start_reference_continuity": {
+      "value": true,
+      "agreement": 1.0,
+      "observed": null
+    },
+    "continuity_search_ahead_s": {
+      "value": 1.0,
+      "agreement": 1.0,
+      "observed": null
+    },
+    "chunk_blend_s": {
+      "value": 0.22,
+      "agreement": 1.0,
+      "observed": null
+    },
+    "chunk_end_margin_s": {
+      "value": 0.5,
+      "agreement": 1.0,
+      "observed": null
+    },
+    "rtc_enabled": {
+      "value": true,
+      "agreement": 1.0,
+      "observed": null
+    },
+    "rtc_prefix_frames": {
+      "value": 10,
+      "agreement": 1.0,
+      "observed": null
+    },
+    "rtc_hard_prefix_frames": {
+      "value": 2,
+      "agreement": 1.0,
+      "observed": null
+    },
+    "rtc_blend_frames": {
+      "value": 8,
+      "agreement": 1.0,
+      "observed": null
+    },
+    "phase_rotation_weight": {
+      "value": 0.08,
+      "agreement": 1.0,
+      "observed": null
+    },
+    "phase_velocity_weight": {
+      "value": 0.03,
+      "agreement": 1.0,
+      "observed": null
+    },
+    "phase_measured_weight": {
+      "value": 0.15,
+      "agreement": 1.0,
+      "observed": null
+    },
+    "phase_max_root_jump_m": {
+      "value": 0.2,
+      "agreement": 1.0,
+      "observed": null
+    },
+    "chunk_phase_alignment": {
+      "value": true,
+      "agreement": 1.0,
+      "observed": null
+    },
+    "chunk_alignment": {
+      "value": "fixed",
+      "agreement": 1.0,
+      "observed": null
+    },
+    "max_source_state_lag": {
+      "value": 30,
+      "agreement": 1.0,
+      "observed": null
+    },
+    "adaptive_far_min_frames": {
+      "value": 25,
+      "agreement": 1.0,
+      "observed": null
+    },
+    "adaptive_far_max_frames": {
+      "value": 50,
+      "agreement": 1.0,
+      "observed": null
+    },
+    "adaptive_near_min_frames": {
+      "value": 8,
+      "agreement": 1.0,
+      "observed": null
+    },
+    "adaptive_near_max_frames": {
+      "value": 12,
+      "agreement": 1.0,
+      "observed": null
+    },
+    "adaptive_near_distance_m": {
+      "value": 0.05,
+      "agreement": 1.0,
+      "observed": null
+    },
+    "adaptive_min_wrist_travel_m": {
+      "value": 0.05,
+      "agreement": 1.0,
+      "observed": null
+    },
+    "adaptive_stall_frames": {
+      "value": 10,
+      "agreement": 1.0,
+      "observed": null
+    },
+    "adaptive_stall_motion_m": {
+      "value": 0.005,
+      "agreement": 1.0,
+      "observed": null
+    },
+    "adaptive_stall_increment_m": {
+      "value": 0.005,
+      "agreement": 1.0,
+      "observed": null
+    },
+    "adaptive_stall_max_lookahead_m": {
+      "value": 0.05,
+      "agreement": 1.0,
+      "observed": null
+    },
+    "focus_handoff_enabled": {
+      "value": true,
+      "agreement": 1.0,
+      "observed": null
+    },
+    "focus_handoff_version": {
+      "value": "v3",
+      "agreement": 1.0,
+      "observed": null
+    },
+    "focus_handoff_finger_mode": {
+      "value": "hold_progress",
+      "agreement": 1.0,
+      "observed": null
+    },
+    "focus_handoff_source": {
+      "value": "keypoints",
+      "agreement": 1.0,
+      "observed": null
+    },
+    "focus_handoff_sides": {
+      "value": [
+        "left",
+        "right"
+      ],
+      "agreement": 1.0,
+      "observed": null
+    },
+    "focus_v3_closed_spread_m": {
+      "value": 0.11,
+      "agreement": 1.0,
+      "observed": null
+    },
+    "focus_v3_max_approach_m": {
+      "value": 0.02,
+      "agreement": 1.0,
+      "observed": null
+    },
+    "focus_adaptive_enabled": {
+      "value": false,
+      "agreement": 1.0,
+      "observed": null
+    },
+    "stall_wrist_assist": {
+      "value": false,
+      "agreement": 1.0,
+      "observed": null
+    },
+    "continuity_hand_event_guard": {
+      "value": false,
+      "agreement": 1.0,
+      "observed": null
+    },
+    "finger_wrist_gate": {
+      "value": false,
+      "agreement": 1.0,
+      "observed": null
+    },
+    "approach_slowdown": {
+      "value": false,
+      "agreement": 1.0,
+      "observed": null
+    },
+    "finger_chunk_source": {
+      "value": "playback",
+      "agreement": 1.0,
+      "observed": null
+    },
+    "wrist_compensation": {
+      "value": "none",
+      "agreement": 1.0,
+      "observed": null
+    }
+  },
+  "aac": "not deployed: adaptive_chunk_execution selects a horizon from one prediction and documents that a single forward cannot supply same-observation uncertainty; see round3/audit_brain_sampling.py",
+  "measurement": "chunk arrivals recorded after the R1 closed-loop event only; gaps outside (0,5)s dropped"
+}

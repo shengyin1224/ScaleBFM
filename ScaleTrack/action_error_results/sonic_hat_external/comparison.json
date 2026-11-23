@@ -1,0 +1,85 @@
+{
+  "baseline": "/root/shengyin/ScaleBFM/ScaleTrack/action_error_results/sonic_hat_external/released.json",
+  "motions": 2,
+  "comparison_scope": "all evaluated frames; pelvis-local wrist/head metrics",
+  "comparisons": [
+    {
+      "candidate": "/root/shengyin/ScaleBFM/ScaleTrack/action_error_results/sonic_hat_external/F3_20000.json",
+      "passed": 2,
+      "total": 2,
+      "metrics": {
+        "error_left_wrist_pelvis_local_pos": {
+          "baseline": 10.049648582935333,
+          "candidate": 8.78208726644516,
+          "relative_change_percent": -12.612991449696443
+        },
+        "error_left_wrist_pelvis_local_rot": {
+          "baseline": 21.717194352891674,
+          "candidate": 24.790106705764163,
+          "relative_change_percent": 14.149674690659687
+        },
+        "error_right_wrist_pelvis_local_pos": {
+          "baseline": 6.728889048099518,
+          "candidate": 6.46914541721344,
+          "relative_change_percent": -3.860126523552043
+        },
+        "error_right_wrist_pelvis_local_rot": {
+          "baseline": 7.621621972162346,
+          "candidate": 8.344092061809615,
+          "relative_change_percent": 9.47921705230279
+        },
+        "error_head_proxy_pelvis_local_pos": {
+          "baseline": 4.592719674110413,
+          "candidate": 6.081147864460945,
+          "relative_change_percent": 32.4084267267811
+        },
+        "error_head_proxy_pelvis_local_rot": {
+          "baseline": 10.249327227007774,
+          "candidate": 9.14231236444691,
+          "relative_change_percent": -10.80085392964909
+        }
+      },
+      "worst_relative_degradation_percent": 32.4084267267811,
+      "all_degradations_le_10_percent": false
+    },
+    {
+      "candidate": "/root/shengyin/ScaleBFM/ScaleTrack/action_error_results/sonic_hat_external/F3h_20000.json",
+      "passed": 2,
+      "total": 2,
+      "metrics": {
+        "error_left_wrist_pelvis_local_pos": {
+          "baseline": 10.049648582935333,
+          "candidate": 10.677902400493622,
+          "relative_change_percent": 6.251500362162776
+        },
+        "error_left_wrist_pelvis_local_rot": {
+          "baseline": 21.717194352891674,
+          "candidate": 25.021163467649234,
+          "relative_change_percent": 15.213609369009639
+        },
+        "error_right_wrist_pelvis_local_pos": {
+          "baseline": 6.728889048099518,
+          "candidate": 7.956143468618393,
+          "relative_change_percent": 18.238589041165664
+        },
+        "error_right_wrist_pelvis_local_rot": {
+          "baseline": 7.621621972162346,
+          "candidate": 11.369307496160614,
+          "relative_change_percent": 49.17175815970054
+        },
+        "error_head_proxy_pelvis_local_pos": {
+          "baseline": 4.592719674110413,
+          "candidate": 5.304005742073059,
+          "relative_change_percent": 15.487251964717807
+        },
+        "error_head_proxy_pelvis_local_rot": {
+          "baseline": 10.249327227007774,
+          "candidate": 8.595188598719501,
+          "relative_change_percent": -16.138997142461108
+        }
+      },
+      "worst_relative_degradation_percent": 49.17175815970054,
+      "all_degradations_le_10_percent": false
+    }
+  ]
+}

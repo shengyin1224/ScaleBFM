@@ -1,0 +1,11 @@
+{
+  "checkpoint": "/root/shengyin/ScaleBFM/ScaleTrack/logs/rsl_rl/g1_bfm_tracking_exp/humanoid_transformer_m/model_22200.pt",
+  "expanded_keys": [
+    "actor_task_embedder.task_projection.weight",
+    "critic_task_embedder.task_projection.weight"
+  ],
+  "load_classified_as_resume": false,
+  "max_abs_action_difference": 0.0,
+  "mean_abs_action_difference": 0.0,
+  "bitwise_equal": true
+}

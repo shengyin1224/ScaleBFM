@@ -1,0 +1,101 @@
+{
+  "method": "b1",
+  "artifact_sha256": "76ebf7cb08db963d2d740b3c0b73bc8af5cb5a0ba95d9c90ba90570350134fa4",
+  "cerebellum_deployment_sha256": "24d10e69d30d253f87d65465c9fa2a0be756d67d17b3a4a08299b0084576aacf",
+  "frozen_cerebellum_raw_sha256": "c9c65cfb60bea8e4a254abaa8a60496e8fd0b9703751a0d70c3d322789766393",
+  "training_checkpoint_sha256": "2a8085cafbd682402a9cc1d0cfa5a4de960328bbdb811aeb26cc938f81e2a909",
+  "interface": "correct_kp(history H10, window100x4x9)",
+  "coefficient_transition": false,
+  "activation_ramp": false,
+  "runtime_source_sha256": {
+    "executor.py": "5285c5a7923134ee4b2ef7fb14f6c1b4954ac9db0e44a6406b02d764056713f0",
+    "coefficients.py": "67c719d86046e8337fc6ffcb9fc4adc1056b141dc0e704dd2e3bcaf73e27f129",
+    "device_history.py": "5d88c75d87a6ec394e4cc259e36d3c7b28e74dd32133378fea8b2ce059319611",
+    "script_predictor.py": "b286d5db001d2d66dfb8254cbd04d287c3cbf24ce27d030e16a7473f059fa4e6",
+    "deployment_adapter.py": "7a3d48b242c925a179e40f99aaa37e4a81a7d45e8de12448ea69d17cd3c711c1",
+    "deployment_hooks.py": "9dd4f5465538e96e51b16b84de747c6fc8d2a54f82b679374217cd12b48c74da",
+    "deployment_env.py": "c5301f44a466806704eeab782602d3889d3296ea38f8c5e94830b04061a5aaeb"
+  },
+  "source_sha256": {
+    "audit.py": "e5d088bb0c92e9c3d4f2d41e8f347dd60bc8616c340a96c2155df0da37d5831f",
+    "sync_report.py": "d951d22e4bee543ee008f551e80d788dbb7933807d97a0671db912d6b9e2b9f5",
+    "coefficients.py": "67c719d86046e8337fc6ffcb9fc4adc1056b141dc0e704dd2e3bcaf73e27f129",
+    "watch_latency.py": "7093d0486c514da8b7f34fd2fc925953622a9aa7f77510a6cac1cc5f4ac66adf",
+    "absolute_rms.py": "ee052537b617020d60f6fa55974a7db5b099e7482226a07301511b2b7a4c8089",
+    "analyze_fallback.py": "8b73f34419aee64ceb59566c35109c9999cf7ed41942469ff4df7c3e8c47a72d",
+    "package.py": "2fbab11bd845d9c645e33f729ff34246fb16f1a20f01a0003f02466126daca6b",
+    "report.py": "b1120aa19cb220939cdd65095e71afb4fa366701488f5928190e70eaf118b354",
+    "watch_report.py": "dcf7a6679dca529bd0d2842d2e7f246ca8ad19cc725bd0d6c16810e952d1f18c",
+    "export.py": "31acaa3a6fdf2290f84ab9e801d7fb131522268880087c23f9d4e061cc81fe9b",
+    "deployment_hooks.py": "9dd4f5465538e96e51b16b84de747c6fc8d2a54f82b679374217cd12b48c74da",
+    "evaluate.py": "83c6ff72bbebfc23603f1e1c4192d47be8a2dbf092ee2959bf6d629491355baf",
+    "device_history.py": "5d88c75d87a6ec394e4cc259e36d3c7b28e74dd32133378fea8b2ce059319611",
+    "run.py": "661070a7bb5c937e77d827ee4fe33edca06fea3219d855dc950639a6df62d90e",
+    "basis.py": "3744786809e957a765a9f74a42b1812aeac5f3bc6096cee0d7f78480b91ac74e",
+    "script_predictor.py": "b286d5db001d2d66dfb8254cbd04d287c3cbf24ce27d030e16a7473f059fa4e6",
+    "run_activation.py": "2187ee0f850a9a7786e94eae79728908e0371295583626398f0a59078a5aaba0",
+    "train_lowdim.py": "2e3a7928e721626571dc361bee046a3d4ab8f0444529f3316a5734332b586077",
+    "executor.py": "5285c5a7923134ee4b2ef7fb14f6c1b4954ac9db0e44a6406b02d764056713f0",
+    "benchmark.py": "2ed310f4e088ded9356ecb5a94b5f1db1a37f73669d99118a83c8a95ec41f83f",
+    "context.py": "87890751855b12d051efd5e9d7f85dc128f8d38529a474df0f872d8c1845d982",
+    "lowdim.py": "84da0f164d5f124a03155bc5a98317cfb08ffe984a3af184b0c9de35af334246",
+    "deployment_adapter.py": "7a3d48b242c925a179e40f99aaa37e4a81a7d45e8de12448ea69d17cd3c711c1",
+    "__init__.py": "716cd19aafc91d26eb749f975860e74283a8bb4c8a8108bbedf0084a76c59707",
+    "deployment_env.py": "c5301f44a466806704eeab782602d3889d3296ea38f8c5e94830b04061a5aaeb",
+    "run_coefficient_transition.py": "68ffe8b14864921f26c8b7fb4d2812f2cc5cee89ddd351f6970c9bf859b07e82"
+  },
+  "keypoints": [
+    "root",
+    "head",
+    "left_wrist",
+    "right_wrist"
+  ],
+  "enabled_by_default": false,
+  "offline_evaluations": {
+    "brain": {
+      "status": "passed",
+      "gates": {
+        "actual_above_5hz_ratio": true,
+        "action_difference_ratio": true,
+        "joint_velocity_rms_ratio": true,
+        "plan_seam_excess_p95_cm": true,
+        "wrist_error_reduction": true,
+        "fallback_fraction": true
+      },
+      "fallback_fraction": 0.0030125018828136767,
+      "metrics_sha256": "ffa8fb87b567a5a9f702c90f343be857034de484dc767a1bda90d8c22fbe6d3a",
+      "metrics_file": "/home/nerv/qingyaoxu/ScaleBFM/exec_comp/runs/round4/brain_evaluation/b1_lowdim/metrics.json"
+    },
+    "motion": {
+      "status": "passed",
+      "gates": {
+        "actual_above_5hz_ratio": true,
+        "action_difference_ratio": true,
+        "joint_velocity_rms_ratio": true,
+        "plan_seam_excess_p95_cm": true,
+        "wrist_error_reduction": true,
+        "fallback_fraction": true
+      },
+      "fallback_fraction": 0.01667798406730817,
+      "metrics_sha256": "d26c6cc4a43b777aff46b05eebbedfc8150b5dcc03b725cfc973c68cded56664",
+      "metrics_file": "/home/nerv/qingyaoxu/ScaleBFM/exec_comp/runs/round4/closed_loop/b1_lowdim/metrics.json"
+    },
+    "dr": {
+      "status": "failed",
+      "gates": {
+        "actual_above_5hz_ratio": true,
+        "action_difference_ratio": true,
+        "joint_velocity_rms_ratio": true,
+        "plan_seam_excess_p95_cm": true,
+        "wrist_error_reduction": true,
+        "fallback_fraction": false
+      },
+      "fallback_fraction": 0.050091642418531444,
+      "metrics_sha256": "4620618dd2edfd570663cdd9f92740e9ce2a935ba63e828b584229f6f3ba6b0f",
+      "metrics_file": "/home/nerv/qingyaoxu/ScaleBFM/exec_comp/runs/round4/closed_loop/b1_lowdim_dr/metrics.json"
+    }
+  },
+  "offline_all_gates_passed": false,
+  "acceptance_status": "INCOMPLETE: see offline evaluations;4080S latency deferred by user; no real-robot execution",
+  "real_robot_run": false
+}

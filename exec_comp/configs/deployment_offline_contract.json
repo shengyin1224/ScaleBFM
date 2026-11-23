@@ -1,0 +1,8 @@
+{
+  "trained_script_api": true,
+  "fingertips_identity_preserved": true,
+  "positions_bounded_5cm": true,
+  "per_step_log_schema_checked": true,
+  "robot_or_environment_instantiated": false,
+  "log": "/home/nerv/qingyaoxu/ScaleBFM/exec_comp/runs/round2/deployment_offline_smoke/20261025_203607_1792931767634660409/control_steps.jsonl"
+}

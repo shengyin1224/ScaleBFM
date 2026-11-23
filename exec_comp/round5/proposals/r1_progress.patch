@@ -1,0 +1,28 @@
+--- a/ScaleBridge/scalebridge/env/motion_tracking_hat4_online.py
++++ b/ScaleBridge/scalebridge/env/motion_tracking_hat4_online.py
+@@ -3844,7 +3844,15 @@
+             or blend_s <= 0.0
+         ):
+             return requested, 1.0
+-        alpha = min(max((now_ns - self.takeover_started_ns) * 1e-9 / blend_s, 0.0), 1.0)
++        # Proposed only: limit progress per delivered control update. A wall
++        # clock stall must not consume most of the750ms handover in one step.
++        last_ns = getattr(self, "_takeover_progress_ns", self.takeover_started_ns)
++        progress = getattr(self, "_takeover_progress", 0.0)
++        elapsed_s = max(0.0, (now_ns - last_ns) * 1e-9)
++        maximum_step_s = float(self.cfg.get("takeover_max_progress_step_s", self.dt))
++        alpha = min(1.0, progress + min(elapsed_s, maximum_step_s) / blend_s)
++        self._takeover_progress = alpha
++        self._takeover_progress_ns = now_ns
+         hold = self.takeover_hold_dof_pos.to(
+             device=requested.device, dtype=requested.dtype
+         )
+@@ -3925,6 +3933,8 @@
+         self._latched_sample = None
+         self._latched_link_poses = None
+         self.takeover_started_ns = now_ns
++        self._takeover_progress = 0.0
++        self._takeover_progress_ns = now_ns
+         self._root_transition_active = (
+             self.local_to_global_transition_steps > 0
+             and not self.reference_forcing

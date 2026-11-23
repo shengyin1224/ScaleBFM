@@ -1,0 +1,20 @@
+{
+  "original": {
+    "joint_mae_deg": 24.902042388916016,
+    "world_wrist_mean_cm": [
+      143.92967224121094,
+      122.16255950927734
+    ],
+    "gravity_norm_mean": 3.873040199279785,
+    "velocity_mae_m_s": 2.6032323837280273
+  },
+  "gravity_projection": {
+    "joint_mae_deg": 12.314035415649414,
+    "world_wrist_mean_cm": [
+      114.3096923828125,
+      103.54503631591797
+    ],
+    "gravity_norm_mean": 1.0,
+    "velocity_mae_m_s": 0.9780164957046509
+  }
+}

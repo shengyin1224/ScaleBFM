@@ -1,0 +1,9 @@
+{
+  "root_com_offset_b": [
+    0.0,
+    0.0,
+    -0.07604999840259552
+  ],
+  "root_lin_vel_b_is_com_velocity": true,
+  "root_position_is_link_origin": true
+}

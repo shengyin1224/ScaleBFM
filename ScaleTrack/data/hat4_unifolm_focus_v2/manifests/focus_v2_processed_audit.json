@@ -1,0 +1,73 @@
+{
+  "definition": "focus_v2_physical_hand_closure",
+  "body_arrays": "bit-identical to hat4_unifolm/processed",
+  "focus_resampling": "same 30 Hz -> 50 Hz nearest-neighbor timeline as package_motions.py",
+  "families": {
+    "G1_WBT_Brainco_Collect_Plates_Into_Dishwasher": {
+      "episodes": 300,
+      "frames_50hz": 711087,
+      "focus_frames_50hz": 141735,
+      "focus_fraction": 0.19932160199806775
+    },
+    "G1_WBT_Brainco_Make_The_Bed": {
+      "episodes": 300,
+      "frames_50hz": 344587,
+      "focus_frames_50hz": 118442,
+      "focus_fraction": 0.34372161457048583
+    },
+    "G1_WBT_Brainco_Pick_Up_Medicine": {
+      "episodes": 300,
+      "frames_50hz": 393819,
+      "focus_frames_50hz": 132449,
+      "focus_fraction": 0.33631947671392187
+    },
+    "G1_WBT_Brainco_Pickup_Pillow": {
+      "episodes": 300,
+      "frames_50hz": 295951,
+      "focus_frames_50hz": 67799,
+      "focus_fraction": 0.22908859912620672
+    },
+    "G1_WBT_Inspire_Clean_The_Living_Room": {
+      "episodes": 300,
+      "frames_50hz": 466831,
+      "focus_frames_50hz": 110483,
+      "focus_fraction": 0.23666594549205172
+    },
+    "G1_WBT_Inspire_Pick_Up_Drinks": {
+      "episodes": 300,
+      "frames_50hz": 538346,
+      "focus_frames_50hz": 123863,
+      "focus_fraction": 0.23008065444899747
+    },
+    "G1_WBT_Inspire_Put_Clothes_Into_Basket": {
+      "episodes": 300,
+      "frames_50hz": 380400,
+      "focus_frames_50hz": 213285,
+      "focus_fraction": 0.560686119873817
+    },
+    "G1_WBT_Inspire_Put_Clothes_into_Washing_Machine": {
+      "episodes": 300,
+      "frames_50hz": 810122,
+      "focus_frames_50hz": 318563,
+      "focus_fraction": 0.39322842732329205
+    },
+    "G1_WBT_Inspire_Put_Drinks_Into_Fridge": {
+      "episodes": 300,
+      "frames_50hz": 312365,
+      "focus_frames_50hz": 104937,
+      "focus_fraction": 0.3359435276039249
+    },
+    "G1_WBT_Inspire_Put_Vegetables_Into_Basket": {
+      "episodes": 300,
+      "frames_50hz": 459831,
+      "focus_frames_50hz": 212050,
+      "focus_fraction": 0.46114768251814253
+    }
+  },
+  "totals": {
+    "episodes": 3000,
+    "frames_50hz": 4713339,
+    "focus_frames_50hz": 1543606,
+    "focus_fraction": 0.32749734317858314
+  }
+}

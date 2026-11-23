@@ -1,0 +1,233 @@
+{
+  "robot_root_to_virtual_head_chain_upper_bound_cm": 44.417816027998924,
+  "episodes": [
+    {
+      "episode": 0,
+      "type": "human",
+      "initial_root_head_distance_cm": 57.3340117931366,
+      "predicted_root_head_distance_mean_cm": 58.582353591918945,
+      "necessary_position_error_gap_mean_cm": 14.16453742980957,
+      "gap_p95_cm": 15.726264715194702,
+      "fraction_gap_above5cm": 1.0
+    },
+    {
+      "episode": 1,
+      "type": "human",
+      "initial_root_head_distance_cm": 57.45874643325806,
+      "predicted_root_head_distance_mean_cm": 59.5325231552124,
+      "necessary_position_error_gap_mean_cm": 15.11471176147461,
+      "gap_p95_cm": 16.39074640274048,
+      "fraction_gap_above5cm": 1.0
+    },
+    {
+      "episode": 2,
+      "type": "human",
+      "initial_root_head_distance_cm": 58.08200240135193,
+      "predicted_root_head_distance_mean_cm": 60.41514873504639,
+      "necessary_position_error_gap_mean_cm": 15.997332572937012,
+      "gap_p95_cm": 17.273034191131593,
+      "fraction_gap_above5cm": 1.0
+    },
+    {
+      "episode": 3,
+      "type": "human",
+      "initial_root_head_distance_cm": 61.820030212402344,
+      "predicted_root_head_distance_mean_cm": 59.37618017196655,
+      "necessary_position_error_gap_mean_cm": 14.958356857299805,
+      "gap_p95_cm": 16.136334133148193,
+      "fraction_gap_above5cm": 1.0
+    },
+    {
+      "episode": 4,
+      "type": "human",
+      "initial_root_head_distance_cm": 57.15270638465881,
+      "predicted_root_head_distance_mean_cm": 59.601813554763794,
+      "necessary_position_error_gap_mean_cm": 15.18399429321289,
+      "gap_p95_cm": 16.36719160079956,
+      "fraction_gap_above5cm": 1.0
+    },
+    {
+      "episode": 5,
+      "type": "human",
+      "initial_root_head_distance_cm": 57.248663902282715,
+      "predicted_root_head_distance_mean_cm": 60.36515831947327,
+      "necessary_position_error_gap_mean_cm": 15.947342872619629,
+      "gap_p95_cm": 17.774197387695313,
+      "fraction_gap_above5cm": 1.0
+    },
+    {
+      "episode": 6,
+      "type": "human",
+      "initial_root_head_distance_cm": 57.277655601501465,
+      "predicted_root_head_distance_mean_cm": 58.962756395339966,
+      "necessary_position_error_gap_mean_cm": 14.544937133789062,
+      "gap_p95_cm": 15.5386803150177,
+      "fraction_gap_above5cm": 1.0
+    },
+    {
+      "episode": 7,
+      "type": "human",
+      "initial_root_head_distance_cm": 58.758533000946045,
+      "predicted_root_head_distance_mean_cm": 59.40909385681152,
+      "necessary_position_error_gap_mean_cm": 14.991270065307617,
+      "gap_p95_cm": 16.00977201461792,
+      "fraction_gap_above5cm": 1.0
+    },
+    {
+      "episode": 8,
+      "type": "human",
+      "initial_root_head_distance_cm": 57.02221393585205,
+      "predicted_root_head_distance_mean_cm": 59.52346920967102,
+      "necessary_position_error_gap_mean_cm": 15.105656623840332,
+      "gap_p95_cm": 16.318274402618407,
+      "fraction_gap_above5cm": 1.0
+    },
+    {
+      "episode": 9,
+      "type": "human",
+      "initial_root_head_distance_cm": 57.987821102142334,
+      "predicted_root_head_distance_mean_cm": 59.150683879852295,
+      "necessary_position_error_gap_mean_cm": 14.73287296295166,
+      "gap_p95_cm": 15.844104194641114,
+      "fraction_gap_above5cm": 1.0
+    },
+    {
+      "episode": 10,
+      "type": "human",
+      "initial_root_head_distance_cm": 58.232301473617554,
+      "predicted_root_head_distance_mean_cm": 58.87333154678345,
+      "necessary_position_error_gap_mean_cm": 14.455510139465332,
+      "gap_p95_cm": 15.691801023483276,
+      "fraction_gap_above5cm": 1.0
+    },
+    {
+      "episode": 11,
+      "type": "human",
+      "initial_root_head_distance_cm": 59.57157611846924,
+      "predicted_root_head_distance_mean_cm": 59.99680161476135,
+      "necessary_position_error_gap_mean_cm": 15.578983306884766,
+      "gap_p95_cm": 16.677690696716308,
+      "fraction_gap_above5cm": 1.0
+    },
+    {
+      "episode": 12,
+      "type": "human",
+      "initial_root_head_distance_cm": 56.22586011886597,
+      "predicted_root_head_distance_mean_cm": 59.14338827133179,
+      "necessary_position_error_gap_mean_cm": 14.725569725036621,
+      "gap_p95_cm": 15.999342250823974,
+      "fraction_gap_above5cm": 1.0
+    },
+    {
+      "episode": 13,
+      "type": "human",
+      "initial_root_head_distance_cm": 59.02466177940369,
+      "predicted_root_head_distance_mean_cm": 59.36836004257202,
+      "necessary_position_error_gap_mean_cm": 14.950542449951172,
+      "gap_p95_cm": 16.780780410766603,
+      "fraction_gap_above5cm": 1.0
+    },
+    {
+      "episode": 14,
+      "type": "human",
+      "initial_root_head_distance_cm": 57.1854293346405,
+      "predicted_root_head_distance_mean_cm": 58.800411224365234,
+      "necessary_position_error_gap_mean_cm": 14.382594108581543,
+      "gap_p95_cm": 15.813071060180665,
+      "fraction_gap_above5cm": 1.0
+    },
+    {
+      "episode": 15,
+      "type": "robot",
+      "initial_root_head_distance_cm": 44.40143704414368,
+      "predicted_root_head_distance_mean_cm": 44.40757930278778,
+      "necessary_position_error_gap_mean_cm": 0.010108612477779388,
+      "gap_p95_cm": 0.0660489499568939,
+      "fraction_gap_above5cm": 0.0
+    },
+    {
+      "episode": 16,
+      "type": "robot",
+      "initial_root_head_distance_cm": 44.4052129983902,
+      "predicted_root_head_distance_mean_cm": 44.39753293991089,
+      "necessary_position_error_gap_mean_cm": 0.005420981906354427,
+      "gap_p95_cm": 0.03448128700256346,
+      "fraction_gap_above5cm": 0.0
+    },
+    {
+      "episode": 17,
+      "type": "robot",
+      "initial_root_head_distance_cm": 44.38404738903046,
+      "predicted_root_head_distance_mean_cm": 44.386059045791626,
+      "necessary_position_error_gap_mean_cm": 0.004794664680957794,
+      "gap_p95_cm": 0.04322677850723266,
+      "fraction_gap_above5cm": 0.0
+    },
+    {
+      "episode": 18,
+      "type": "robot",
+      "initial_root_head_distance_cm": 44.40056085586548,
+      "predicted_root_head_distance_mean_cm": 44.38116252422333,
+      "necessary_position_error_gap_mean_cm": 0.005413017701357603,
+      "gap_p95_cm": 0.04644319415092464,
+      "fraction_gap_above5cm": 0.0
+    },
+    {
+      "episode": 19,
+      "type": "robot",
+      "initial_root_head_distance_cm": 44.39942240715027,
+      "predicted_root_head_distance_mean_cm": 44.42174732685089,
+      "necessary_position_error_gap_mean_cm": 0.023187126964330673,
+      "gap_p95_cm": 0.11127918958663928,
+      "fraction_gap_above5cm": 0.0
+    },
+    {
+      "episode": 20,
+      "type": "robot",
+      "initial_root_head_distance_cm": 44.3590521812439,
+      "predicted_root_head_distance_mean_cm": 44.357383251190186,
+      "necessary_position_error_gap_mean_cm": 0.003702180227264762,
+      "gap_p95_cm": 0.028163343667983846,
+      "fraction_gap_above5cm": 0.0
+    },
+    {
+      "episode": 21,
+      "type": "robot",
+      "initial_root_head_distance_cm": 44.35416758060455,
+      "predicted_root_head_distance_mean_cm": 44.36996579170227,
+      "necessary_position_error_gap_mean_cm": 0.005135092884302139,
+      "gap_p95_cm": 0.04260450601577756,
+      "fraction_gap_above5cm": 0.0
+    },
+    {
+      "episode": 22,
+      "type": "robot",
+      "initial_root_head_distance_cm": 44.40141022205353,
+      "predicted_root_head_distance_mean_cm": 44.378650188446045,
+      "necessary_position_error_gap_mean_cm": 0.007885405793786049,
+      "gap_p95_cm": 0.05785226821899414,
+      "fraction_gap_above5cm": 0.0
+    },
+    {
+      "episode": 23,
+      "type": "robot",
+      "initial_root_head_distance_cm": 44.40128207206726,
+      "predicted_root_head_distance_mean_cm": 44.38513517379761,
+      "necessary_position_error_gap_mean_cm": 0.005372020415961742,
+      "gap_p95_cm": 0.032123476266860886,
+      "fraction_gap_above5cm": 0.0
+    },
+    {
+      "episode": 24,
+      "type": "robot",
+      "initial_root_head_distance_cm": 44.387659430503845,
+      "predicted_root_head_distance_mean_cm": 44.352662563323975,
+      "necessary_position_error_gap_mean_cm": 0.0013745591277256608,
+      "gap_p95_cm": 0.002261400222778291,
+      "fraction_gap_above5cm": 0.0
+    }
+  ],
+  "meaning": "Euclidean head-root separation is invariant to world translation/heading. A target beyond the sum of fixed link lengths cannot be reached by joint-angle adjustment; it needs an explicit embodiment mapping.",
+  "human_mapping_available": false,
+  "human_raw_replay": "diagnostic only; no valid robot-domain tracking claim"
+}

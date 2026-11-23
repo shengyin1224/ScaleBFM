@@ -1,0 +1,97 @@
+{
+  "source_tree": "/home/nerv/qingyaoxu/ScaleBFM/ScaleBridge",
+  "files": {
+    "scalebridge/__init__.py": {
+      "source": "/home/nerv/qingyaoxu/ScaleBFM/ScaleBridge/scalebridge/__init__.py",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    "scalebridge/env/__init__.py": {
+      "source": "/home/nerv/qingyaoxu/ScaleBFM/ScaleBridge/scalebridge/env/__init__.py",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    "scalebridge/env/base_env.py": {
+      "source": "/home/nerv/qingyaoxu/ScaleBFM/ScaleBridge/scalebridge/env/base_env.py",
+      "sha256": "77a8a7e3bc84f93356c4c32be2569f9657b028bf7ba0f0ef44b764edb3daaa0e",
+      "bytes": 4747
+    },
+    "scalebridge/env/motion_tracking_hat4_online.py": {
+      "source": "/home/nerv/qingyaoxu/ScaleBFM/ScaleBridge/scalebridge/env/motion_tracking_hat4_online.py",
+      "sha256": "0bd924e3bcb55eeffa5284dc0f9fc36ebbd0929709f4ab193fd9270967bc3b07",
+      "bytes": 204807
+    },
+    "scalebridge/env/motion_tracking_hat4_adaptive.py": {
+      "source": "/home/nerv/qingyaoxu/ScaleBFM/ScaleBridge/scalebridge/env/motion_tracking_hat4_adaptive.py",
+      "sha256": "6ade711e2855f6e584c5b76b674456aca3063f1ab0038a5643d0191f35e82ff8",
+      "bytes": 12589
+    },
+    "scalebridge/online/__init__.py": {
+      "source": "/home/nerv/qingyaoxu/ScaleBFM/ScaleBridge/scalebridge/online/__init__.py",
+      "sha256": "f67202d10805acf9305ce3fdcec534b6bee86d55d95a9904229e984730dcd8f6",
+      "bytes": 65
+    },
+    "scalebridge/online/adaptive_chunk_execution.py": {
+      "source": "/home/nerv/qingyaoxu/ScaleBFM/ScaleBridge/scalebridge/online/adaptive_chunk_execution.py",
+      "sha256": "fb3e754ce4d2da09ed705cbfc1c689a85fb647e9f02b0b39049e2df45ef932e3",
+      "bytes": 6339
+    },
+    "scalebridge/online/continuity_hand_event_guard.py": {
+      "source": "/home/nerv/qingyaoxu/ScaleBFM/ScaleBridge/scalebridge/online/continuity_hand_event_guard.py",
+      "sha256": "02b6984e73b0c691e56c85dc98e58fda3fbcf6b2a1e0fdf42cbf595e0d8aa697",
+      "bytes": 16873
+    },
+    "scalebridge/online/current_pose.py": {
+      "source": "/home/nerv/qingyaoxu/ScaleBFM/ScaleBridge/scalebridge/online/current_pose.py",
+      "sha256": "79dacf3cb79b9062a766ee9fef37d823518d11243988bcf02f84996bc118aa1c",
+      "bytes": 4818
+    },
+    "scalebridge/online/focus.py": {
+      "source": "/home/nerv/qingyaoxu/ScaleBFM/ScaleBridge/scalebridge/online/focus.py",
+      "sha256": "8f45788d704b7c2959093abb97863394a28acb101e7c95647b228b0f01663592",
+      "bytes": 7098
+    },
+    "scalebridge/online/focus_handoff.py": {
+      "source": "/home/nerv/qingyaoxu/ScaleBFM/ScaleBridge/scalebridge/online/focus_handoff.py",
+      "sha256": "805ee91e3180117877783c4f15c474e73460257315ad36c84547040a2562f4a3",
+      "bytes": 28726
+    },
+    "scalebridge/online/focus_worker.py": {
+      "source": "/home/nerv/qingyaoxu/ScaleBFM/ScaleBridge/scalebridge/online/focus_worker.py",
+      "sha256": "7511587092208b1763d5e866fca4ee7936005b2cb258ba1353e2016876755242",
+      "bytes": 8400
+    },
+    "scalebridge/online/gpt_supervisor.py": {
+      "source": "/home/nerv/qingyaoxu/ScaleBFM/ScaleBridge/scalebridge/online/gpt_supervisor.py",
+      "sha256": "c62325c8a3b6a411db99e0615f4d84bf4f630440dc2ae366b68bfb4bd0bfa443",
+      "bytes": 40590
+    },
+    "scalebridge/online/protocol.py": {
+      "source": "/home/nerv/qingyaoxu/ScaleBFM/ScaleBridge/scalebridge/online/protocol.py",
+      "sha256": "a80033071de27bc5a819f45791b32c1ff83c0601592c1c35f38b4c64c47d02aa",
+      "bytes": 11988
+    },
+    "scalebridge/online/reference.py": {
+      "source": "/home/nerv/qingyaoxu/ScaleBFM/ScaleBridge/scalebridge/online/reference.py",
+      "sha256": "30e50b566f54d289403175be1816e7ed4403d2590b3ab7d8b3638af09c39bf88",
+      "bytes": 11671
+    },
+    "scalebridge/online/stall_wrist_assist.py": {
+      "source": "/home/nerv/qingyaoxu/ScaleBFM/ScaleBridge/scalebridge/online/stall_wrist_assist.py",
+      "sha256": "a30c73f8add95d0f0ccb43fc01ae166abb54409ceab28625a92ea4043cd0e64e",
+      "bytes": 9452
+    },
+    "scalebridge/online/trajectory_continuity.py": {
+      "source": "/home/nerv/qingyaoxu/ScaleBFM/ScaleBridge/scalebridge/online/trajectory_continuity.py",
+      "sha256": "06e85c308b749573c427c5ce6f39c2d0fc1e54249c0ec9aeb2ce32fec50ee441",
+      "bytes": 4182
+    },
+    "scalebridge/online/transport.py": {
+      "source": "/home/nerv/qingyaoxu/ScaleBFM/ScaleBridge/scalebridge/online/transport.py",
+      "sha256": "29b378ccb9bffc3222986db2296f38cc4f032ea4ab2e795ff2f9f382ce529463",
+      "bytes": 4462
+    }
+  },
+  "policy": "byte-identical copies; the originals are never written to",
+  "reason": "the training host has no live ScaleBridge checkout, and the simulation must reuse the deployed switching rules rather than a reimplementation"
+}

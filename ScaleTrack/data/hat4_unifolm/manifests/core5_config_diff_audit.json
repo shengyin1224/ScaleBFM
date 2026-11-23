@@ -1,0 +1,235 @@
+{
+  "comparison": "fully instantiated IsaacLab env config to_dict()",
+  "all_checks_passed": true,
+  "checks": {
+    "F1_vs_F2": {
+      "passed": true,
+      "unexpected_paths": [],
+      "missing_paths": []
+    },
+    "F1_vs_F2o": {
+      "passed": true,
+      "unexpected_paths": [],
+      "missing_paths": []
+    },
+    "F2_vs_F3": {
+      "passed": true,
+      "unexpected_paths": [],
+      "missing_paths": []
+    },
+    "F2o_vs_F3": {
+      "passed": true,
+      "unexpected_paths": [],
+      "missing_paths": []
+    },
+    "F3_vs_F3h": {
+      "passed": true,
+      "unexpected_paths": [],
+      "missing_paths": []
+    }
+  },
+  "pairs": {
+    "F1_vs_F2": [
+      {
+        "path": "focus_weight",
+        "left": "<MISSING>",
+        "right": 2.0
+      },
+      {
+        "path": "phase_weighted_body_names",
+        "left": "<MISSING>",
+        "right": [
+          "left_wrist_yaw_link",
+          "right_wrist_yaw_link"
+        ]
+      },
+      {
+        "path": "rewards.motion_body_pos.params.focus_weight",
+        "left": "<MISSING>",
+        "right": 2.0
+      },
+      {
+        "path": "rewards.motion_body_pos.params.phase_weighted_body_names",
+        "left": "<MISSING>",
+        "right": [
+          "left_wrist_yaw_link",
+          "right_wrist_yaw_link"
+        ]
+      },
+      {
+        "path": "rewards.motion_body_rot.params.focus_weight",
+        "left": "<MISSING>",
+        "right": 2.0
+      },
+      {
+        "path": "rewards.motion_body_rot.params.phase_weighted_body_names",
+        "left": "<MISSING>",
+        "right": [
+          "left_wrist_yaw_link",
+          "right_wrist_yaw_link"
+        ]
+      }
+    ],
+    "F1_vs_F2o": [
+      {
+        "path": "observations.critic_task.focus_phase",
+        "left": "<MISSING>",
+        "right": {
+          "func": "scaletrack.tasks.tracking.mdp.observations:focus_phase",
+          "params": {
+            "command_name": "motion",
+            "token_count": 7
+          },
+          "modifiers": null,
+          "noise": null,
+          "clip": null,
+          "scale": null,
+          "history_length": 0,
+          "flatten_history_dim": true
+        }
+      },
+      {
+        "path": "observations.mode_mapping.mode_mapping.params.extra_unmasked_dims",
+        "left": "<MISSING>",
+        "right": 2
+      },
+      {
+        "path": "observations.policy_task.focus_phase",
+        "left": "<MISSING>",
+        "right": {
+          "func": "scaletrack.tasks.tracking.mdp.observations:focus_phase",
+          "params": {
+            "command_name": "motion",
+            "token_count": 6
+          },
+          "modifiers": null,
+          "noise": null,
+          "clip": null,
+          "scale": null,
+          "history_length": 0,
+          "flatten_history_dim": true
+        }
+      }
+    ],
+    "F2_vs_F3": [
+      {
+        "path": "observations.critic_task.focus_phase",
+        "left": "<MISSING>",
+        "right": {
+          "func": "scaletrack.tasks.tracking.mdp.observations:focus_phase",
+          "params": {
+            "command_name": "motion",
+            "token_count": 7
+          },
+          "modifiers": null,
+          "noise": null,
+          "clip": null,
+          "scale": null,
+          "history_length": 0,
+          "flatten_history_dim": true
+        }
+      },
+      {
+        "path": "observations.mode_mapping.mode_mapping.params.extra_unmasked_dims",
+        "left": "<MISSING>",
+        "right": 2
+      },
+      {
+        "path": "observations.policy_task.focus_phase",
+        "left": "<MISSING>",
+        "right": {
+          "func": "scaletrack.tasks.tracking.mdp.observations:focus_phase",
+          "params": {
+            "command_name": "motion",
+            "token_count": 6
+          },
+          "modifiers": null,
+          "noise": null,
+          "clip": null,
+          "scale": null,
+          "history_length": 0,
+          "flatten_history_dim": true
+        }
+      }
+    ],
+    "F2o_vs_F3": [
+      {
+        "path": "focus_weight",
+        "left": "<MISSING>",
+        "right": 2.0
+      },
+      {
+        "path": "phase_weighted_body_names",
+        "left": "<MISSING>",
+        "right": [
+          "left_wrist_yaw_link",
+          "right_wrist_yaw_link"
+        ]
+      },
+      {
+        "path": "rewards.motion_body_pos.params.focus_weight",
+        "left": "<MISSING>",
+        "right": 2.0
+      },
+      {
+        "path": "rewards.motion_body_pos.params.phase_weighted_body_names",
+        "left": "<MISSING>",
+        "right": [
+          "left_wrist_yaw_link",
+          "right_wrist_yaw_link"
+        ]
+      },
+      {
+        "path": "rewards.motion_body_rot.params.focus_weight",
+        "left": "<MISSING>",
+        "right": 2.0
+      },
+      {
+        "path": "rewards.motion_body_rot.params.phase_weighted_body_names",
+        "left": "<MISSING>",
+        "right": [
+          "left_wrist_yaw_link",
+          "right_wrist_yaw_link"
+        ]
+      }
+    ],
+    "F3_vs_F3h": [
+      {
+        "path": "phase_weighted_body_names",
+        "left": [
+          "left_wrist_yaw_link",
+          "right_wrist_yaw_link"
+        ],
+        "right": [
+          "left_wrist_yaw_link",
+          "right_wrist_yaw_link",
+          "torso_link"
+        ]
+      },
+      {
+        "path": "rewards.motion_body_pos.params.phase_weighted_body_names",
+        "left": [
+          "left_wrist_yaw_link",
+          "right_wrist_yaw_link"
+        ],
+        "right": [
+          "left_wrist_yaw_link",
+          "right_wrist_yaw_link",
+          "torso_link"
+        ]
+      },
+      {
+        "path": "rewards.motion_body_rot.params.phase_weighted_body_names",
+        "left": [
+          "left_wrist_yaw_link",
+          "right_wrist_yaw_link"
+        ],
+        "right": [
+          "left_wrist_yaw_link",
+          "right_wrist_yaw_link",
+          "torso_link"
+        ]
+      }
+    ]
+  }
+}

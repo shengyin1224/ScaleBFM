@@ -1,0 +1,28 @@
+{
+  "format": "TorchScript FP32",
+  "interface": "correct_kp(Dict[str,Tensor] state_hist, Tensor[100,4,9] K_star_chunk) -> Tensor[100,4,9]",
+  "history": 10,
+  "chunk_length": 100,
+  "chunk_fps": 30,
+  "control_hz": 50,
+  "response_alignment_control_steps": 1,
+  "keypoint_order": [
+    "root",
+    "head",
+    "left_wrist",
+    "right_wrist"
+  ],
+  "rotation": "x/z matrix columns",
+  "position_residual_bound_m": 0.05,
+  "artifact_sha256": "253cc04109110eae33dc43bca353d49ad2f2c2e32ac215db42686f9089ba5ea2",
+  "a1_training_checkpoint": "/home/nerv/qingyaoxu/ScaleBFM/exec_comp/runs/models/inverse_smooth_r2_best.pt",
+  "a1_checkpoint_sha256": "d66342ee52192ef42ba4c9e9c97805ac5a3bece8e5c8df17001d2422a760d8ba",
+  "frozen_cerebellum_raw_sha256": "c9c65cfb60bea8e4a254abaa8a60496e8fd0b9703751a0d70c3d322789766393",
+  "residual_lowpass_50hz": true,
+  "lowpass_delay_ms": 20,
+  "fingertips": "Python dictionary wrapper preserves all fingertip fields unchanged",
+  "enabled_by_default": false,
+  "real_robot_run": false,
+  "cerebellum_deployment_path": "/home/nerv/qingyaoxu/ScaleBFM/MyScaleBFM/ScaleTrack/releases/hat4_focus_release_v1/model_20000_scalebridge_tensorrt_4080s.pt",
+  "cerebellum_deployment_sha256": "24d10e69d30d253f87d65465c9fa2a0be756d67d17b3a4a08299b0084576aacf"
+}

@@ -1,0 +1,69 @@
+{
+  "scope": "FOCUS frames",
+  "motions": 10,
+  "frames_per_side": {
+    "left": 2467,
+    "right": 2467
+  },
+  "per_side": {
+    "left": {
+      "reference_angular_speed_mean_deg_s": 14.928560526253522,
+      "reference_angular_speed_p95_deg_s": 55.30404695351298,
+      "pelvis_local_rotation_error_mean_deg": 7.9733653788252745,
+      "pelvis_local_rotation_error_p95_deg": 15.305440264853944,
+      "speed_error_spearman": 0.0686951915497312
+    },
+    "right": {
+      "reference_angular_speed_mean_deg_s": 29.868040020200983,
+      "reference_angular_speed_p95_deg_s": 102.96257735906518,
+      "pelvis_local_rotation_error_mean_deg": 11.22207072692763,
+      "pelvis_local_rotation_error_p95_deg": 27.1347532878344,
+      "speed_error_spearman": 0.20212050598938733
+    }
+  },
+  "right_to_left_mean_speed_ratio": 2.0007314146380515,
+  "pooled_speed_error_spearman": 0.1987242923588678,
+  "bins": [
+    {
+      "low_deg_s": 0.0,
+      "high_deg_s": 15.0,
+      "frames": 3003,
+      "speed_mean_deg_s": 6.109089345100023,
+      "rotation_error_mean_deg": 9.132171531719305,
+      "rotation_error_p95_deg": 21.651494898544172
+    },
+    {
+      "low_deg_s": 15.0,
+      "high_deg_s": 30.0,
+      "frames": 864,
+      "speed_mean_deg_s": 20.911276890559446,
+      "rotation_error_mean_deg": 10.046531529167906,
+      "rotation_error_p95_deg": 21.431271697036966
+    },
+    {
+      "low_deg_s": 30.0,
+      "high_deg_s": 60.0,
+      "frames": 593,
+      "speed_mean_deg_s": 42.29122813607211,
+      "rotation_error_mean_deg": 10.281793812310758,
+      "rotation_error_p95_deg": 23.006582259482006
+    },
+    {
+      "low_deg_s": 60.0,
+      "high_deg_s": 120.0,
+      "frames": 369,
+      "speed_mean_deg_s": 81.82425860725982,
+      "rotation_error_mean_deg": 10.29577320098104,
+      "rotation_error_p95_deg": 22.033757569591813
+    },
+    {
+      "low_deg_s": 120.0,
+      "high_deg_s": null,
+      "frames": 105,
+      "speed_mean_deg_s": 179.31833619576096,
+      "rotation_error_mean_deg": 12.902690286438064,
+      "rotation_error_p95_deg": 27.70822231065748
+    }
+  ],
+  "bin_means_monotonic_non_decreasing": true
+}

@@ -1,0 +1,38 @@
+common:
+  action_dim: 128
+  camera_names:
+  - top
+  policy_class: ACT
+  state_dim: 128
+data:
+  action_representation: original
+  image_resolution_hw:
+  - 240
+  - 320
+  robot_target_fps: 30.0
+experiment_variant: geometry
+model:
+  backbone: vjepa2_1_vitb
+  dec_layers: 7
+  dim_feedforward: 3200
+  enc_layers: 4
+  future_dino:
+    ablation: none
+    dropout: 0.1
+    enabled: true
+    horizon: 45
+    huber_weight: 0.1
+    normalize_target: true
+    num_heads: 8
+    num_layers: 4
+    num_patches: 1024
+    target_encoder: dinov2_vits14
+    warmup_steps: 0
+    weight: 0.0
+  hidden_dim: 512
+  image_feature_strategy: ACT_linear
+  kl_weight: 10
+  lr_backbone: 1e-5
+  nheads: 8
+  use_language_conditioning: false
+  zero_state_dims: 98:128

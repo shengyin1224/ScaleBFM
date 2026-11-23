@@ -1,0 +1,11 @@
+{
+  "package_files_created": true,
+  "enable": false,
+  "ready_for_robot": false,
+  "pending": [
+    "B1 R4 evaluations/fallback diagnosis",
+    "4080S resident/graph end-to-end latency"
+  ],
+  "a1_lowdim_training": "skipped per user",
+  "caps": "deferred per user"
+}

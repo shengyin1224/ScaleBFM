@@ -1,0 +1,60 @@
+{
+  "rows": [
+    {
+      "run": "drift10_off",
+      "reanchor_mode": "off",
+      "drift_cm": 10.0,
+      "success_rate_frames": 1.0,
+      "left_wrist_yaw_link_global_mean_cm": 8.305655238247747,
+      "left_wrist_yaw_link_global_p95_cm": 13.070984731138191,
+      "right_wrist_yaw_link_global_mean_cm": 9.275542491573214,
+      "right_wrist_yaw_link_global_p95_cm": 13.848098530128357
+    },
+    {
+      "run": "drift10_on",
+      "reanchor_mode": "on",
+      "drift_cm": 10.0,
+      "success_rate_frames": 1.0,
+      "left_wrist_yaw_link_global_mean_cm": 4.385913866516397,
+      "left_wrist_yaw_link_global_p95_cm": 10.303007076291436,
+      "right_wrist_yaw_link_global_mean_cm": 4.295942497900421,
+      "right_wrist_yaw_link_global_p95_cm": 9.413539570853438
+    },
+    {
+      "run": "drift5_off",
+      "reanchor_mode": "off",
+      "drift_cm": 5.0,
+      "success_rate_frames": 1.0,
+      "left_wrist_yaw_link_global_mean_cm": 4.965839559635935,
+      "left_wrist_yaw_link_global_p95_cm": 8.159968601676377,
+      "right_wrist_yaw_link_global_mean_cm": 5.52601651093495,
+      "right_wrist_yaw_link_global_p95_cm": 9.189730535342484
+    },
+    {
+      "run": "drift5_on",
+      "reanchor_mode": "on",
+      "drift_cm": 5.0,
+      "success_rate_frames": 1.0,
+      "left_wrist_yaw_link_global_mean_cm": 4.110583142257661,
+      "left_wrist_yaw_link_global_p95_cm": 8.862412984558691,
+      "right_wrist_yaw_link_global_mean_cm": 3.8522336660916063,
+      "right_wrist_yaw_link_global_p95_cm": 7.197227012744187
+    },
+    {
+      "run": "static",
+      "reanchor_mode": "on",
+      "drift_cm": 0.0,
+      "success_rate_frames": 1.0,
+      "left_wrist_yaw_link_global_mean_cm": 0.9618226297034547,
+      "left_wrist_yaw_link_global_p95_cm": 1.0368065342216162,
+      "right_wrist_yaw_link_global_mean_cm": 0.961395715265417,
+      "right_wrist_yaw_link_global_p95_cm": 1.6265389588050323
+    }
+  ],
+  "static_acceptance": {
+    "run": "static",
+    "threshold_cm": 2.5,
+    "worst_wrist_world_mean_cm": 0.9618226297034547,
+    "passed": true
+  }
+}

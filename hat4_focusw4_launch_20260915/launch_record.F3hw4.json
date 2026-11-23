@@ -1,0 +1,38 @@
+[
+  {
+    "variant": "F3hw4",
+    "physical_gpu": 1,
+    "pid": 700474,
+    "log": "/root/shengyin/ScaleBFM/hat4_focusw4_launch_20260915/F3hw4.log",
+    "command": [
+      "/root/miniconda3/envs/isaaclab_sonic/bin/python",
+      "/root/shengyin/ScaleBFM/ScaleTrack/scripts/pretrain/rsl_rl/train.py",
+      "--task",
+      "G1-HAT4-F3HW4-Finetune",
+      "--motion_file",
+      "/root/shengyin/ScaleBFM/ScaleTrack/data/hat4_unifolm_focus_v2/manifests/unifolm_hat4_train.yaml",
+      "--test_motion_file",
+      "/root/shengyin/ScaleBFM/ScaleTrack/data/hat4_unifolm_focus_v2/manifests/unifolm_hat4_heldout.yaml",
+      "--pretrained_checkpoint",
+      "/root/shengyin/ScaleBFM/ScaleTrack/logs/rsl_rl/g1_bfm_tracking_exp/humanoid_transformer_m/model_22200.pt",
+      "--num_envs",
+      "4096",
+      "--max_iterations",
+      "20000",
+      "--run_name",
+      "F3hw4",
+      "--device",
+      "cuda:0",
+      "--headless"
+    ],
+    "environment": {
+      "CUDA_VISIBLE_DEVICES": "1",
+      "VK_ICD_FILENAMES": "/etc/vulkan/icd.d/nvidia_icd.json",
+      "PYTHONUNBUFFERED": "1",
+      "OMP_NUM_THREADS": "4",
+      "MKL_NUM_THREADS": "4",
+      "OPENBLAS_NUM_THREADS": "4",
+      "NUMEXPR_NUM_THREADS": "4"
+    }
+  }
+]

@@ -1,0 +1,17 @@
+{
+  "gpu": "NVIDIA GeForce RTX 4080 SUPER",
+  "torch": "2.8.0+cu128",
+  "latency": {
+    "mean_ms": 0.3716737610846758,
+    "median_ms": 0.3654240071773529,
+    "p95_ms": 0.45477121025323824,
+    "batch": 1,
+    "warmup": 50,
+    "measured_calls": 200,
+    "timing": "CUDA events; GPU tensors already resident; excludes disk logging and CPU conversion"
+  },
+  "artifact": "/home/nerv/qingyaoxu/ScaleBFM/exec_comp/releases/a1_round2/a1_correct_kp.pt",
+  "artifact_sha256": "253cc04109110eae33dc43bca353d49ad2f2c2e32ac215db42686f9089ba5ea2",
+  "eager_max_abs": 0.0,
+  "max_position_residual_m": 0.050000037997961044
+}

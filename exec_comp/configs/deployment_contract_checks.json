@@ -1,0 +1,8 @@
+{
+  "fk_position_m": 1.7881393432617188e-07,
+  "fk_quaternion_sign_invariant": 7.748603820800781e-07,
+  "obs_max_abs": 2.980232238769531e-07,
+  "trt_action_max_abs": 9.5367431640625e-07,
+  "torchscript_action_max_abs": 5.960464477539062e-07,
+  "input_gradient_finite_nonzero": true
+}

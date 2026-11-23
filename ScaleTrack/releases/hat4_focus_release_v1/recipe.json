@@ -1,0 +1,30 @@
+{
+  "release": "hat4_focus_release_v1",
+  "variant": "F3h",
+  "task": "G1-HAT4-F3H-Finetune",
+  "checkpoint": "model_20000.pt",
+  "sha256": "c9c65cfb60bea8e4a254abaa8a60496e8fd0b9703751a0d70c3d322789766393",
+  "seed": 42,
+  "mode_sampling": {
+    "HAT-4": 0.5,
+    "each_of_eight_factory_modes": 0.0625
+  },
+  "focus_reward_multiplier": 2.0,
+  "focus_weighted_links": [
+    "left_wrist_yaw_link",
+    "right_wrist_yaw_link",
+    "torso_link"
+  ],
+  "phase_observation_dims_per_token": 2,
+  "actor_task_input_width": 269,
+  "action_dim": 29,
+  "heldout_fixed_hat4": {
+    "passed": 485,
+    "total": 600,
+    "success_rate": 0.8083333333,
+    "left_wrist_focus_mean_cm_deg": [1.83, 3.44],
+    "right_wrist_focus_mean_cm_deg": [1.78, 3.78],
+    "head_focus_mean_cm_deg": [1.79, 2.87]
+  },
+  "claim_scope": "precision improvement only; no survival-rate improvement"
+}

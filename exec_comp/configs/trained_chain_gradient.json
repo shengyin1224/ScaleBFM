@@ -1,0 +1,10 @@
+{
+  "steps": 167,
+  "goal_frames": 100,
+  "gradient_max": 0.0029395180754363537,
+  "gradient_l1": 0.6645921468734741,
+  "finite": true,
+  "source_policy_weights_frozen": true,
+  "body_weights_frozen": true,
+  "does_not_establish_prediction_accuracy": true
+}

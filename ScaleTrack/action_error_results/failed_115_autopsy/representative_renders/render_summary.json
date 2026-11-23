@@ -1,0 +1,98 @@
+{
+  "task": "G1-BFM-Transformer-Tracking",
+  "load_run": "humanoid_transformer_m",
+  "checkpoint": "model_22200.pt",
+  "mode_index": 8,
+  "results": [
+    {
+      "motion": "G1_WBT_Inspire_Put_Clothes_into_Washing_Machine_ep_0006",
+      "transitions": 300,
+      "gpu": null,
+      "exit_code": 0,
+      "video": "/root/shengyin/ScaleBFM/ScaleTrack/action_error_results/failed_115_autopsy/representative_renders/videos/G1_WBT_Inspire_Put_Clothes_into_Washing_Machine_ep_0006/rl-video-step-0.mp4",
+      "log": null,
+      "status": "skipped_existing"
+    },
+    {
+      "motion": "G1_WBT_Brainco_Collect_Plates_Into_Dishwasher_ep_0007",
+      "transitions": 300,
+      "gpu": null,
+      "exit_code": 0,
+      "video": "/root/shengyin/ScaleBFM/ScaleTrack/action_error_results/failed_115_autopsy/representative_renders/videos/G1_WBT_Brainco_Collect_Plates_Into_Dishwasher_ep_0007/rl-video-step-0.mp4",
+      "log": null,
+      "status": "skipped_existing"
+    },
+    {
+      "motion": "G1_WBT_Inspire_Pick_Up_Drinks_ep_0046",
+      "transitions": 300,
+      "gpu": "6",
+      "exit_code": 0,
+      "video": "/root/shengyin/ScaleBFM/ScaleTrack/action_error_results/failed_115_autopsy/representative_renders/videos/G1_WBT_Inspire_Pick_Up_Drinks_ep_0046/rl-video-step-0.mp4",
+      "log": "/root/shengyin/ScaleBFM/ScaleTrack/action_error_results/failed_115_autopsy/representative_renders/logs/G1_WBT_Inspire_Pick_Up_Drinks_ep_0046.log",
+      "status": "rendered"
+    },
+    {
+      "motion": "G1_WBT_Brainco_Make_The_Bed_ep_0002",
+      "transitions": 300,
+      "gpu": "7",
+      "exit_code": 0,
+      "video": "/root/shengyin/ScaleBFM/ScaleTrack/action_error_results/failed_115_autopsy/representative_renders/videos/G1_WBT_Brainco_Make_The_Bed_ep_0002/rl-video-step-0.mp4",
+      "log": "/root/shengyin/ScaleBFM/ScaleTrack/action_error_results/failed_115_autopsy/representative_renders/logs/G1_WBT_Brainco_Make_The_Bed_ep_0002.log",
+      "status": "rendered"
+    },
+    {
+      "motion": "G1_WBT_Inspire_Put_Clothes_Into_Basket_ep_0012",
+      "transitions": 300,
+      "gpu": "6",
+      "exit_code": 0,
+      "video": "/root/shengyin/ScaleBFM/ScaleTrack/action_error_results/failed_115_autopsy/representative_renders/videos/G1_WBT_Inspire_Put_Clothes_Into_Basket_ep_0012/rl-video-step-0.mp4",
+      "log": "/root/shengyin/ScaleBFM/ScaleTrack/action_error_results/failed_115_autopsy/representative_renders/logs/G1_WBT_Inspire_Put_Clothes_Into_Basket_ep_0012.log",
+      "status": "rendered"
+    },
+    {
+      "motion": "G1_WBT_Brainco_Pickup_Pillow_ep_0022",
+      "transitions": 300,
+      "gpu": "7",
+      "exit_code": 0,
+      "video": "/root/shengyin/ScaleBFM/ScaleTrack/action_error_results/failed_115_autopsy/representative_renders/videos/G1_WBT_Brainco_Pickup_Pillow_ep_0022/rl-video-step-0.mp4",
+      "log": "/root/shengyin/ScaleBFM/ScaleTrack/action_error_results/failed_115_autopsy/representative_renders/logs/G1_WBT_Brainco_Pickup_Pillow_ep_0022.log",
+      "status": "rendered"
+    },
+    {
+      "motion": "G1_WBT_Inspire_Put_Vegetables_Into_Basket_ep_0155",
+      "transitions": 300,
+      "gpu": "6",
+      "exit_code": 0,
+      "video": "/root/shengyin/ScaleBFM/ScaleTrack/action_error_results/failed_115_autopsy/representative_renders/videos/G1_WBT_Inspire_Put_Vegetables_Into_Basket_ep_0155/rl-video-step-0.mp4",
+      "log": "/root/shengyin/ScaleBFM/ScaleTrack/action_error_results/failed_115_autopsy/representative_renders/logs/G1_WBT_Inspire_Put_Vegetables_Into_Basket_ep_0155.log",
+      "status": "rendered"
+    },
+    {
+      "motion": "G1_WBT_Inspire_Put_Clothes_into_Washing_Machine_ep_0009",
+      "transitions": 300,
+      "gpu": "7",
+      "exit_code": 0,
+      "video": "/root/shengyin/ScaleBFM/ScaleTrack/action_error_results/failed_115_autopsy/representative_renders/videos/G1_WBT_Inspire_Put_Clothes_into_Washing_Machine_ep_0009/rl-video-step-0.mp4",
+      "log": "/root/shengyin/ScaleBFM/ScaleTrack/action_error_results/failed_115_autopsy/representative_renders/logs/G1_WBT_Inspire_Put_Clothes_into_Washing_Machine_ep_0009.log",
+      "status": "rendered"
+    },
+    {
+      "motion": "G1_WBT_Brainco_Collect_Plates_Into_Dishwasher_ep_0013",
+      "transitions": 300,
+      "gpu": "6",
+      "exit_code": 0,
+      "video": "/root/shengyin/ScaleBFM/ScaleTrack/action_error_results/failed_115_autopsy/representative_renders/videos/G1_WBT_Brainco_Collect_Plates_Into_Dishwasher_ep_0013/rl-video-step-0.mp4",
+      "log": "/root/shengyin/ScaleBFM/ScaleTrack/action_error_results/failed_115_autopsy/representative_renders/logs/G1_WBT_Brainco_Collect_Plates_Into_Dishwasher_ep_0013.log",
+      "status": "rendered"
+    },
+    {
+      "motion": "G1_WBT_Inspire_Pick_Up_Drinks_ep_0095",
+      "transitions": 300,
+      "gpu": "7",
+      "exit_code": 0,
+      "video": "/root/shengyin/ScaleBFM/ScaleTrack/action_error_results/failed_115_autopsy/representative_renders/videos/G1_WBT_Inspire_Pick_Up_Drinks_ep_0095/rl-video-step-0.mp4",
+      "log": "/root/shengyin/ScaleBFM/ScaleTrack/action_error_results/failed_115_autopsy/representative_renders/logs/G1_WBT_Inspire_Pick_Up_Drinks_ep_0095.log",
+      "status": "rendered"
+    }
+  ]
+}

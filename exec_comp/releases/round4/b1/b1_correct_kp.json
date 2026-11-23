@@ -1,0 +1,24 @@
+{
+  "method": "b1",
+  "format": "TorchScriptFP32",
+  "sha256": "76ebf7cb08db963d2d740b3c0b73bc8af5cb5a0ba95d9c90ba90570350134fa4",
+  "checkpoint": "exec_comp/runs/models/b1_r3_v4_lowdim_online_2_h32_best.pt",
+  "checkpoint_sha256": "2a8085cafbd682402a9cc1d0cfa5a4de960328bbdb811aeb26cc938f81e2a909",
+  "frozen_cerebellum_raw_sha256": "c9c65cfb60bea8e4a254abaa8a60496e8fd0b9703751a0d70c3d322789766393",
+  "max_abs": 0.0,
+  "max_position_residual_m": 0.050000034272670746,
+  "state_fields": [
+    "q",
+    "dq",
+    "kp",
+    "root_pos",
+    "root_quat",
+    "s"
+  ],
+  "history": 10,
+  "s_order": "q29,dq29,measured angular velocity3,measured projected gravity3",
+  "stage_safety": "not in network; shared Round4Executor enforces grasp freeze/cap/fade/mutual exclusion",
+  "acceptance_status": "draft; R4-5/R4-6/R4-7 pending",
+  "enable": false,
+  "real_robot_run": false
+}

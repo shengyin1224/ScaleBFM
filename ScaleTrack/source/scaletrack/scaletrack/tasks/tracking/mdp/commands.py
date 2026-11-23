@@ -1,5 +1,6 @@
 from __future__ import annotations
 import yaml
+import hashlib
 import math
 import os
 import torch
@@ -42,6 +43,31 @@ def load_motion_data_worker(args):
             raise ValueError(f"Loaded motion should be 50FPS. An error occurs when loading motion: {name}")
         if data["joint_pos"].shape[0] == 0:
             raise ValueError(f"Loaded motion should not be zero duration. An error occurs when loading motion: {name}")
+        frame_count = data["joint_pos"].shape[0]
+        focus_mask = (
+            data["focus_mask"].astype(bool)
+            if "focus_mask" in data.files
+            else np.zeros(frame_count, dtype=bool)
+        )
+        focus_time_to_next_edge_s = (
+            data["focus_time_to_next_edge_s"].astype(np.float32)
+            if "focus_time_to_next_edge_s" in data.files
+            else np.full(frame_count, 2.0, dtype=np.float32)
+        )
+        focus_valid = (
+            data["focus_valid"].astype(bool)
+            if "focus_valid" in data.files
+            else np.zeros(frame_count, dtype=bool)
+        )
+        for field_name, values in (
+            ("focus_mask", focus_mask),
+            ("focus_time_to_next_edge_s", focus_time_to_next_edge_s),
+            ("focus_valid", focus_valid),
+        ):
+            if values.shape != (frame_count,):
+                raise ValueError(
+                    f"{name}: {field_name} must be shaped ({frame_count},), got {values.shape}"
+                )
         
         return {
             "idx": idx,
@@ -52,7 +78,10 @@ def load_motion_data_worker(args):
             "body_quat_w": data["body_quat_w"][:, body_indexes],
             "body_lin_vel_w": data["body_lin_vel_w"][:, body_indexes],
             "body_ang_vel_w": data["body_ang_vel_w"][:, body_indexes],
-            "time_step": data["joint_pos"].shape[0]
+            "focus_mask": focus_mask,
+            "focus_time_to_next_edge_s": focus_time_to_next_edge_s,
+            "focus_valid": focus_valid,
+            "time_step": frame_count,
         }
     except Exception as e:
         print(f"Error loading {name}: {e}")
@@ -70,25 +99,41 @@ def load_motions_np(motions: dict, body_indexes: Sequence[int]):
     body_quat_w = [None] * motion_count
     body_lin_vel_w = [None] * motion_count
     body_ang_vel_w = [None] * motion_count
+    focus_mask = [None] * motion_count
+    focus_time_to_next_edge_s = [None] * motion_count
+    focus_valid = [None] * motion_count
     time_step_total = [None] * motion_count
             
-    with ProcessPoolExecutor(max_workers=mp.cpu_count()) as executor:
-        futures = {executor.submit(load_motion_data_worker, item): item[0] for item in motion_items}
+    if motion_count == 1:
+        results = [load_motion_data_worker(motion_items[0])]
+    else:
+        # Eight ablations may start concurrently.  Spawning every host CPU for
+        # each runner would create >1000 loaders and duplicate NPZ memory.
+        with ProcessPoolExecutor(
+            max_workers=min(16, mp.cpu_count(), motion_count)
+        ) as executor:
+            futures = {executor.submit(load_motion_data_worker, item): item[0] for item in motion_items}
+            results = [
+                future.result()
+                for future in tqdm(as_completed(futures), total=len(futures), desc="Loading motions...")
+            ]
 
-        for future in tqdm(as_completed(futures), total=len(futures), desc="Loading motions..."):
-            result = future.result()
-            if result is not None:
-                idx = result["idx"]
-                names[idx] = result["name"]
-                joint_pos[idx] = result["joint_pos"]
-                joint_vel[idx] = result["joint_vel"]
-                body_pos_w[idx] = result["body_pos_w"]
-                body_quat_w[idx] = result["body_quat_w"]
-                body_lin_vel_w[idx] = result["body_lin_vel_w"]
-                body_ang_vel_w[idx] = result["body_ang_vel_w"]
-                time_step_total[idx] = result["time_step"]
-            else:
-                raise ValueError(f"Defective motions should be filtered from the dataset to ensure index alignment under distributed training and parallel loading setting!")
+    for result in results:
+        if result is not None:
+            idx = result["idx"]
+            names[idx] = result["name"]
+            joint_pos[idx] = result["joint_pos"]
+            joint_vel[idx] = result["joint_vel"]
+            body_pos_w[idx] = result["body_pos_w"]
+            body_quat_w[idx] = result["body_quat_w"]
+            body_lin_vel_w[idx] = result["body_lin_vel_w"]
+            body_ang_vel_w[idx] = result["body_ang_vel_w"]
+            focus_mask[idx] = result["focus_mask"]
+            focus_time_to_next_edge_s[idx] = result["focus_time_to_next_edge_s"]
+            focus_valid[idx] = result["focus_valid"]
+            time_step_total[idx] = result["time_step"]
+        else:
+            raise ValueError(f"Defective motions should be filtered from the dataset to ensure index alignment under distributed training and parallel loading setting!")
     
     try:
         joint_pos_np = np.concatenate(joint_pos)
@@ -97,14 +142,40 @@ def load_motions_np(motions: dict, body_indexes: Sequence[int]):
         body_quat_w_np = np.concatenate(body_quat_w)
         body_lin_vel_w_np = np.concatenate(body_lin_vel_w)
         body_ang_vel_w_np = np.concatenate(body_ang_vel_w)
+        focus_mask_np = np.concatenate(focus_mask)
+        focus_time_to_next_edge_s_np = np.concatenate(focus_time_to_next_edge_s)
+        focus_valid_np = np.concatenate(focus_valid)
         time_step_total_np = np.array(time_step_total)
     except Exception as e:
         print(f"Gathering operation failed possibly due to contaminated motion data. There is still None placeholder in the array!")
         raise e
 
-    del joint_pos, joint_vel, body_pos_w, body_quat_w, body_lin_vel_w, body_ang_vel_w, time_step_total
+    del (
+        joint_pos,
+        joint_vel,
+        body_pos_w,
+        body_quat_w,
+        body_lin_vel_w,
+        body_ang_vel_w,
+        focus_mask,
+        focus_time_to_next_edge_s,
+        focus_valid,
+        time_step_total,
+    )
 
-    return names, joint_pos_np, joint_vel_np, body_pos_w_np, body_quat_w_np, body_lin_vel_w_np, body_ang_vel_w_np, time_step_total_np
+    return (
+        names,
+        joint_pos_np,
+        joint_vel_np,
+        body_pos_w_np,
+        body_quat_w_np,
+        body_lin_vel_w_np,
+        body_ang_vel_w_np,
+        focus_mask_np,
+        focus_time_to_next_edge_s_np,
+        focus_valid_np,
+        time_step_total_np,
+    )
 
 
 class MotionCommand(CommandTerm):
@@ -137,6 +208,8 @@ class MotionCommand(CommandTerm):
             self.motion_names_train, self.cat_joint_pos_train, self.cat_joint_vel_train, \
                 self.cat_body_pos_w_train, self.cat_body_quat_w_train, \
                     self.cat_body_lin_vel_w_train, self.cat_body_ang_vel_w_train, \
+                        self.cat_focus_mask_train, self.cat_focus_time_to_next_edge_s_train, \
+                            self.cat_focus_valid_train, \
                         self.time_totals_train = self.load_motions(motions, self.body_indexes.cpu().numpy(), set_name="train")
             self.time_offsets_train = torch.zeros(self.num_motion_train, dtype=torch.long)
             if self.num_motion_train > 1:
@@ -158,6 +231,8 @@ class MotionCommand(CommandTerm):
                 self.motion_names_test, self.cat_joint_pos_test, self.cat_joint_vel_test, \
                     self.cat_body_pos_w_test, self.cat_body_quat_w_test, \
                         self.cat_body_lin_vel_w_test, self.cat_body_ang_vel_w_test, \
+                            self.cat_focus_mask_test, self.cat_focus_time_to_next_edge_s_test, \
+                                self.cat_focus_valid_test, \
                             self.time_totals_test = self.load_motions(test_motions, self.body_indexes.cpu().numpy(), set_name="test")
                 self.time_offsets_test = torch.zeros(self.num_motion_test, dtype=torch.long)
                 if self.num_motion_test > 1:
@@ -173,10 +248,26 @@ class MotionCommand(CommandTerm):
         self.cat_body_quat_w = self.cat_body_quat_w_train
         self.cat_body_lin_vel_w = self.cat_body_lin_vel_w_train
         self.cat_body_ang_vel_w = self.cat_body_ang_vel_w_train
+        self.cat_focus_mask = self.cat_focus_mask_train
+        self.cat_focus_time_to_next_edge_s = self.cat_focus_time_to_next_edge_s_train
+        self.cat_focus_valid = self.cat_focus_valid_train
         self.time_totals = self.time_totals_train
         self.time_offsets = self.time_offsets_train      
         self.motion_names = self.motion_names_train
         self.num_motion = self.num_motion_train  
+
+        valid_focus_frames = int(self.cat_focus_valid_train.sum().item())
+        focus_frames = int(
+            (
+                self.cat_focus_mask_train & self.cat_focus_valid_train
+            ).sum().item()
+        )
+        print(
+            "FOCUS train coverage: "
+            f"valid={valid_focus_frames}/{len(self.cat_focus_valid_train)}, "
+            f"in_focus={focus_frames}, "
+            f"fraction_of_valid={focus_frames / max(valid_focus_frames, 1):.4f}"
+        )
 
         self.motion_ids = torch.zeros(self.num_envs, dtype=torch.long)
         self.time_steps = torch.zeros(self.num_envs, dtype=torch.long)
@@ -194,6 +285,12 @@ class MotionCommand(CommandTerm):
         self.metrics["error_body_rot_relative"] = torch.zeros(self.num_envs,device=self.device)
         self.metrics["error_joint_pos"] = torch.zeros(self.num_envs, device=self.device)
         self.metrics["error_joint_vel"] = torch.zeros(self.num_envs, device=self.device)
+        for prefix in ("left_wrist", "right_wrist", "head_proxy"):
+            for frame in ("global", "pelvis_local"):
+                for quantity in ("pos", "rot"):
+                    self.metrics[f"error_{prefix}_{frame}_{quantity}"] = torch.zeros(
+                        self.num_envs, device=self.device
+                    )
 
         self.is_evaluating = False
         self.randomize_next_resampling = True
@@ -206,7 +303,12 @@ class MotionCommand(CommandTerm):
                     assert name in self.cfg.body_names, f"Link {name} in Mode {mode_name} does not exist in the list of link names given."
                     self._mode_table[mode_idx, self.cfg.body_names.index(name)] = 1
         
-            sampled_mode_ids = torch.randint(0, self._mode_table.shape[0], (self.num_envs,), device=self.device, dtype=torch.long)
+            self._mode_sampling_prob = self._build_mode_sampling_prob()
+            sampled_mode_ids = torch.multinomial(
+                self._mode_sampling_prob,
+                self.num_envs,
+                replacement=True,
+            )
             self._mode = self._mode_table[sampled_mode_ids].clone() # (num_envs, num_links)
         else:
             self._mode = torch.bernoulli(
@@ -224,6 +326,40 @@ class MotionCommand(CommandTerm):
         self._future_manual_cache: dict[tuple[int, ...], dict[str, torch.Tensor]] = {}
 
         self.resample_motions()
+
+    def _build_mode_sampling_prob(self) -> torch.Tensor:
+        mode_names = list(self.cfg.mode_candidates)
+        configured = self.cfg.mode_sampling_weights
+        if not configured:
+            return torch.full(
+                (len(mode_names),),
+                1.0 / len(mode_names),
+                dtype=torch.float32,
+                device=self.device,
+            )
+        unknown = sorted(set(configured).difference(mode_names))
+        missing = sorted(set(mode_names).difference(configured))
+        if unknown or missing:
+            raise ValueError(
+                "mode_sampling_weights must specify every mode exactly; "
+                f"unknown={unknown}, missing={missing}"
+            )
+        weights = torch.tensor(
+            [float(configured[name]) for name in mode_names],
+            dtype=torch.float32,
+            device=self.device,
+        )
+        if torch.any(weights < 0) or float(weights.sum()) <= 0:
+            raise ValueError(f"Invalid mode sampling weights: {configured}")
+        probabilities = weights / weights.sum()
+        print(
+            "Mode sampling probabilities: "
+            + ", ".join(
+                f"{name}={float(probabilities[index]):.4f}"
+                for index, name in enumerate(mode_names)
+            )
+        )
+        return probabilities
 
     def resample_motions(self):
         self.motion_ids[:] = torch.multinomial(self.motion_sampling_prob, num_samples=self.num_envs, replacement=True)
@@ -527,6 +663,18 @@ class MotionCommand(CommandTerm):
     def mode(self) -> torch.Tensor:
         return self._mode
 
+    @property
+    def focus_flag(self) -> torch.Tensor:
+        return self.cat_focus_mask[self._global_time_index()].to(self.device)
+
+    @property
+    def focus_valid(self) -> torch.Tensor:
+        return self.cat_focus_valid[self._global_time_index()].to(self.device)
+
+    @property
+    def focus_time_to_next_edge_s(self) -> torch.Tensor:
+        return self.cat_focus_time_to_next_edge_s[self._global_time_index()].to(self.device)
+
     def _update_metrics(self):
         self.metrics["error_anchor_height"] = torch.abs(self.anchor_pos_w[..., 2] - self.robot_anchor_pos_w[..., 2])
         self.metrics["error_anchor_pos"] = torch.norm(self.anchor_pos_w - self.robot_anchor_pos_w, dim=-1)
@@ -559,6 +707,67 @@ class MotionCommand(CommandTerm):
         self.metrics["error_joint_pos"] = torch.norm(self.joint_pos - self.robot_joint_pos, dim=-1)
         self.metrics["error_joint_vel"] = torch.norm(self.joint_vel - self.robot_joint_vel, dim=-1)
 
+        reference_anchor_pos = self.anchor_pos_w
+        reference_anchor_quat = self.anchor_quat_w
+        actual_anchor_pos = self.robot_anchor_pos_w
+        actual_anchor_quat = self.robot_anchor_quat_w
+        anchor_error_vec = reference_anchor_pos - actual_anchor_pos
+        for metric_prefix, body_name in (
+            ("left_wrist", "left_wrist_yaw_link"),
+            ("right_wrist", "right_wrist_yaw_link"),
+            ("head_proxy", "torso_link"),
+        ):
+            body_index = self.cfg.body_names.index(body_name)
+            reference_pos = self.body_pos_w[:, body_index]
+            reference_quat = self.body_quat_w[:, body_index]
+            actual_pos = self.robot_body_pos_w[:, body_index]
+            actual_quat = self.robot_body_quat_w[:, body_index]
+            if metric_prefix == "head_proxy":
+                # Exact fixed transform audited against the TWIST G1 asset:
+                # head_mocap is torso_link + [0, 0, 0.4] m, identity rotation.
+                head_offset = torch.tensor(
+                    [0.0, 0.0, 0.4],
+                    dtype=reference_pos.dtype,
+                    device=reference_pos.device,
+                ).expand_as(reference_pos)
+                reference_pos = reference_pos + quat_apply(
+                    reference_quat, head_offset
+                )
+                actual_pos = actual_pos + quat_apply(actual_quat, head_offset)
+            self.metrics[f"error_{metric_prefix}_global_pos"] = torch.norm(
+                reference_pos - actual_pos, dim=-1
+            )
+            if metric_prefix in ("left_wrist", "right_wrist"):
+                body_error_vec = reference_pos - actual_pos
+                self.metrics[f"cosine_pelvis_{metric_prefix}_global_pos_error"] = (
+                    torch.nn.functional.cosine_similarity(
+                        anchor_error_vec, body_error_vec, dim=-1, eps=1.0e-8
+                    )
+                )
+            self.metrics[f"error_{metric_prefix}_global_rot"] = (
+                quat_error_magnitude(reference_quat, actual_quat)
+            )
+            reference_local_pos = quat_apply(
+                quat_inv(reference_anchor_quat),
+                reference_pos - reference_anchor_pos,
+            )
+            actual_local_pos = quat_apply(
+                quat_inv(actual_anchor_quat),
+                actual_pos - actual_anchor_pos,
+            )
+            reference_local_quat = quat_mul(
+                quat_inv(reference_anchor_quat), reference_quat
+            )
+            actual_local_quat = quat_mul(
+                quat_inv(actual_anchor_quat), actual_quat
+            )
+            self.metrics[f"error_{metric_prefix}_pelvis_local_pos"] = torch.norm(
+                reference_local_pos - actual_local_pos, dim=-1
+            )
+            self.metrics[f"error_{metric_prefix}_pelvis_local_rot"] = (
+                quat_error_magnitude(reference_local_quat, actual_local_quat)
+            )
+
     def _resample_command(self, env_ids: Sequence[int]):
         if len(env_ids) == 0:
             return
@@ -574,6 +783,9 @@ class MotionCommand(CommandTerm):
                 self.time_steps[env_ids_cpu] = (self.time_steps[env_ids_cpu] + 1) % motion_len # weishuai: pick up from where it fails
         else:
             self.time_steps[env_ids_cpu] = 0
+
+        if self.cfg.playback_enabled:
+            self._reset_playback(env_ids_cpu)
 
         root_pos = self.body_pos_w[:, 0].clone()
         root_ori = self.body_quat_w[:, 0].clone()
@@ -608,7 +820,11 @@ class MotionCommand(CommandTerm):
         )
 
         if self.cfg.mode_candidates:
-            sampled_mode_ids = torch.randint(0, self._mode_table.shape[0], (len(env_ids),), device=self.device, dtype=torch.long)
+            sampled_mode_ids = torch.multinomial(
+                self._mode_sampling_prob,
+                len(env_ids),
+                replacement=True,
+            )
             self._mode[env_ids] = self._mode_table[sampled_mode_ids].clone() # (env_ids_len, num_links)
         else:
             self._mode[env_ids] = torch.bernoulli(
@@ -676,6 +892,9 @@ class MotionCommand(CommandTerm):
             self.cat_body_quat_w = self.cat_body_quat_w_test
             self.cat_body_lin_vel_w = self.cat_body_lin_vel_w_test
             self.cat_body_ang_vel_w = self.cat_body_ang_vel_w_test
+            self.cat_focus_mask = self.cat_focus_mask_test
+            self.cat_focus_time_to_next_edge_s = self.cat_focus_time_to_next_edge_s_test
+            self.cat_focus_valid = self.cat_focus_valid_test
 
         else:
             self.motion_names = self.motion_names_train
@@ -689,28 +908,67 @@ class MotionCommand(CommandTerm):
             self.cat_body_quat_w = self.cat_body_quat_w_train
             self.cat_body_lin_vel_w = self.cat_body_lin_vel_w_train
             self.cat_body_ang_vel_w = self.cat_body_ang_vel_w_train
+            self.cat_focus_mask = self.cat_focus_mask_train
+            self.cat_focus_time_to_next_edge_s = self.cat_focus_time_to_next_edge_s_train
+            self.cat_focus_valid = self.cat_focus_valid_train
 
     def load_motions(self, motions: dict, body_indexes: Sequence[int], set_name: str):
 
         if not self.is_distributed:
             
-            names, joint_pos, joint_vel, body_pos_w, body_quat_w, body_lin_vel_w, body_ang_vel_w, time_step_total = load_motions_np(motions, body_indexes)
+            (
+                names,
+                joint_pos,
+                joint_vel,
+                body_pos_w,
+                body_quat_w,
+                body_lin_vel_w,
+                body_ang_vel_w,
+                focus_mask,
+                focus_time_to_next_edge_s,
+                focus_valid,
+                time_step_total,
+            ) = load_motions_np(motions, body_indexes)
         
         else:
+            # Version the shared-memory schema: v2 adds the three FOCUS arrays.
+            # Reusing an old unversioned segment would deserialize the last
+            # arrays under the wrong names without an obvious Python error.
+            # Keep corpus versions separate: v3 must never attach to a still
+            # existing v2 segment with the same train/test name.
+            corpus_key = repr((sorted(motions.items()), tuple(int(i) for i in body_indexes)))
+            corpus_digest = hashlib.sha256(corpus_key.encode()).hexdigest()[:16]
+            shared_memory_name = f"shared_motionlib_v2_{set_name}_{corpus_digest}"
             if self.gpu_local_rank == 0:
 
-                names, joint_pos, joint_vel, body_pos_w, body_quat_w, body_lin_vel_w, body_ang_vel_w, time_step_total = load_motions_np(motions, body_indexes)
+                (
+                    names,
+                    joint_pos,
+                    joint_vel,
+                    body_pos_w,
+                    body_quat_w,
+                    body_lin_vel_w,
+                    body_ang_vel_w,
+                    focus_mask,
+                    focus_time_to_next_edge_s,
+                    focus_valid,
+                    time_step_total,
+                ) = load_motions_np(motions, body_indexes)
 
                 shapes = [
                     joint_pos.shape, joint_vel.shape,
                     body_pos_w.shape, body_quat_w.shape,
                     body_lin_vel_w.shape, body_ang_vel_w.shape,
+                    focus_mask.shape, focus_time_to_next_edge_s.shape,
+                    focus_valid.shape,
                     time_step_total.shape
                 ]
                 dtypes = [
                     joint_pos.dtype, joint_vel.dtype,
                     body_pos_w.dtype, body_quat_w.dtype,
                     body_lin_vel_w.dtype, body_ang_vel_w.dtype,
+                    focus_mask.dtype, focus_time_to_next_edge_s.dtype,
+                    focus_valid.dtype,
                     time_step_total.dtype
                 ]
                 metadata = {
@@ -727,10 +985,10 @@ class MotionCommand(CommandTerm):
                 total_size = metadata_size + data_size + 8
 
                 try: 
-                    shm = SharedMemory(name=f"shared_motionlib_{set_name}")
+                    shm = SharedMemory(name=shared_memory_name)
                 except FileNotFoundError:
                     # Create new shared memory
-                    shm = SharedMemory(name=f"shared_motionlib_{set_name}", create=True, size=total_size)
+                    shm = SharedMemory(name=shared_memory_name, create=True, size=total_size)
                     
                     shm.buf[:8] = metadata_size.to_bytes(8, 'little')
                     
@@ -739,7 +997,9 @@ class MotionCommand(CommandTerm):
                     # Write data arrays
                     offset = 8 + metadata_size
                     arrays = [joint_pos, joint_vel, body_pos_w, 
-                                body_quat_w, body_lin_vel_w, body_ang_vel_w, time_step_total]
+                                body_quat_w, body_lin_vel_w, body_ang_vel_w,
+                                focus_mask, focus_time_to_next_edge_s, focus_valid,
+                                time_step_total]
                     
                     for array in arrays:
                         array_bytes = array.tobytes()
@@ -752,7 +1012,7 @@ class MotionCommand(CommandTerm):
             else:
                 torch.distributed.barrier()
 
-            setattr(self, f"shm_{set_name}", SharedMemory(name=f"shared_motionlib_{set_name}"))
+            setattr(self, f"shm_{set_name}", SharedMemory(name=shared_memory_name))
 
             metadata_size = int.from_bytes(getattr(self, f"shm_{set_name}").buf[:8], 'little')
             metadata_bytes = bytes(getattr(self, f"shm_{set_name}").buf[8:8+metadata_size])
@@ -770,7 +1030,18 @@ class MotionCommand(CommandTerm):
                 arrays.append(array)
                 offset += array_size
             
-            joint_pos, joint_vel, body_pos_w, body_quat_w, body_lin_vel_w, body_ang_vel_w, time_step_total = arrays
+            (
+                joint_pos,
+                joint_vel,
+                body_pos_w,
+                body_quat_w,
+                body_lin_vel_w,
+                body_ang_vel_w,
+                focus_mask,
+                focus_time_to_next_edge_s,
+                focus_valid,
+                time_step_total,
+            ) = arrays
 
         joint_pos = torch.from_numpy(joint_pos)
         joint_vel = torch.from_numpy(joint_vel)
@@ -778,9 +1049,24 @@ class MotionCommand(CommandTerm):
         body_quat_w = torch.from_numpy(body_quat_w)
         body_lin_vel_w = torch.from_numpy(body_lin_vel_w)
         body_ang_vel_w = torch.from_numpy(body_ang_vel_w)
+        focus_mask = torch.from_numpy(focus_mask)
+        focus_time_to_next_edge_s = torch.from_numpy(focus_time_to_next_edge_s)
+        focus_valid = torch.from_numpy(focus_valid)
         time_step_total = torch.from_numpy(time_step_total)
 
-        return names, joint_pos, joint_vel, body_pos_w, body_quat_w, body_lin_vel_w, body_ang_vel_w, time_step_total
+        return (
+            names,
+            joint_pos,
+            joint_vel,
+            body_pos_w,
+            body_quat_w,
+            body_lin_vel_w,
+            body_ang_vel_w,
+            focus_mask,
+            focus_time_to_next_edge_s,
+            focus_valid,
+            time_step_total,
+        )
 
 
 @configclass
@@ -796,6 +1082,7 @@ class MotionCommandCfg(CommandTermCfg):
     anchor_body_name: str = MISSING
     body_names: list[str] = MISSING
     mode_candidates: dict[str, list[str]] = {}
+    mode_sampling_weights: dict[str, float] = {}
 
     pose_range: dict[str, tuple[float, float]] = {}
     velocity_range: dict[str, tuple[float, float]] = {}
@@ -804,6 +1091,20 @@ class MotionCommandCfg(CommandTermCfg):
     
     ref_frame_buffer_size: int = 33
     rand_timestep_range: tuple[int, int] = (5,33)
+
+    # Schedules count control steps, not PPO iterations or summed environment steps.
+    playback_enabled: bool = False
+    playback_node_interval: float = 0.25
+    playback_rate_low: float = 0.25
+    playback_rate_high: float = 1.25
+    playback_std_start: float = 1e-4
+    playback_std_end: float = 1.0
+    playback_start_step: int = 0
+    playback_end_step: int = 640000
+    precision_start_step: int = 0
+    precision_end_step: int = 640000
+    # Set this when resuming the curriculum from an existing fine-tune.
+    schedule_step_offset: int = 0
 
     enable_reset_disturbance: bool = True
 

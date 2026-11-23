@@ -1,0 +1,25 @@
+{
+  "package_files_created": true,
+  "enable": false,
+  "ready_for_robot": false,
+  "offline_evaluations": {
+    "brain": {
+      "status": "pending"
+    },
+    "motion": {
+      "status": "pending"
+    },
+    "dr": {
+      "status": "pending"
+    }
+  },
+  "offline_all_gates_passed": false,
+  "pending": [
+    "brain:pending",
+    "motion:pending",
+    "dr:pending",
+    "4080S latency deferred until user notifies idle window"
+  ],
+  "a1_lowdim_training": "skipped per user",
+  "caps": "deferred per user"
+}

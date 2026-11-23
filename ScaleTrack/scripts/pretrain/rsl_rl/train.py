@@ -26,6 +26,20 @@ parser.add_argument("--seed", type=int, default=None, help="Seed used for the en
 parser.add_argument("--max_iterations", type=int, default=None, help="RL Policy training iterations.")
 parser.add_argument("--motion_file", type=str, required=True, help="The name of the motion file.")
 parser.add_argument("--test_motion_file", type=str, default="", help="The name of the motion file for test set.")
+parser.add_argument(
+    "--pretrained_checkpoint",
+    type=str,
+    default="",
+    help=(
+        "Warm-start model weights from this checkpoint while discarding its "
+        "optimizer state and iteration counter. Mutually exclusive with --resume."
+    ),
+)
+parser.add_argument(
+    "--disable-new-settings",
+    action="store_true",
+    help="Use the original motion command and omit the extra wrist precision reward for the focus-only control.",
+)
 parser.add_argument("--distributed", action="store_true", default=False, help="Distributed training.")
 
 # append RSL-RL cli arguments
@@ -80,6 +94,8 @@ def main(env_cfg: ManagerBasedRLEnvCfg | DirectRLEnvCfg | DirectMARLEnvCfg, agen
     """Train with RSL-RL agent."""
     # override configurations with non-hydra CLI arguments
     agent_cfg = cli_args.update_rsl_rl_cfg(agent_cfg, args_cli)
+    if args_cli.pretrained_checkpoint and agent_cfg.resume:
+        raise ValueError("--pretrained_checkpoint and --resume are mutually exclusive")
     env_cfg.scene.num_envs = args_cli.num_envs if args_cli.num_envs is not None else env_cfg.scene.num_envs
     agent_cfg.max_iterations = (
         args_cli.max_iterations if args_cli.max_iterations is not None else agent_cfg.max_iterations
@@ -92,6 +108,20 @@ def main(env_cfg: ManagerBasedRLEnvCfg | DirectRLEnvCfg | DirectMARLEnvCfg, agen
 
     env_cfg.commands.motion.motion_file = args_cli.motion_file
     env_cfg.commands.motion.test_motion_file = args_cli.test_motion_file
+
+    if args_cli.disable_new_settings:
+        from scaletrack.tasks.tracking.mdp.commands import MotionCommand
+
+        if not hasattr(env_cfg.rewards, "wrist_precision"):
+            raise ValueError("--disable-new-settings requires an HAT4 focus task")
+        env_cfg.commands.motion.class_type = MotionCommand
+        env_cfg.commands.motion.playback_enabled = False
+        env_cfg.rewards.wrist_precision = None
+    print(
+        "[INFO]: Experiment mechanisms: "
+        f"playback={env_cfg.commands.motion.playback_enabled}; "
+        f"wrist_precision={getattr(env_cfg.rewards, 'wrist_precision', None) is not None}"
+    )
 
     # multi-gpu training configuration
     if args_cli.distributed:
@@ -157,6 +187,25 @@ def main(env_cfg: ManagerBasedRLEnvCfg | DirectRLEnvCfg | DirectMARLEnvCfg, agen
         print(f"[INFO]: Loading model checkpoint from: {resume_path}")
         # load previously trained model
         runner.load(resume_path)
+    elif args_cli.pretrained_checkpoint:
+        pretrained_path = os.path.abspath(args_cli.pretrained_checkpoint)
+        if not os.path.isfile(pretrained_path):
+            raise FileNotFoundError(
+                f"Pretrained checkpoint does not exist: {pretrained_path}"
+            )
+        print(
+            "[INFO]: Warm-starting model only (optimizer and iteration are NOT "
+            f"restored) from: {pretrained_path}"
+        )
+        runner.load(pretrained_path, load_optimizer=False, map_location=agent_cfg.device)
+        runner.current_learning_iteration = 0
+        expanded = getattr(
+            runner.alg.policy, "last_load_zero_expanded_keys", ()
+        )
+        print(
+            "[INFO]: Warm start complete; iteration=0; "
+            f"zero-expanded={list(expanded)}"
+        )
 
     # run training
     runner.learn(num_learning_iterations=agent_cfg.max_iterations, init_at_random_ep_len=True)

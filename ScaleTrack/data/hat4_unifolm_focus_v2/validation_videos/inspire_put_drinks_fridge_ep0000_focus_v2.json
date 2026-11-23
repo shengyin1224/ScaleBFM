@@ -1,0 +1,28 @@
+{
+  "hdf5": "/mnt/nvme0n1/DATASETS/human_policy/convert_UnifoLM_WBT_inspire_rootfix/G1_WBT_Inspire_Put_Drinks_Into_Fridge_ep_0000_rootfix.hdf5",
+  "focus_source": "/root/shengyin/ScaleBFM/ScaleTrack/data/hat4_unifolm_focus_v2/raw/G1_WBT_Inspire_Put_Drinks_Into_Fridge_ep_0000.pkl",
+  "video": "/root/shengyin/ScaleBFM/ScaleTrack/data/hat4_unifolm_focus_v2/validation_videos/inspire_put_drinks_fridge_ep0000_focus_v2.mp4",
+  "fps": 30.0,
+  "frames": 890,
+  "duration_s": 29.666666666666668,
+  "focus_segments": [
+    {
+      "start_frame": 278,
+      "end_frame_inclusive": 338,
+      "start_s": 9.266666666666667,
+      "end_s_exclusive": 11.3
+    },
+    {
+      "start_frame": 622,
+      "end_frame_inclusive": 704,
+      "start_s": 20.733333333333334,
+      "end_s_exclusive": 23.5
+    },
+    {
+      "start_frame": 748,
+      "end_frame_inclusive": 808,
+      "start_s": 24.933333333333334,
+      "end_s_exclusive": 26.966666666666665
+    }
+  ]
+}

@@ -1,0 +1,82 @@
+{
+  "1": {
+    "learned_joint_wrist_error_with_oracle_root_cm": [
+      0.05897156521677971,
+      0.07014541327953339
+    ],
+    "oracle_state_integration_wrist_error_cm": [
+      0.052520085126161575,
+      0.07613319158554077
+    ],
+    "predicted_gravity_norm_mean": 0.9999321699142456,
+    "truth_gravity_norm_mean": 1.0,
+    "state_mae": {
+      "q_rad": 0.0010118373902514577,
+      "dq_rad_s": 0.045912519097328186,
+      "ang_rad_s": 0.027922946959733963,
+      "gravity": 0.0007230720948427916,
+      "height_m": 0.00023685352061875165,
+      "velocity_m_s": 0.0034879313316196203
+    }
+  },
+  "8": {
+    "learned_joint_wrist_error_with_oracle_root_cm": [
+      0.29460668563842773,
+      0.3503042757511139
+    ],
+    "oracle_state_integration_wrist_error_cm": [
+      0.23352043330669403,
+      0.3199614882469177
+    ],
+    "predicted_gravity_norm_mean": 0.9996278285980225,
+    "truth_gravity_norm_mean": 1.0,
+    "state_mae": {
+      "q_rad": 0.0037993192672729492,
+      "dq_rad_s": 0.050938237458467484,
+      "ang_rad_s": 0.03336465358734131,
+      "gravity": 0.002791811479255557,
+      "height_m": 0.000896186102181673,
+      "velocity_m_s": 0.0066836439073085785
+    }
+  },
+  "32": {
+    "learned_joint_wrist_error_with_oracle_root_cm": [
+      0.40136897563934326,
+      0.46471747756004333
+    ],
+    "oracle_state_integration_wrist_error_cm": [
+      0.8198082447052002,
+      1.1356455087661743
+    ],
+    "predicted_gravity_norm_mean": 0.9988470077514648,
+    "truth_gravity_norm_mean": 1.0,
+    "state_mae": {
+      "q_rad": 0.0074298204854130745,
+      "dq_rad_s": 0.063810795545578,
+      "ang_rad_s": 0.0502810925245285,
+      "gravity": 0.009615039452910423,
+      "height_m": 0.0019071827409788966,
+      "velocity_m_s": 0.01940016821026802
+    }
+  },
+  "167": {
+    "learned_joint_wrist_error_with_oracle_root_cm": [
+      17.12260627746582,
+      24.948055267333984
+    ],
+    "oracle_state_integration_wrist_error_cm": [
+      3.6443212032318115,
+      5.212784767150879
+    ],
+    "predicted_gravity_norm_mean": 3.873040199279785,
+    "truth_gravity_norm_mean": 1.0,
+    "state_mae": {
+      "q_rad": 0.4346226751804352,
+      "dq_rad_s": 1.2868902683258057,
+      "ang_rad_s": 3.8871355056762695,
+      "gravity": 1.6268835067749023,
+      "height_m": 0.2818443179130554,
+      "velocity_m_s": 2.6032323837280273
+    }
+  }
+}

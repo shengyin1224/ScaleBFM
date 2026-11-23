@@ -1,0 +1,9 @@
+{
+  "excess_near_seam": 1011.7103817046591,
+  "excess_total": 1070.9462434864404,
+  "near_count": 172776,
+  "all_count": 964864,
+  "positive_excess_second_difference_fraction_near_replan": 0.9446882958485943,
+  "fraction_of_samples_near_replan": 0.17906772353409392,
+  "definition": "positive excess max(norm(ddA1)-norm(ddRaw),0), within±1 control step of replan; same300 full clips"
+}

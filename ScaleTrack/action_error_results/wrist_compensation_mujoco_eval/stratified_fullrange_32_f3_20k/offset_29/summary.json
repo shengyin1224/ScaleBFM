@@ -1,0 +1,111 @@
+{
+  "checkpoint": "/root/shengyin/ScaleBFM/ScaleTrack/logs/rsl_rl/g1_hat4_focus_finetune/formal_core5_20260728b_F3/model_20000.pt",
+  "bucket_c_status": "NOT RUN: no manifest provided",
+  "buckets": {
+    "A_unifolm_heldout": {
+      "mode_4": {
+        "motions": 1,
+        "frames": 1264,
+        "success_rate_frames_0.5m": 1.0,
+        "metrics": {
+          "head/global/focus/position_m": {
+            "mean": 0.036370815128082955,
+            "p95": 0.06414909669451589
+          },
+          "head/global/focus/rotation_deg": {
+            "mean": 2.8784498286963167,
+            "p95": 4.92686502005003
+          },
+          "head/global/full/position_m": {
+            "mean": 0.030310584740773857,
+            "p95": 0.047220365886302934
+          },
+          "head/global/full/rotation_deg": {
+            "mean": 3.05159311209568,
+            "p95": 5.813978395359987
+          },
+          "head/local/focus/position_m": {
+            "mean": 0.028633788626631542,
+            "p95": 0.06396427262517757
+          },
+          "head/local/focus/rotation_deg": {
+            "mean": 4.9378803378698475,
+            "p95": 10.205366106946304
+          },
+          "head/local/full/position_m": {
+            "mean": 0.02723334425002987,
+            "p95": 0.05520217088422337
+          },
+          "head/local/full/rotation_deg": {
+            "mean": 4.507956510609503,
+            "p95": 8.215138984996898
+          },
+          "left_wrist_yaw_link/global/focus/position_m": {
+            "mean": 0.027553640604435284,
+            "p95": 0.0560425256023929
+          },
+          "left_wrist_yaw_link/global/focus/rotation_deg": {
+            "mean": 4.034897111947106,
+            "p95": 6.8050017209315286
+          },
+          "left_wrist_yaw_link/global/full/position_m": {
+            "mean": 0.017958269482394873,
+            "p95": 0.04636758056432003
+          },
+          "left_wrist_yaw_link/global/full/rotation_deg": {
+            "mean": 5.1376153817939345,
+            "p95": 8.172540394960292
+          },
+          "left_wrist_yaw_link/local/focus/position_m": {
+            "mean": 0.033822623483123336,
+            "p95": 0.05798200279551662
+          },
+          "left_wrist_yaw_link/local/focus/rotation_deg": {
+            "mean": 5.473443640298976,
+            "p95": 11.946130236973739
+          },
+          "left_wrist_yaw_link/local/full/position_m": {
+            "mean": 0.04296529670336837,
+            "p95": 0.08525548678207996
+          },
+          "left_wrist_yaw_link/local/full/rotation_deg": {
+            "mean": 7.20345831652235,
+            "p95": 11.90934452430522
+          },
+          "right_wrist_yaw_link/global/focus/position_m": {
+            "mean": 0.030170217911380002,
+            "p95": 0.06601308134621856
+          },
+          "right_wrist_yaw_link/global/focus/rotation_deg": {
+            "mean": 5.3874806250287826,
+            "p95": 13.178035015151474
+          },
+          "right_wrist_yaw_link/global/full/position_m": {
+            "mean": 0.01817609631896028,
+            "p95": 0.0478395702584332
+          },
+          "right_wrist_yaw_link/global/full/rotation_deg": {
+            "mean": 4.079649853102405,
+            "p95": 7.125129162380628
+          },
+          "right_wrist_yaw_link/local/focus/position_m": {
+            "mean": 0.036144553645099955,
+            "p95": 0.08508970217699897
+          },
+          "right_wrist_yaw_link/local/focus/rotation_deg": {
+            "mean": 5.565607608037714,
+            "p95": 8.571261629531737
+          },
+          "right_wrist_yaw_link/local/full/position_m": {
+            "mean": 0.04715076452982442,
+            "p95": 0.0822669774437507
+          },
+          "right_wrist_yaw_link/local/full/rotation_deg": {
+            "mean": 5.117409473079929,
+            "p95": 7.948276241254045
+          }
+        }
+      }
+    }
+  }
+}

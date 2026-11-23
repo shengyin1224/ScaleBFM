@@ -1,0 +1,87 @@
+{
+  "profile": "b1_activation_candidate",
+  "evaluations": {
+    "brain": {
+      "status": "passed",
+      "gates": {
+        "actual_above_5hz_ratio": true,
+        "action_difference_ratio": true,
+        "joint_velocity_rms_ratio": true,
+        "plan_seam_excess_p95_cm": true,
+        "wrist_error_reduction": true,
+        "fallback_fraction": true
+      },
+      "metrics": {
+        "actual_above_5hz_ratio": 1.147150301436128,
+        "action_difference_ratio": 1.121069766282924,
+        "joint_velocity_rms_ratio": 1.0381387539057547,
+        "command_above_5hz_ratio": 1.4257427155754887,
+        "plan_seam_p95_cm": 0.027708491869270806,
+        "raw_plan_seam_p95_cm": 0.040276881307363524,
+        "plan_seam_excess_p95_cm": -0.012568389438092718,
+        "wrist_mean_cm": 1.9737013578414917,
+        "raw_wrist_mean_cm": 3.4455111026763916,
+        "wrist_error_reduction": 0.4271673203118205
+      },
+      "fallback_fraction": 0.0018075011296882061,
+      "metrics_sha256": "6d3c71f5d7fad6803b69050d0db633971ab583da947ddc05a915243729eabf93"
+    },
+    "motion": {
+      "status": "passed",
+      "gates": {
+        "actual_above_5hz_ratio": true,
+        "action_difference_ratio": true,
+        "joint_velocity_rms_ratio": true,
+        "plan_seam_excess_p95_cm": true,
+        "wrist_error_reduction": true,
+        "fallback_fraction": true
+      },
+      "metrics": {
+        "actual_above_5hz_ratio": 1.0556666311168021,
+        "action_difference_ratio": 1.0883828514546348,
+        "joint_velocity_rms_ratio": 1.0326748440414928,
+        "command_above_5hz_ratio": 1.7808924264665973,
+        "plan_seam_p95_cm": 5.9604644775390625e-06,
+        "raw_plan_seam_p95_cm": 0.0,
+        "plan_seam_excess_p95_cm": 5.9604644775390625e-06,
+        "wrist_mean_cm": 1.7692262612316672,
+        "raw_wrist_mean_cm": 4.036558337619332,
+        "wrist_error_reduction": 0.5616993207448315
+      },
+      "fallback_fraction": 0.013812749465873896,
+      "metrics_sha256": "5931cf35efe5c658aa0acb68628bad4bf7c002280ee4a1e55992335b835da941"
+    },
+    "dr": {
+      "status": "passed",
+      "gates": {
+        "actual_above_5hz_ratio": true,
+        "action_difference_ratio": true,
+        "joint_velocity_rms_ratio": true,
+        "plan_seam_excess_p95_cm": true,
+        "wrist_error_reduction": true,
+        "fallback_fraction": true
+      },
+      "metrics": {
+        "actual_above_5hz_ratio": 0.9884826253461021,
+        "action_difference_ratio": 1.0597342102255303,
+        "joint_velocity_rms_ratio": 1.0568712958157236,
+        "command_above_5hz_ratio": 13.192804345891684,
+        "plan_seam_p95_cm": 5.9604644775390625e-06,
+        "raw_plan_seam_p95_cm": 0.0,
+        "plan_seam_excess_p95_cm": 5.9604644775390625e-06,
+        "wrist_mean_cm": 2.0468097222171884,
+        "raw_wrist_mean_cm": 3.923403457495691,
+        "wrist_error_reduction": 0.47830761113625886
+      },
+      "fallback_fraction": 0.04772975703473062,
+      "metrics_sha256": "babac956ea79413c87a7a9be96587a71149965986a53a6e2b798120b55f647af"
+    }
+  },
+  "runtime_binding_matches": true,
+  "artifact_hash_matches": true,
+  "offline_all_gates_passed": true,
+  "ready_for_robot": false,
+  "latency_4080s": "deferred until user notifies idle window",
+  "note": "Evidence receipt only; does not modify or promote the bound model/runtime manifest",
+  "real_robot_run": false
+}

@@ -69,5 +69,13 @@ class G1BFMTrackingEnvCfg(BFMTrackingEnvCfg):
                 "right_shoulder_roll_link",
                 "right_elbow_link",
                 "right_wrist_yaw_link",
-            ]
+            ],
+            # HAT/VR teleoperation exposes root, both wrists, and head.  G1 has
+            # no articulated neck, so torso_link is the trainable head proxy.
+            "HAT-4": [
+                "pelvis",
+                "left_wrist_yaw_link",
+                "right_wrist_yaw_link",
+                "torso_link",
+            ],
         }

@@ -1,0 +1,12 @@
+{
+  "original_config": "/home/nerv/qingyaoxu/ScaleBFM/ScaleBridge/scalebridge/config/hat4_online.yaml",
+  "original_sha256": "3661b68c5f776eae36a6f73e34a6080f482ed42c33c94cf36928a4282b19f462",
+  "copied_original": "/home/nerv/qingyaoxu/ScaleBFM/exec_comp/deployment/configs/hat4_online.yaml",
+  "copied_sha256": "3661b68c5f776eae36a6f73e34a6080f482ed42c33c94cf36928a4282b19f462",
+  "new_default_off_config": "/home/nerv/qingyaoxu/ScaleBFM/exec_comp/deployment/configs/hat4_exec_comp.yaml",
+  "composition_checked": true,
+  "instantiated_robot_or_sockets": false,
+  "all_new_files_under_exec_comp": true,
+  "configuration_location": "New configuration sits beside an immutable copy inside the separate package; live deployment directory is untouched.",
+  "overlay_support": "Plain body tracking with original clock/RTC/overlap. FOCUS handoff/adaptive/hand-event/stall/legacy compensation overlays bypass correction and are logged until separately validated."
+}

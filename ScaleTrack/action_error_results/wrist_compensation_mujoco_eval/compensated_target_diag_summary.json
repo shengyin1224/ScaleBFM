@@ -1,0 +1,49 @@
+{
+  "scope": "M-F3 20k MuJoCo; 25 paired full-survival motions from 32 motions equally spaced over heldout-600",
+  "focus": {
+    "left_wrist": {
+      "original_local": {
+        "mean_m": 0.03262776347615488,
+        "p95_m": 0.06945861540908962,
+        "frames": 4874
+      },
+      "compensated_global": {
+        "mean_m": 0.07829474693381475,
+        "p95_m": 0.17698381974078553,
+        "frames": 4874
+      },
+      "compensated_local": {
+        "mean_m": 0.05592325900064628,
+        "p95_m": 0.12193615148073915,
+        "frames": 4874
+      },
+      "offset_norm": {
+        "mean_m": 0.06785295903682709,
+        "p95_m": 0.15182577818632118,
+        "frames": 4874
+      }
+    },
+    "right_wrist": {
+      "original_local": {
+        "mean_m": 0.03933536934200577,
+        "p95_m": 0.09000513731387932,
+        "frames": 4874
+      },
+      "compensated_global": {
+        "mean_m": 0.0861179675827365,
+        "p95_m": 0.18302343947864466,
+        "frames": 4874
+      },
+      "compensated_local": {
+        "mean_m": 0.07380593687711304,
+        "p95_m": 0.16740797701486118,
+        "frames": 4874
+      },
+      "offset_norm": {
+        "mean_m": 0.0753035619854927,
+        "p95_m": 0.16661558896303172,
+        "frames": 4874
+      }
+    }
+  }
+}

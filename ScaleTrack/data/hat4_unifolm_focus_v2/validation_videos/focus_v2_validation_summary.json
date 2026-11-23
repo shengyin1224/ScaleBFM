@@ -1,0 +1,20 @@
+{
+  "definition": "focus_v2_physical_hand_closure",
+  "time_interval_convention": "[start_s, end_s_exclusive)",
+  "videos": {
+    "brainco": {
+      "episode": "G1_WBT_Brainco_Pickup_Pillow_ep_0000",
+      "source_hdf5": "/mnt/nvme0n1/DATASETS/human_policy/convert_UnifoLM_WBT/G1_WBT_Brainco_Pickup_Pillow_ep_0000.hdf5",
+      "rendered_video": "/root/shengyin/ScaleBFM/ScaleTrack/data/hat4_unifolm_focus_v2/validation_videos/brainco_pickup_pillow_ep0000_focus_v2.mp4",
+      "focus_frames_inclusive": [[193, 256], [370, 434]],
+      "focus_seconds": [[6.4333333333, 8.5666666667], [12.3333333333, 14.5]]
+    },
+    "inspire": {
+      "episode": "G1_WBT_Inspire_Put_Drinks_Into_Fridge_ep_0000",
+      "source_hdf5": "/mnt/nvme0n1/DATASETS/human_policy/convert_UnifoLM_WBT_inspire_rootfix/G1_WBT_Inspire_Put_Drinks_Into_Fridge_ep_0000_rootfix.hdf5",
+      "rendered_video": "/root/shengyin/ScaleBFM/ScaleTrack/data/hat4_unifolm_focus_v2/validation_videos/inspire_put_drinks_fridge_ep0000_focus_v2.mp4",
+      "focus_frames_inclusive": [[278, 338], [622, 704], [748, 808]],
+      "focus_seconds": [[9.2666666667, 11.3], [20.7333333333, 23.5], [24.9333333333, 26.9666666667]]
+    }
+  }
+}

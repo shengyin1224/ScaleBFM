@@ -1,0 +1,7 @@
+{
+  "actual_bound_export_loads": true,
+  "first_step_finite": true,
+  "device": "cpu",
+  "flags": {},
+  "real_robot_run": false
+}

@@ -10,12 +10,27 @@ import yaml
 import hashlib
 from isaaclab.app import AppLauncher
 
+# Joblib uses threads below; allowing every interpolation task to spawn a full
+# OpenMP pool causes severe 32 x N oversubscription on the 3000-motion corpus.
+torch.set_num_threads(1)
+
 parser = argparse.ArgumentParser(description="Process retargeted motion files")
 parser.add_argument("--data_dir", type=str, required=True, help="The path to the input motion directory.")
 parser.add_argument("--data_format", type=str, default="pkl", help="Format of the retargeted motions.")
 parser.add_argument("--output_dir", type=str, default="source/scaletrack/data/motions", help="Path to save the obtained files")
 parser.add_argument("--output_fps", type=int, default=50, help="The fps of the output motion.")
 parser.add_argument("--num_envs", type=int, default=4096, help="Number of parallel environments")
+parser.add_argument(
+    "--loader_workers",
+    type=int,
+    default=32,
+    help="In-process interpolation threads (threads are required after Isaac launch).",
+)
+parser.add_argument(
+    "--skip_existing",
+    action="store_true",
+    help="Resume packaging by excluding motions whose output NPZ already exists.",
+)
 parser.add_argument("--robot_type", type=str, default="g1_29dof", help="Type of humanoid robot")
 # parser.add_argument("--num_splits", type=int, default=1, help="Number of splits to divide motions into")
 
@@ -99,6 +114,32 @@ def quat_conjugate(q: torch.Tensor) -> torch.Tensor:
     q = q.reshape(-1, 4)
     return torch.cat((q[..., 0:1], -q[..., 1:]), dim=-1).view(shape)
 
+
+def quat_slerp_batch(
+    q0: torch.Tensor, q1: torch.Tensor, blend: torch.Tensor
+) -> torch.Tensor:
+    """Vectorized shortest-path SLERP for wxyz quaternion batches."""
+    dot = torch.sum(q0 * q1, dim=-1, keepdim=True)
+    q1_short = torch.where(dot < 0.0, -q1, q1)
+    dot = torch.abs(dot).clamp(-1.0, 1.0)
+    angle = torch.acos(dot)
+    sin_angle = torch.sin(angle)
+    alpha = blend.unsqueeze(-1)
+    safe = sin_angle.abs() > 1.0e-7
+    weight0 = torch.where(
+        safe,
+        torch.sin((1.0 - alpha) * angle) / sin_angle.clamp_min(1.0e-7),
+        1.0 - alpha,
+    )
+    weight1 = torch.where(
+        safe,
+        torch.sin(alpha * angle) / sin_angle.clamp_min(1.0e-7),
+        alpha,
+    )
+    output = weight0 * q0 + weight1 * q1_short
+    return torch.nn.functional.normalize(output, dim=-1)
+
+
 def axis_angle_from_quat(quat: torch.Tensor, eps: float = 1.0e-6) -> torch.Tensor:
     """Convert rotations given as quaternions to axis/angle.
 
@@ -138,6 +179,24 @@ def load_single_motion(input_dir, motion_file, output_dt):
         base_pos = torch.from_numpy(motion_dict['root_pos']).float()
         base_rot = torch.from_numpy(motion_dict['root_rot'])[:, [3,0,1,2]].float()
         dof_pos = torch.from_numpy(motion_dict['dof_pos']).float()
+        focus_mask = np.asarray(
+            motion_dict.get("focus_mask", np.zeros(len(base_pos), dtype=bool)),
+            dtype=bool,
+        )
+        focus_time_to_next_edge_s = np.asarray(
+            motion_dict.get(
+                "focus_time_to_next_edge_s",
+                np.full(len(base_pos), 2.0, dtype=np.float32),
+            ),
+            dtype=np.float32,
+        )
+        focus_valid = np.asarray(
+            motion_dict.get(
+                "focus_valid",
+                np.zeros(len(base_pos), dtype=bool),
+            ),
+            dtype=bool,
+        )
         
         input_frames = base_pos.shape[0]
         input_dt = 1.0 / fps  # Assuming 30 fps input, adjust if needed
@@ -146,6 +205,15 @@ def load_single_motion(input_dir, motion_file, output_dt):
         # Interpolate to output fps
         times = torch.arange(0, duration, output_dt, dtype=torch.float32)
         output_frames = times.shape[0]
+        for field_name, values in (
+            ("focus_mask", focus_mask),
+            ("focus_time_to_next_edge_s", focus_time_to_next_edge_s),
+            ("focus_valid", focus_valid),
+        ):
+            if values.shape != (input_frames,):
+                raise ValueError(
+                    f"{field_name} must be shaped ({input_frames},), got {values.shape}"
+                )
 
         phase = times / duration
         index_0 = (phase * (input_frames - 1)).floor().long()
@@ -153,10 +221,18 @@ def load_single_motion(input_dir, motion_file, output_dt):
         blend = phase * (input_frames - 1) - index_0
         
         motion_base_pos = base_pos[index_0] * (1 - blend.unsqueeze(1)) + base_pos[index_1] * blend.unsqueeze(1)
-        motion_base_rot = torch.zeros_like(base_rot[index_0])
-        for i in range(base_rot[index_0].shape[0]):
-            motion_base_rot[i] = quat_slerp(base_rot[index_0][i], base_rot[index_1][i], blend[i])
+        motion_base_rot = quat_slerp_batch(
+            base_rot[index_0], base_rot[index_1], blend
+        )
         motion_dof_pos = dof_pos[index_0] * (1 - blend.unsqueeze(1)) + dof_pos[index_1] * blend.unsqueeze(1)
+        nearest_index = torch.clamp(
+            torch.round(phase * (input_frames - 1)).long(),
+            0,
+            input_frames - 1,
+        ).numpy()
+        motion_focus_mask = focus_mask[nearest_index]
+        motion_focus_time_to_next_edge_s = focus_time_to_next_edge_s[nearest_index]
+        motion_focus_valid = focus_valid[nearest_index]
         
         # Compute velocities
         base_lin_vel = torch.gradient(motion_base_pos, spacing=output_dt, dim=0)[0]
@@ -175,6 +251,9 @@ def load_single_motion(input_dir, motion_file, output_dt):
             'base_ang_vel': base_ang_vel,
             'dof_pos': motion_dof_pos,
             'dof_vel': dof_vel,
+            'focus_mask': motion_focus_mask,
+            'focus_time_to_next_edge_s': motion_focus_time_to_next_edge_s,
+            'focus_valid': motion_focus_valid,
             'output_frames': output_frames,
             'file_name': "_".join(os.path.relpath(os.path.splitext(motion_file)[0], input_dir).split("/"))
         }
@@ -232,9 +311,22 @@ class BatchMotionLoader:
     def _load_all_motions(self):
         """Load all motions into memory."""
 
-        self.batch_motions = joblib.Parallel(n_jobs=-1, verbose=10)(
-            joblib.delayed(load_single_motion)(self.input_dir, motion_file, self.output_dt) for motion_file in self.motion_files
-        )
+        # A loky child process cannot import Isaac Sim's omni/carb runtime after
+        # this script has launched the app.  Keep loading in-process: one motion
+        # runs directly, while batches use threads for the CPU interpolation.
+        if len(self.motion_files) == 1:
+            self.batch_motions = [
+                load_single_motion(self.input_dir, self.motion_files[0], self.output_dt)
+            ]
+        else:
+            self.batch_motions = joblib.Parallel(
+                n_jobs=min(args_cli.loader_workers, len(self.motion_files)),
+                prefer="threads",
+                verbose=10,
+            )(
+                joblib.delayed(load_single_motion)(self.input_dir, motion_file, self.output_dt)
+                for motion_file in self.motion_files
+            )
         self.batch_motions = [motion for motion in self.batch_motions if motion is not None and motion['output_frames'] > 2]
         self.batch_motions = sorted(self.batch_motions, key=lambda x: x['output_frames'])
 
@@ -269,6 +361,24 @@ def run_simulator(sim: sim_utils.SimulationContext, scene: InteractiveScene, joi
     
     # Find all motion files
     motion_files = glob.glob(f"{args_cli.data_dir}/**/*.{args_cli.data_format}", recursive=True)
+    if args_cli.skip_existing:
+        before = len(motion_files)
+        motion_files = [
+            path
+            for path in motion_files
+            if not os.path.exists(
+                os.path.join(
+                    args_cli.output_dir,
+                    "_".join(
+                        os.path.relpath(
+                            os.path.splitext(path)[0], args_cli.data_dir
+                        ).split("/")
+                    )
+                    + ".npz",
+                )
+            )
+        ]
+        print(f"Resume packaging: skipped {before - len(motion_files)} existing outputs")
     if not motion_files:
         print(f"No motion files found in {args_cli.data_dir} with format {args_cli.data_format}")
         return
@@ -388,15 +498,38 @@ def run_simulator(sim: sim_utils.SimulationContext, scene: InteractiveScene, joi
             sim.render()
             scene.update(sim.get_physics_dt())
             
+            # One batched device-to-host transfer per field.  The previous
+            # per-env .cpu() calls introduced 6 * num_envs synchronizations at
+            # every frame and dominated full-corpus packaging time.
+            host_joint_pos = robot.data.joint_pos[
+                :actual_batch_size
+            ].cpu().numpy()
+            host_joint_vel = robot.data.joint_vel[
+                :actual_batch_size
+            ].cpu().numpy()
+            host_body_pos = (
+                robot.data.body_pos_w[:actual_batch_size]
+                - scene.env_origins[:actual_batch_size, None, :]
+            ).cpu().numpy()
+            host_body_quat = robot.data.body_quat_w[
+                :actual_batch_size
+            ].cpu().numpy()
+            host_body_lin_vel = robot.data.body_lin_vel_w[
+                :actual_batch_size
+            ].cpu().numpy()
+            host_body_ang_vel = robot.data.body_ang_vel_w[
+                :actual_batch_size
+            ].cpu().numpy()
+
             # Log data for active environments
             for env_idx in range(actual_batch_size):
                 if frame_counters[env_idx] <= batch_motions[env_idx]['output_frames']:
-                    batch_logs[env_idx]["joint_pos"].append(robot.data.joint_pos[env_idx, :].cpu().numpy().copy())
-                    batch_logs[env_idx]["joint_vel"].append(robot.data.joint_vel[env_idx, :].cpu().numpy().copy())
-                    batch_logs[env_idx]["body_pos_w"].append(robot.data.body_pos_w[env_idx, :].cpu().numpy().copy())
-                    batch_logs[env_idx]["body_quat_w"].append(robot.data.body_quat_w[env_idx, :].cpu().numpy().copy())
-                    batch_logs[env_idx]["body_lin_vel_w"].append(robot.data.body_lin_vel_w[env_idx, :].cpu().numpy().copy())
-                    batch_logs[env_idx]["body_ang_vel_w"].append(robot.data.body_ang_vel_w[env_idx, :].cpu().numpy().copy())
+                    batch_logs[env_idx]["joint_pos"].append(host_joint_pos[env_idx].copy())
+                    batch_logs[env_idx]["joint_vel"].append(host_joint_vel[env_idx].copy())
+                    batch_logs[env_idx]["body_pos_w"].append(host_body_pos[env_idx].copy())
+                    batch_logs[env_idx]["body_quat_w"].append(host_body_quat[env_idx].copy())
+                    batch_logs[env_idx]["body_lin_vel_w"].append(host_body_lin_vel[env_idx].copy())
+                    batch_logs[env_idx]["body_ang_vel_w"].append(host_body_ang_vel[env_idx].copy())
             
             # Check for completed environments
             for env_idx in range(actual_batch_size):
@@ -411,6 +544,12 @@ def run_simulator(sim: sim_utils.SimulationContext, scene: InteractiveScene, joi
                     for k in ("joint_pos", "joint_vel", "body_pos_w", "body_quat_w", "body_lin_vel_w", "body_ang_vel_w"):
                         log_data[k] = np.stack(batch_logs[env_idx][k], axis=0)
                     log_data["fps"] = batch_logs[env_idx]["fps"]
+                    source_motion = batch_motions[env_idx]
+                    log_data["focus_mask"] = source_motion["focus_mask"].astype(bool)
+                    log_data["focus_time_to_next_edge_s"] = source_motion[
+                        "focus_time_to_next_edge_s"
+                    ].astype(np.float32)
+                    log_data["focus_valid"] = source_motion["focus_valid"].astype(bool)
                     
                     np.savez(output_path, **log_data)
                     print(f"{len(completed_envs)} / {actual_batch_size}; Saved motion: {output_path}.")

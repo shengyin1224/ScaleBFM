@@ -1,0 +1,22 @@
+{
+  "source_dataset": "G1_WBT_Inspire_Pickup_Pillow_MainCamOnly/G1_WB_Dex5_Pickup_Pillow",
+  "episodes": 609,
+  "source_fps": 30,
+  "source_frames": 157060,
+  "processed_fps": 50,
+  "processed_frames": 260950,
+  "processed_frame_range": [279, 647],
+  "focus_frames": 61915,
+  "focus_fraction": 0.2372676757999617,
+  "per_episode_focus_frame_range": [101, 102],
+  "all_focus_valid": true,
+  "joint_count": 29,
+  "body_count": 30,
+  "joint_reorder": "identity",
+  "canonical_root_max_error_m": 2.9760816729120057e-06,
+  "body_quaternion_max_norm_error": 3.5762786865234375e-07,
+  "all_numeric_finite": true,
+  "raw_bytes": 24078555,
+  "processed_bytes": 470760538,
+  "validation_scope": "all 609 raw PKLs and all 609 processed NPZ files"
+}

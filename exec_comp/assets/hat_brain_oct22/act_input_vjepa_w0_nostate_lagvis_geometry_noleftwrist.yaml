@@ -1,0 +1,39 @@
+# Left wrist input 80:89 is masked by the checkpoint state_keep_mask.
+# Online action inference; training-only auxiliary heads are ignored by the existing loader.
+common:
+  policy_class: ACT
+  state_dim: 128
+  action_dim: 128
+  action_chunk_size: 100
+  camera_names:
+  - top
+model:
+  enc_layers: 4
+  dec_layers: 7
+  nheads: 8
+  hidden_dim: 512
+  kl_weight: 10
+  dim_feedforward: 3200
+  lr_backbone: 1e-5
+  backbone: vjepa2_1_vitb
+  image_feature_strategy: ACT_linear
+  use_language_conditioning: false
+  zero_state_dims: 98:128
+  future_dino:
+    ablation: none
+    dropout: 0.1
+    enabled: true
+    horizon: 45
+    huber_weight: 0.1
+    normalize_target: true
+    num_heads: 8
+    num_layers: 4
+    num_patches: 1024
+    target_encoder: dinov2_vits14
+    warmup_steps: 0
+    weight: 0.0
+data:
+  image_resolution_hw:
+  - 240
+  - 320
+  action_representation: original

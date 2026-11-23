@@ -1,0 +1,413 @@
+{
+  "split": "exec_comp/configs/hat_heldout_split.json",
+  "robot_clips": 10,
+  "human_clips": 15,
+  "episodes": [
+    {
+      "path": "/mnt/nvme0n1/human_policy_ckpt/bottle0930_8runs_20261003_data/human_old/wholebody-63_unified_V.hdf5",
+      "type": "human",
+      "fps": 30.0,
+      "frames": 181,
+      "images": {
+        "observation.image.top": [
+          181,
+          240,
+          320,
+          3
+        ]
+      },
+      "focus_or_grasp_annotation_keys": [],
+      "spare_dims_98_100_max_abs": 0.0,
+      "source": "/tmp/0907_input/wholebody-63_unified_V.json"
+    },
+    {
+      "path": "/mnt/nvme0n1/human_policy_ckpt/bottle0930_8runs_20261003_data/human_old/wholebody-89_unified_V.hdf5",
+      "type": "human",
+      "fps": 30.0,
+      "frames": 187,
+      "images": {
+        "observation.image.top": [
+          187,
+          240,
+          320,
+          3
+        ]
+      },
+      "focus_or_grasp_annotation_keys": [],
+      "spare_dims_98_100_max_abs": 0.0,
+      "source": "/tmp/0907_input/wholebody-89_unified_V.json"
+    },
+    {
+      "path": "/mnt/nvme0n1/human_policy_ckpt/bottle0930_8runs_20261003_data/human_old/wholebody-109_unified_V.hdf5",
+      "type": "human",
+      "fps": 30.0,
+      "frames": 155,
+      "images": {
+        "observation.image.top": [
+          155,
+          240,
+          320,
+          3
+        ]
+      },
+      "focus_or_grasp_annotation_keys": [],
+      "spare_dims_98_100_max_abs": 0.0,
+      "source": "/tmp/0907_input/wholebody-109_unified_V.json"
+    },
+    {
+      "path": "/mnt/nvme0n1/human_policy_ckpt/bottle0930_8runs_20261003_data/human_old/wholebody-121_unified_V.hdf5",
+      "type": "human",
+      "fps": 30.0,
+      "frames": 181,
+      "images": {
+        "observation.image.top": [
+          181,
+          240,
+          320,
+          3
+        ]
+      },
+      "focus_or_grasp_annotation_keys": [],
+      "spare_dims_98_100_max_abs": 0.0,
+      "source": "/tmp/0907_input/wholebody-121_unified_V.json"
+    },
+    {
+      "path": "/mnt/nvme0n1/human_policy_ckpt/bottle0930_8runs_20261003_data/human_old/wholebody-127_unified_V.hdf5",
+      "type": "human",
+      "fps": 30.0,
+      "frames": 154,
+      "images": {
+        "observation.image.top": [
+          154,
+          240,
+          320,
+          3
+        ]
+      },
+      "focus_or_grasp_annotation_keys": [],
+      "spare_dims_98_100_max_abs": 0.0,
+      "source": "/tmp/0907_input/wholebody-127_unified_V.json"
+    },
+    {
+      "path": "/mnt/nvme0n1/human_policy_ckpt/bottle0930_8runs_20261003_data/human_old/wholebody-132_unified_V.hdf5",
+      "type": "human",
+      "fps": 30.0,
+      "frames": 152,
+      "images": {
+        "observation.image.top": [
+          152,
+          240,
+          320,
+          3
+        ]
+      },
+      "focus_or_grasp_annotation_keys": [],
+      "spare_dims_98_100_max_abs": 0.0,
+      "source": "/tmp/0907_input/wholebody-132_unified_V.json"
+    },
+    {
+      "path": "/mnt/nvme0n1/human_policy_ckpt/bottle0930_8runs_20261003_data/human_old/wholebody-146_unified_V.hdf5",
+      "type": "human",
+      "fps": 30.0,
+      "frames": 169,
+      "images": {
+        "observation.image.top": [
+          169,
+          240,
+          320,
+          3
+        ]
+      },
+      "focus_or_grasp_annotation_keys": [],
+      "spare_dims_98_100_max_abs": 0.0,
+      "source": "/tmp/0907_input/wholebody-146_unified_V.json"
+    },
+    {
+      "path": "/mnt/nvme0n1/human_policy_ckpt/bottle0930_8runs_20261003_data/human_old/wholebody-153_unified_V.hdf5",
+      "type": "human",
+      "fps": 30.0,
+      "frames": 191,
+      "images": {
+        "observation.image.top": [
+          191,
+          240,
+          320,
+          3
+        ]
+      },
+      "focus_or_grasp_annotation_keys": [],
+      "spare_dims_98_100_max_abs": 0.0,
+      "source": "/tmp/0907_input/wholebody-153_unified_V.json"
+    },
+    {
+      "path": "/mnt/nvme0n1/human_policy_ckpt/bottle0930_8runs_20261003_data/human_old/wholebody-158_unified_V.hdf5",
+      "type": "human",
+      "fps": 30.0,
+      "frames": 166,
+      "images": {
+        "observation.image.top": [
+          166,
+          240,
+          320,
+          3
+        ]
+      },
+      "focus_or_grasp_annotation_keys": [],
+      "spare_dims_98_100_max_abs": 0.0,
+      "source": "/tmp/0907_input/wholebody-158_unified_V.json"
+    },
+    {
+      "path": "/mnt/nvme0n1/human_policy_ckpt/bottle0930_8runs_20261003_data/human_old/wholebody-162_unified_V.hdf5",
+      "type": "human",
+      "fps": 30.0,
+      "frames": 174,
+      "images": {
+        "observation.image.top": [
+          174,
+          240,
+          320,
+          3
+        ]
+      },
+      "focus_or_grasp_annotation_keys": [],
+      "spare_dims_98_100_max_abs": 0.0,
+      "source": "/tmp/0907_input/wholebody-162_unified_V.json"
+    },
+    {
+      "path": "/mnt/nvme0n1/human_policy_ckpt/bottle0930_8runs_20261003_data/human_old/wholebody-177_unified_V.hdf5",
+      "type": "human",
+      "fps": 30.0,
+      "frames": 177,
+      "images": {
+        "observation.image.top": [
+          177,
+          240,
+          320,
+          3
+        ]
+      },
+      "focus_or_grasp_annotation_keys": [],
+      "spare_dims_98_100_max_abs": 0.0,
+      "source": "/tmp/0907_input/wholebody-177_unified_V.json"
+    },
+    {
+      "path": "/mnt/nvme0n1/human_policy_ckpt/bottle0930_8runs_20261003_data/human_old/wholebody-179_unified_V.hdf5",
+      "type": "human",
+      "fps": 30.0,
+      "frames": 161,
+      "images": {
+        "observation.image.top": [
+          161,
+          240,
+          320,
+          3
+        ]
+      },
+      "focus_or_grasp_annotation_keys": [],
+      "spare_dims_98_100_max_abs": 0.0,
+      "source": "/tmp/0907_input/wholebody-179_unified_V.json"
+    },
+    {
+      "path": "/mnt/nvme0n1/human_policy_ckpt/bottle0930_8runs_20261003_data/human_old/wholebody-185_unified_V.hdf5",
+      "type": "human",
+      "fps": 30.0,
+      "frames": 173,
+      "images": {
+        "observation.image.top": [
+          173,
+          240,
+          320,
+          3
+        ]
+      },
+      "focus_or_grasp_annotation_keys": [],
+      "spare_dims_98_100_max_abs": 0.0,
+      "source": "/tmp/0907_input/wholebody-185_unified_V.json"
+    },
+    {
+      "path": "/mnt/nvme0n1/human_policy_ckpt/bottle0930_8runs_20261003_data/human_old/wholebody-186_unified_V.hdf5",
+      "type": "human",
+      "fps": 30.0,
+      "frames": 139,
+      "images": {
+        "observation.image.top": [
+          139,
+          240,
+          320,
+          3
+        ]
+      },
+      "focus_or_grasp_annotation_keys": [],
+      "spare_dims_98_100_max_abs": 0.0,
+      "source": "/tmp/0907_input/wholebody-186_unified_V.json"
+    },
+    {
+      "path": "/mnt/nvme0n1/human_policy_ckpt/bottle0930_8runs_20261003_data/human_old/wholebody-206_unified_V.hdf5",
+      "type": "human",
+      "fps": 30.0,
+      "frames": 125,
+      "images": {
+        "observation.image.top": [
+          125,
+          240,
+          320,
+          3
+        ]
+      },
+      "focus_or_grasp_annotation_keys": [],
+      "spare_dims_98_100_max_abs": 0.0,
+      "source": "/tmp/0907_input/wholebody-206_unified_V.json"
+    },
+    {
+      "path": "/mnt/nvme0n1/human_policy_ckpt/bottle0930_8runs_20261003_data/robot_new/SONIC_Dex5_20260930_ep_0009_rootfix.hdf5",
+      "type": "robot",
+      "fps": 50.0,
+      "frames": 617,
+      "images": {
+        "observation.image.ego_view": [
+          617,
+          21980
+        ]
+      },
+      "focus_or_grasp_annotation_keys": [],
+      "spare_dims_98_100_max_abs": 0.0,
+      "source": "/root/shengyin/sonic_real_teleop_20260930_curated/usable_dataset/data/chunk-000/episode_000009.parquet"
+    },
+    {
+      "path": "/mnt/nvme0n1/human_policy_ckpt/bottle0930_8runs_20261003_data/robot_new/SONIC_Dex5_20260930_ep_0012_rootfix.hdf5",
+      "type": "robot",
+      "fps": 50.0,
+      "frames": 634,
+      "images": {
+        "observation.image.ego_view": [
+          634,
+          21607
+        ]
+      },
+      "focus_or_grasp_annotation_keys": [],
+      "spare_dims_98_100_max_abs": 0.0,
+      "source": "/root/shengyin/sonic_real_teleop_20260930_curated/usable_dataset/data/chunk-000/episode_000012.parquet"
+    },
+    {
+      "path": "/mnt/nvme0n1/human_policy_ckpt/bottle0930_8runs_20261003_data/robot_new/SONIC_Dex5_20260930_ep_0017_rootfix.hdf5",
+      "type": "robot",
+      "fps": 50.0,
+      "frames": 578,
+      "images": {
+        "observation.image.ego_view": [
+          578,
+          22373
+        ]
+      },
+      "focus_or_grasp_annotation_keys": [],
+      "spare_dims_98_100_max_abs": 0.0,
+      "source": "/root/shengyin/sonic_real_teleop_20260930_curated/usable_dataset/data/chunk-000/episode_000017.parquet"
+    },
+    {
+      "path": "/mnt/nvme0n1/human_policy_ckpt/bottle0930_8runs_20261003_data/robot_new/SONIC_Dex5_20260930_ep_0018_rootfix.hdf5",
+      "type": "robot",
+      "fps": 50.0,
+      "frames": 622,
+      "images": {
+        "observation.image.ego_view": [
+          622,
+          22144
+        ]
+      },
+      "focus_or_grasp_annotation_keys": [],
+      "spare_dims_98_100_max_abs": 0.0,
+      "source": "/root/shengyin/sonic_real_teleop_20260930_curated/usable_dataset/data/chunk-000/episode_000018.parquet"
+    },
+    {
+      "path": "/mnt/nvme0n1/human_policy_ckpt/bottle0930_8runs_20261003_data/robot_new/SONIC_Dex5_20260930_ep_0032_rootfix.hdf5",
+      "type": "robot",
+      "fps": 50.0,
+      "frames": 668,
+      "images": {
+        "observation.image.ego_view": [
+          668,
+          22030
+        ]
+      },
+      "focus_or_grasp_annotation_keys": [],
+      "spare_dims_98_100_max_abs": 0.0,
+      "source": "/root/shengyin/sonic_real_teleop_20260930_curated/usable_dataset/data/chunk-000/episode_000032.parquet"
+    },
+    {
+      "path": "/mnt/nvme0n1/human_policy_ckpt/bottle0930_8runs_20261003_data/robot_new/SONIC_Dex5_20260930_ep_0039_rootfix.hdf5",
+      "type": "robot",
+      "fps": 50.0,
+      "frames": 619,
+      "images": {
+        "observation.image.ego_view": [
+          619,
+          21684
+        ]
+      },
+      "focus_or_grasp_annotation_keys": [],
+      "spare_dims_98_100_max_abs": 0.0,
+      "source": "/root/shengyin/sonic_real_teleop_20260930_curated/usable_dataset/data/chunk-000/episode_000039.parquet"
+    },
+    {
+      "path": "/mnt/nvme0n1/human_policy_ckpt/bottle0930_8runs_20261003_data/robot_new/SONIC_Dex5_20260930_ep_0042_rootfix.hdf5",
+      "type": "robot",
+      "fps": 50.0,
+      "frames": 1129,
+      "images": {
+        "observation.image.ego_view": [
+          1129,
+          22162
+        ]
+      },
+      "focus_or_grasp_annotation_keys": [],
+      "spare_dims_98_100_max_abs": 0.0,
+      "source": "/root/shengyin/sonic_real_teleop_20260930_curated/usable_dataset/data/chunk-000/episode_000042.parquet"
+    },
+    {
+      "path": "/mnt/nvme0n1/human_policy_ckpt/bottle0930_8runs_20261003_data/robot_new/SONIC_Dex5_20260930_ep_0060_rootfix.hdf5",
+      "type": "robot",
+      "fps": 50.0,
+      "frames": 637,
+      "images": {
+        "observation.image.ego_view": [
+          637,
+          21690
+        ]
+      },
+      "focus_or_grasp_annotation_keys": [],
+      "spare_dims_98_100_max_abs": 0.0,
+      "source": "/root/shengyin/sonic_real_teleop_20260930_curated/usable_dataset/data/chunk-000/episode_000060.parquet"
+    },
+    {
+      "path": "/mnt/nvme0n1/human_policy_ckpt/bottle0930_8runs_20261003_data/robot_new/SONIC_Dex5_20260930_ep_0068_rootfix.hdf5",
+      "type": "robot",
+      "fps": 50.0,
+      "frames": 430,
+      "images": {
+        "observation.image.ego_view": [
+          430,
+          21052
+        ]
+      },
+      "focus_or_grasp_annotation_keys": [],
+      "spare_dims_98_100_max_abs": 0.0,
+      "source": "/root/shengyin/sonic_real_teleop_20260930_curated/usable_dataset/data/chunk-000/episode_000068.parquet"
+    },
+    {
+      "path": "/mnt/nvme0n1/human_policy_ckpt/bottle0930_8runs_20261003_data/robot_new/SONIC_Dex5_20260930_ep_0077_rootfix.hdf5",
+      "type": "robot",
+      "fps": 50.0,
+      "frames": 715,
+      "images": {
+        "observation.image.ego_view": [
+          715,
+          21889
+        ]
+      },
+      "focus_or_grasp_annotation_keys": [],
+      "spare_dims_98_100_max_abs": 0.0,
+      "source": "/root/shengyin/sonic_real_teleop_20260930_curated/usable_dataset/data/chunk-000/episode_000077.parquet"
+    }
+  ],
+  "annotated_clips": 0
+}

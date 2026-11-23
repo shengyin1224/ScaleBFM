@@ -1,0 +1,92 @@
+[
+  {
+    "cap_combined": 1,
+    "physical_gpu": 0,
+    "pid": 2962908,
+    "prefix": "precision_20261013_w1",
+    "command": [
+      "/root/miniconda3/envs/isaaclab_sonic/bin/python",
+      "/root/shengyin/ScaleBFM/ScaleTrack/scripts/precision_teacher_student/supervise.py",
+      "--cap",
+      "1",
+      "--prefix",
+      "precision_20261013_w1"
+    ],
+    "pipeline_log": "/root/shengyin/ScaleBFM/ScaleTrack/precision_launch_20261013/precision_20261013_w1_pipeline.log",
+    "initial_sha256": "c9c65cfb60bea8e4a254abaa8a60496e8fd0b9703751a0d70c3d322789766393",
+    "teacher_updates": 20000,
+    "student_updates": 5000,
+    "focus": false,
+    "teacher_mode": "WholeBody-14",
+    "student_mode": "HAT-4",
+    "contract": {
+      "history": 3,
+      "future_idx": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "actor_task_dim": 269,
+      "action_dim": 29
+    },
+    "code_sha256": {
+      "policy.py": "9996b90671aa47ea5edff444bfcf9c88f4741c40b23fc8aee79bfeb7f783a46d",
+      "_legacy_mujoco.py": "b523001add5aa7bb2bf4000d0d4cb32309e5b1ba239bba1dea8628220e4f1f90",
+      "eval_memory.py": "f90253654912a853c9c7bd49e8b119223b5e96b7e846fd6bbb25cdebca145f03",
+      "distill_student.py": "c669fbae0fbb9a4efb197271f6cb661b400baf4cfb58f514d79be07dbde73d45",
+      "test_contract.py": "b3730e80b63e425e666b10ec5857a12765663da997294f6b7ff5e309b2b4a8b5",
+      "train_teacher.py": "4389a68a02403f7d74cd02cf9f1d384e72af438700a55b02c748fa87481b10df",
+      "launch.py": "14bd2fce05b6b39077d2a55408e91fb319410e400d902e2d849e6fd6b96c6cdc",
+      "supervise.py": "23b5720a39292909de0fb1ab419ed7a80365aa6fb230abbf0640581019fba5cf",
+      "env_cfg.py": "c34da25a7fbab7f79c0b89eb31579514c7c38ca95faf2dfaa0a00e2f5a1032ce"
+    }
+  },
+  {
+    "cap_combined": 2,
+    "physical_gpu": 1,
+    "pid": 2963106,
+    "prefix": "precision_20261013_w2",
+    "command": [
+      "/root/miniconda3/envs/isaaclab_sonic/bin/python",
+      "/root/shengyin/ScaleBFM/ScaleTrack/scripts/precision_teacher_student/supervise.py",
+      "--cap",
+      "2",
+      "--prefix",
+      "precision_20261013_w2"
+    ],
+    "pipeline_log": "/root/shengyin/ScaleBFM/ScaleTrack/precision_launch_20261013/precision_20261013_w2_pipeline.log",
+    "initial_sha256": "c9c65cfb60bea8e4a254abaa8a60496e8fd0b9703751a0d70c3d322789766393",
+    "teacher_updates": 20000,
+    "student_updates": 5000,
+    "focus": false,
+    "teacher_mode": "WholeBody-14",
+    "student_mode": "HAT-4",
+    "contract": {
+      "history": 3,
+      "future_idx": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "actor_task_dim": 269,
+      "action_dim": 29
+    },
+    "code_sha256": {
+      "policy.py": "9996b90671aa47ea5edff444bfcf9c88f4741c40b23fc8aee79bfeb7f783a46d",
+      "_legacy_mujoco.py": "b523001add5aa7bb2bf4000d0d4cb32309e5b1ba239bba1dea8628220e4f1f90",
+      "eval_memory.py": "f90253654912a853c9c7bd49e8b119223b5e96b7e846fd6bbb25cdebca145f03",
+      "distill_student.py": "c669fbae0fbb9a4efb197271f6cb661b400baf4cfb58f514d79be07dbde73d45",
+      "test_contract.py": "b3730e80b63e425e666b10ec5857a12765663da997294f6b7ff5e309b2b4a8b5",
+      "train_teacher.py": "4389a68a02403f7d74cd02cf9f1d384e72af438700a55b02c748fa87481b10df",
+      "launch.py": "14bd2fce05b6b39077d2a55408e91fb319410e400d902e2d849e6fd6b96c6cdc",
+      "supervise.py": "23b5720a39292909de0fb1ab419ed7a80365aa6fb230abbf0640581019fba5cf",
+      "env_cfg.py": "c34da25a7fbab7f79c0b89eb31579514c7c38ca95faf2dfaa0a00e2f5a1032ce"
+    }
+  }
+]

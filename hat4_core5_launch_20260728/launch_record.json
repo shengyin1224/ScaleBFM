@@ -1,0 +1,157 @@
+[
+  {
+    "variant": "F1",
+    "physical_gpu": 0,
+    "pid": 963059,
+    "log": "/root/shengyin/ScaleBFM/hat4_core5_launch_20260728/F1.log",
+    "command": [
+      "/root/miniconda3/envs/isaaclab_sonic/bin/python",
+      "/root/shengyin/ScaleBFM/ScaleTrack/scripts/pretrain/rsl_rl/train.py",
+      "--task",
+      "G1-HAT4-F1-Finetune",
+      "--motion_file",
+      "/root/shengyin/ScaleBFM/ScaleTrack/data/hat4_unifolm/manifests/unifolm_hat4_train.yaml",
+      "--test_motion_file",
+      "/root/shengyin/ScaleBFM/ScaleTrack/data/hat4_unifolm/manifests/unifolm_hat4_heldout.yaml",
+      "--pretrained_checkpoint",
+      "/root/shengyin/ScaleBFM/ScaleTrack/logs/rsl_rl/g1_bfm_tracking_exp/humanoid_transformer_m/model_22200.pt",
+      "--num_envs",
+      "4096",
+      "--max_iterations",
+      "20000",
+      "--run_name",
+      "formal_core5_20260728_F1",
+      "--device",
+      "cuda:0",
+      "--headless"
+    ],
+    "environment": {
+      "CUDA_VISIBLE_DEVICES": "0",
+      "VK_ICD_FILENAMES": "/etc/vulkan/icd.d/nvidia_icd.json"
+    }
+  },
+  {
+    "variant": "F2",
+    "physical_gpu": 1,
+    "pid": 963060,
+    "log": "/root/shengyin/ScaleBFM/hat4_core5_launch_20260728/F2.log",
+    "command": [
+      "/root/miniconda3/envs/isaaclab_sonic/bin/python",
+      "/root/shengyin/ScaleBFM/ScaleTrack/scripts/pretrain/rsl_rl/train.py",
+      "--task",
+      "G1-HAT4-F2-Finetune",
+      "--motion_file",
+      "/root/shengyin/ScaleBFM/ScaleTrack/data/hat4_unifolm/manifests/unifolm_hat4_train.yaml",
+      "--test_motion_file",
+      "/root/shengyin/ScaleBFM/ScaleTrack/data/hat4_unifolm/manifests/unifolm_hat4_heldout.yaml",
+      "--pretrained_checkpoint",
+      "/root/shengyin/ScaleBFM/ScaleTrack/logs/rsl_rl/g1_bfm_tracking_exp/humanoid_transformer_m/model_22200.pt",
+      "--num_envs",
+      "4096",
+      "--max_iterations",
+      "20000",
+      "--run_name",
+      "formal_core5_20260728_F2",
+      "--device",
+      "cuda:0",
+      "--headless"
+    ],
+    "environment": {
+      "CUDA_VISIBLE_DEVICES": "1",
+      "VK_ICD_FILENAMES": "/etc/vulkan/icd.d/nvidia_icd.json"
+    }
+  },
+  {
+    "variant": "F2o",
+    "physical_gpu": 2,
+    "pid": 963061,
+    "log": "/root/shengyin/ScaleBFM/hat4_core5_launch_20260728/F2o.log",
+    "command": [
+      "/root/miniconda3/envs/isaaclab_sonic/bin/python",
+      "/root/shengyin/ScaleBFM/ScaleTrack/scripts/pretrain/rsl_rl/train.py",
+      "--task",
+      "G1-HAT4-F2O-Finetune",
+      "--motion_file",
+      "/root/shengyin/ScaleBFM/ScaleTrack/data/hat4_unifolm/manifests/unifolm_hat4_train.yaml",
+      "--test_motion_file",
+      "/root/shengyin/ScaleBFM/ScaleTrack/data/hat4_unifolm/manifests/unifolm_hat4_heldout.yaml",
+      "--pretrained_checkpoint",
+      "/root/shengyin/ScaleBFM/ScaleTrack/logs/rsl_rl/g1_bfm_tracking_exp/humanoid_transformer_m/model_22200.pt",
+      "--num_envs",
+      "4096",
+      "--max_iterations",
+      "20000",
+      "--run_name",
+      "formal_core5_20260728_F2o",
+      "--device",
+      "cuda:0",
+      "--headless"
+    ],
+    "environment": {
+      "CUDA_VISIBLE_DEVICES": "2",
+      "VK_ICD_FILENAMES": "/etc/vulkan/icd.d/nvidia_icd.json"
+    }
+  },
+  {
+    "variant": "F3",
+    "physical_gpu": 3,
+    "pid": 963062,
+    "log": "/root/shengyin/ScaleBFM/hat4_core5_launch_20260728/F3.log",
+    "command": [
+      "/root/miniconda3/envs/isaaclab_sonic/bin/python",
+      "/root/shengyin/ScaleBFM/ScaleTrack/scripts/pretrain/rsl_rl/train.py",
+      "--task",
+      "G1-HAT4-F3-Finetune",
+      "--motion_file",
+      "/root/shengyin/ScaleBFM/ScaleTrack/data/hat4_unifolm/manifests/unifolm_hat4_train.yaml",
+      "--test_motion_file",
+      "/root/shengyin/ScaleBFM/ScaleTrack/data/hat4_unifolm/manifests/unifolm_hat4_heldout.yaml",
+      "--pretrained_checkpoint",
+      "/root/shengyin/ScaleBFM/ScaleTrack/logs/rsl_rl/g1_bfm_tracking_exp/humanoid_transformer_m/model_22200.pt",
+      "--num_envs",
+      "4096",
+      "--max_iterations",
+      "20000",
+      "--run_name",
+      "formal_core5_20260728_F3",
+      "--device",
+      "cuda:0",
+      "--headless"
+    ],
+    "environment": {
+      "CUDA_VISIBLE_DEVICES": "3",
+      "VK_ICD_FILENAMES": "/etc/vulkan/icd.d/nvidia_icd.json"
+    }
+  },
+  {
+    "variant": "F3h",
+    "physical_gpu": 5,
+    "pid": 963063,
+    "log": "/root/shengyin/ScaleBFM/hat4_core5_launch_20260728/F3h.log",
+    "command": [
+      "/root/miniconda3/envs/isaaclab_sonic/bin/python",
+      "/root/shengyin/ScaleBFM/ScaleTrack/scripts/pretrain/rsl_rl/train.py",
+      "--task",
+      "G1-HAT4-F3H-Finetune",
+      "--motion_file",
+      "/root/shengyin/ScaleBFM/ScaleTrack/data/hat4_unifolm/manifests/unifolm_hat4_train.yaml",
+      "--test_motion_file",
+      "/root/shengyin/ScaleBFM/ScaleTrack/data/hat4_unifolm/manifests/unifolm_hat4_heldout.yaml",
+      "--pretrained_checkpoint",
+      "/root/shengyin/ScaleBFM/ScaleTrack/logs/rsl_rl/g1_bfm_tracking_exp/humanoid_transformer_m/model_22200.pt",
+      "--num_envs",
+      "4096",
+      "--max_iterations",
+      "20000",
+      "--run_name",
+      "formal_core5_20260728_F3h",
+      "--device",
+      "cuda:0",
+      "--headless"
+    ],
+    "environment": {
+      "CUDA_VISIBLE_DEVICES": "5",
+      "VK_ICD_FILENAMES": "/etc/vulkan/icd.d/nvidia_icd.json"
+    }
+  }
+]

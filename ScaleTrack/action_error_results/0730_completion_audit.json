@@ -1,0 +1,354 @@
+{
+  "allow_pending_xl": true,
+  "all_passed": true,
+  "passed": 15,
+  "total": 15,
+  "checks": [
+    {
+      "name": "failure_overlap",
+      "passed": true,
+      "evidence": {
+        "variants": 7,
+        "common": 114,
+        "union": 118,
+        "recomputed_common": 114,
+        "recomputed_union": 118,
+        "pairwise_jaccard_min_max": [
+          0.9661016949152542,
+          1.0
+        ],
+        "category_common_total": 114,
+        "suspicious_common": {
+          "suspicious": 111,
+          "total": 114
+        },
+        "suspicious_all": {
+          "suspicious": 147,
+          "total": 600
+        }
+      }
+    },
+    {
+      "name": "failure_timing_and_links",
+      "passed": true,
+      "evidence": {
+        "failed": 115,
+        "early": 115,
+        "groups": {
+          "wrists": 21,
+          "arms_without_wrists": 64,
+          "torso": 30
+        }
+      }
+    },
+    {
+      "name": "crop_counterfactual",
+      "passed": true,
+      "evidence": {
+        "repaired_motions": 102,
+        "unchanged_selected_motions": 12,
+        "independent_payloads_and_manifest_valid": true,
+        "original_failed": 115,
+        "repaired_failed": 115,
+        "same_failure_set": true
+      }
+    },
+    {
+      "name": "representative_renders",
+      "passed": true,
+      "evidence": {
+        "videos": 10,
+        "contact_sheets": 10,
+        "minimum_video_bytes": 681945,
+        "minimum_contact_sheet_bytes": 142629
+      }
+    },
+    {
+      "name": "m_runs_reached_20k",
+      "passed": true,
+      "evidence": {
+        "F1": "/root/shengyin/ScaleBFM/ScaleTrack/logs/rsl_rl/g1_hat4_focus_finetune/formal_core5_20260728b_F1/model_20000.pt",
+        "F2": "/root/shengyin/ScaleBFM/ScaleTrack/logs/rsl_rl/g1_hat4_focus_finetune/formal_core5_20260728b_F2/model_20000.pt",
+        "F2o": "/root/shengyin/ScaleBFM/ScaleTrack/logs/rsl_rl/g1_hat4_focus_finetune/formal_core5_20260728b_F2o/model_20000.pt",
+        "F3": "/root/shengyin/ScaleBFM/ScaleTrack/logs/rsl_rl/g1_hat4_focus_finetune/formal_core5_20260728b_F3/model_20000.pt",
+        "F3h": "/root/shengyin/ScaleBFM/ScaleTrack/logs/rsl_rl/g1_hat4_focus_finetune/formal_core5_20260728b_F3h/model_20000.pt"
+      }
+    },
+    {
+      "name": "rolling_fixed_hat4",
+      "passed": true,
+      "evidence": {
+        "expected_jsons": 15,
+        "actual_jsons": 15,
+        "reports": [
+          {
+            "variant": "F1",
+            "step": 12000,
+            "passed": 484,
+            "valid": true
+          },
+          {
+            "variant": "F1",
+            "step": 16000,
+            "passed": 485,
+            "valid": true
+          },
+          {
+            "variant": "F1",
+            "step": 20000,
+            "passed": 485,
+            "valid": true
+          },
+          {
+            "variant": "F3h",
+            "step": 12000,
+            "passed": 486,
+            "valid": true
+          },
+          {
+            "variant": "F3h",
+            "step": 16000,
+            "passed": 485,
+            "valid": true
+          },
+          {
+            "variant": "F3h",
+            "step": 20000,
+            "passed": 485,
+            "valid": true
+          },
+          {
+            "variant": "F3",
+            "step": 12000,
+            "passed": 485,
+            "valid": true
+          },
+          {
+            "variant": "F3",
+            "step": 16000,
+            "passed": 485,
+            "valid": true
+          },
+          {
+            "variant": "F3",
+            "step": 20000,
+            "passed": 486,
+            "valid": true
+          },
+          {
+            "variant": "F2",
+            "step": 12000,
+            "passed": 485,
+            "valid": true
+          },
+          {
+            "variant": "F2",
+            "step": 16000,
+            "passed": 485,
+            "valid": true
+          },
+          {
+            "variant": "F2",
+            "step": 20000,
+            "passed": 486,
+            "valid": true
+          },
+          {
+            "variant": "F2o",
+            "step": 12000,
+            "passed": 486,
+            "valid": true
+          },
+          {
+            "variant": "F2o",
+            "step": 16000,
+            "passed": 485,
+            "valid": true
+          },
+          {
+            "variant": "F2o",
+            "step": 20000,
+            "passed": 485,
+            "valid": true
+          }
+        ],
+        "passes_20k": {
+          "F1": 485,
+          "F2": 486,
+          "F2o": 485,
+          "F3": 486,
+          "F3h": 485
+        }
+      }
+    },
+    {
+      "name": "m_winner_release",
+      "passed": true,
+      "evidence": {
+        "winner": "F3h",
+        "sha256": "c9c65cfb60bea8e4a254abaa8a60496e8fd0b9703751a0d70c3d322789766393",
+        "wrist_rotation_disadvantages_deg": {
+          "left": -0.13520957103592623,
+          "right": 0.29524133017614806
+        },
+        "worst_disadvantage_deg": 0.29524133017614806,
+        "predefined_threshold_deg": 1.0,
+        "f3_5_required": false
+      }
+    },
+    {
+      "name": "mujoco_reanchor",
+      "passed": true,
+      "evidence": {
+        "static": {
+          "run": "static",
+          "threshold_cm": 2.5,
+          "worst_wrist_world_mean_cm": 0.9618226297034547,
+          "passed": true
+        },
+        "drift10_worst_off_cm": 9.275542491573214,
+        "drift10_worst_on_cm": 4.385913866516397,
+        "experiment_semantics_valid": true
+      }
+    },
+    {
+      "name": "sonic_external_and_old_modes",
+      "passed": true,
+      "evidence": {
+        "motions": 2,
+        "references": [
+          {
+            "motion": "SONIC_PH2D_1400_ZED",
+            "exists": true,
+            "frames": 212,
+            "finite": true,
+            "focus_valid_frames": 0,
+            "max_quaternion_norm_error": 2.384185791015625e-07,
+            "valid": true
+          },
+          {
+            "motion": "SONIC_PH2D_104_AVP",
+            "exists": true,
+            "frames": 432,
+            "finite": true,
+            "focus_valid_frames": 0,
+            "max_quaternion_norm_error": 2.384185791015625e-07,
+            "valid": true
+          }
+        ],
+        "reports": 7,
+        "mode_indices": [
+          8,
+          8,
+          8,
+          2,
+          2,
+          7,
+          7
+        ],
+        "hat4_le_10_claims": [
+          false,
+          false
+        ]
+      }
+    },
+    {
+      "name": "wrist_speed_error",
+      "passed": true,
+      "evidence": {
+        "motion_names": [
+          "G1_WBT_Brainco_Collect_Plates_Into_Dishwasher_ep_0000",
+          "G1_WBT_Brainco_Make_The_Bed_ep_0000",
+          "G1_WBT_Brainco_Pick_Up_Medicine_ep_0000",
+          "G1_WBT_Brainco_Pickup_Pillow_ep_0000",
+          "G1_WBT_Inspire_Clean_The_Living_Room_ep_0000",
+          "G1_WBT_Inspire_Pick_Up_Drinks_ep_0000",
+          "G1_WBT_Inspire_Put_Clothes_Into_Basket_ep_0000",
+          "G1_WBT_Inspire_Put_Clothes_into_Washing_Machine_ep_0000",
+          "G1_WBT_Inspire_Put_Drinks_Into_Fridge_ep_0000",
+          "G1_WBT_Inspire_Put_Vegetables_Into_Basket_ep_0000"
+        ],
+        "sample_rows": 4934,
+        "focus_frames_recomputed_from_traces": 2467,
+        "sample_means_match_json": true,
+        "ratio": 2.0007314146380515,
+        "pooled_spearman": 0.1987242923588678,
+        "plot": "/root/shengyin/ScaleBFM/ScaleTrack/action_error_results/wrist_speed_error_10class/wrist_speed_error.png"
+      }
+    },
+    {
+      "name": "official_xl_baseline",
+      "passed": true,
+      "evidence": {
+        "sha256": "8a7be5191de8bbcd3f7359615b935ea605ee47d8703135dc4202fa9eeefc1b2f",
+        "passed": 486,
+        "mode": {
+          "index": 8,
+          "name": "HAT-4",
+          "active_links": [
+            "pelvis",
+            "left_wrist_yaw_link",
+            "right_wrist_yaw_link",
+            "torso_link"
+          ]
+        },
+        "eval_max_steps_per_motion": 1000,
+        "failed_list_count": 114
+      }
+    },
+    {
+      "name": "official_xl_run_provenance",
+      "passed": true,
+      "evidence": {
+        "path": "/root/shengyin/ScaleBFM/ScaleTrack/logs/rsl_rl/g1_hat4_focus_finetune/formal_xl_f3h_20260803/run_provenance.json",
+        "ranks": 5,
+        "physical_gpus": [
+          "0,1,2,3,5"
+        ],
+        "warm_start_log": {
+          "path": "/root/shengyin/ScaleBFM/ScaleTrack/logs/launch_logs/formal_xl_f3h_20260803.log",
+          "official_checkpoint_line_count": 5,
+          "iteration_zero_and_zero_expand_line_count": 5,
+          "zero_expanded_keys": [
+            "actor_task_embedder.task_projection.weight",
+            "critic_task_embedder.task_projection.weight"
+          ],
+          "valid": true,
+          "note": "model_0.pt is saved after the first PPO update; it is not an untouched copy of the initialization."
+        },
+        "train_motions": 2400,
+        "heldout_motions": 600,
+        "valid": true
+      }
+    },
+    {
+      "name": "official_xl_checkpoint_curve",
+      "passed": true,
+      "evidence": {
+        "status": "pending and explicitly allowed",
+        "expected": "/root/shengyin/ScaleBFM/ScaleTrack/action_error_results/official_xl_hat4/checkpoints/curve_summary.json"
+      }
+    },
+    {
+      "name": "official_xl_f3h_final",
+      "passed": true,
+      "evidence": {
+        "status": "pending and explicitly allowed",
+        "expected": "/root/shengyin/ScaleBFM/ScaleTrack/releases/hat4_focus_release_xl_v1/final_summary.json"
+      }
+    },
+    {
+      "name": "markdown_reports",
+      "passed": true,
+      "evidence": {
+        "main": "/root/shengyin/ScaleBFM/0803-next-steps-implementation-results.md",
+        "failure": "/root/shengyin/ScaleBFM/ScaleTrack/action_error_results/failed_115_autopsy/REPORT.md",
+        "paper_outline": "/root/shengyin/ScaleBFM/ScaleTrack/paper_material/HAT4_FINETUNE_PAPER_OUTLINE.md",
+        "real_reanchor_protocol": "/root/shengyin/ScaleBFM/ScaleTrack/paper_material/REAL_ROBOT_REANCHOR_ACCEPTANCE_PROTOCOL.md",
+        "real_trace_validator": "/root/shengyin/ScaleBFM/ScaleTrack/scripts/analysis/validate_real_reanchor_trace.py",
+        "final_xl_results_written": true
+      }
+    }
+  ],
+  "hardware_scope": "NOT LOCALLY EXECUTABLE: real-robot static calibration, online tracker re-anchor, and grasp success rate require the physical robot/tracker."
+}

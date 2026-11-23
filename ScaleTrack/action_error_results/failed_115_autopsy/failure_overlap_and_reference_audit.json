@@ -1,0 +1,5935 @@
+{
+  "manifest": "/root/shengyin/ScaleBFM/ScaleTrack/data/hat4_unifolm/manifests/unifolm_hat4_heldout.yaml",
+  "motions": 600,
+  "variants": {
+    "F1_model8000": 116,
+    "F2_model8000": 115,
+    "F2o_model8000": 117,
+    "F3_model8000": 115,
+    "F3h_model8000": 115,
+    "official_model22200_hat4": 115,
+    "official_model22200_vr3": 115
+  },
+  "variant_count": 7,
+  "common_failure_count": 114,
+  "union_failure_count": 118,
+  "variable_failure_count": 4,
+  "common_fraction_of_union": 0.9661016949152542,
+  "pairwise_overlap": [
+    {
+      "left": "F1_model8000",
+      "right": "F2_model8000",
+      "intersection": 114,
+      "union": 117,
+      "jaccard": 0.9743589743589743
+    },
+    {
+      "left": "F1_model8000",
+      "right": "F2o_model8000",
+      "intersection": 115,
+      "union": 118,
+      "jaccard": 0.9745762711864406
+    },
+    {
+      "left": "F1_model8000",
+      "right": "F3_model8000",
+      "intersection": 114,
+      "union": 117,
+      "jaccard": 0.9743589743589743
+    },
+    {
+      "left": "F1_model8000",
+      "right": "F3h_model8000",
+      "intersection": 115,
+      "union": 116,
+      "jaccard": 0.9913793103448276
+    },
+    {
+      "left": "F1_model8000",
+      "right": "official_model22200_hat4",
+      "intersection": 114,
+      "union": 117,
+      "jaccard": 0.9743589743589743
+    },
+    {
+      "left": "F1_model8000",
+      "right": "official_model22200_vr3",
+      "intersection": 114,
+      "union": 117,
+      "jaccard": 0.9743589743589743
+    },
+    {
+      "left": "F2_model8000",
+      "right": "F2o_model8000",
+      "intersection": 115,
+      "union": 117,
+      "jaccard": 0.9829059829059829
+    },
+    {
+      "left": "F2_model8000",
+      "right": "F3_model8000",
+      "intersection": 115,
+      "union": 115,
+      "jaccard": 1.0
+    },
+    {
+      "left": "F2_model8000",
+      "right": "F3h_model8000",
+      "intersection": 114,
+      "union": 116,
+      "jaccard": 0.9827586206896551
+    },
+    {
+      "left": "F2_model8000",
+      "right": "official_model22200_hat4",
+      "intersection": 115,
+      "union": 115,
+      "jaccard": 1.0
+    },
+    {
+      "left": "F2_model8000",
+      "right": "official_model22200_vr3",
+      "intersection": 115,
+      "union": 115,
+      "jaccard": 1.0
+    },
+    {
+      "left": "F2o_model8000",
+      "right": "F3_model8000",
+      "intersection": 115,
+      "union": 117,
+      "jaccard": 0.9829059829059829
+    },
+    {
+      "left": "F2o_model8000",
+      "right": "F3h_model8000",
+      "intersection": 114,
+      "union": 118,
+      "jaccard": 0.9661016949152542
+    },
+    {
+      "left": "F2o_model8000",
+      "right": "official_model22200_hat4",
+      "intersection": 115,
+      "union": 117,
+      "jaccard": 0.9829059829059829
+    },
+    {
+      "left": "F2o_model8000",
+      "right": "official_model22200_vr3",
+      "intersection": 115,
+      "union": 117,
+      "jaccard": 0.9829059829059829
+    },
+    {
+      "left": "F3_model8000",
+      "right": "F3h_model8000",
+      "intersection": 114,
+      "union": 116,
+      "jaccard": 0.9827586206896551
+    },
+    {
+      "left": "F3_model8000",
+      "right": "official_model22200_hat4",
+      "intersection": 115,
+      "union": 115,
+      "jaccard": 1.0
+    },
+    {
+      "left": "F3_model8000",
+      "right": "official_model22200_vr3",
+      "intersection": 115,
+      "union": 115,
+      "jaccard": 1.0
+    },
+    {
+      "left": "F3h_model8000",
+      "right": "official_model22200_hat4",
+      "intersection": 114,
+      "union": 116,
+      "jaccard": 0.9827586206896551
+    },
+    {
+      "left": "F3h_model8000",
+      "right": "official_model22200_vr3",
+      "intersection": 114,
+      "union": 116,
+      "jaccard": 0.9827586206896551
+    },
+    {
+      "left": "official_model22200_hat4",
+      "right": "official_model22200_vr3",
+      "intersection": 115,
+      "union": 115,
+      "jaccard": 1.0
+    }
+  ],
+  "category_distribution": {
+    "Collect_Plates_Into_Dishwasher": {
+      "total": 60,
+      "common_failed": 23,
+      "union_failed": 23,
+      "common_failure_rate": 0.38333333333333336,
+      "per_variant_failed": {
+        "F1_model8000": 23,
+        "F2_model8000": 23,
+        "F2o_model8000": 23,
+        "F3_model8000": 23,
+        "F3h_model8000": 23,
+        "official_model22200_hat4": 23,
+        "official_model22200_vr3": 23
+      }
+    },
+    "Make_The_Bed": {
+      "total": 60,
+      "common_failed": 12,
+      "union_failed": 12,
+      "common_failure_rate": 0.2,
+      "per_variant_failed": {
+        "F1_model8000": 12,
+        "F2_model8000": 12,
+        "F2o_model8000": 12,
+        "F3_model8000": 12,
+        "F3h_model8000": 12,
+        "official_model22200_hat4": 12,
+        "official_model22200_vr3": 12
+      }
+    },
+    "Pick_Up_Medicine": {
+      "total": 60,
+      "common_failed": 0,
+      "union_failed": 1,
+      "common_failure_rate": 0.0,
+      "per_variant_failed": {
+        "F1_model8000": 1,
+        "F2_model8000": 0,
+        "F2o_model8000": 1,
+        "F3_model8000": 0,
+        "F3h_model8000": 0,
+        "official_model22200_hat4": 0,
+        "official_model22200_vr3": 0
+      }
+    },
+    "Pickup_Pillow": {
+      "total": 60,
+      "common_failed": 8,
+      "union_failed": 8,
+      "common_failure_rate": 0.13333333333333333,
+      "per_variant_failed": {
+        "F1_model8000": 8,
+        "F2_model8000": 8,
+        "F2o_model8000": 8,
+        "F3_model8000": 8,
+        "F3h_model8000": 8,
+        "official_model22200_hat4": 8,
+        "official_model22200_vr3": 8
+      }
+    },
+    "Clean_The_Living_Room": {
+      "total": 60,
+      "common_failed": 0,
+      "union_failed": 1,
+      "common_failure_rate": 0.0,
+      "per_variant_failed": {
+        "F1_model8000": 0,
+        "F2_model8000": 0,
+        "F2o_model8000": 1,
+        "F3_model8000": 0,
+        "F3h_model8000": 0,
+        "official_model22200_hat4": 0,
+        "official_model22200_vr3": 0
+      }
+    },
+    "Pick_Up_Drinks": {
+      "total": 60,
+      "common_failed": 21,
+      "union_failed": 21,
+      "common_failure_rate": 0.35,
+      "per_variant_failed": {
+        "F1_model8000": 21,
+        "F2_model8000": 21,
+        "F2o_model8000": 21,
+        "F3_model8000": 21,
+        "F3h_model8000": 21,
+        "official_model22200_hat4": 21,
+        "official_model22200_vr3": 21
+      }
+    },
+    "Put_Clothes_Into_Basket": {
+      "total": 60,
+      "common_failed": 10,
+      "union_failed": 10,
+      "common_failure_rate": 0.16666666666666666,
+      "per_variant_failed": {
+        "F1_model8000": 10,
+        "F2_model8000": 10,
+        "F2o_model8000": 10,
+        "F3_model8000": 10,
+        "F3h_model8000": 10,
+        "official_model22200_hat4": 10,
+        "official_model22200_vr3": 10
+      }
+    },
+    "Put_Clothes_into_Washing_Machine": {
+      "total": 60,
+      "common_failed": 34,
+      "union_failed": 34,
+      "common_failure_rate": 0.5666666666666667,
+      "per_variant_failed": {
+        "F1_model8000": 34,
+        "F2_model8000": 34,
+        "F2o_model8000": 34,
+        "F3_model8000": 34,
+        "F3h_model8000": 34,
+        "official_model22200_hat4": 34,
+        "official_model22200_vr3": 34
+      }
+    },
+    "Put_Drinks_Into_Fridge": {
+      "total": 60,
+      "common_failed": 0,
+      "union_failed": 1,
+      "common_failure_rate": 0.0,
+      "per_variant_failed": {
+        "F1_model8000": 1,
+        "F2_model8000": 0,
+        "F2o_model8000": 0,
+        "F3_model8000": 0,
+        "F3h_model8000": 1,
+        "official_model22200_hat4": 0,
+        "official_model22200_vr3": 0
+      }
+    },
+    "Put_Vegetables_Into_Basket": {
+      "total": 60,
+      "common_failed": 6,
+      "union_failed": 7,
+      "common_failure_rate": 0.1,
+      "per_variant_failed": {
+        "F1_model8000": 6,
+        "F2_model8000": 7,
+        "F2o_model8000": 7,
+        "F3_model8000": 7,
+        "F3h_model8000": 6,
+        "official_model22200_hat4": 7,
+        "official_model22200_vr3": 7
+      }
+    }
+  },
+  "common_failures": [
+    "G1_WBT_Brainco_Collect_Plates_Into_Dishwasher_ep_0007",
+    "G1_WBT_Brainco_Collect_Plates_Into_Dishwasher_ep_0013",
+    "G1_WBT_Brainco_Collect_Plates_Into_Dishwasher_ep_0026",
+    "G1_WBT_Brainco_Collect_Plates_Into_Dishwasher_ep_0042",
+    "G1_WBT_Brainco_Collect_Plates_Into_Dishwasher_ep_0054",
+    "G1_WBT_Brainco_Collect_Plates_Into_Dishwasher_ep_0063",
+    "G1_WBT_Brainco_Collect_Plates_Into_Dishwasher_ep_0068",
+    "G1_WBT_Brainco_Collect_Plates_Into_Dishwasher_ep_0074",
+    "G1_WBT_Brainco_Collect_Plates_Into_Dishwasher_ep_0087",
+    "G1_WBT_Brainco_Collect_Plates_Into_Dishwasher_ep_0100",
+    "G1_WBT_Brainco_Collect_Plates_Into_Dishwasher_ep_0117",
+    "G1_WBT_Brainco_Collect_Plates_Into_Dishwasher_ep_0118",
+    "G1_WBT_Brainco_Collect_Plates_Into_Dishwasher_ep_0138",
+    "G1_WBT_Brainco_Collect_Plates_Into_Dishwasher_ep_0161",
+    "G1_WBT_Brainco_Collect_Plates_Into_Dishwasher_ep_0163",
+    "G1_WBT_Brainco_Collect_Plates_Into_Dishwasher_ep_0164",
+    "G1_WBT_Brainco_Collect_Plates_Into_Dishwasher_ep_0208",
+    "G1_WBT_Brainco_Collect_Plates_Into_Dishwasher_ep_0211",
+    "G1_WBT_Brainco_Collect_Plates_Into_Dishwasher_ep_0233",
+    "G1_WBT_Brainco_Collect_Plates_Into_Dishwasher_ep_0234",
+    "G1_WBT_Brainco_Collect_Plates_Into_Dishwasher_ep_0240",
+    "G1_WBT_Brainco_Collect_Plates_Into_Dishwasher_ep_0274",
+    "G1_WBT_Brainco_Collect_Plates_Into_Dishwasher_ep_0275",
+    "G1_WBT_Brainco_Make_The_Bed_ep_0002",
+    "G1_WBT_Brainco_Make_The_Bed_ep_0029",
+    "G1_WBT_Brainco_Make_The_Bed_ep_0087",
+    "G1_WBT_Brainco_Make_The_Bed_ep_0133",
+    "G1_WBT_Brainco_Make_The_Bed_ep_0139",
+    "G1_WBT_Brainco_Make_The_Bed_ep_0148",
+    "G1_WBT_Brainco_Make_The_Bed_ep_0149",
+    "G1_WBT_Brainco_Make_The_Bed_ep_0205",
+    "G1_WBT_Brainco_Make_The_Bed_ep_0238",
+    "G1_WBT_Brainco_Make_The_Bed_ep_0258",
+    "G1_WBT_Brainco_Make_The_Bed_ep_0285",
+    "G1_WBT_Brainco_Make_The_Bed_ep_0286",
+    "G1_WBT_Brainco_Pickup_Pillow_ep_0022",
+    "G1_WBT_Brainco_Pickup_Pillow_ep_0036",
+    "G1_WBT_Brainco_Pickup_Pillow_ep_0050",
+    "G1_WBT_Brainco_Pickup_Pillow_ep_0064",
+    "G1_WBT_Brainco_Pickup_Pillow_ep_0180",
+    "G1_WBT_Brainco_Pickup_Pillow_ep_0202",
+    "G1_WBT_Brainco_Pickup_Pillow_ep_0267",
+    "G1_WBT_Brainco_Pickup_Pillow_ep_0280",
+    "G1_WBT_Inspire_Pick_Up_Drinks_ep_0046",
+    "G1_WBT_Inspire_Pick_Up_Drinks_ep_0095",
+    "G1_WBT_Inspire_Pick_Up_Drinks_ep_0132",
+    "G1_WBT_Inspire_Pick_Up_Drinks_ep_0142",
+    "G1_WBT_Inspire_Pick_Up_Drinks_ep_0150",
+    "G1_WBT_Inspire_Pick_Up_Drinks_ep_0151",
+    "G1_WBT_Inspire_Pick_Up_Drinks_ep_0158",
+    "G1_WBT_Inspire_Pick_Up_Drinks_ep_0159",
+    "G1_WBT_Inspire_Pick_Up_Drinks_ep_0180",
+    "G1_WBT_Inspire_Pick_Up_Drinks_ep_0184",
+    "G1_WBT_Inspire_Pick_Up_Drinks_ep_0190",
+    "G1_WBT_Inspire_Pick_Up_Drinks_ep_0201",
+    "G1_WBT_Inspire_Pick_Up_Drinks_ep_0233",
+    "G1_WBT_Inspire_Pick_Up_Drinks_ep_0234",
+    "G1_WBT_Inspire_Pick_Up_Drinks_ep_0239",
+    "G1_WBT_Inspire_Pick_Up_Drinks_ep_0246",
+    "G1_WBT_Inspire_Pick_Up_Drinks_ep_0252",
+    "G1_WBT_Inspire_Pick_Up_Drinks_ep_0259",
+    "G1_WBT_Inspire_Pick_Up_Drinks_ep_0279",
+    "G1_WBT_Inspire_Pick_Up_Drinks_ep_0281",
+    "G1_WBT_Inspire_Pick_Up_Drinks_ep_0282",
+    "G1_WBT_Inspire_Put_Clothes_Into_Basket_ep_0012",
+    "G1_WBT_Inspire_Put_Clothes_Into_Basket_ep_0034",
+    "G1_WBT_Inspire_Put_Clothes_Into_Basket_ep_0039",
+    "G1_WBT_Inspire_Put_Clothes_Into_Basket_ep_0059",
+    "G1_WBT_Inspire_Put_Clothes_Into_Basket_ep_0063",
+    "G1_WBT_Inspire_Put_Clothes_Into_Basket_ep_0066",
+    "G1_WBT_Inspire_Put_Clothes_Into_Basket_ep_0077",
+    "G1_WBT_Inspire_Put_Clothes_Into_Basket_ep_0141",
+    "G1_WBT_Inspire_Put_Clothes_Into_Basket_ep_0244",
+    "G1_WBT_Inspire_Put_Clothes_Into_Basket_ep_0280",
+    "G1_WBT_Inspire_Put_Clothes_into_Washing_Machine_ep_0006",
+    "G1_WBT_Inspire_Put_Clothes_into_Washing_Machine_ep_0009",
+    "G1_WBT_Inspire_Put_Clothes_into_Washing_Machine_ep_0010",
+    "G1_WBT_Inspire_Put_Clothes_into_Washing_Machine_ep_0012",
+    "G1_WBT_Inspire_Put_Clothes_into_Washing_Machine_ep_0014",
+    "G1_WBT_Inspire_Put_Clothes_into_Washing_Machine_ep_0026",
+    "G1_WBT_Inspire_Put_Clothes_into_Washing_Machine_ep_0057",
+    "G1_WBT_Inspire_Put_Clothes_into_Washing_Machine_ep_0059",
+    "G1_WBT_Inspire_Put_Clothes_into_Washing_Machine_ep_0065",
+    "G1_WBT_Inspire_Put_Clothes_into_Washing_Machine_ep_0068",
+    "G1_WBT_Inspire_Put_Clothes_into_Washing_Machine_ep_0073",
+    "G1_WBT_Inspire_Put_Clothes_into_Washing_Machine_ep_0074",
+    "G1_WBT_Inspire_Put_Clothes_into_Washing_Machine_ep_0101",
+    "G1_WBT_Inspire_Put_Clothes_into_Washing_Machine_ep_0111",
+    "G1_WBT_Inspire_Put_Clothes_into_Washing_Machine_ep_0114",
+    "G1_WBT_Inspire_Put_Clothes_into_Washing_Machine_ep_0119",
+    "G1_WBT_Inspire_Put_Clothes_into_Washing_Machine_ep_0130",
+    "G1_WBT_Inspire_Put_Clothes_into_Washing_Machine_ep_0137",
+    "G1_WBT_Inspire_Put_Clothes_into_Washing_Machine_ep_0154",
+    "G1_WBT_Inspire_Put_Clothes_into_Washing_Machine_ep_0168",
+    "G1_WBT_Inspire_Put_Clothes_into_Washing_Machine_ep_0185",
+    "G1_WBT_Inspire_Put_Clothes_into_Washing_Machine_ep_0188",
+    "G1_WBT_Inspire_Put_Clothes_into_Washing_Machine_ep_0196",
+    "G1_WBT_Inspire_Put_Clothes_into_Washing_Machine_ep_0203",
+    "G1_WBT_Inspire_Put_Clothes_into_Washing_Machine_ep_0204",
+    "G1_WBT_Inspire_Put_Clothes_into_Washing_Machine_ep_0211",
+    "G1_WBT_Inspire_Put_Clothes_into_Washing_Machine_ep_0217",
+    "G1_WBT_Inspire_Put_Clothes_into_Washing_Machine_ep_0252",
+    "G1_WBT_Inspire_Put_Clothes_into_Washing_Machine_ep_0255",
+    "G1_WBT_Inspire_Put_Clothes_into_Washing_Machine_ep_0257",
+    "G1_WBT_Inspire_Put_Clothes_into_Washing_Machine_ep_0264",
+    "G1_WBT_Inspire_Put_Clothes_into_Washing_Machine_ep_0285",
+    "G1_WBT_Inspire_Put_Clothes_into_Washing_Machine_ep_0286",
+    "G1_WBT_Inspire_Put_Clothes_into_Washing_Machine_ep_0295",
+    "G1_WBT_Inspire_Put_Vegetables_Into_Basket_ep_0140",
+    "G1_WBT_Inspire_Put_Vegetables_Into_Basket_ep_0155",
+    "G1_WBT_Inspire_Put_Vegetables_Into_Basket_ep_0190",
+    "G1_WBT_Inspire_Put_Vegetables_Into_Basket_ep_0203",
+    "G1_WBT_Inspire_Put_Vegetables_Into_Basket_ep_0222",
+    "G1_WBT_Inspire_Put_Vegetables_Into_Basket_ep_0226"
+  ],
+  "variable_failures": [
+    {
+      "motion": "G1_WBT_Brainco_Pick_Up_Medicine_ep_0220",
+      "failed_variant_count": 2,
+      "failed_variants": [
+        "F1_model8000",
+        "F2o_model8000"
+      ]
+    },
+    {
+      "motion": "G1_WBT_Inspire_Clean_The_Living_Room_ep_0058",
+      "failed_variant_count": 1,
+      "failed_variants": [
+        "F2o_model8000"
+      ]
+    },
+    {
+      "motion": "G1_WBT_Inspire_Put_Drinks_Into_Fridge_ep_0056",
+      "failed_variant_count": 2,
+      "failed_variants": [
+        "F1_model8000",
+        "F3h_model8000"
+      ]
+    },
+    {
+      "motion": "G1_WBT_Inspire_Put_Vegetables_Into_Basket_ep_0201",
+      "failed_variant_count": 5,
+      "failed_variants": [
+        "F2_model8000",
+        "F2o_model8000",
+        "F3_model8000",
+        "official_model22200_hat4",
+        "official_model22200_vr3"
+      ]
+    }
+  ],
+  "reference_quality_thresholds": {
+    "root_step_m": 0.1,
+    "body_step_m": 0.15,
+    "joint_step_rad": 1.0,
+    "body_linear_speed_mps": 5.0,
+    "body_angular_speed_radps": 20.0
+  },
+  "suspicious_common_reference_count": 111,
+  "suspicious_common_references": [
+    "G1_WBT_Brainco_Collect_Plates_Into_Dishwasher_ep_0007",
+    "G1_WBT_Brainco_Collect_Plates_Into_Dishwasher_ep_0013",
+    "G1_WBT_Brainco_Collect_Plates_Into_Dishwasher_ep_0026",
+    "G1_WBT_Brainco_Collect_Plates_Into_Dishwasher_ep_0042",
+    "G1_WBT_Brainco_Collect_Plates_Into_Dishwasher_ep_0054",
+    "G1_WBT_Brainco_Collect_Plates_Into_Dishwasher_ep_0063",
+    "G1_WBT_Brainco_Collect_Plates_Into_Dishwasher_ep_0068",
+    "G1_WBT_Brainco_Collect_Plates_Into_Dishwasher_ep_0074",
+    "G1_WBT_Brainco_Collect_Plates_Into_Dishwasher_ep_0087",
+    "G1_WBT_Brainco_Collect_Plates_Into_Dishwasher_ep_0100",
+    "G1_WBT_Brainco_Collect_Plates_Into_Dishwasher_ep_0117",
+    "G1_WBT_Brainco_Collect_Plates_Into_Dishwasher_ep_0118",
+    "G1_WBT_Brainco_Collect_Plates_Into_Dishwasher_ep_0138",
+    "G1_WBT_Brainco_Collect_Plates_Into_Dishwasher_ep_0161",
+    "G1_WBT_Brainco_Collect_Plates_Into_Dishwasher_ep_0163",
+    "G1_WBT_Brainco_Collect_Plates_Into_Dishwasher_ep_0164",
+    "G1_WBT_Brainco_Collect_Plates_Into_Dishwasher_ep_0208",
+    "G1_WBT_Brainco_Collect_Plates_Into_Dishwasher_ep_0211",
+    "G1_WBT_Brainco_Collect_Plates_Into_Dishwasher_ep_0233",
+    "G1_WBT_Brainco_Collect_Plates_Into_Dishwasher_ep_0234",
+    "G1_WBT_Brainco_Collect_Plates_Into_Dishwasher_ep_0240",
+    "G1_WBT_Brainco_Collect_Plates_Into_Dishwasher_ep_0274",
+    "G1_WBT_Brainco_Collect_Plates_Into_Dishwasher_ep_0275",
+    "G1_WBT_Brainco_Make_The_Bed_ep_0002",
+    "G1_WBT_Brainco_Make_The_Bed_ep_0029",
+    "G1_WBT_Brainco_Make_The_Bed_ep_0087",
+    "G1_WBT_Brainco_Make_The_Bed_ep_0133",
+    "G1_WBT_Brainco_Make_The_Bed_ep_0139",
+    "G1_WBT_Brainco_Make_The_Bed_ep_0148",
+    "G1_WBT_Brainco_Make_The_Bed_ep_0149",
+    "G1_WBT_Brainco_Make_The_Bed_ep_0205",
+    "G1_WBT_Brainco_Make_The_Bed_ep_0238",
+    "G1_WBT_Brainco_Make_The_Bed_ep_0258",
+    "G1_WBT_Brainco_Make_The_Bed_ep_0285",
+    "G1_WBT_Brainco_Make_The_Bed_ep_0286",
+    "G1_WBT_Brainco_Pickup_Pillow_ep_0022",
+    "G1_WBT_Brainco_Pickup_Pillow_ep_0036",
+    "G1_WBT_Brainco_Pickup_Pillow_ep_0050",
+    "G1_WBT_Brainco_Pickup_Pillow_ep_0064",
+    "G1_WBT_Brainco_Pickup_Pillow_ep_0180",
+    "G1_WBT_Brainco_Pickup_Pillow_ep_0202",
+    "G1_WBT_Brainco_Pickup_Pillow_ep_0267",
+    "G1_WBT_Brainco_Pickup_Pillow_ep_0280",
+    "G1_WBT_Inspire_Pick_Up_Drinks_ep_0046",
+    "G1_WBT_Inspire_Pick_Up_Drinks_ep_0095",
+    "G1_WBT_Inspire_Pick_Up_Drinks_ep_0132",
+    "G1_WBT_Inspire_Pick_Up_Drinks_ep_0142",
+    "G1_WBT_Inspire_Pick_Up_Drinks_ep_0150",
+    "G1_WBT_Inspire_Pick_Up_Drinks_ep_0151",
+    "G1_WBT_Inspire_Pick_Up_Drinks_ep_0158",
+    "G1_WBT_Inspire_Pick_Up_Drinks_ep_0159",
+    "G1_WBT_Inspire_Pick_Up_Drinks_ep_0180",
+    "G1_WBT_Inspire_Pick_Up_Drinks_ep_0184",
+    "G1_WBT_Inspire_Pick_Up_Drinks_ep_0190",
+    "G1_WBT_Inspire_Pick_Up_Drinks_ep_0201",
+    "G1_WBT_Inspire_Pick_Up_Drinks_ep_0233",
+    "G1_WBT_Inspire_Pick_Up_Drinks_ep_0234",
+    "G1_WBT_Inspire_Pick_Up_Drinks_ep_0239",
+    "G1_WBT_Inspire_Pick_Up_Drinks_ep_0246",
+    "G1_WBT_Inspire_Pick_Up_Drinks_ep_0252",
+    "G1_WBT_Inspire_Pick_Up_Drinks_ep_0259",
+    "G1_WBT_Inspire_Pick_Up_Drinks_ep_0279",
+    "G1_WBT_Inspire_Pick_Up_Drinks_ep_0281",
+    "G1_WBT_Inspire_Pick_Up_Drinks_ep_0282",
+    "G1_WBT_Inspire_Put_Clothes_Into_Basket_ep_0012",
+    "G1_WBT_Inspire_Put_Clothes_Into_Basket_ep_0034",
+    "G1_WBT_Inspire_Put_Clothes_Into_Basket_ep_0039",
+    "G1_WBT_Inspire_Put_Clothes_Into_Basket_ep_0059",
+    "G1_WBT_Inspire_Put_Clothes_Into_Basket_ep_0063",
+    "G1_WBT_Inspire_Put_Clothes_Into_Basket_ep_0066",
+    "G1_WBT_Inspire_Put_Clothes_Into_Basket_ep_0077",
+    "G1_WBT_Inspire_Put_Clothes_Into_Basket_ep_0141",
+    "G1_WBT_Inspire_Put_Clothes_Into_Basket_ep_0244",
+    "G1_WBT_Inspire_Put_Clothes_Into_Basket_ep_0280",
+    "G1_WBT_Inspire_Put_Clothes_into_Washing_Machine_ep_0006",
+    "G1_WBT_Inspire_Put_Clothes_into_Washing_Machine_ep_0009",
+    "G1_WBT_Inspire_Put_Clothes_into_Washing_Machine_ep_0010",
+    "G1_WBT_Inspire_Put_Clothes_into_Washing_Machine_ep_0012",
+    "G1_WBT_Inspire_Put_Clothes_into_Washing_Machine_ep_0014",
+    "G1_WBT_Inspire_Put_Clothes_into_Washing_Machine_ep_0026",
+    "G1_WBT_Inspire_Put_Clothes_into_Washing_Machine_ep_0057",
+    "G1_WBT_Inspire_Put_Clothes_into_Washing_Machine_ep_0059",
+    "G1_WBT_Inspire_Put_Clothes_into_Washing_Machine_ep_0065",
+    "G1_WBT_Inspire_Put_Clothes_into_Washing_Machine_ep_0068",
+    "G1_WBT_Inspire_Put_Clothes_into_Washing_Machine_ep_0074",
+    "G1_WBT_Inspire_Put_Clothes_into_Washing_Machine_ep_0101",
+    "G1_WBT_Inspire_Put_Clothes_into_Washing_Machine_ep_0111",
+    "G1_WBT_Inspire_Put_Clothes_into_Washing_Machine_ep_0114",
+    "G1_WBT_Inspire_Put_Clothes_into_Washing_Machine_ep_0119",
+    "G1_WBT_Inspire_Put_Clothes_into_Washing_Machine_ep_0130",
+    "G1_WBT_Inspire_Put_Clothes_into_Washing_Machine_ep_0137",
+    "G1_WBT_Inspire_Put_Clothes_into_Washing_Machine_ep_0154",
+    "G1_WBT_Inspire_Put_Clothes_into_Washing_Machine_ep_0168",
+    "G1_WBT_Inspire_Put_Clothes_into_Washing_Machine_ep_0185",
+    "G1_WBT_Inspire_Put_Clothes_into_Washing_Machine_ep_0188",
+    "G1_WBT_Inspire_Put_Clothes_into_Washing_Machine_ep_0196",
+    "G1_WBT_Inspire_Put_Clothes_into_Washing_Machine_ep_0203",
+    "G1_WBT_Inspire_Put_Clothes_into_Washing_Machine_ep_0204",
+    "G1_WBT_Inspire_Put_Clothes_into_Washing_Machine_ep_0211",
+    "G1_WBT_Inspire_Put_Clothes_into_Washing_Machine_ep_0217",
+    "G1_WBT_Inspire_Put_Clothes_into_Washing_Machine_ep_0252",
+    "G1_WBT_Inspire_Put_Clothes_into_Washing_Machine_ep_0255",
+    "G1_WBT_Inspire_Put_Clothes_into_Washing_Machine_ep_0257",
+    "G1_WBT_Inspire_Put_Clothes_into_Washing_Machine_ep_0264",
+    "G1_WBT_Inspire_Put_Clothes_into_Washing_Machine_ep_0285",
+    "G1_WBT_Inspire_Put_Clothes_into_Washing_Machine_ep_0286",
+    "G1_WBT_Inspire_Put_Clothes_into_Washing_Machine_ep_0295",
+    "G1_WBT_Inspire_Put_Vegetables_Into_Basket_ep_0155",
+    "G1_WBT_Inspire_Put_Vegetables_Into_Basket_ep_0190",
+    "G1_WBT_Inspire_Put_Vegetables_Into_Basket_ep_0222",
+    "G1_WBT_Inspire_Put_Vegetables_Into_Basket_ep_0226"
+  ],
+  "reference_quality_contingency": {
+    "common_failures": {
+      "suspicious": 111,
+      "total": 114
+    },
+    "variable_failures": {
+      "suspicious": 2,
+      "total": 4
+    },
+    "never_failed": {
+      "suspicious": 34,
+      "total": 482
+    },
+    "all_motions": {
+      "suspicious": 147,
+      "total": 600
+    },
+    "common_failure_recall": 0.9736842105263158,
+    "common_failure_precision": 0.7551020408163265
+  },
+  "prefix_trim_candidate_count_all": 104,
+  "prefix_trim_candidate_count_common": 102,
+  "reference_audits": {
+    "G1_WBT_Brainco_Collect_Plates_Into_Dishwasher_ep_0007": {
+      "path": "/root/shengyin/ScaleBFM/ScaleTrack/data/hat4_unifolm/processed/G1_WBT_Brainco_Collect_Plates_Into_Dishwasher_ep_0007.npz",
+      "frames": 1242,
+      "fps": 50.0,
+      "duration_s": 24.82,
+      "root_step_m": {
+        "mean": 0.0012346454290490833,
+        "p95": 0.004044144189054779,
+        "max": 0.21998803308978232
+      },
+      "body_step_m": {
+        "mean": 0.001574901082556863,
+        "p95": 0.0049599281428806905,
+        "max": 0.36735587557745975
+      },
+      "joint_step_rad": {
+        "mean": 0.0015994616093132367,
+        "p95": 0.007629473507404327,
+        "max": 0.4379826784133911
+      },
+      "body_linear_speed_mps": {
+        "mean": 0.08598020505877202,
+        "p95": 0.2598877693246315,
+        "max": 19.020547107846024
+      },
+      "body_angular_speed_radps": {
+        "mean": 0.21961545359042065,
+        "p95": 0.7845010744668975,
+        "max": 39.07429960446867
+      },
+      "max_root_step_transition": 1,
+      "max_body_step_transition": 1,
+      "discontinuity_transition_count": 2,
+      "discontinuity_transitions": [
+        1,
+        2
+      ],
+      "first_discontinuity_transition": 1,
+      "last_discontinuity_transition": 2,
+      "prefix_trim_candidate": true,
+      "suspicious_reference": true,
+      "suspicious_reasons": [
+        "root_step_gt_10cm",
+        "body_step_gt_15cm",
+        "body_speed_gt_5mps",
+        "body_ang_speed_gt_20radps"
+      ]
+    },
+    "G1_WBT_Brainco_Collect_Plates_Into_Dishwasher_ep_0013": {
+      "path": "/root/shengyin/ScaleBFM/ScaleTrack/data/hat4_unifolm/processed/G1_WBT_Brainco_Collect_Plates_Into_Dishwasher_ep_0013.npz",
+      "frames": 1475,
+      "fps": 50.0,
+      "duration_s": 29.48,
+      "root_step_m": {
+        "mean": 0.0014907161870915734,
+        "p95": 0.003668201980306734,
+        "max": 0.44260657392479597
+      },
+      "body_step_m": {
+        "mean": 0.0019359989685271979,
+        "p95": 0.0059088558470815926,
+        "max": 0.4798817165903805
+      },
+      "joint_step_rad": {
+        "mean": 0.0015675760992896453,
+        "p95": 0.007717326283454895,
+        "max": 0.14916047267615795
+      },
+      "body_linear_speed_mps": {
+        "mean": 0.10709450894676008,
+        "p95": 0.31688937711389115,
+        "max": 23.93884874511345
+      },
+      "body_angular_speed_radps": {
+        "mean": 0.233309727629741,
+        "p95": 0.9181985432693368,
+        "max": 16.516968228977817
+      },
+      "max_root_step_transition": 1,
+      "max_body_step_transition": 1,
+      "discontinuity_transition_count": 2,
+      "discontinuity_transitions": [
+        1,
+        2
+      ],
+      "first_discontinuity_transition": 1,
+      "last_discontinuity_transition": 2,
+      "prefix_trim_candidate": true,
+      "suspicious_reference": true,
+      "suspicious_reasons": [
+        "root_step_gt_10cm",
+        "body_step_gt_15cm",
+        "body_speed_gt_5mps"
+      ]
+    },
+    "G1_WBT_Brainco_Collect_Plates_Into_Dishwasher_ep_0026": {
+      "path": "/root/shengyin/ScaleBFM/ScaleTrack/data/hat4_unifolm/processed/G1_WBT_Brainco_Collect_Plates_Into_Dishwasher_ep_0026.npz",
+      "frames": 1935,
+      "fps": 50.0,
+      "duration_s": 38.68,
+      "root_step_m": {
+        "mean": 0.0015056869174853837,
+        "p95": 0.004392157014617029,
+        "max": 0.4582278505807894
+      },
+      "body_step_m": {
+        "mean": 0.0019440432531680342,
+        "p95": 0.005755116799950965,
+        "max": 0.5224953468105692
+      },
+      "joint_step_rad": {
+        "mean": 0.0017003910507597509,
+        "p95": 0.007603097707033157,
+        "max": 0.6162647753953934
+      },
+      "body_linear_speed_mps": {
+        "mean": 0.10579396515444017,
+        "p95": 0.3000934920845586,
+        "max": 25.794043036299303
+      },
+      "body_angular_speed_radps": {
+        "mean": 0.2313955023460609,
+        "p95": 0.8188444554453497,
+        "max": 35.47367405811495
+      },
+      "max_root_step_transition": 1,
+      "max_body_step_transition": 1,
+      "discontinuity_transition_count": 2,
+      "discontinuity_transitions": [
+        1,
+        2
+      ],
+      "first_discontinuity_transition": 1,
+      "last_discontinuity_transition": 2,
+      "prefix_trim_candidate": true,
+      "suspicious_reference": true,
+      "suspicious_reasons": [
+        "root_step_gt_10cm",
+        "body_step_gt_15cm",
+        "body_speed_gt_5mps",
+        "body_ang_speed_gt_20radps"
+      ]
+    },
+    "G1_WBT_Brainco_Collect_Plates_Into_Dishwasher_ep_0042": {
+      "path": "/root/shengyin/ScaleBFM/ScaleTrack/data/hat4_unifolm/processed/G1_WBT_Brainco_Collect_Plates_Into_Dishwasher_ep_0042.npz",
+      "frames": 3340,
+      "fps": 50.0,
+      "duration_s": 66.78,
+      "root_step_m": {
+        "mean": 0.001276311827329289,
+        "p95": 0.005130564233726659,
+        "max": 0.20427802733009842
+      },
+      "body_step_m": {
+        "mean": 0.0015604643914557661,
+        "p95": 0.005762333448024908,
+        "max": 0.31606716429752757
+      },
+      "joint_step_rad": {
+        "mean": 0.0015782099510995985,
+        "p95": 0.007346659898757935,
+        "max": 0.6936132833361626
+      },
+      "body_linear_speed_mps": {
+        "mean": 0.08086116660237623,
+        "p95": 0.2901131073060091,
+        "max": 16.9138066987957
+      },
+      "body_angular_speed_radps": {
+        "mean": 0.21712964367372786,
+        "p95": 0.8282796791177847,
+        "max": 42.775324121615526
+      },
+      "max_root_step_transition": 1,
+      "max_body_step_transition": 1,
+      "discontinuity_transition_count": 2,
+      "discontinuity_transitions": [
+        1,
+        2
+      ],
+      "first_discontinuity_transition": 1,
+      "last_discontinuity_transition": 2,
+      "prefix_trim_candidate": true,
+      "suspicious_reference": true,
+      "suspicious_reasons": [
+        "root_step_gt_10cm",
+        "body_step_gt_15cm",
+        "body_speed_gt_5mps",
+        "body_ang_speed_gt_20radps"
+      ]
+    },
+    "G1_WBT_Brainco_Collect_Plates_Into_Dishwasher_ep_0054": {
+      "path": "/root/shengyin/ScaleBFM/ScaleTrack/data/hat4_unifolm/processed/G1_WBT_Brainco_Collect_Plates_Into_Dishwasher_ep_0054.npz",
+      "frames": 1995,
+      "fps": 50.0,
+      "duration_s": 39.88,
+      "root_step_m": {
+        "mean": 0.0014827704010543876,
+        "p95": 0.005072087458650329,
+        "max": 0.2021219314142193
+      },
+      "body_step_m": {
+        "mean": 0.0018650640098500106,
+        "p95": 0.0063052773192506665,
+        "max": 0.26100740609388845
+      },
+      "joint_step_rad": {
+        "mean": 0.001931000456605889,
+        "p95": 0.008697092533111572,
+        "max": 0.15212294459342957
+      },
+      "body_linear_speed_mps": {
+        "mean": 0.09749059272150801,
+        "p95": 0.33089223422026753,
+        "max": 12.844374004834323
+      },
+      "body_angular_speed_radps": {
+        "mean": 0.24124457702461674,
+        "p95": 0.8652517612356823,
+        "max": 12.403154649251174
+      },
+      "max_root_step_transition": 1,
+      "max_body_step_transition": 1,
+      "discontinuity_transition_count": 2,
+      "discontinuity_transitions": [
+        1,
+        2
+      ],
+      "first_discontinuity_transition": 1,
+      "last_discontinuity_transition": 2,
+      "prefix_trim_candidate": true,
+      "suspicious_reference": true,
+      "suspicious_reasons": [
+        "root_step_gt_10cm",
+        "body_step_gt_15cm",
+        "body_speed_gt_5mps"
+      ]
+    },
+    "G1_WBT_Brainco_Collect_Plates_Into_Dishwasher_ep_0063": {
+      "path": "/root/shengyin/ScaleBFM/ScaleTrack/data/hat4_unifolm/processed/G1_WBT_Brainco_Collect_Plates_Into_Dishwasher_ep_0063.npz",
+      "frames": 2414,
+      "fps": 50.0,
+      "duration_s": 48.26,
+      "root_step_m": {
+        "mean": 0.0012816152228065276,
+        "p95": 0.004975175005857198,
+        "max": 0.22924026970002898
+      },
+      "body_step_m": {
+        "mean": 0.0016552209809598366,
+        "p95": 0.005936912334199803,
+        "max": 0.2894376504650235
+      },
+      "joint_step_rad": {
+        "mean": 0.0016221566167049298,
+        "p95": 0.007546357810497282,
+        "max": 0.6001579761505127
+      },
+      "body_linear_speed_mps": {
+        "mean": 0.0870456483378111,
+        "p95": 0.3030290054898653,
+        "max": 15.849956552966965
+      },
+      "body_angular_speed_radps": {
+        "mean": 0.2199655418883459,
+        "p95": 0.8138083595808666,
+        "max": 35.76808160365143
+      },
+      "max_root_step_transition": 1,
+      "max_body_step_transition": 1,
+      "discontinuity_transition_count": 2,
+      "discontinuity_transitions": [
+        1,
+        2
+      ],
+      "first_discontinuity_transition": 1,
+      "last_discontinuity_transition": 2,
+      "prefix_trim_candidate": true,
+      "suspicious_reference": true,
+      "suspicious_reasons": [
+        "root_step_gt_10cm",
+        "body_step_gt_15cm",
+        "body_speed_gt_5mps",
+        "body_ang_speed_gt_20radps"
+      ]
+    },
+    "G1_WBT_Brainco_Collect_Plates_Into_Dishwasher_ep_0068": {
+      "path": "/root/shengyin/ScaleBFM/ScaleTrack/data/hat4_unifolm/processed/G1_WBT_Brainco_Collect_Plates_Into_Dishwasher_ep_0068.npz",
+      "frames": 2380,
+      "fps": 50.0,
+      "duration_s": 47.58,
+      "root_step_m": {
+        "mean": 0.0012994251781223208,
+        "p95": 0.003989583014510007,
+        "max": 0.3217560832162891
+      },
+      "body_step_m": {
+        "mean": 0.0017413770036983501,
+        "p95": 0.005390756684478641,
+        "max": 0.37003703647414093
+      },
+      "joint_step_rad": {
+        "mean": 0.001808580519091642,
+        "p95": 0.00829244777560234,
+        "max": 0.320719450712204
+      },
+      "body_linear_speed_mps": {
+        "mean": 0.0924661695131884,
+        "p95": 0.2814619795938465,
+        "max": 18.455466039267655
+      },
+      "body_angular_speed_radps": {
+        "mean": 0.2498930010214003,
+        "p95": 0.8871080135832008,
+        "max": 26.431319877121233
+      },
+      "max_root_step_transition": 1,
+      "max_body_step_transition": 1,
+      "discontinuity_transition_count": 2,
+      "discontinuity_transitions": [
+        1,
+        2
+      ],
+      "first_discontinuity_transition": 1,
+      "last_discontinuity_transition": 2,
+      "prefix_trim_candidate": true,
+      "suspicious_reference": true,
+      "suspicious_reasons": [
+        "root_step_gt_10cm",
+        "body_step_gt_15cm",
+        "body_speed_gt_5mps",
+        "body_ang_speed_gt_20radps"
+      ]
+    },
+    "G1_WBT_Brainco_Collect_Plates_Into_Dishwasher_ep_0074": {
+      "path": "/root/shengyin/ScaleBFM/ScaleTrack/data/hat4_unifolm/processed/G1_WBT_Brainco_Collect_Plates_Into_Dishwasher_ep_0074.npz",
+      "frames": 2840,
+      "fps": 50.0,
+      "duration_s": 56.78,
+      "root_step_m": {
+        "mean": 0.0018743319335962313,
+        "p95": 0.007093906948165725,
+        "max": 0.7082161107941402
+      },
+      "body_step_m": {
+        "mean": 0.0021688332974386026,
+        "p95": 0.007870700087873246,
+        "max": 0.8776587322433768
+      },
+      "joint_step_rad": {
+        "mean": 0.0017867296558648413,
+        "p95": 0.008528277277946472,
+        "max": 0.5515211820602417
+      },
+      "body_linear_speed_mps": {
+        "mean": 0.11557714689342849,
+        "p95": 0.3978813035053511,
+        "max": 42.495095636227305
+      },
+      "body_angular_speed_radps": {
+        "mean": 0.2420062300867555,
+        "p95": 0.9462753271115378,
+        "max": 46.5217690840865
+      },
+      "max_root_step_transition": 1,
+      "max_body_step_transition": 1,
+      "discontinuity_transition_count": 2,
+      "discontinuity_transitions": [
+        1,
+        2
+      ],
+      "first_discontinuity_transition": 1,
+      "last_discontinuity_transition": 2,
+      "prefix_trim_candidate": true,
+      "suspicious_reference": true,
+      "suspicious_reasons": [
+        "root_step_gt_10cm",
+        "body_step_gt_15cm",
+        "body_speed_gt_5mps",
+        "body_ang_speed_gt_20radps"
+      ]
+    },
+    "G1_WBT_Brainco_Collect_Plates_Into_Dishwasher_ep_0087": {
+      "path": "/root/shengyin/ScaleBFM/ScaleTrack/data/hat4_unifolm/processed/G1_WBT_Brainco_Collect_Plates_Into_Dishwasher_ep_0087.npz",
+      "frames": 2130,
+      "fps": 50.0,
+      "duration_s": 42.58,
+      "root_step_m": {
+        "mean": 0.0016042380851672752,
+        "p95": 0.006417834112580609,
+        "max": 0.0908312973290377
+      },
+      "body_step_m": {
+        "mean": 0.0020609592332167938,
+        "p95": 0.007458414741616581,
+        "max": 0.13252975358376012
+      },
+      "joint_step_rad": {
+        "mean": 0.002151180818027147,
+        "p95": 0.00968526303768158,
+        "max": 0.45180290937423706
+      },
+      "body_linear_speed_mps": {
+        "mean": 0.10625719089666537,
+        "p95": 0.3795775569060781,
+        "max": 6.679849599056526
+      },
+      "body_angular_speed_radps": {
+        "mean": 0.28739916390697307,
+        "p95": 1.0418690381254463,
+        "max": 31.8424943937386
+      },
+      "max_root_step_transition": 1,
+      "max_body_step_transition": 1,
+      "discontinuity_transition_count": 0,
+      "discontinuity_transitions": [],
+      "first_discontinuity_transition": null,
+      "last_discontinuity_transition": null,
+      "prefix_trim_candidate": false,
+      "suspicious_reference": true,
+      "suspicious_reasons": [
+        "body_speed_gt_5mps",
+        "body_ang_speed_gt_20radps"
+      ]
+    },
+    "G1_WBT_Brainco_Collect_Plates_Into_Dishwasher_ep_0100": {
+      "path": "/root/shengyin/ScaleBFM/ScaleTrack/data/hat4_unifolm/processed/G1_WBT_Brainco_Collect_Plates_Into_Dishwasher_ep_0100.npz",
+      "frames": 2287,
+      "fps": 50.0,
+      "duration_s": 45.72,
+      "root_step_m": {
+        "mean": 0.001765236374738499,
+        "p95": 0.00645961109771721,
+        "max": 0.3736251447516954
+      },
+      "body_step_m": {
+        "mean": 0.0021105128029502464,
+        "p95": 0.007194999541910789,
+        "max": 0.3815904761011724
+      },
+      "joint_step_rad": {
+        "mean": 0.0019556189965598187,
+        "p95": 0.009128063917160026,
+        "max": 0.6146037578582764
+      },
+      "body_linear_speed_mps": {
+        "mean": 0.11102890157902603,
+        "p95": 0.3625110419144344,
+        "max": 20.18185843469681
+      },
+      "body_angular_speed_radps": {
+        "mean": 0.25249283308962833,
+        "p95": 0.9171389212026004,
+        "max": 45.03849056063288
+      },
+      "max_root_step_transition": 1,
+      "max_body_step_transition": 1,
+      "discontinuity_transition_count": 2,
+      "discontinuity_transitions": [
+        1,
+        2
+      ],
+      "first_discontinuity_transition": 1,
+      "last_discontinuity_transition": 2,
+      "prefix_trim_candidate": true,
+      "suspicious_reference": true,
+      "suspicious_reasons": [
+        "root_step_gt_10cm",
+        "body_step_gt_15cm",
+        "body_speed_gt_5mps",
+        "body_ang_speed_gt_20radps"
+      ]
+    },
+    "G1_WBT_Brainco_Collect_Plates_Into_Dishwasher_ep_0117": {
+      "path": "/root/shengyin/ScaleBFM/ScaleTrack/data/hat4_unifolm/processed/G1_WBT_Brainco_Collect_Plates_Into_Dishwasher_ep_0117.npz",
+      "frames": 3537,
+      "fps": 50.0,
+      "duration_s": 70.72,
+      "root_step_m": {
+        "mean": 0.0014698530830162433,
+        "p95": 0.006368818481079904,
+        "max": 0.12087258213015484
+      },
+      "body_step_m": {
+        "mean": 0.0017056506463659245,
+        "p95": 0.0070041759078878245,
+        "max": 0.14725240161560316
+      },
+      "joint_step_rad": {
+        "mean": 0.0015334543780210824,
+        "p95": 0.007355269172694513,
+        "max": 0.14046446047723293
+      },
+      "body_linear_speed_mps": {
+        "mean": 0.0872267731872323,
+        "p95": 0.3531337993310305,
+        "max": 7.273912123277378
+      },
+      "body_angular_speed_radps": {
+        "mean": 0.20412471285366174,
+        "p95": 0.8121455625269328,
+        "max": 5.328831776586066
+      },
+      "max_root_step_transition": 1,
+      "max_body_step_transition": 1,
+      "discontinuity_transition_count": 1,
+      "discontinuity_transitions": [
+        1
+      ],
+      "first_discontinuity_transition": 1,
+      "last_discontinuity_transition": 1,
+      "prefix_trim_candidate": true,
+      "suspicious_reference": true,
+      "suspicious_reasons": [
+        "root_step_gt_10cm",
+        "body_speed_gt_5mps"
+      ]
+    },
+    "G1_WBT_Brainco_Collect_Plates_Into_Dishwasher_ep_0118": {
+      "path": "/root/shengyin/ScaleBFM/ScaleTrack/data/hat4_unifolm/processed/G1_WBT_Brainco_Collect_Plates_Into_Dishwasher_ep_0118.npz",
+      "frames": 2932,
+      "fps": 50.0,
+      "duration_s": 58.62,
+      "root_step_m": {
+        "mean": 0.0015413260821967834,
+        "p95": 0.00640983912890124,
+        "max": 0.2215714632540741
+      },
+      "body_step_m": {
+        "mean": 0.0018246352044098695,
+        "p95": 0.007452842949576176,
+        "max": 0.23414793259889152
+      },
+      "joint_step_rad": {
+        "mean": 0.0016263815824239995,
+        "p95": 0.008067886228673158,
+        "max": 0.1443171128630638
+      },
+      "body_linear_speed_mps": {
+        "mean": 0.09457058669728914,
+        "p95": 0.3814679742604114,
+        "max": 11.898348384590165
+      },
+      "body_angular_speed_radps": {
+        "mean": 0.22403414376922862,
+        "p95": 1.0020293518767205,
+        "max": 9.253480559522549
+      },
+      "max_root_step_transition": 1,
+      "max_body_step_transition": 1,
+      "discontinuity_transition_count": 2,
+      "discontinuity_transitions": [
+        1,
+        2
+      ],
+      "first_discontinuity_transition": 1,
+      "last_discontinuity_transition": 2,
+      "prefix_trim_candidate": true,
+      "suspicious_reference": true,
+      "suspicious_reasons": [
+        "root_step_gt_10cm",
+        "body_step_gt_15cm",
+        "body_speed_gt_5mps"
+      ]
+    },
+    "G1_WBT_Brainco_Collect_Plates_Into_Dishwasher_ep_0138": {
+      "path": "/root/shengyin/ScaleBFM/ScaleTrack/data/hat4_unifolm/processed/G1_WBT_Brainco_Collect_Plates_Into_Dishwasher_ep_0138.npz",
+      "frames": 1934,
+      "fps": 50.0,
+      "duration_s": 38.66,
+      "root_step_m": {
+        "mean": 0.0016345668050184521,
+        "p95": 0.005988112327360957,
+        "max": 0.15293446869000019
+      },
+      "body_step_m": {
+        "mean": 0.0019721391568676516,
+        "p95": 0.006715562936348027,
+        "max": 0.18408279550732246
+      },
+      "joint_step_rad": {
+        "mean": 0.00196092466737437,
+        "p95": 0.008771079778671254,
+        "max": 0.45299649238586426
+      },
+      "body_linear_speed_mps": {
+        "mean": 0.102707947230822,
+        "p95": 0.3454149861330347,
+        "max": 9.22172689558611
+      },
+      "body_angular_speed_radps": {
+        "mean": 0.24470705969055495,
+        "p95": 0.8721379928716796,
+        "max": 39.114537895309795
+      },
+      "max_root_step_transition": 1,
+      "max_body_step_transition": 1,
+      "discontinuity_transition_count": 2,
+      "discontinuity_transitions": [
+        1,
+        2
+      ],
+      "first_discontinuity_transition": 1,
+      "last_discontinuity_transition": 2,
+      "prefix_trim_candidate": true,
+      "suspicious_reference": true,
+      "suspicious_reasons": [
+        "root_step_gt_10cm",
+        "body_step_gt_15cm",
+        "body_speed_gt_5mps",
+        "body_ang_speed_gt_20radps"
+      ]
+    },
+    "G1_WBT_Brainco_Collect_Plates_Into_Dishwasher_ep_0161": {
+      "path": "/root/shengyin/ScaleBFM/ScaleTrack/data/hat4_unifolm/processed/G1_WBT_Brainco_Collect_Plates_Into_Dishwasher_ep_0161.npz",
+      "frames": 2055,
+      "fps": 50.0,
+      "duration_s": 41.08,
+      "root_step_m": {
+        "mean": 0.0015347283613526405,
+        "p95": 0.006538161853568754,
+        "max": 0.10288038970167211
+      },
+      "body_step_m": {
+        "mean": 0.0019634374094099705,
+        "p95": 0.007382349345097075,
+        "max": 0.121778354840868
+      },
+      "joint_step_rad": {
+        "mean": 0.002014586030159793,
+        "p95": 0.009149823803454638,
+        "max": 0.19114643335342407
+      },
+      "body_linear_speed_mps": {
+        "mean": 0.10207750291769045,
+        "p95": 0.3822788085263511,
+        "max": 5.975457099545988
+      },
+      "body_angular_speed_radps": {
+        "mean": 0.25708059075042217,
+        "p95": 0.9619077822123115,
+        "max": 9.116026283102475
+      },
+      "max_root_step_transition": 1,
+      "max_body_step_transition": 1,
+      "discontinuity_transition_count": 1,
+      "discontinuity_transitions": [
+        1
+      ],
+      "first_discontinuity_transition": 1,
+      "last_discontinuity_transition": 1,
+      "prefix_trim_candidate": true,
+      "suspicious_reference": true,
+      "suspicious_reasons": [
+        "root_step_gt_10cm",
+        "body_speed_gt_5mps"
+      ]
+    },
+    "G1_WBT_Brainco_Collect_Plates_Into_Dishwasher_ep_0163": {
+      "path": "/root/shengyin/ScaleBFM/ScaleTrack/data/hat4_unifolm/processed/G1_WBT_Brainco_Collect_Plates_Into_Dishwasher_ep_0163.npz",
+      "frames": 2275,
+      "fps": 50.0,
+      "duration_s": 45.48,
+      "root_step_m": {
+        "mean": 0.001120901520265736,
+        "p95": 0.0051028358981205875,
+        "max": 0.11167607895858708
+      },
+      "body_step_m": {
+        "mean": 0.0015064022468439836,
+        "p95": 0.005819598204758245,
+        "max": 0.12061395270510698
+      },
+      "joint_step_rad": {
+        "mean": 0.0015502409883121529,
+        "p95": 0.007321646437048912,
+        "max": 0.1921023204922676
+      },
+      "body_linear_speed_mps": {
+        "mean": 0.0790433103376111,
+        "p95": 0.3018554467777867,
+        "max": 6.022425527024115
+      },
+      "body_angular_speed_radps": {
+        "mean": 0.20610717416206684,
+        "p95": 0.7800648387021051,
+        "max": 15.244709269718019
+      },
+      "max_root_step_transition": 1,
+      "max_body_step_transition": 1,
+      "discontinuity_transition_count": 1,
+      "discontinuity_transitions": [
+        1
+      ],
+      "first_discontinuity_transition": 1,
+      "last_discontinuity_transition": 1,
+      "prefix_trim_candidate": true,
+      "suspicious_reference": true,
+      "suspicious_reasons": [
+        "root_step_gt_10cm",
+        "body_speed_gt_5mps"
+      ]
+    },
+    "G1_WBT_Brainco_Collect_Plates_Into_Dishwasher_ep_0164": {
+      "path": "/root/shengyin/ScaleBFM/ScaleTrack/data/hat4_unifolm/processed/G1_WBT_Brainco_Collect_Plates_Into_Dishwasher_ep_0164.npz",
+      "frames": 1967,
+      "fps": 50.0,
+      "duration_s": 39.32,
+      "root_step_m": {
+        "mean": 0.0015997241556064401,
+        "p95": 0.006130106081022519,
+        "max": 0.1784580053384554
+      },
+      "body_step_m": {
+        "mean": 0.001974895396109395,
+        "p95": 0.006979606644840638,
+        "max": 0.24080989191885988
+      },
+      "joint_step_rad": {
+        "mean": 0.0018747356067766402,
+        "p95": 0.008663064241409297,
+        "max": 0.28673698008060455
+      },
+      "body_linear_speed_mps": {
+        "mean": 0.10326349323527381,
+        "p95": 0.3572242310502428,
+        "max": 11.424889943670749
+      },
+      "body_angular_speed_radps": {
+        "mean": 0.25000599579413585,
+        "p95": 0.9127573468905362,
+        "max": 30.408578184318046
+      },
+      "max_root_step_transition": 1,
+      "max_body_step_transition": 1,
+      "discontinuity_transition_count": 2,
+      "discontinuity_transitions": [
+        1,
+        2
+      ],
+      "first_discontinuity_transition": 1,
+      "last_discontinuity_transition": 2,
+      "prefix_trim_candidate": true,
+      "suspicious_reference": true,
+      "suspicious_reasons": [
+        "root_step_gt_10cm",
+        "body_step_gt_15cm",
+        "body_speed_gt_5mps",
+        "body_ang_speed_gt_20radps"
+      ]
+    },
+    "G1_WBT_Brainco_Collect_Plates_Into_Dishwasher_ep_0208": {
+      "path": "/root/shengyin/ScaleBFM/ScaleTrack/data/hat4_unifolm/processed/G1_WBT_Brainco_Collect_Plates_Into_Dishwasher_ep_0208.npz",
+      "frames": 1982,
+      "fps": 50.0,
+      "duration_s": 39.62,
+      "root_step_m": {
+        "mean": 0.0017498859421781537,
+        "p95": 0.006980648565510067,
+        "max": 0.17630827843133687
+      },
+      "body_step_m": {
+        "mean": 0.0022461255834182073,
+        "p95": 0.00773883369606645,
+        "max": 0.21105554533903678
+      },
+      "joint_step_rad": {
+        "mean": 0.002446078114748625,
+        "p95": 0.011004696728195993,
+        "max": 0.1667104959487915
+      },
+      "body_linear_speed_mps": {
+        "mean": 0.11724330487458527,
+        "p95": 0.39183732391041753,
+        "max": 10.516255574499148
+      },
+      "body_angular_speed_radps": {
+        "mean": 0.30067093598009975,
+        "p95": 1.1179428742627813,
+        "max": 9.939697632316467
+      },
+      "max_root_step_transition": 1,
+      "max_body_step_transition": 1,
+      "discontinuity_transition_count": 2,
+      "discontinuity_transitions": [
+        1,
+        2
+      ],
+      "first_discontinuity_transition": 1,
+      "last_discontinuity_transition": 2,
+      "prefix_trim_candidate": true,
+      "suspicious_reference": true,
+      "suspicious_reasons": [
+        "root_step_gt_10cm",
+        "body_step_gt_15cm",
+        "body_speed_gt_5mps"
+      ]
+    },
+    "G1_WBT_Brainco_Collect_Plates_Into_Dishwasher_ep_0211": {
+      "path": "/root/shengyin/ScaleBFM/ScaleTrack/data/hat4_unifolm/processed/G1_WBT_Brainco_Collect_Plates_Into_Dishwasher_ep_0211.npz",
+      "frames": 2294,
+      "fps": 50.0,
+      "duration_s": 45.86,
+      "root_step_m": {
+        "mean": 0.0013579774022981423,
+        "p95": 0.005780924559085465,
+        "max": 0.09052171971863614
+      },
+      "body_step_m": {
+        "mean": 0.0018003344468214126,
+        "p95": 0.006775683345636408,
+        "max": 0.14208138311572155
+      },
+      "joint_step_rad": {
+        "mean": 0.0020888405433236164,
+        "p95": 0.009445308148860921,
+        "max": 0.18395546451210976
+      },
+      "body_linear_speed_mps": {
+        "mean": 0.09375183295606522,
+        "p95": 0.3458789317569638,
+        "max": 7.23302682302543
+      },
+      "body_angular_speed_radps": {
+        "mean": 0.2687945667058724,
+        "p95": 1.0014196843034935,
+        "max": 8.63233812890526
+      },
+      "max_root_step_transition": 1,
+      "max_body_step_transition": 1,
+      "discontinuity_transition_count": 0,
+      "discontinuity_transitions": [],
+      "first_discontinuity_transition": null,
+      "last_discontinuity_transition": null,
+      "prefix_trim_candidate": false,
+      "suspicious_reference": true,
+      "suspicious_reasons": [
+        "body_speed_gt_5mps"
+      ]
+    },
+    "G1_WBT_Brainco_Collect_Plates_Into_Dishwasher_ep_0233": {
+      "path": "/root/shengyin/ScaleBFM/ScaleTrack/data/hat4_unifolm/processed/G1_WBT_Brainco_Collect_Plates_Into_Dishwasher_ep_0233.npz",
+      "frames": 1929,
+      "fps": 50.0,
+      "duration_s": 38.56,
+      "root_step_m": {
+        "mean": 0.002116836717588257,
+        "p95": 0.00824207065130307,
+        "max": 0.2366046111325398
+      },
+      "body_step_m": {
+        "mean": 0.0025593808964782536,
+        "p95": 0.009277660553664,
+        "max": 0.2712225944127277
+      },
+      "joint_step_rad": {
+        "mean": 0.002577230208358873,
+        "p95": 0.011558246985077838,
+        "max": 0.21428392827510834
+      },
+      "body_linear_speed_mps": {
+        "mean": 0.1334551608582343,
+        "p95": 0.46910746732384845,
+        "max": 13.755715738977148
+      },
+      "body_angular_speed_radps": {
+        "mean": 0.3099579377446197,
+        "p95": 1.1277736897296409,
+        "max": 10.302687893159977
+      },
+      "max_root_step_transition": 1,
+      "max_body_step_transition": 1,
+      "discontinuity_transition_count": 2,
+      "discontinuity_transitions": [
+        1,
+        2
+      ],
+      "first_discontinuity_transition": 1,
+      "last_discontinuity_transition": 2,
+      "prefix_trim_candidate": true,
+      "suspicious_reference": true,
+      "suspicious_reasons": [
+        "root_step_gt_10cm",
+        "body_step_gt_15cm",
+        "body_speed_gt_5mps"
+      ]
+    },
+    "G1_WBT_Brainco_Collect_Plates_Into_Dishwasher_ep_0234": {
+      "path": "/root/shengyin/ScaleBFM/ScaleTrack/data/hat4_unifolm/processed/G1_WBT_Brainco_Collect_Plates_Into_Dishwasher_ep_0234.npz",
+      "frames": 2707,
+      "fps": 50.0,
+      "duration_s": 54.12,
+      "root_step_m": {
+        "mean": 0.0014833271592866986,
+        "p95": 0.006022396074938321,
+        "max": 0.47203543365303263
+      },
+      "body_step_m": {
+        "mean": 0.0018944923960382903,
+        "p95": 0.007030211755480699,
+        "max": 0.5378735849370224
+      },
+      "joint_step_rad": {
+        "mean": 0.0019556008707695143,
+        "p95": 0.00926152225583787,
+        "max": 0.6788943409919739
+      },
+      "body_linear_speed_mps": {
+        "mean": 0.10157851125002305,
+        "p95": 0.3606039024784278,
+        "max": 27.336373016267537
+      },
+      "body_angular_speed_radps": {
+        "mean": 0.24926897766877923,
+        "p95": 0.9693190837825205,
+        "max": 49.25671336530855
+      },
+      "max_root_step_transition": 1,
+      "max_body_step_transition": 1,
+      "discontinuity_transition_count": 2,
+      "discontinuity_transitions": [
+        1,
+        2
+      ],
+      "first_discontinuity_transition": 1,
+      "last_discontinuity_transition": 2,
+      "prefix_trim_candidate": true,
+      "suspicious_reference": true,
+      "suspicious_reasons": [
+        "root_step_gt_10cm",
+        "body_step_gt_15cm",
+        "body_speed_gt_5mps",
+        "body_ang_speed_gt_20radps"
+      ]
+    },
+    "G1_WBT_Brainco_Collect_Plates_Into_Dishwasher_ep_0240": {
+      "path": "/root/shengyin/ScaleBFM/ScaleTrack/data/hat4_unifolm/processed/G1_WBT_Brainco_Collect_Plates_Into_Dishwasher_ep_0240.npz",
+      "frames": 1844,
+      "fps": 50.0,
+      "duration_s": 36.86,
+      "root_step_m": {
+        "mean": 0.00167730375299681,
+        "p95": 0.005523468091160044,
+        "max": 0.5182597359343593
+      },
+      "body_step_m": {
+        "mean": 0.001968657689649832,
+        "p95": 0.006000393752815876,
+        "max": 0.5837496219049761
+      },
+      "joint_step_rad": {
+        "mean": 0.0015884860910079643,
+        "p95": 0.007491606473922723,
+        "max": 0.22220223397016525
+      },
+      "body_linear_speed_mps": {
+        "mean": 0.1070221533384926,
+        "p95": 0.3040873497761274,
+        "max": 28.649545990042796
+      },
+      "body_angular_speed_radps": {
+        "mean": 0.22708937173072777,
+        "p95": 0.8769218786903068,
+        "max": 24.501732935738634
+      },
+      "max_root_step_transition": 1,
+      "max_body_step_transition": 1,
+      "discontinuity_transition_count": 2,
+      "discontinuity_transitions": [
+        1,
+        2
+      ],
+      "first_discontinuity_transition": 1,
+      "last_discontinuity_transition": 2,
+      "prefix_trim_candidate": true,
+      "suspicious_reference": true,
+      "suspicious_reasons": [
+        "root_step_gt_10cm",
+        "body_step_gt_15cm",
+        "body_speed_gt_5mps",
+        "body_ang_speed_gt_20radps"
+      ]
+    },
+    "G1_WBT_Brainco_Collect_Plates_Into_Dishwasher_ep_0274": {
+      "path": "/root/shengyin/ScaleBFM/ScaleTrack/data/hat4_unifolm/processed/G1_WBT_Brainco_Collect_Plates_Into_Dishwasher_ep_0274.npz",
+      "frames": 2112,
+      "fps": 50.0,
+      "duration_s": 42.22,
+      "root_step_m": {
+        "mean": 0.001982398194276695,
+        "p95": 0.006951615022294019,
+        "max": 0.5409156793518484
+      },
+      "body_step_m": {
+        "mean": 0.0023121379906206716,
+        "p95": 0.00796656861799833,
+        "max": 0.5733830664161038
+      },
+      "joint_step_rad": {
+        "mean": 0.0021175775081255436,
+        "p95": 0.009904227405786512,
+        "max": 0.16153034567832947
+      },
+      "body_linear_speed_mps": {
+        "mean": 0.12408736372632159,
+        "p95": 0.4103090916612357,
+        "max": 28.89879527041666
+      },
+      "body_angular_speed_radps": {
+        "mean": 0.27475201128655097,
+        "p95": 1.0642971246829622,
+        "max": 9.423928881039515
+      },
+      "max_root_step_transition": 1,
+      "max_body_step_transition": 1,
+      "discontinuity_transition_count": 2,
+      "discontinuity_transitions": [
+        1,
+        2
+      ],
+      "first_discontinuity_transition": 1,
+      "last_discontinuity_transition": 2,
+      "prefix_trim_candidate": true,
+      "suspicious_reference": true,
+      "suspicious_reasons": [
+        "root_step_gt_10cm",
+        "body_step_gt_15cm",
+        "body_speed_gt_5mps"
+      ]
+    },
+    "G1_WBT_Brainco_Collect_Plates_Into_Dishwasher_ep_0275": {
+      "path": "/root/shengyin/ScaleBFM/ScaleTrack/data/hat4_unifolm/processed/G1_WBT_Brainco_Collect_Plates_Into_Dishwasher_ep_0275.npz",
+      "frames": 2285,
+      "fps": 50.0,
+      "duration_s": 45.68,
+      "root_step_m": {
+        "mean": 0.0017270090590065022,
+        "p95": 0.007084537906720518,
+        "max": 0.3469865548151846
+      },
+      "body_step_m": {
+        "mean": 0.0019960954659808627,
+        "p95": 0.007671825575012088,
+        "max": 0.4188819438131
+      },
+      "joint_step_rad": {
+        "mean": 0.0017941133069944762,
+        "p95": 0.00845902319997549,
+        "max": 0.1475251019001007
+      },
+      "body_linear_speed_mps": {
+        "mean": 0.10535951699114034,
+        "p95": 0.39367528824810977,
+        "max": 20.49290066530284
+      },
+      "body_angular_speed_radps": {
+        "mean": 0.22740282767306721,
+        "p95": 0.8890447754785622,
+        "max": 14.070871571702611
+      },
+      "max_root_step_transition": 1,
+      "max_body_step_transition": 1,
+      "discontinuity_transition_count": 2,
+      "discontinuity_transitions": [
+        1,
+        2
+      ],
+      "first_discontinuity_transition": 1,
+      "last_discontinuity_transition": 2,
+      "prefix_trim_candidate": true,
+      "suspicious_reference": true,
+      "suspicious_reasons": [
+        "root_step_gt_10cm",
+        "body_step_gt_15cm",
+        "body_speed_gt_5mps"
+      ]
+    },
+    "G1_WBT_Brainco_Make_The_Bed_ep_0002": {
+      "path": "/root/shengyin/ScaleBFM/ScaleTrack/data/hat4_unifolm/processed/G1_WBT_Brainco_Make_The_Bed_ep_0002.npz",
+      "frames": 1267,
+      "fps": 50.0,
+      "duration_s": 25.32,
+      "root_step_m": {
+        "mean": 0.0034599568606118033,
+        "p95": 0.008628894741736986,
+        "max": 0.7430178147182354
+      },
+      "body_step_m": {
+        "mean": 0.0037089823703912042,
+        "p95": 0.008755291921004101,
+        "max": 0.7874445739074403
+      },
+      "joint_step_rad": {
+        "mean": 0.002563339850914028,
+        "p95": 0.010196567699313163,
+        "max": 0.13005223870277405
+      },
+      "body_linear_speed_mps": {
+        "mean": 0.20025819773548237,
+        "p95": 0.4405548986674081,
+        "max": 39.45602074475158
+      },
+      "body_angular_speed_radps": {
+        "mean": 0.29448265631359605,
+        "p95": 0.833033024695331,
+        "max": 10.583855307108855
+      },
+      "max_root_step_transition": 1,
+      "max_body_step_transition": 1,
+      "discontinuity_transition_count": 2,
+      "discontinuity_transitions": [
+        1,
+        2
+      ],
+      "first_discontinuity_transition": 1,
+      "last_discontinuity_transition": 2,
+      "prefix_trim_candidate": true,
+      "suspicious_reference": true,
+      "suspicious_reasons": [
+        "root_step_gt_10cm",
+        "body_step_gt_15cm",
+        "body_speed_gt_5mps"
+      ]
+    },
+    "G1_WBT_Brainco_Make_The_Bed_ep_0029": {
+      "path": "/root/shengyin/ScaleBFM/ScaleTrack/data/hat4_unifolm/processed/G1_WBT_Brainco_Make_The_Bed_ep_0029.npz",
+      "frames": 1590,
+      "fps": 50.0,
+      "duration_s": 31.78,
+      "root_step_m": {
+        "mean": 0.003165091098645052,
+        "p95": 0.007644780455612734,
+        "max": 0.6160084476876729
+      },
+      "body_step_m": {
+        "mean": 0.00332357436534436,
+        "p95": 0.007825972396786812,
+        "max": 0.6721479034279169
+      },
+      "joint_step_rad": {
+        "mean": 0.002796368268395382,
+        "p95": 0.011110067367553711,
+        "max": 0.180669367313385
+      },
+      "body_linear_speed_mps": {
+        "mean": 0.17393675188495825,
+        "p95": 0.38874446934608853,
+        "max": 33.51340584344577
+      },
+      "body_angular_speed_radps": {
+        "mean": 0.3234129219195074,
+        "p95": 0.9283148738515798,
+        "max": 9.429863483518892
+      },
+      "max_root_step_transition": 1,
+      "max_body_step_transition": 1,
+      "discontinuity_transition_count": 2,
+      "discontinuity_transitions": [
+        1,
+        2
+      ],
+      "first_discontinuity_transition": 1,
+      "last_discontinuity_transition": 2,
+      "prefix_trim_candidate": true,
+      "suspicious_reference": true,
+      "suspicious_reasons": [
+        "root_step_gt_10cm",
+        "body_step_gt_15cm",
+        "body_speed_gt_5mps"
+      ]
+    },
+    "G1_WBT_Brainco_Make_The_Bed_ep_0087": {
+      "path": "/root/shengyin/ScaleBFM/ScaleTrack/data/hat4_unifolm/processed/G1_WBT_Brainco_Make_The_Bed_ep_0087.npz",
+      "frames": 882,
+      "fps": 50.0,
+      "duration_s": 17.62,
+      "root_step_m": {
+        "mean": 0.002670555258637528,
+        "p95": 0.006391744651426456,
+        "max": 0.1881071818284028
+      },
+      "body_step_m": {
+        "mean": 0.002997853828705199,
+        "p95": 0.0069911820294204586,
+        "max": 0.21621452271993824
+      },
+      "joint_step_rad": {
+        "mean": 0.003222822703685505,
+        "p95": 0.012866581976413724,
+        "max": 0.19369864463806152
+      },
+      "body_linear_speed_mps": {
+        "mean": 0.15573167654885536,
+        "p95": 0.3534901599056241,
+        "max": 10.904286106798343
+      },
+      "body_angular_speed_radps": {
+        "mean": 0.34490350385771334,
+        "p95": 0.9753224611762058,
+        "max": 15.46806374670677
+      },
+      "max_root_step_transition": 1,
+      "max_body_step_transition": 1,
+      "discontinuity_transition_count": 2,
+      "discontinuity_transitions": [
+        1,
+        2
+      ],
+      "first_discontinuity_transition": 1,
+      "last_discontinuity_transition": 2,
+      "prefix_trim_candidate": true,
+      "suspicious_reference": true,
+      "suspicious_reasons": [
+        "root_step_gt_10cm",
+        "body_step_gt_15cm",
+        "body_speed_gt_5mps"
+      ]
+    },
+    "G1_WBT_Brainco_Make_The_Bed_ep_0133": {
+      "path": "/root/shengyin/ScaleBFM/ScaleTrack/data/hat4_unifolm/processed/G1_WBT_Brainco_Make_The_Bed_ep_0133.npz",
+      "frames": 850,
+      "fps": 50.0,
+      "duration_s": 16.98,
+      "root_step_m": {
+        "mean": 0.002510128354580211,
+        "p95": 0.007069301956733479,
+        "max": 0.25378203334750893
+      },
+      "body_step_m": {
+        "mean": 0.002804361445142367,
+        "p95": 0.007437150453312671,
+        "max": 0.27342308418298883
+      },
+      "joint_step_rad": {
+        "mean": 0.0027075319839441896,
+        "p95": 0.011341363191604614,
+        "max": 0.13008397817611694
+      },
+      "body_linear_speed_mps": {
+        "mean": 0.14860183927977444,
+        "p95": 0.36938042115669656,
+        "max": 13.868173608280156
+      },
+      "body_angular_speed_radps": {
+        "mean": 0.2910146322813804,
+        "p95": 0.9721702909068757,
+        "max": 10.728531454602109
+      },
+      "max_root_step_transition": 1,
+      "max_body_step_transition": 1,
+      "discontinuity_transition_count": 2,
+      "discontinuity_transitions": [
+        1,
+        2
+      ],
+      "first_discontinuity_transition": 1,
+      "last_discontinuity_transition": 2,
+      "prefix_trim_candidate": true,
+      "suspicious_reference": true,
+      "suspicious_reasons": [
+        "root_step_gt_10cm",
+        "body_step_gt_15cm",
+        "body_speed_gt_5mps"
+      ]
+    },
+    "G1_WBT_Brainco_Make_The_Bed_ep_0139": {
+      "path": "/root/shengyin/ScaleBFM/ScaleTrack/data/hat4_unifolm/processed/G1_WBT_Brainco_Make_The_Bed_ep_0139.npz",
+      "frames": 1800,
+      "fps": 50.0,
+      "duration_s": 35.98,
+      "root_step_m": {
+        "mean": 0.0026397862184832006,
+        "p95": 0.006652594290003756,
+        "max": 0.34814181042226994
+      },
+      "body_step_m": {
+        "mean": 0.0027510834334101212,
+        "p95": 0.006661188560654369,
+        "max": 0.3864483257481794
+      },
+      "joint_step_rad": {
+        "mean": 0.002629931198271949,
+        "p95": 0.011000476777553558,
+        "max": 0.1849117875099182
+      },
+      "body_linear_speed_mps": {
+        "mean": 0.14011003881807982,
+        "p95": 0.32659883337452583,
+        "max": 19.345858590453346
+      },
+      "body_angular_speed_radps": {
+        "mean": 0.29157913065178365,
+        "p95": 0.8960489637411657,
+        "max": 10.495987898715923
+      },
+      "max_root_step_transition": 1,
+      "max_body_step_transition": 1,
+      "discontinuity_transition_count": 2,
+      "discontinuity_transitions": [
+        1,
+        2
+      ],
+      "first_discontinuity_transition": 1,
+      "last_discontinuity_transition": 2,
+      "prefix_trim_candidate": true,
+      "suspicious_reference": true,
+      "suspicious_reasons": [
+        "root_step_gt_10cm",
+        "body_step_gt_15cm",
+        "body_speed_gt_5mps"
+      ]
+    },
+    "G1_WBT_Brainco_Make_The_Bed_ep_0148": {
+      "path": "/root/shengyin/ScaleBFM/ScaleTrack/data/hat4_unifolm/processed/G1_WBT_Brainco_Make_The_Bed_ep_0148.npz",
+      "frames": 1099,
+      "fps": 50.0,
+      "duration_s": 21.96,
+      "root_step_m": {
+        "mean": 0.002027270611963643,
+        "p95": 0.005089957687008215,
+        "max": 0.14566996777566799
+      },
+      "body_step_m": {
+        "mean": 0.002220646095557507,
+        "p95": 0.00536242476389418,
+        "max": 0.15679064471892537
+      },
+      "joint_step_rad": {
+        "mean": 0.0023573450554570893,
+        "p95": 0.010073214769363398,
+        "max": 0.16544699668884277
+      },
+      "body_linear_speed_mps": {
+        "mean": 0.11347610895497189,
+        "p95": 0.2596440817780301,
+        "max": 7.939730141117423
+      },
+      "body_angular_speed_radps": {
+        "mean": 0.24831354564104516,
+        "p95": 0.7596042097592666,
+        "max": 13.17572008374779
+      },
+      "max_root_step_transition": 1,
+      "max_body_step_transition": 1,
+      "discontinuity_transition_count": 1,
+      "discontinuity_transitions": [
+        1
+      ],
+      "first_discontinuity_transition": 1,
+      "last_discontinuity_transition": 1,
+      "prefix_trim_candidate": true,
+      "suspicious_reference": true,
+      "suspicious_reasons": [
+        "root_step_gt_10cm",
+        "body_step_gt_15cm",
+        "body_speed_gt_5mps"
+      ]
+    },
+    "G1_WBT_Brainco_Make_The_Bed_ep_0149": {
+      "path": "/root/shengyin/ScaleBFM/ScaleTrack/data/hat4_unifolm/processed/G1_WBT_Brainco_Make_The_Bed_ep_0149.npz",
+      "frames": 1479,
+      "fps": 50.0,
+      "duration_s": 29.56,
+      "root_step_m": {
+        "mean": 0.0023149793361909887,
+        "p95": 0.006508509334090442,
+        "max": 0.22650825562606333
+      },
+      "body_step_m": {
+        "mean": 0.002528052074243043,
+        "p95": 0.007047099067837733,
+        "max": 0.2413865414932126
+      },
+      "joint_step_rad": {
+        "mean": 0.0023550740546631195,
+        "p95": 0.010311804711818693,
+        "max": 0.1827489472925663
+      },
+      "body_linear_speed_mps": {
+        "mean": 0.12963795883135062,
+        "p95": 0.35594957041913944,
+        "max": 11.990548764345897
+      },
+      "body_angular_speed_radps": {
+        "mean": 0.27526934542168247,
+        "p95": 0.9062054081902108,
+        "max": 8.179058678607568
+      },
+      "max_root_step_transition": 1,
+      "max_body_step_transition": 1,
+      "discontinuity_transition_count": 2,
+      "discontinuity_transitions": [
+        1,
+        2
+      ],
+      "first_discontinuity_transition": 1,
+      "last_discontinuity_transition": 2,
+      "prefix_trim_candidate": true,
+      "suspicious_reference": true,
+      "suspicious_reasons": [
+        "root_step_gt_10cm",
+        "body_step_gt_15cm",
+        "body_speed_gt_5mps"
+      ]
+    },
+    "G1_WBT_Brainco_Make_The_Bed_ep_0205": {
+      "path": "/root/shengyin/ScaleBFM/ScaleTrack/data/hat4_unifolm/processed/G1_WBT_Brainco_Make_The_Bed_ep_0205.npz",
+      "frames": 1052,
+      "fps": 50.0,
+      "duration_s": 21.02,
+      "root_step_m": {
+        "mean": 0.002596062840801663,
+        "p95": 0.0066368011595980434,
+        "max": 0.3268734591839126
+      },
+      "body_step_m": {
+        "mean": 0.002837910235221781,
+        "p95": 0.007160852772784252,
+        "max": 0.3447555363461713
+      },
+      "joint_step_rad": {
+        "mean": 0.0027554094335428313,
+        "p95": 0.011778345704078673,
+        "max": 0.16427505016326904
+      },
+      "body_linear_speed_mps": {
+        "mean": 0.15015145592901677,
+        "p95": 0.36476691746745316,
+        "max": 17.091301839548425
+      },
+      "body_angular_speed_radps": {
+        "mean": 0.29363318855044895,
+        "p95": 0.8940205283250733,
+        "max": 12.938067375275773
+      },
+      "max_root_step_transition": 1,
+      "max_body_step_transition": 1,
+      "discontinuity_transition_count": 2,
+      "discontinuity_transitions": [
+        1,
+        2
+      ],
+      "first_discontinuity_transition": 1,
+      "last_discontinuity_transition": 2,
+      "prefix_trim_candidate": true,
+      "suspicious_reference": true,
+      "suspicious_reasons": [
+        "root_step_gt_10cm",
+        "body_step_gt_15cm",
+        "body_speed_gt_5mps"
+      ]
+    },
+    "G1_WBT_Brainco_Make_The_Bed_ep_0238": {
+      "path": "/root/shengyin/ScaleBFM/ScaleTrack/data/hat4_unifolm/processed/G1_WBT_Brainco_Make_The_Bed_ep_0238.npz",
+      "frames": 1089,
+      "fps": 50.0,
+      "duration_s": 21.76,
+      "root_step_m": {
+        "mean": 0.00407683185724476,
+        "p95": 0.00925103405522267,
+        "max": 0.680010696305535
+      },
+      "body_step_m": {
+        "mean": 0.004350581335507141,
+        "p95": 0.009503852781980664,
+        "max": 0.7017094048048261
+      },
+      "joint_step_rad": {
+        "mean": 0.003694007529444229,
+        "p95": 0.014765967428684216,
+        "max": 0.14447414875030518
+      },
+      "body_linear_speed_mps": {
+        "mean": 0.23117601249517614,
+        "p95": 0.4722814862222003,
+        "max": 35.0252601950842
+      },
+      "body_angular_speed_radps": {
+        "mean": 0.38401700891041834,
+        "p95": 1.1070144748970423,
+        "max": 8.140233503288695
+      },
+      "max_root_step_transition": 1,
+      "max_body_step_transition": 1,
+      "discontinuity_transition_count": 2,
+      "discontinuity_transitions": [
+        1,
+        2
+      ],
+      "first_discontinuity_transition": 1,
+      "last_discontinuity_transition": 2,
+      "prefix_trim_candidate": true,
+      "suspicious_reference": true,
+      "suspicious_reasons": [
+        "root_step_gt_10cm",
+        "body_step_gt_15cm",
+        "body_speed_gt_5mps"
+      ]
+    },
+    "G1_WBT_Brainco_Make_The_Bed_ep_0258": {
+      "path": "/root/shengyin/ScaleBFM/ScaleTrack/data/hat4_unifolm/processed/G1_WBT_Brainco_Make_The_Bed_ep_0258.npz",
+      "frames": 1457,
+      "fps": 50.0,
+      "duration_s": 29.12,
+      "root_step_m": {
+        "mean": 0.0026807990725360806,
+        "p95": 0.008054345289282939,
+        "max": 0.5358941231604708
+      },
+      "body_step_m": {
+        "mean": 0.002907307027014965,
+        "p95": 0.007855116082035065,
+        "max": 0.5851037820018736
+      },
+      "joint_step_rad": {
+        "mean": 0.0023464041579628423,
+        "p95": 0.010015284270048126,
+        "max": 0.1485353410243988
+      },
+      "body_linear_speed_mps": {
+        "mean": 0.1553954387964607,
+        "p95": 0.3852602495708058,
+        "max": 29.222283640561336
+      },
+      "body_angular_speed_radps": {
+        "mean": 0.2537876914860656,
+        "p95": 0.7819251140508326,
+        "max": 9.07926855107184
+      },
+      "max_root_step_transition": 1,
+      "max_body_step_transition": 1,
+      "discontinuity_transition_count": 2,
+      "discontinuity_transitions": [
+        1,
+        2
+      ],
+      "first_discontinuity_transition": 1,
+      "last_discontinuity_transition": 2,
+      "prefix_trim_candidate": true,
+      "suspicious_reference": true,
+      "suspicious_reasons": [
+        "root_step_gt_10cm",
+        "body_step_gt_15cm",
+        "body_speed_gt_5mps"
+      ]
+    },
+    "G1_WBT_Brainco_Make_The_Bed_ep_0285": {
+      "path": "/root/shengyin/ScaleBFM/ScaleTrack/data/hat4_unifolm/processed/G1_WBT_Brainco_Make_The_Bed_ep_0285.npz",
+      "frames": 1172,
+      "fps": 50.0,
+      "duration_s": 23.42,
+      "root_step_m": {
+        "mean": 0.0028468877749289368,
+        "p95": 0.007728638852942638,
+        "max": 0.2109565038088846
+      },
+      "body_step_m": {
+        "mean": 0.0030127948509360955,
+        "p95": 0.007785930247377289,
+        "max": 0.22241171553492914
+      },
+      "joint_step_rad": {
+        "mean": 0.0029950406596319016,
+        "p95": 0.013043901324272151,
+        "max": 0.17903712391853333
+      },
+      "body_linear_speed_mps": {
+        "mean": 0.1541175051466785,
+        "p95": 0.38083645436022995,
+        "max": 11.209755420360816
+      },
+      "body_angular_speed_radps": {
+        "mean": 0.31853550378087353,
+        "p95": 0.96964848839719,
+        "max": 8.76851720605167
+      },
+      "max_root_step_transition": 1,
+      "max_body_step_transition": 1,
+      "discontinuity_transition_count": 2,
+      "discontinuity_transitions": [
+        1,
+        2
+      ],
+      "first_discontinuity_transition": 1,
+      "last_discontinuity_transition": 2,
+      "prefix_trim_candidate": true,
+      "suspicious_reference": true,
+      "suspicious_reasons": [
+        "root_step_gt_10cm",
+        "body_step_gt_15cm",
+        "body_speed_gt_5mps"
+      ]
+    },
+    "G1_WBT_Brainco_Make_The_Bed_ep_0286": {
+      "path": "/root/shengyin/ScaleBFM/ScaleTrack/data/hat4_unifolm/processed/G1_WBT_Brainco_Make_The_Bed_ep_0286.npz",
+      "frames": 994,
+      "fps": 50.0,
+      "duration_s": 19.86,
+      "root_step_m": {
+        "mean": 0.0033993670770331207,
+        "p95": 0.00790302586034178,
+        "max": 0.25821999747704516
+      },
+      "body_step_m": {
+        "mean": 0.0035378937289043794,
+        "p95": 0.00841193040910078,
+        "max": 0.2645940462767221
+      },
+      "joint_step_rad": {
+        "mean": 0.0033926121433835985,
+        "p95": 0.01403654515743255,
+        "max": 0.21283984184265137
+      },
+      "body_linear_speed_mps": {
+        "mean": 0.18145793301460847,
+        "p95": 0.427101150711848,
+        "max": 13.196906386877076
+      },
+      "body_angular_speed_radps": {
+        "mean": 0.3770899953397803,
+        "p95": 1.0609757886020805,
+        "max": 12.544504959339115
+      },
+      "max_root_step_transition": 1,
+      "max_body_step_transition": 1,
+      "discontinuity_transition_count": 2,
+      "discontinuity_transitions": [
+        1,
+        2
+      ],
+      "first_discontinuity_transition": 1,
+      "last_discontinuity_transition": 2,
+      "prefix_trim_candidate": true,
+      "suspicious_reference": true,
+      "suspicious_reasons": [
+        "root_step_gt_10cm",
+        "body_step_gt_15cm",
+        "body_speed_gt_5mps"
+      ]
+    },
+    "G1_WBT_Brainco_Pickup_Pillow_ep_0022": {
+      "path": "/root/shengyin/ScaleBFM/ScaleTrack/data/hat4_unifolm/processed/G1_WBT_Brainco_Pickup_Pillow_ep_0022.npz",
+      "frames": 769,
+      "fps": 50.0,
+      "duration_s": 15.36,
+      "root_step_m": {
+        "mean": 0.004611457587694667,
+        "p95": 0.010145395096875493,
+        "max": 0.8586055576652882
+      },
+      "body_step_m": {
+        "mean": 0.005122399925566463,
+        "p95": 0.010729092614158331,
+        "max": 0.9116581732371188
+      },
+      "joint_step_rad": {
+        "mean": 0.00389130090230412,
+        "p95": 0.016257365047931672,
+        "max": 0.14373880624771118
+      },
+      "body_linear_speed_mps": {
+        "mean": 0.2890952414760817,
+        "p95": 0.554989584404341,
+        "max": 45.087543687897195
+      },
+      "body_angular_speed_radps": {
+        "mean": 0.40602296453517095,
+        "p95": 1.215579430423344,
+        "max": 17.68641520944481
+      },
+      "max_root_step_transition": 1,
+      "max_body_step_transition": 1,
+      "discontinuity_transition_count": 2,
+      "discontinuity_transitions": [
+        1,
+        2
+      ],
+      "first_discontinuity_transition": 1,
+      "last_discontinuity_transition": 2,
+      "prefix_trim_candidate": true,
+      "suspicious_reference": true,
+      "suspicious_reasons": [
+        "root_step_gt_10cm",
+        "body_step_gt_15cm",
+        "body_speed_gt_5mps"
+      ]
+    },
+    "G1_WBT_Brainco_Pickup_Pillow_ep_0036": {
+      "path": "/root/shengyin/ScaleBFM/ScaleTrack/data/hat4_unifolm/processed/G1_WBT_Brainco_Pickup_Pillow_ep_0036.npz",
+      "frames": 992,
+      "fps": 50.0,
+      "duration_s": 19.82,
+      "root_step_m": {
+        "mean": 0.005365372228834898,
+        "p95": 0.008370577056351754,
+        "max": 1.1126202326260148
+      },
+      "body_step_m": {
+        "mean": 0.005617182382153113,
+        "p95": 0.00880848323976525,
+        "max": 1.1473291198923234
+      },
+      "joint_step_rad": {
+        "mean": 0.003549132580410688,
+        "p95": 0.015197187662124622,
+        "max": 0.13563752174377441
+      },
+      "body_linear_speed_mps": {
+        "mean": 0.30898927817248245,
+        "p95": 0.44139333528928804,
+        "max": 57.31273919505699
+      },
+      "body_angular_speed_radps": {
+        "mean": 0.3627475744624218,
+        "p95": 1.0079822351529295,
+        "max": 7.600850237231539
+      },
+      "max_root_step_transition": 1,
+      "max_body_step_transition": 1,
+      "discontinuity_transition_count": 2,
+      "discontinuity_transitions": [
+        1,
+        2
+      ],
+      "first_discontinuity_transition": 1,
+      "last_discontinuity_transition": 2,
+      "prefix_trim_candidate": true,
+      "suspicious_reference": true,
+      "suspicious_reasons": [
+        "root_step_gt_10cm",
+        "body_step_gt_15cm",
+        "body_speed_gt_5mps"
+      ]
+    },
+    "G1_WBT_Brainco_Pickup_Pillow_ep_0050": {
+      "path": "/root/shengyin/ScaleBFM/ScaleTrack/data/hat4_unifolm/processed/G1_WBT_Brainco_Pickup_Pillow_ep_0050.npz",
+      "frames": 1385,
+      "fps": 50.0,
+      "duration_s": 27.68,
+      "root_step_m": {
+        "mean": 0.004516692147113508,
+        "p95": 0.009323023117821634,
+        "max": 1.2762216400137876
+      },
+      "body_step_m": {
+        "mean": 0.004662714203539145,
+        "p95": 0.009641983952246665,
+        "max": 1.3085997302505883
+      },
+      "joint_step_rad": {
+        "mean": 0.0031344826114404374,
+        "p95": 0.013639893382787704,
+        "max": 0.1363803744316101
+      },
+      "body_linear_speed_mps": {
+        "mean": 0.25461001379374243,
+        "p95": 0.47696835812819094,
+        "max": 65.21373973140697
+      },
+      "body_angular_speed_radps": {
+        "mean": 0.3231317515773734,
+        "p95": 0.9917917369813336,
+        "max": 11.617964122417233
+      },
+      "max_root_step_transition": 1,
+      "max_body_step_transition": 1,
+      "discontinuity_transition_count": 2,
+      "discontinuity_transitions": [
+        1,
+        2
+      ],
+      "first_discontinuity_transition": 1,
+      "last_discontinuity_transition": 2,
+      "prefix_trim_candidate": true,
+      "suspicious_reference": true,
+      "suspicious_reasons": [
+        "root_step_gt_10cm",
+        "body_step_gt_15cm",
+        "body_speed_gt_5mps"
+      ]
+    },
+    "G1_WBT_Brainco_Pickup_Pillow_ep_0064": {
+      "path": "/root/shengyin/ScaleBFM/ScaleTrack/data/hat4_unifolm/processed/G1_WBT_Brainco_Pickup_Pillow_ep_0064.npz",
+      "frames": 780,
+      "fps": 50.0,
+      "duration_s": 15.58,
+      "root_step_m": {
+        "mean": 0.004690745142815619,
+        "p95": 0.009962422244823566,
+        "max": 0.6646712378542493
+      },
+      "body_step_m": {
+        "mean": 0.005191099248722204,
+        "p95": 0.011430595913014813,
+        "max": 0.7091407116136578
+      },
+      "joint_step_rad": {
+        "mean": 0.004279940849816132,
+        "p95": 0.01822913996875286,
+        "max": 0.1986602246761322
+      },
+      "body_linear_speed_mps": {
+        "mean": 0.2847967474592766,
+        "p95": 0.5837202508844145,
+        "max": 35.30563953947409
+      },
+      "body_angular_speed_radps": {
+        "mean": 0.42884242054449817,
+        "p95": 1.3729001929239049,
+        "max": 7.550882375246259
+      },
+      "max_root_step_transition": 1,
+      "max_body_step_transition": 1,
+      "discontinuity_transition_count": 2,
+      "discontinuity_transitions": [
+        1,
+        2
+      ],
+      "first_discontinuity_transition": 1,
+      "last_discontinuity_transition": 2,
+      "prefix_trim_candidate": true,
+      "suspicious_reference": true,
+      "suspicious_reasons": [
+        "root_step_gt_10cm",
+        "body_step_gt_15cm",
+        "body_speed_gt_5mps"
+      ]
+    },
+    "G1_WBT_Brainco_Pickup_Pillow_ep_0180": {
+      "path": "/root/shengyin/ScaleBFM/ScaleTrack/data/hat4_unifolm/processed/G1_WBT_Brainco_Pickup_Pillow_ep_0180.npz",
+      "frames": 1179,
+      "fps": 50.0,
+      "duration_s": 23.56,
+      "root_step_m": {
+        "mean": 0.0050119731971415065,
+        "p95": 0.008708237176431117,
+        "max": 1.3464684807064318
+      },
+      "body_step_m": {
+        "mean": 0.005166655140791622,
+        "p95": 0.009071676263996645,
+        "max": 1.3763584329225078
+      },
+      "joint_step_rad": {
+        "mean": 0.003230153147383473,
+        "p95": 0.013545885379426172,
+        "max": 0.1096026599407196
+      },
+      "body_linear_speed_mps": {
+        "mean": 0.28604421506200634,
+        "p95": 0.45269958252853204,
+        "max": 68.80079048892264
+      },
+      "body_angular_speed_radps": {
+        "mean": 0.33307830655646337,
+        "p95": 0.9654712182905673,
+        "max": 7.558379254740533
+      },
+      "max_root_step_transition": 1,
+      "max_body_step_transition": 1,
+      "discontinuity_transition_count": 2,
+      "discontinuity_transitions": [
+        1,
+        2
+      ],
+      "first_discontinuity_transition": 1,
+      "last_discontinuity_transition": 2,
+      "prefix_trim_candidate": true,
+      "suspicious_reference": true,
+      "suspicious_reasons": [
+        "root_step_gt_10cm",
+        "body_step_gt_15cm",
+        "body_speed_gt_5mps"
+      ]
+    },
+    "G1_WBT_Brainco_Pickup_Pillow_ep_0202": {
+      "path": "/root/shengyin/ScaleBFM/ScaleTrack/data/hat4_unifolm/processed/G1_WBT_Brainco_Pickup_Pillow_ep_0202.npz",
+      "frames": 1135,
+      "fps": 50.0,
+      "duration_s": 22.68,
+      "root_step_m": {
+        "mean": 0.005331175259829982,
+        "p95": 0.008435544721318557,
+        "max": 1.1778327176617398
+      },
+      "body_step_m": {
+        "mean": 0.005522742616827475,
+        "p95": 0.009114172179309443,
+        "max": 1.2362818915868234
+      },
+      "joint_step_rad": {
+        "mean": 0.0034464375498471263,
+        "p95": 0.013345221988856792,
+        "max": 0.1946440041065216
+      },
+      "body_linear_speed_mps": {
+        "mean": 0.30056147150976503,
+        "p95": 0.45689259776897656,
+        "max": 61.67469798194487
+      },
+      "body_angular_speed_radps": {
+        "mean": 0.38418833576090905,
+        "p95": 1.0222904299200466,
+        "max": 16.59719056894604
+      },
+      "max_root_step_transition": 1,
+      "max_body_step_transition": 1,
+      "discontinuity_transition_count": 2,
+      "discontinuity_transitions": [
+        1,
+        2
+      ],
+      "first_discontinuity_transition": 1,
+      "last_discontinuity_transition": 2,
+      "prefix_trim_candidate": true,
+      "suspicious_reference": true,
+      "suspicious_reasons": [
+        "root_step_gt_10cm",
+        "body_step_gt_15cm",
+        "body_speed_gt_5mps"
+      ]
+    },
+    "G1_WBT_Brainco_Pickup_Pillow_ep_0267": {
+      "path": "/root/shengyin/ScaleBFM/ScaleTrack/data/hat4_unifolm/processed/G1_WBT_Brainco_Pickup_Pillow_ep_0267.npz",
+      "frames": 1014,
+      "fps": 50.0,
+      "duration_s": 20.26,
+      "root_step_m": {
+        "mean": 0.0056660678534423865,
+        "p95": 0.009478049250464604,
+        "max": 1.3517999673791552
+      },
+      "body_step_m": {
+        "mean": 0.005821591574260897,
+        "p95": 0.010103399390702787,
+        "max": 1.3663951424083458
+      },
+      "joint_step_rad": {
+        "mean": 0.0037844559320633756,
+        "p95": 0.01624955534934997,
+        "max": 0.11846405267715454
+      },
+      "body_linear_speed_mps": {
+        "mean": 0.3227118738590688,
+        "p95": 0.506333553464303,
+        "max": 68.30943387934981
+      },
+      "body_angular_speed_radps": {
+        "mean": 0.3825321502510389,
+        "p95": 1.159966901162332,
+        "max": 9.806383111183614
+      },
+      "max_root_step_transition": 1,
+      "max_body_step_transition": 1,
+      "discontinuity_transition_count": 2,
+      "discontinuity_transitions": [
+        1,
+        2
+      ],
+      "first_discontinuity_transition": 1,
+      "last_discontinuity_transition": 2,
+      "prefix_trim_candidate": true,
+      "suspicious_reference": true,
+      "suspicious_reasons": [
+        "root_step_gt_10cm",
+        "body_step_gt_15cm",
+        "body_speed_gt_5mps"
+      ]
+    },
+    "G1_WBT_Brainco_Pickup_Pillow_ep_0280": {
+      "path": "/root/shengyin/ScaleBFM/ScaleTrack/data/hat4_unifolm/processed/G1_WBT_Brainco_Pickup_Pillow_ep_0280.npz",
+      "frames": 1304,
+      "fps": 50.0,
+      "duration_s": 26.06,
+      "root_step_m": {
+        "mean": 0.004935898873041876,
+        "p95": 0.00965913550682653,
+        "max": 1.1660732511712404
+      },
+      "body_step_m": {
+        "mean": 0.005096494132915428,
+        "p95": 0.010060450271337657,
+        "max": 1.2401640819520676
+      },
+      "joint_step_rad": {
+        "mean": 0.0032047857126934164,
+        "p95": 0.013574664294719681,
+        "max": 0.1357285249978304
+      },
+      "body_linear_speed_mps": {
+        "mean": 0.27623383973626875,
+        "p95": 0.5014004326774137,
+        "max": 61.78950193614571
+      },
+      "body_angular_speed_radps": {
+        "mean": 0.35201936164319636,
+        "p95": 1.0758242733629406,
+        "max": 15.253496115083342
+      },
+      "max_root_step_transition": 1,
+      "max_body_step_transition": 1,
+      "discontinuity_transition_count": 2,
+      "discontinuity_transitions": [
+        1,
+        2
+      ],
+      "first_discontinuity_transition": 1,
+      "last_discontinuity_transition": 2,
+      "prefix_trim_candidate": true,
+      "suspicious_reference": true,
+      "suspicious_reasons": [
+        "root_step_gt_10cm",
+        "body_step_gt_15cm",
+        "body_speed_gt_5mps"
+      ]
+    },
+    "G1_WBT_Inspire_Pick_Up_Drinks_ep_0046": {
+      "path": "/root/shengyin/ScaleBFM/ScaleTrack/data/hat4_unifolm/processed/G1_WBT_Inspire_Pick_Up_Drinks_ep_0046.npz",
+      "frames": 1724,
+      "fps": 50.0,
+      "duration_s": 34.46,
+      "root_step_m": {
+        "mean": 0.002553445805113784,
+        "p95": 0.006500098547600245,
+        "max": 0.6230325651017408
+      },
+      "body_step_m": {
+        "mean": 0.002951538680147799,
+        "p95": 0.007420834288374524,
+        "max": 0.6696363276108305
+      },
+      "joint_step_rad": {
+        "mean": 0.0027231277018632295,
+        "p95": 0.012092915549874295,
+        "max": 0.5172655284404755
+      },
+      "body_linear_speed_mps": {
+        "mean": 0.15790457527601293,
+        "p95": 0.37771538301514446,
+        "max": 33.23704536563843
+      },
+      "body_angular_speed_radps": {
+        "mean": 0.357793842952555,
+        "p95": 1.1924783180901293,
+        "max": 24.119967377057925
+      },
+      "max_root_step_transition": 1,
+      "max_body_step_transition": 1,
+      "discontinuity_transition_count": 2,
+      "discontinuity_transitions": [
+        1,
+        2
+      ],
+      "first_discontinuity_transition": 1,
+      "last_discontinuity_transition": 2,
+      "prefix_trim_candidate": true,
+      "suspicious_reference": true,
+      "suspicious_reasons": [
+        "root_step_gt_10cm",
+        "body_step_gt_15cm",
+        "body_speed_gt_5mps",
+        "body_ang_speed_gt_20radps"
+      ]
+    },
+    "G1_WBT_Inspire_Pick_Up_Drinks_ep_0095": {
+      "path": "/root/shengyin/ScaleBFM/ScaleTrack/data/hat4_unifolm/processed/G1_WBT_Inspire_Pick_Up_Drinks_ep_0095.npz",
+      "frames": 2590,
+      "fps": 50.0,
+      "duration_s": 51.78,
+      "root_step_m": {
+        "mean": 0.0016672556019888586,
+        "p95": 0.006374931033436765,
+        "max": 0.36798151716823263
+      },
+      "body_step_m": {
+        "mean": 0.0020241912921744364,
+        "p95": 0.0069967194565501755,
+        "max": 0.39872157936720504
+      },
+      "joint_step_rad": {
+        "mean": 0.002142360686013294,
+        "p95": 0.00983726978302002,
+        "max": 0.14118032157421112
+      },
+      "body_linear_speed_mps": {
+        "mean": 0.10535560060819335,
+        "p95": 0.3469175162944602,
+        "max": 19.839262157834284
+      },
+      "body_angular_speed_radps": {
+        "mean": 0.3034521528423522,
+        "p95": 1.117664720446891,
+        "max": 11.49619928728502
+      },
+      "max_root_step_transition": 1,
+      "max_body_step_transition": 1,
+      "discontinuity_transition_count": 2,
+      "discontinuity_transitions": [
+        1,
+        2
+      ],
+      "first_discontinuity_transition": 1,
+      "last_discontinuity_transition": 2,
+      "prefix_trim_candidate": true,
+      "suspicious_reference": true,
+      "suspicious_reasons": [
+        "root_step_gt_10cm",
+        "body_step_gt_15cm",
+        "body_speed_gt_5mps"
+      ]
+    },
+    "G1_WBT_Inspire_Pick_Up_Drinks_ep_0132": {
+      "path": "/root/shengyin/ScaleBFM/ScaleTrack/data/hat4_unifolm/processed/G1_WBT_Inspire_Pick_Up_Drinks_ep_0132.npz",
+      "frames": 1614,
+      "fps": 50.0,
+      "duration_s": 32.26,
+      "root_step_m": {
+        "mean": 0.0020796808656560364,
+        "p95": 0.006988219603968467,
+        "max": 0.4148449161033394
+      },
+      "body_step_m": {
+        "mean": 0.0025391020025072536,
+        "p95": 0.007574732587240322,
+        "max": 0.43219982400861773
+      },
+      "joint_step_rad": {
+        "mean": 0.0028152941896524095,
+        "p95": 0.011586683988571158,
+        "max": 0.1299329623579979
+      },
+      "body_linear_speed_mps": {
+        "mean": 0.1348767395346049,
+        "p95": 0.381921306845363,
+        "max": 21.845049557990404
+      },
+      "body_angular_speed_radps": {
+        "mean": 0.31530044181129147,
+        "p95": 1.0357721020087065,
+        "max": 10.397752584755878
+      },
+      "max_root_step_transition": 1,
+      "max_body_step_transition": 1,
+      "discontinuity_transition_count": 2,
+      "discontinuity_transitions": [
+        1,
+        2
+      ],
+      "first_discontinuity_transition": 1,
+      "last_discontinuity_transition": 2,
+      "prefix_trim_candidate": true,
+      "suspicious_reference": true,
+      "suspicious_reasons": [
+        "root_step_gt_10cm",
+        "body_step_gt_15cm",
+        "body_speed_gt_5mps"
+      ]
+    },
+    "G1_WBT_Inspire_Pick_Up_Drinks_ep_0142": {
+      "path": "/root/shengyin/ScaleBFM/ScaleTrack/data/hat4_unifolm/processed/G1_WBT_Inspire_Pick_Up_Drinks_ep_0142.npz",
+      "frames": 2985,
+      "fps": 50.0,
+      "duration_s": 59.68,
+      "root_step_m": {
+        "mean": 0.0020516249825137654,
+        "p95": 0.0076739559914280105,
+        "max": 0.4334424147318091
+      },
+      "body_step_m": {
+        "mean": 0.0024121707699451744,
+        "p95": 0.008347415543345716,
+        "max": 0.49623577806554625
+      },
+      "joint_step_rad": {
+        "mean": 0.0022082768790595095,
+        "p95": 0.009812785312533379,
+        "max": 0.15212297439575195
+      },
+      "body_linear_speed_mps": {
+        "mean": 0.12491256572625443,
+        "p95": 0.41425273252929823,
+        "max": 24.851079311277278
+      },
+      "body_angular_speed_radps": {
+        "mean": 0.3481609785648361,
+        "p95": 1.2662071238807935,
+        "max": 13.972327440888021
+      },
+      "max_root_step_transition": 1,
+      "max_body_step_transition": 1,
+      "discontinuity_transition_count": 2,
+      "discontinuity_transitions": [
+        1,
+        2
+      ],
+      "first_discontinuity_transition": 1,
+      "last_discontinuity_transition": 2,
+      "prefix_trim_candidate": true,
+      "suspicious_reference": true,
+      "suspicious_reasons": [
+        "root_step_gt_10cm",
+        "body_step_gt_15cm",
+        "body_speed_gt_5mps"
+      ]
+    },
+    "G1_WBT_Inspire_Pick_Up_Drinks_ep_0150": {
+      "path": "/root/shengyin/ScaleBFM/ScaleTrack/data/hat4_unifolm/processed/G1_WBT_Inspire_Pick_Up_Drinks_ep_0150.npz",
+      "frames": 2590,
+      "fps": 50.0,
+      "duration_s": 51.78,
+      "root_step_m": {
+        "mean": 0.0021062338260679297,
+        "p95": 0.006669526752335618,
+        "max": 0.7342388549896174
+      },
+      "body_step_m": {
+        "mean": 0.002318731344571377,
+        "p95": 0.007112033402517527,
+        "max": 0.7490983415192293
+      },
+      "joint_step_rad": {
+        "mean": 0.001844489255705019,
+        "p95": 0.008333802223205566,
+        "max": 0.14612603187561035
+      },
+      "body_linear_speed_mps": {
+        "mean": 0.12319526417396244,
+        "p95": 0.354930095861978,
+        "max": 37.49181440917414
+      },
+      "body_angular_speed_radps": {
+        "mean": 0.24499686366041673,
+        "p95": 0.8229490223848996,
+        "max": 6.940835724709265
+      },
+      "max_root_step_transition": 1,
+      "max_body_step_transition": 1,
+      "discontinuity_transition_count": 2,
+      "discontinuity_transitions": [
+        1,
+        2
+      ],
+      "first_discontinuity_transition": 1,
+      "last_discontinuity_transition": 2,
+      "prefix_trim_candidate": true,
+      "suspicious_reference": true,
+      "suspicious_reasons": [
+        "root_step_gt_10cm",
+        "body_step_gt_15cm",
+        "body_speed_gt_5mps"
+      ]
+    },
+    "G1_WBT_Inspire_Pick_Up_Drinks_ep_0151": {
+      "path": "/root/shengyin/ScaleBFM/ScaleTrack/data/hat4_unifolm/processed/G1_WBT_Inspire_Pick_Up_Drinks_ep_0151.npz",
+      "frames": 2930,
+      "fps": 50.0,
+      "duration_s": 58.58,
+      "root_step_m": {
+        "mean": 0.00182736865048812,
+        "p95": 0.006278187858264787,
+        "max": 0.5239180388508556
+      },
+      "body_step_m": {
+        "mean": 0.00206006838701539,
+        "p95": 0.0066406207582906385,
+        "max": 0.5615299386135038
+      },
+      "joint_step_rad": {
+        "mean": 0.0017308714043773876,
+        "p95": 0.00803200714290142,
+        "max": 0.10970228910446167
+      },
+      "body_linear_speed_mps": {
+        "mean": 0.10757075010591399,
+        "p95": 0.32904807375700046,
+        "max": 28.08230497826767
+      },
+      "body_angular_speed_radps": {
+        "mean": 0.25716823445911313,
+        "p95": 0.9463032718628674,
+        "max": 10.774568572502682
+      },
+      "max_root_step_transition": 1,
+      "max_body_step_transition": 1,
+      "discontinuity_transition_count": 2,
+      "discontinuity_transitions": [
+        1,
+        2
+      ],
+      "first_discontinuity_transition": 1,
+      "last_discontinuity_transition": 2,
+      "prefix_trim_candidate": true,
+      "suspicious_reference": true,
+      "suspicious_reasons": [
+        "root_step_gt_10cm",
+        "body_step_gt_15cm",
+        "body_speed_gt_5mps"
+      ]
+    },
+    "G1_WBT_Inspire_Pick_Up_Drinks_ep_0158": {
+      "path": "/root/shengyin/ScaleBFM/ScaleTrack/data/hat4_unifolm/processed/G1_WBT_Inspire_Pick_Up_Drinks_ep_0158.npz",
+      "frames": 2229,
+      "fps": 50.0,
+      "duration_s": 44.56,
+      "root_step_m": {
+        "mean": 0.0018233661917606307,
+        "p95": 0.005783063596811636,
+        "max": 0.7360298840202365
+      },
+      "body_step_m": {
+        "mean": 0.002051894909437896,
+        "p95": 0.00603454776730549,
+        "max": 0.7430699119116054
+      },
+      "joint_step_rad": {
+        "mean": 0.0017365492682307761,
+        "p95": 0.00824166852980851,
+        "max": 0.2332465797662735
+      },
+      "body_linear_speed_mps": {
+        "mean": 0.1111748676772338,
+        "p95": 0.30156340710205637,
+        "max": 37.19674491193515
+      },
+      "body_angular_speed_radps": {
+        "mean": 0.23271433170127193,
+        "p95": 0.8625023543879966,
+        "max": 19.94266830047416
+      },
+      "max_root_step_transition": 1,
+      "max_body_step_transition": 1,
+      "discontinuity_transition_count": 2,
+      "discontinuity_transitions": [
+        1,
+        2
+      ],
+      "first_discontinuity_transition": 1,
+      "last_discontinuity_transition": 2,
+      "prefix_trim_candidate": true,
+      "suspicious_reference": true,
+      "suspicious_reasons": [
+        "root_step_gt_10cm",
+        "body_step_gt_15cm",
+        "body_speed_gt_5mps"
+      ]
+    },
+    "G1_WBT_Inspire_Pick_Up_Drinks_ep_0159": {
+      "path": "/root/shengyin/ScaleBFM/ScaleTrack/data/hat4_unifolm/processed/G1_WBT_Inspire_Pick_Up_Drinks_ep_0159.npz",
+      "frames": 2442,
+      "fps": 50.0,
+      "duration_s": 48.82,
+      "root_step_m": {
+        "mean": 0.001911792386003276,
+        "p95": 0.006192398431173253,
+        "max": 0.5495216920708708
+      },
+      "body_step_m": {
+        "mean": 0.0021459762495662296,
+        "p95": 0.007005414819364021,
+        "max": 0.5645088974301952
+      },
+      "joint_step_rad": {
+        "mean": 0.001897015513797885,
+        "p95": 0.00859985165297985,
+        "max": 0.13050103187561035
+      },
+      "body_linear_speed_mps": {
+        "mean": 0.11304493624037491,
+        "p95": 0.34850028983216447,
+        "max": 28.39437921907547
+      },
+      "body_angular_speed_radps": {
+        "mean": 0.28426313194124664,
+        "p95": 1.0725214331774031,
+        "max": 14.74776820477218
+      },
+      "max_root_step_transition": 1,
+      "max_body_step_transition": 1,
+      "discontinuity_transition_count": 2,
+      "discontinuity_transitions": [
+        1,
+        2
+      ],
+      "first_discontinuity_transition": 1,
+      "last_discontinuity_transition": 2,
+      "prefix_trim_candidate": true,
+      "suspicious_reference": true,
+      "suspicious_reasons": [
+        "root_step_gt_10cm",
+        "body_step_gt_15cm",
+        "body_speed_gt_5mps"
+      ]
+    },
+    "G1_WBT_Inspire_Pick_Up_Drinks_ep_0180": {
+      "path": "/root/shengyin/ScaleBFM/ScaleTrack/data/hat4_unifolm/processed/G1_WBT_Inspire_Pick_Up_Drinks_ep_0180.npz",
+      "frames": 1507,
+      "fps": 50.0,
+      "duration_s": 30.12,
+      "root_step_m": {
+        "mean": 0.0025842517807688017,
+        "p95": 0.007875719044056859,
+        "max": 0.7241697446210776
+      },
+      "body_step_m": {
+        "mean": 0.0029656666867277147,
+        "p95": 0.00875886545386899,
+        "max": 0.7598235140158321
+      },
+      "joint_step_rad": {
+        "mean": 0.0028965588718588516,
+        "p95": 0.013351947627961635,
+        "max": 0.1427464485168457
+      },
+      "body_linear_speed_mps": {
+        "mean": 0.162943232928877,
+        "p95": 0.4498889424889587,
+        "max": 37.961018990496136
+      },
+      "body_angular_speed_radps": {
+        "mean": 0.3243965832774489,
+        "p95": 1.1574248488807193,
+        "max": 9.595603962515042
+      },
+      "max_root_step_transition": 1,
+      "max_body_step_transition": 1,
+      "discontinuity_transition_count": 2,
+      "discontinuity_transitions": [
+        1,
+        2
+      ],
+      "first_discontinuity_transition": 1,
+      "last_discontinuity_transition": 2,
+      "prefix_trim_candidate": true,
+      "suspicious_reference": true,
+      "suspicious_reasons": [
+        "root_step_gt_10cm",
+        "body_step_gt_15cm",
+        "body_speed_gt_5mps"
+      ]
+    },
+    "G1_WBT_Inspire_Pick_Up_Drinks_ep_0184": {
+      "path": "/root/shengyin/ScaleBFM/ScaleTrack/data/hat4_unifolm/processed/G1_WBT_Inspire_Pick_Up_Drinks_ep_0184.npz",
+      "frames": 1687,
+      "fps": 50.0,
+      "duration_s": 33.72,
+      "root_step_m": {
+        "mean": 0.002407551899636048,
+        "p95": 0.006251399847859465,
+        "max": 0.756385650686017
+      },
+      "body_step_m": {
+        "mean": 0.002742490446614062,
+        "p95": 0.0069749920870122144,
+        "max": 0.7716824268976216
+      },
+      "joint_step_rad": {
+        "mean": 0.0027174029405868327,
+        "p95": 0.011837142705917354,
+        "max": 0.18038368225097656
+      },
+      "body_linear_speed_mps": {
+        "mean": 0.14885376687304525,
+        "p95": 0.3593343103351214,
+        "max": 39.21277131416279
+      },
+      "body_angular_speed_radps": {
+        "mean": 0.29895525625516506,
+        "p95": 1.0524246936842203,
+        "max": 15.39319580058031
+      },
+      "max_root_step_transition": 1,
+      "max_body_step_transition": 1,
+      "discontinuity_transition_count": 2,
+      "discontinuity_transitions": [
+        1,
+        2
+      ],
+      "first_discontinuity_transition": 1,
+      "last_discontinuity_transition": 2,
+      "prefix_trim_candidate": true,
+      "suspicious_reference": true,
+      "suspicious_reasons": [
+        "root_step_gt_10cm",
+        "body_step_gt_15cm",
+        "body_speed_gt_5mps"
+      ]
+    },
+    "G1_WBT_Inspire_Pick_Up_Drinks_ep_0190": {
+      "path": "/root/shengyin/ScaleBFM/ScaleTrack/data/hat4_unifolm/processed/G1_WBT_Inspire_Pick_Up_Drinks_ep_0190.npz",
+      "frames": 1755,
+      "fps": 50.0,
+      "duration_s": 35.08,
+      "root_step_m": {
+        "mean": 0.002370116183788781,
+        "p95": 0.007433264601394678,
+        "max": 0.570762199307125
+      },
+      "body_step_m": {
+        "mean": 0.0026935445856521713,
+        "p95": 0.007941139588462575,
+        "max": 0.5835681271129771
+      },
+      "joint_step_rad": {
+        "mean": 0.0028464279821813643,
+        "p95": 0.011926908046007156,
+        "max": 0.15054383873939514
+      },
+      "body_linear_speed_mps": {
+        "mean": 0.14328905749035523,
+        "p95": 0.39823804252910305,
+        "max": 29.141477482519257
+      },
+      "body_angular_speed_radps": {
+        "mean": 0.3057369990413272,
+        "p95": 1.008422612218951,
+        "max": 7.394858108571544
+      },
+      "max_root_step_transition": 1,
+      "max_body_step_transition": 1,
+      "discontinuity_transition_count": 2,
+      "discontinuity_transitions": [
+        1,
+        2
+      ],
+      "first_discontinuity_transition": 1,
+      "last_discontinuity_transition": 2,
+      "prefix_trim_candidate": true,
+      "suspicious_reference": true,
+      "suspicious_reasons": [
+        "root_step_gt_10cm",
+        "body_step_gt_15cm",
+        "body_speed_gt_5mps"
+      ]
+    },
+    "G1_WBT_Inspire_Pick_Up_Drinks_ep_0201": {
+      "path": "/root/shengyin/ScaleBFM/ScaleTrack/data/hat4_unifolm/processed/G1_WBT_Inspire_Pick_Up_Drinks_ep_0201.npz",
+      "frames": 1664,
+      "fps": 50.0,
+      "duration_s": 33.26,
+      "root_step_m": {
+        "mean": 0.0022485234365689577,
+        "p95": 0.007027030158541634,
+        "max": 0.5813659335691436
+      },
+      "body_step_m": {
+        "mean": 0.0025656235779890272,
+        "p95": 0.007329796054866597,
+        "max": 0.5875406782171345
+      },
+      "joint_step_rad": {
+        "mean": 0.002542889924602079,
+        "p95": 0.011058545112609862,
+        "max": 0.15473656356334686
+      },
+      "body_linear_speed_mps": {
+        "mean": 0.13688475014357265,
+        "p95": 0.3756340249234236,
+        "max": 29.322295456969368
+      },
+      "body_angular_speed_radps": {
+        "mean": 0.2900735211732306,
+        "p95": 0.9892711335920025,
+        "max": 6.460282169751303
+      },
+      "max_root_step_transition": 1,
+      "max_body_step_transition": 1,
+      "discontinuity_transition_count": 2,
+      "discontinuity_transitions": [
+        1,
+        2
+      ],
+      "first_discontinuity_transition": 1,
+      "last_discontinuity_transition": 2,
+      "prefix_trim_candidate": true,
+      "suspicious_reference": true,
+      "suspicious_reasons": [
+        "root_step_gt_10cm",
+        "body_step_gt_15cm",
+        "body_speed_gt_5mps"
+      ]
+    },
+    "G1_WBT_Inspire_Pick_Up_Drinks_ep_0233": {
+      "path": "/root/shengyin/ScaleBFM/ScaleTrack/data/hat4_unifolm/processed/G1_WBT_Inspire_Pick_Up_Drinks_ep_0233.npz",
+      "frames": 2535,
+      "fps": 50.0,
+      "duration_s": 50.68,
+      "root_step_m": {
+        "mean": 0.0020582941325664682,
+        "p95": 0.0074716364687353026,
+        "max": 0.5297697198112037
+      },
+      "body_step_m": {
+        "mean": 0.002372886398746262,
+        "p95": 0.007838578307817305,
+        "max": 0.5383757137739453
+      },
+      "joint_step_rad": {
+        "mean": 0.002465232054504251,
+        "p95": 0.0110977734439075,
+        "max": 0.15784531831741333
+      },
+      "body_linear_speed_mps": {
+        "mean": 0.12481069284987298,
+        "p95": 0.3971829045225829,
+        "max": 26.82580208597834
+      },
+      "body_angular_speed_radps": {
+        "mean": 0.27720469092720323,
+        "p95": 0.9913774724048933,
+        "max": 8.628016657774744
+      },
+      "max_root_step_transition": 1,
+      "max_body_step_transition": 1,
+      "discontinuity_transition_count": 2,
+      "discontinuity_transitions": [
+        1,
+        2
+      ],
+      "first_discontinuity_transition": 1,
+      "last_discontinuity_transition": 2,
+      "prefix_trim_candidate": true,
+      "suspicious_reference": true,
+      "suspicious_reasons": [
+        "root_step_gt_10cm",
+        "body_step_gt_15cm",
+        "body_speed_gt_5mps"
+      ]
+    },
+    "G1_WBT_Inspire_Pick_Up_Drinks_ep_0234": {
+      "path": "/root/shengyin/ScaleBFM/ScaleTrack/data/hat4_unifolm/processed/G1_WBT_Inspire_Pick_Up_Drinks_ep_0234.npz",
+      "frames": 1502,
+      "fps": 50.0,
+      "duration_s": 30.02,
+      "root_step_m": {
+        "mean": 0.002805021438029428,
+        "p95": 0.009226072845797375,
+        "max": 0.7546141510922966
+      },
+      "body_step_m": {
+        "mean": 0.003315187274437529,
+        "p95": 0.00974762941488502,
+        "max": 0.7756480541787433
+      },
+      "joint_step_rad": {
+        "mean": 0.003012342455070439,
+        "p95": 0.012719354033470135,
+        "max": 0.18928366899490356
+      },
+      "body_linear_speed_mps": {
+        "mean": 0.17989514660608233,
+        "p95": 0.4935645622762978,
+        "max": 38.64721488405698
+      },
+      "body_angular_speed_radps": {
+        "mean": 0.3695211211994854,
+        "p95": 1.3425161855436383,
+        "max": 12.299993723237638
+      },
+      "max_root_step_transition": 1,
+      "max_body_step_transition": 1,
+      "discontinuity_transition_count": 2,
+      "discontinuity_transitions": [
+        1,
+        2
+      ],
+      "first_discontinuity_transition": 1,
+      "last_discontinuity_transition": 2,
+      "prefix_trim_candidate": true,
+      "suspicious_reference": true,
+      "suspicious_reasons": [
+        "root_step_gt_10cm",
+        "body_step_gt_15cm",
+        "body_speed_gt_5mps"
+      ]
+    },
+    "G1_WBT_Inspire_Pick_Up_Drinks_ep_0239": {
+      "path": "/root/shengyin/ScaleBFM/ScaleTrack/data/hat4_unifolm/processed/G1_WBT_Inspire_Pick_Up_Drinks_ep_0239.npz",
+      "frames": 1415,
+      "fps": 50.0,
+      "duration_s": 28.28,
+      "root_step_m": {
+        "mean": 0.0020609797702921154,
+        "p95": 0.007451876363103669,
+        "max": 0.4992993652823153
+      },
+      "body_step_m": {
+        "mean": 0.0024780674037885248,
+        "p95": 0.007713889461592064,
+        "max": 0.5067759193133871
+      },
+      "joint_step_rad": {
+        "mean": 0.002774972271066101,
+        "p95": 0.012420132756233215,
+        "max": 0.11676955223083496
+      },
+      "body_linear_speed_mps": {
+        "mean": 0.1250410161270669,
+        "p95": 0.38779624521569483,
+        "max": 16.936996482131715
+      },
+      "body_angular_speed_radps": {
+        "mean": 0.30814482515505565,
+        "p95": 1.1221050111188904,
+        "max": 7.33853832605595
+      },
+      "max_root_step_transition": 3,
+      "max_body_step_transition": 3,
+      "discontinuity_transition_count": 3,
+      "discontinuity_transitions": [
+        2,
+        3,
+        4
+      ],
+      "first_discontinuity_transition": 2,
+      "last_discontinuity_transition": 4,
+      "prefix_trim_candidate": true,
+      "suspicious_reference": true,
+      "suspicious_reasons": [
+        "root_step_gt_10cm",
+        "body_step_gt_15cm",
+        "body_speed_gt_5mps"
+      ]
+    },
+    "G1_WBT_Inspire_Pick_Up_Drinks_ep_0246": {
+      "path": "/root/shengyin/ScaleBFM/ScaleTrack/data/hat4_unifolm/processed/G1_WBT_Inspire_Pick_Up_Drinks_ep_0246.npz",
+      "frames": 1295,
+      "fps": 50.0,
+      "duration_s": 25.88,
+      "root_step_m": {
+        "mean": 0.002766216819467708,
+        "p95": 0.008961210865165674,
+        "max": 0.788587231628808
+      },
+      "body_step_m": {
+        "mean": 0.0031583893926867943,
+        "p95": 0.008631632674618946,
+        "max": 0.8333168298906377
+      },
+      "joint_step_rad": {
+        "mean": 0.0027935522185366887,
+        "p95": 0.011483870446681976,
+        "max": 0.13849622011184692
+      },
+      "body_linear_speed_mps": {
+        "mean": 0.17417843294608154,
+        "p95": 0.433018161257312,
+        "max": 41.08296016399701
+      },
+      "body_angular_speed_radps": {
+        "mean": 0.3446753607564053,
+        "p95": 1.0818679557289,
+        "max": 17.67152810886684
+      },
+      "max_root_step_transition": 1,
+      "max_body_step_transition": 1,
+      "discontinuity_transition_count": 2,
+      "discontinuity_transitions": [
+        1,
+        2
+      ],
+      "first_discontinuity_transition": 1,
+      "last_discontinuity_transition": 2,
+      "prefix_trim_candidate": true,
+      "suspicious_reference": true,
+      "suspicious_reasons": [
+        "root_step_gt_10cm",
+        "body_step_gt_15cm",
+        "body_speed_gt_5mps"
+      ]
+    },
+    "G1_WBT_Inspire_Pick_Up_Drinks_ep_0252": {
+      "path": "/root/shengyin/ScaleBFM/ScaleTrack/data/hat4_unifolm/processed/G1_WBT_Inspire_Pick_Up_Drinks_ep_0252.npz",
+      "frames": 1445,
+      "fps": 50.0,
+      "duration_s": 28.88,
+      "root_step_m": {
+        "mean": 0.0031652258675295593,
+        "p95": 0.010085714840112963,
+        "max": 0.965870076234454
+      },
+      "body_step_m": {
+        "mean": 0.003514318373461259,
+        "p95": 0.010355815647286782,
+        "max": 0.9852553173232051
+      },
+      "joint_step_rad": {
+        "mean": 0.0028228534440984045,
+        "p95": 0.011964823410380632,
+        "max": 0.23986190557479858
+      },
+      "body_linear_speed_mps": {
+        "mean": 0.19365255169757775,
+        "p95": 0.5221250051250671,
+        "max": 49.25333696858064
+      },
+      "body_angular_speed_radps": {
+        "mean": 0.329630441494878,
+        "p95": 1.104473768792432,
+        "max": 17.169334553708744
+      },
+      "max_root_step_transition": 1,
+      "max_body_step_transition": 1,
+      "discontinuity_transition_count": 2,
+      "discontinuity_transitions": [
+        1,
+        2
+      ],
+      "first_discontinuity_transition": 1,
+      "last_discontinuity_transition": 2,
+      "prefix_trim_candidate": true,
+      "suspicious_reference": true,
+      "suspicious_reasons": [
+        "root_step_gt_10cm",
+        "body_step_gt_15cm",
+        "body_speed_gt_5mps"
+      ]
+    },
+    "G1_WBT_Inspire_Pick_Up_Drinks_ep_0259": {
+      "path": "/root/shengyin/ScaleBFM/ScaleTrack/data/hat4_unifolm/processed/G1_WBT_Inspire_Pick_Up_Drinks_ep_0259.npz",
+      "frames": 1464,
+      "fps": 50.0,
+      "duration_s": 29.26,
+      "root_step_m": {
+        "mean": 0.002184922089784738,
+        "p95": 0.005806925140834363,
+        "max": 0.5884124333968997
+      },
+      "body_step_m": {
+        "mean": 0.002475212564065764,
+        "p95": 0.006604943054929858,
+        "max": 0.5928363832392389
+      },
+      "joint_step_rad": {
+        "mean": 0.0026441804305011077,
+        "p95": 0.011409538984298704,
+        "max": 0.12232999503612518
+      },
+      "body_linear_speed_mps": {
+        "mean": 0.13474069863980173,
+        "p95": 0.329550678220946,
+        "max": 29.61538415042254
+      },
+      "body_angular_speed_radps": {
+        "mean": 0.3056135093097873,
+        "p95": 1.1405461792170832,
+        "max": 10.299838309422823
+      },
+      "max_root_step_transition": 1,
+      "max_body_step_transition": 1,
+      "discontinuity_transition_count": 2,
+      "discontinuity_transitions": [
+        1,
+        2
+      ],
+      "first_discontinuity_transition": 1,
+      "last_discontinuity_transition": 2,
+      "prefix_trim_candidate": true,
+      "suspicious_reference": true,
+      "suspicious_reasons": [
+        "root_step_gt_10cm",
+        "body_step_gt_15cm",
+        "body_speed_gt_5mps"
+      ]
+    },
+    "G1_WBT_Inspire_Pick_Up_Drinks_ep_0279": {
+      "path": "/root/shengyin/ScaleBFM/ScaleTrack/data/hat4_unifolm/processed/G1_WBT_Inspire_Pick_Up_Drinks_ep_0279.npz",
+      "frames": 1492,
+      "fps": 50.0,
+      "duration_s": 29.82,
+      "root_step_m": {
+        "mean": 0.0025355556252477443,
+        "p95": 0.008347743103531336,
+        "max": 0.7702515056043185
+      },
+      "body_step_m": {
+        "mean": 0.002962600193496577,
+        "p95": 0.008769837861810638,
+        "max": 0.7840318755387163
+      },
+      "joint_step_rad": {
+        "mean": 0.0029883231956168983,
+        "p95": 0.012638863921165464,
+        "max": 0.1452518329024315
+      },
+      "body_linear_speed_mps": {
+        "mean": 0.16292247545117597,
+        "p95": 0.4410549873214202,
+        "max": 39.7934756795324
+      },
+      "body_angular_speed_radps": {
+        "mean": 0.3300611929773757,
+        "p95": 1.1611736979332652,
+        "max": 11.065012181499918
+      },
+      "max_root_step_transition": 1,
+      "max_body_step_transition": 1,
+      "discontinuity_transition_count": 2,
+      "discontinuity_transitions": [
+        1,
+        2
+      ],
+      "first_discontinuity_transition": 1,
+      "last_discontinuity_transition": 2,
+      "prefix_trim_candidate": true,
+      "suspicious_reference": true,
+      "suspicious_reasons": [
+        "root_step_gt_10cm",
+        "body_step_gt_15cm",
+        "body_speed_gt_5mps"
+      ]
+    },
+    "G1_WBT_Inspire_Pick_Up_Drinks_ep_0281": {
+      "path": "/root/shengyin/ScaleBFM/ScaleTrack/data/hat4_unifolm/processed/G1_WBT_Inspire_Pick_Up_Drinks_ep_0281.npz",
+      "frames": 1370,
+      "fps": 50.0,
+      "duration_s": 27.38,
+      "root_step_m": {
+        "mean": 0.0026378925313383914,
+        "p95": 0.008544783418841524,
+        "max": 0.670891621381633
+      },
+      "body_step_m": {
+        "mean": 0.0030157345614922797,
+        "p95": 0.008954260681533236,
+        "max": 0.6783601082376556
+      },
+      "joint_step_rad": {
+        "mean": 0.002856014279196923,
+        "p95": 0.011851951479911804,
+        "max": 0.15155372023582458
+      },
+      "body_linear_speed_mps": {
+        "mean": 0.1645773652584291,
+        "p95": 0.4495297475994962,
+        "max": 34.1140768613898
+      },
+      "body_angular_speed_radps": {
+        "mean": 0.33542533800549545,
+        "p95": 1.1216803460202056,
+        "max": 7.293973751815109
+      },
+      "max_root_step_transition": 1,
+      "max_body_step_transition": 1,
+      "discontinuity_transition_count": 2,
+      "discontinuity_transitions": [
+        1,
+        2
+      ],
+      "first_discontinuity_transition": 1,
+      "last_discontinuity_transition": 2,
+      "prefix_trim_candidate": true,
+      "suspicious_reference": true,
+      "suspicious_reasons": [
+        "root_step_gt_10cm",
+        "body_step_gt_15cm",
+        "body_speed_gt_5mps"
+      ]
+    },
+    "G1_WBT_Inspire_Pick_Up_Drinks_ep_0282": {
+      "path": "/root/shengyin/ScaleBFM/ScaleTrack/data/hat4_unifolm/processed/G1_WBT_Inspire_Pick_Up_Drinks_ep_0282.npz",
+      "frames": 1372,
+      "fps": 50.0,
+      "duration_s": 27.42,
+      "root_step_m": {
+        "mean": 0.0027901357638593915,
+        "p95": 0.009528297129981895,
+        "max": 0.6849500840722595
+      },
+      "body_step_m": {
+        "mean": 0.0030639741652272907,
+        "p95": 0.009635345923516267,
+        "max": 0.7373218805045306
+      },
+      "joint_step_rad": {
+        "mean": 0.0027528724117192507,
+        "p95": 0.01165361851453781,
+        "max": 0.11048354208469391
+      },
+      "body_linear_speed_mps": {
+        "mean": 0.166588717081434,
+        "p95": 0.47720713507808493,
+        "max": 36.84647827033727
+      },
+      "body_angular_speed_radps": {
+        "mean": 0.3163352124898329,
+        "p95": 1.1086504721253212,
+        "max": 6.46735040566981
+      },
+      "max_root_step_transition": 1,
+      "max_body_step_transition": 1,
+      "discontinuity_transition_count": 2,
+      "discontinuity_transitions": [
+        1,
+        2
+      ],
+      "first_discontinuity_transition": 1,
+      "last_discontinuity_transition": 2,
+      "prefix_trim_candidate": true,
+      "suspicious_reference": true,
+      "suspicious_reasons": [
+        "root_step_gt_10cm",
+        "body_step_gt_15cm",
+        "body_speed_gt_5mps"
+      ]
+    },
+    "G1_WBT_Inspire_Put_Clothes_Into_Basket_ep_0012": {
+      "path": "/root/shengyin/ScaleBFM/ScaleTrack/data/hat4_unifolm/processed/G1_WBT_Inspire_Put_Clothes_Into_Basket_ep_0012.npz",
+      "frames": 1357,
+      "fps": 50.0,
+      "duration_s": 27.12,
+      "root_step_m": {
+        "mean": 0.0012012555842160033,
+        "p95": 0.0034038100326095615,
+        "max": 0.07321238991582474
+      },
+      "body_step_m": {
+        "mean": 0.0019130573666059935,
+        "p95": 0.006200681176127463,
+        "max": 0.10551049179055776
+      },
+      "joint_step_rad": {
+        "mean": 0.0024318576997963957,
+        "p95": 0.011195829510688782,
+        "max": 0.4365085959434509
+      },
+      "body_linear_speed_mps": {
+        "mean": 0.10185391130693779,
+        "p95": 0.3314395076603135,
+        "max": 5.697048870596166
+      },
+      "body_angular_speed_radps": {
+        "mean": 0.33143848144073895,
+        "p95": 1.0091399490562207,
+        "max": 28.9383302740591
+      },
+      "max_root_step_transition": 1,
+      "max_body_step_transition": 1,
+      "discontinuity_transition_count": 0,
+      "discontinuity_transitions": [],
+      "first_discontinuity_transition": null,
+      "last_discontinuity_transition": null,
+      "prefix_trim_candidate": false,
+      "suspicious_reference": true,
+      "suspicious_reasons": [
+        "body_speed_gt_5mps",
+        "body_ang_speed_gt_20radps"
+      ]
+    },
+    "G1_WBT_Inspire_Put_Clothes_Into_Basket_ep_0034": {
+      "path": "/root/shengyin/ScaleBFM/ScaleTrack/data/hat4_unifolm/processed/G1_WBT_Inspire_Put_Clothes_Into_Basket_ep_0034.npz",
+      "frames": 1497,
+      "fps": 50.0,
+      "duration_s": 29.92,
+      "root_step_m": {
+        "mean": 0.0016206485642001204,
+        "p95": 0.00419647234429618,
+        "max": 0.036539229456808556
+      },
+      "body_step_m": {
+        "mean": 0.002306861756777394,
+        "p95": 0.006557404722372835,
+        "max": 0.06038099559599442
+      },
+      "joint_step_rad": {
+        "mean": 0.0025567850137982674,
+        "p95": 0.011141853779554366,
+        "max": 0.39592526853084564
+      },
+      "body_linear_speed_mps": {
+        "mean": 0.12066164218657192,
+        "p95": 0.3480151685840061,
+        "max": 3.2584143563052193
+      },
+      "body_angular_speed_radps": {
+        "mean": 0.3672117426614893,
+        "p95": 1.0487171900429346,
+        "max": 26.06781800426005
+      },
+      "max_root_step_transition": 1,
+      "max_body_step_transition": 1,
+      "discontinuity_transition_count": 0,
+      "discontinuity_transitions": [],
+      "first_discontinuity_transition": null,
+      "last_discontinuity_transition": null,
+      "prefix_trim_candidate": false,
+      "suspicious_reference": true,
+      "suspicious_reasons": [
+        "body_ang_speed_gt_20radps"
+      ]
+    },
+    "G1_WBT_Inspire_Put_Clothes_Into_Basket_ep_0039": {
+      "path": "/root/shengyin/ScaleBFM/ScaleTrack/data/hat4_unifolm/processed/G1_WBT_Inspire_Put_Clothes_Into_Basket_ep_0039.npz",
+      "frames": 1532,
+      "fps": 50.0,
+      "duration_s": 30.62,
+      "root_step_m": {
+        "mean": 0.0013399240215034402,
+        "p95": 0.003634135885216585,
+        "max": 0.13301195297031468
+      },
+      "body_step_m": {
+        "mean": 0.002046289229097065,
+        "p95": 0.005923807518681383,
+        "max": 0.15561678779467722
+      },
+      "joint_step_rad": {
+        "mean": 0.002683740642289959,
+        "p95": 0.012591450707986939,
+        "max": 0.5938159227371216
+      },
+      "body_linear_speed_mps": {
+        "mean": 0.10900670634108538,
+        "p95": 0.31599464048804593,
+        "max": 7.6945413903386894
+      },
+      "body_angular_speed_radps": {
+        "mean": 0.35455984731363915,
+        "p95": 1.0910727415835528,
+        "max": 35.76969555740188
+      },
+      "max_root_step_transition": 1,
+      "max_body_step_transition": 1,
+      "discontinuity_transition_count": 1,
+      "discontinuity_transitions": [
+        1
+      ],
+      "first_discontinuity_transition": 1,
+      "last_discontinuity_transition": 1,
+      "prefix_trim_candidate": true,
+      "suspicious_reference": true,
+      "suspicious_reasons": [
+        "root_step_gt_10cm",
+        "body_step_gt_15cm",
+        "body_speed_gt_5mps",
+        "body_ang_speed_gt_20radps"
+      ]
+    },
+    "G1_WBT_Inspire_Put_Clothes_Into_Basket_ep_0059": {
+      "path": "/root/shengyin/ScaleBFM/ScaleTrack/data/hat4_unifolm/processed/G1_WBT_Inspire_Put_Clothes_Into_Basket_ep_0059.npz",
+      "frames": 1337,
+      "fps": 50.0,
+      "duration_s": 26.72,
+      "root_step_m": {
+        "mean": 0.0017476489928365158,
+        "p95": 0.005180251140371388,
+        "max": 0.08043377978543198
+      },
+      "body_step_m": {
+        "mean": 0.0022295119109820077,
+        "p95": 0.006655400879014123,
+        "max": 0.12866377146071664
+      },
+      "joint_step_rad": {
+        "mean": 0.0029743166414538213,
+        "p95": 0.01282072365283966,
+        "max": 0.1136392205953598
+      },
+      "body_linear_speed_mps": {
+        "mean": 0.11428606553143215,
+        "p95": 0.33500430026741895,
+        "max": 6.868013253530814
+      },
+      "body_angular_speed_radps": {
+        "mean": 0.4069770186348803,
+        "p95": 1.218122919234365,
+        "max": 29.92658222328445
+      },
+      "max_root_step_transition": 1,
+      "max_body_step_transition": 1,
+      "discontinuity_transition_count": 0,
+      "discontinuity_transitions": [],
+      "first_discontinuity_transition": null,
+      "last_discontinuity_transition": null,
+      "prefix_trim_candidate": false,
+      "suspicious_reference": true,
+      "suspicious_reasons": [
+        "body_speed_gt_5mps",
+        "body_ang_speed_gt_20radps"
+      ]
+    },
+    "G1_WBT_Inspire_Put_Clothes_Into_Basket_ep_0063": {
+      "path": "/root/shengyin/ScaleBFM/ScaleTrack/data/hat4_unifolm/processed/G1_WBT_Inspire_Put_Clothes_Into_Basket_ep_0063.npz",
+      "frames": 1214,
+      "fps": 50.0,
+      "duration_s": 24.26,
+      "root_step_m": {
+        "mean": 0.0020805954908708945,
+        "p95": 0.005884222797731502,
+        "max": 0.08796707840342442
+      },
+      "body_step_m": {
+        "mean": 0.0027486332447654075,
+        "p95": 0.007694546866702214,
+        "max": 0.1753413679542024
+      },
+      "joint_step_rad": {
+        "mean": 0.0035898790028573717,
+        "p95": 0.014657500386238089,
+        "max": 0.2102656364440918
+      },
+      "body_linear_speed_mps": {
+        "mean": 0.1416935210034822,
+        "p95": 0.39646959269150495,
+        "max": 9.092546522038443
+      },
+      "body_angular_speed_radps": {
+        "mean": 0.5522807866107567,
+        "p95": 1.6370976090867442,
+        "max": 36.97727917884339
+      },
+      "max_root_step_transition": 1,
+      "max_body_step_transition": 1,
+      "discontinuity_transition_count": 1,
+      "discontinuity_transitions": [
+        1
+      ],
+      "first_discontinuity_transition": 1,
+      "last_discontinuity_transition": 1,
+      "prefix_trim_candidate": true,
+      "suspicious_reference": true,
+      "suspicious_reasons": [
+        "body_step_gt_15cm",
+        "body_speed_gt_5mps",
+        "body_ang_speed_gt_20radps"
+      ]
+    },
+    "G1_WBT_Inspire_Put_Clothes_Into_Basket_ep_0066": {
+      "path": "/root/shengyin/ScaleBFM/ScaleTrack/data/hat4_unifolm/processed/G1_WBT_Inspire_Put_Clothes_Into_Basket_ep_0066.npz",
+      "frames": 1354,
+      "fps": 50.0,
+      "duration_s": 27.06,
+      "root_step_m": {
+        "mean": 0.001985267375085005,
+        "p95": 0.005555085915785007,
+        "max": 0.17964202587794129
+      },
+      "body_step_m": {
+        "mean": 0.0025914194672627556,
+        "p95": 0.007711585901572993,
+        "max": 0.2886890059572715
+      },
+      "joint_step_rad": {
+        "mean": 0.003240199607905404,
+        "p95": 0.014079693891108028,
+        "max": 0.12253585457801819
+      },
+      "body_linear_speed_mps": {
+        "mean": 0.1358601172801913,
+        "p95": 0.3978923035016801,
+        "max": 14.206701588442684
+      },
+      "body_angular_speed_radps": {
+        "mean": 0.49556145605806484,
+        "p95": 1.5633121804055132,
+        "max": 36.969194020917314
+      },
+      "max_root_step_transition": 1,
+      "max_body_step_transition": 1,
+      "discontinuity_transition_count": 2,
+      "discontinuity_transitions": [
+        1,
+        2
+      ],
+      "first_discontinuity_transition": 1,
+      "last_discontinuity_transition": 2,
+      "prefix_trim_candidate": true,
+      "suspicious_reference": true,
+      "suspicious_reasons": [
+        "root_step_gt_10cm",
+        "body_step_gt_15cm",
+        "body_speed_gt_5mps",
+        "body_ang_speed_gt_20radps"
+      ]
+    },
+    "G1_WBT_Inspire_Put_Clothes_Into_Basket_ep_0077": {
+      "path": "/root/shengyin/ScaleBFM/ScaleTrack/data/hat4_unifolm/processed/G1_WBT_Inspire_Put_Clothes_Into_Basket_ep_0077.npz",
+      "frames": 1204,
+      "fps": 50.0,
+      "duration_s": 24.06,
+      "root_step_m": {
+        "mean": 0.0022791513591298483,
+        "p95": 0.006376208175504806,
+        "max": 0.2563868848546784
+      },
+      "body_step_m": {
+        "mean": 0.0029646298532920645,
+        "p95": 0.00826981487713338,
+        "max": 0.3676614654355273
+      },
+      "joint_step_rad": {
+        "mean": 0.0035217392096990713,
+        "p95": 0.014492353936657295,
+        "max": 0.18107923865318298
+      },
+      "body_linear_speed_mps": {
+        "mean": 0.15682745125708966,
+        "p95": 0.4262251560014995,
+        "max": 19.384651466153674
+      },
+      "body_angular_speed_radps": {
+        "mean": 0.556303185691991,
+        "p95": 1.6581059047062041,
+        "max": 37.63029414999992
+      },
+      "max_root_step_transition": 1,
+      "max_body_step_transition": 1,
+      "discontinuity_transition_count": 2,
+      "discontinuity_transitions": [
+        1,
+        2
+      ],
+      "first_discontinuity_transition": 1,
+      "last_discontinuity_transition": 2,
+      "prefix_trim_candidate": true,
+      "suspicious_reference": true,
+      "suspicious_reasons": [
+        "root_step_gt_10cm",
+        "body_step_gt_15cm",
+        "body_speed_gt_5mps",
+        "body_ang_speed_gt_20radps"
+      ]
+    },
+    "G1_WBT_Inspire_Put_Clothes_Into_Basket_ep_0141": {
+      "path": "/root/shengyin/ScaleBFM/ScaleTrack/data/hat4_unifolm/processed/G1_WBT_Inspire_Put_Clothes_Into_Basket_ep_0141.npz",
+      "frames": 1459,
+      "fps": 50.0,
+      "duration_s": 29.16,
+      "root_step_m": {
+        "mean": 0.0012676276619518678,
+        "p95": 0.003533196612918098,
+        "max": 0.07004578636992059
+      },
+      "body_step_m": {
+        "mean": 0.002014139791431454,
+        "p95": 0.006203700322923484,
+        "max": 0.16309243576725516
+      },
+      "joint_step_rad": {
+        "mean": 0.0024930834156463,
+        "p95": 0.011525985598564149,
+        "max": 0.33942922204732895
+      },
+      "body_linear_speed_mps": {
+        "mean": 0.10689476139699962,
+        "p95": 0.33202796690162717,
+        "max": 8.620378833778775
+      },
+      "body_angular_speed_radps": {
+        "mean": 0.3341573980542577,
+        "p95": 1.0409849411639136,
+        "max": 31.631996096118026
+      },
+      "max_root_step_transition": 1,
+      "max_body_step_transition": 1,
+      "discontinuity_transition_count": 1,
+      "discontinuity_transitions": [
+        1
+      ],
+      "first_discontinuity_transition": 1,
+      "last_discontinuity_transition": 1,
+      "prefix_trim_candidate": true,
+      "suspicious_reference": true,
+      "suspicious_reasons": [
+        "body_step_gt_15cm",
+        "body_speed_gt_5mps",
+        "body_ang_speed_gt_20radps"
+      ]
+    },
+    "G1_WBT_Inspire_Put_Clothes_Into_Basket_ep_0244": {
+      "path": "/root/shengyin/ScaleBFM/ScaleTrack/data/hat4_unifolm/processed/G1_WBT_Inspire_Put_Clothes_Into_Basket_ep_0244.npz",
+      "frames": 1360,
+      "fps": 50.0,
+      "duration_s": 27.18,
+      "root_step_m": {
+        "mean": 0.0025947024023462765,
+        "p95": 0.005613301136122538,
+        "max": 0.4010610870183457
+      },
+      "body_step_m": {
+        "mean": 0.0036539960327775334,
+        "p95": 0.009563454261502657,
+        "max": 0.4182052909617027
+      },
+      "joint_step_rad": {
+        "mean": 0.004057032373497817,
+        "p95": 0.01628652960062027,
+        "max": 0.14062528312206268
+      },
+      "body_linear_speed_mps": {
+        "mean": 0.19555192339660354,
+        "p95": 0.51917582376678,
+        "max": 20.87843694772613
+      },
+      "body_angular_speed_radps": {
+        "mean": 0.5183406576187961,
+        "p95": 1.6621508590866871,
+        "max": 10.77293237182037
+      },
+      "max_root_step_transition": 1,
+      "max_body_step_transition": 1,
+      "discontinuity_transition_count": 2,
+      "discontinuity_transitions": [
+        1,
+        2
+      ],
+      "first_discontinuity_transition": 1,
+      "last_discontinuity_transition": 2,
+      "prefix_trim_candidate": true,
+      "suspicious_reference": true,
+      "suspicious_reasons": [
+        "root_step_gt_10cm",
+        "body_step_gt_15cm",
+        "body_speed_gt_5mps"
+      ]
+    },
+    "G1_WBT_Inspire_Put_Clothes_Into_Basket_ep_0280": {
+      "path": "/root/shengyin/ScaleBFM/ScaleTrack/data/hat4_unifolm/processed/G1_WBT_Inspire_Put_Clothes_Into_Basket_ep_0280.npz",
+      "frames": 1319,
+      "fps": 50.0,
+      "duration_s": 26.36,
+      "root_step_m": {
+        "mean": 0.0016677571388885144,
+        "p95": 0.004588046554637653,
+        "max": 0.11065831988133393
+      },
+      "body_step_m": {
+        "mean": 0.0024424962766590183,
+        "p95": 0.007049382800214394,
+        "max": 0.11431655885123919
+      },
+      "joint_step_rad": {
+        "mean": 0.002720301391535301,
+        "p95": 0.011790781619492917,
+        "max": 0.42637714743614197
+      },
+      "body_linear_speed_mps": {
+        "mean": 0.12896130955771357,
+        "p95": 0.37183439104583776,
+        "max": 5.785220176663814
+      },
+      "body_angular_speed_radps": {
+        "mean": 0.38764434257581576,
+        "p95": 1.1671650017871786,
+        "max": 28.037732161729537
+      },
+      "max_root_step_transition": 1,
+      "max_body_step_transition": 1,
+      "discontinuity_transition_count": 1,
+      "discontinuity_transitions": [
+        1
+      ],
+      "first_discontinuity_transition": 1,
+      "last_discontinuity_transition": 1,
+      "prefix_trim_candidate": true,
+      "suspicious_reference": true,
+      "suspicious_reasons": [
+        "root_step_gt_10cm",
+        "body_speed_gt_5mps",
+        "body_ang_speed_gt_20radps"
+      ]
+    },
+    "G1_WBT_Inspire_Put_Clothes_into_Washing_Machine_ep_0006": {
+      "path": "/root/shengyin/ScaleBFM/ScaleTrack/data/hat4_unifolm/processed/G1_WBT_Inspire_Put_Clothes_into_Washing_Machine_ep_0006.npz",
+      "frames": 1532,
+      "fps": 50.0,
+      "duration_s": 30.62,
+      "root_step_m": {
+        "mean": 0.0015585767626865386,
+        "p95": 0.004876278779018476,
+        "max": 0.2973493217754139
+      },
+      "body_step_m": {
+        "mean": 0.0021028079098069237,
+        "p95": 0.0055696561035046025,
+        "max": 0.3917799106909267
+      },
+      "joint_step_rad": {
+        "mean": 0.001981566324098497,
+        "p95": 0.008636086434125898,
+        "max": 0.49242937564849854
+      },
+      "body_linear_speed_mps": {
+        "mean": 0.11157558573957257,
+        "p95": 0.2731661771821951,
+        "max": 20.02939937557978
+      },
+      "body_angular_speed_radps": {
+        "mean": 0.2967237887576377,
+        "p95": 0.8721374037091191,
+        "max": 42.0306235533881
+      },
+      "max_root_step_transition": 1,
+      "max_body_step_transition": 1,
+      "discontinuity_transition_count": 2,
+      "discontinuity_transitions": [
+        1,
+        2
+      ],
+      "first_discontinuity_transition": 1,
+      "last_discontinuity_transition": 2,
+      "prefix_trim_candidate": true,
+      "suspicious_reference": true,
+      "suspicious_reasons": [
+        "root_step_gt_10cm",
+        "body_step_gt_15cm",
+        "body_speed_gt_5mps",
+        "body_ang_speed_gt_20radps"
+      ]
+    },
+    "G1_WBT_Inspire_Put_Clothes_into_Washing_Machine_ep_0009": {
+      "path": "/root/shengyin/ScaleBFM/ScaleTrack/data/hat4_unifolm/processed/G1_WBT_Inspire_Put_Clothes_into_Washing_Machine_ep_0009.npz",
+      "frames": 2565,
+      "fps": 50.0,
+      "duration_s": 51.28,
+      "root_step_m": {
+        "mean": 0.0008005067557608516,
+        "p95": 0.0020972327446421714,
+        "max": 0.19484814395901323
+      },
+      "body_step_m": {
+        "mean": 0.001170022317777567,
+        "p95": 0.0033566133154107024,
+        "max": 0.2491823521068628
+      },
+      "joint_step_rad": {
+        "mean": 0.0015908078918150062,
+        "p95": 0.007773119956254959,
+        "max": 0.14070439338684082
+      },
+      "body_linear_speed_mps": {
+        "mean": 0.06127691642490448,
+        "p95": 0.17125543591719478,
+        "max": 11.819156221134147
+      },
+      "body_angular_speed_radps": {
+        "mean": 0.2169034074269993,
+        "p95": 0.764329082254686,
+        "max": 15.310715355457969
+      },
+      "max_root_step_transition": 1,
+      "max_body_step_transition": 1,
+      "discontinuity_transition_count": 2,
+      "discontinuity_transitions": [
+        1,
+        2
+      ],
+      "first_discontinuity_transition": 1,
+      "last_discontinuity_transition": 2,
+      "prefix_trim_candidate": true,
+      "suspicious_reference": true,
+      "suspicious_reasons": [
+        "root_step_gt_10cm",
+        "body_step_gt_15cm",
+        "body_speed_gt_5mps"
+      ]
+    },
+    "G1_WBT_Inspire_Put_Clothes_into_Washing_Machine_ep_0010": {
+      "path": "/root/shengyin/ScaleBFM/ScaleTrack/data/hat4_unifolm/processed/G1_WBT_Inspire_Put_Clothes_into_Washing_Machine_ep_0010.npz",
+      "frames": 2494,
+      "fps": 50.0,
+      "duration_s": 49.86,
+      "root_step_m": {
+        "mean": 0.0007138472971527846,
+        "p95": 0.0019505896372172232,
+        "max": 0.1672212001234918
+      },
+      "body_step_m": {
+        "mean": 0.0010892203719513349,
+        "p95": 0.0030372643905784546,
+        "max": 0.24112461064060695
+      },
+      "joint_step_rad": {
+        "mean": 0.001421647764762842,
+        "p95": 0.0065503895282745354,
+        "max": 0.11380121111869812
+      },
+      "body_linear_speed_mps": {
+        "mean": 0.05746748749043853,
+        "p95": 0.1560530461579743,
+        "max": 11.499027961493306
+      },
+      "body_angular_speed_radps": {
+        "mean": 0.19952921474663973,
+        "p95": 0.6204932953273783,
+        "max": 12.463060401936788
+      },
+      "max_root_step_transition": 1,
+      "max_body_step_transition": 1,
+      "discontinuity_transition_count": 2,
+      "discontinuity_transitions": [
+        1,
+        2
+      ],
+      "first_discontinuity_transition": 1,
+      "last_discontinuity_transition": 2,
+      "prefix_trim_candidate": true,
+      "suspicious_reference": true,
+      "suspicious_reasons": [
+        "root_step_gt_10cm",
+        "body_step_gt_15cm",
+        "body_speed_gt_5mps"
+      ]
+    },
+    "G1_WBT_Inspire_Put_Clothes_into_Washing_Machine_ep_0012": {
+      "path": "/root/shengyin/ScaleBFM/ScaleTrack/data/hat4_unifolm/processed/G1_WBT_Inspire_Put_Clothes_into_Washing_Machine_ep_0012.npz",
+      "frames": 2774,
+      "fps": 50.0,
+      "duration_s": 55.46,
+      "root_step_m": {
+        "mean": 0.0007883718240818344,
+        "p95": 0.0017000708895304024,
+        "max": 0.23082191362307836
+      },
+      "body_step_m": {
+        "mean": 0.001199435233854443,
+        "p95": 0.003195997237835742,
+        "max": 0.2871374177997877
+      },
+      "joint_step_rad": {
+        "mean": 0.0014372106189619713,
+        "p95": 0.006840395927429196,
+        "max": 0.10328908637166023
+      },
+      "body_linear_speed_mps": {
+        "mean": 0.06350939905511072,
+        "p95": 0.16469834493323474,
+        "max": 14.16543723034457
+      },
+      "body_angular_speed_radps": {
+        "mean": 0.19901580484005194,
+        "p95": 0.6817238510113035,
+        "max": 9.138527828958624
+      },
+      "max_root_step_transition": 1,
+      "max_body_step_transition": 1,
+      "discontinuity_transition_count": 2,
+      "discontinuity_transitions": [
+        1,
+        2
+      ],
+      "first_discontinuity_transition": 1,
+      "last_discontinuity_transition": 2,
+      "prefix_trim_candidate": true,
+      "suspicious_reference": true,
+      "suspicious_reasons": [
+        "root_step_gt_10cm",
+        "body_step_gt_15cm",
+        "body_speed_gt_5mps"
+      ]
+    },
+    "G1_WBT_Inspire_Put_Clothes_into_Washing_Machine_ep_0014": {
+      "path": "/root/shengyin/ScaleBFM/ScaleTrack/data/hat4_unifolm/processed/G1_WBT_Inspire_Put_Clothes_into_Washing_Machine_ep_0014.npz",
+      "frames": 3669,
+      "fps": 50.0,
+      "duration_s": 73.36,
+      "root_step_m": {
+        "mean": 0.0009119903117585705,
+        "p95": 0.003241011545037053,
+        "max": 0.28044265312269373
+      },
+      "body_step_m": {
+        "mean": 0.00125964924091124,
+        "p95": 0.003950199344887623,
+        "max": 0.3228373718640951
+      },
+      "joint_step_rad": {
+        "mean": 0.001464520389399629,
+        "p95": 0.0067997314035892435,
+        "max": 0.4893159866333008
+      },
+      "body_linear_speed_mps": {
+        "mean": 0.0662669529970728,
+        "p95": 0.19804885501343591,
+        "max": 16.840276574739615
+      },
+      "body_angular_speed_radps": {
+        "mean": 0.1902309141576064,
+        "p95": 0.6216824914300779,
+        "max": 25.630692707773843
+      },
+      "max_root_step_transition": 1,
+      "max_body_step_transition": 1,
+      "discontinuity_transition_count": 2,
+      "discontinuity_transitions": [
+        1,
+        2
+      ],
+      "first_discontinuity_transition": 1,
+      "last_discontinuity_transition": 2,
+      "prefix_trim_candidate": true,
+      "suspicious_reference": true,
+      "suspicious_reasons": [
+        "root_step_gt_10cm",
+        "body_step_gt_15cm",
+        "body_speed_gt_5mps",
+        "body_ang_speed_gt_20radps"
+      ]
+    },
+    "G1_WBT_Inspire_Put_Clothes_into_Washing_Machine_ep_0026": {
+      "path": "/root/shengyin/ScaleBFM/ScaleTrack/data/hat4_unifolm/processed/G1_WBT_Inspire_Put_Clothes_into_Washing_Machine_ep_0026.npz",
+      "frames": 2952,
+      "fps": 50.0,
+      "duration_s": 59.02,
+      "root_step_m": {
+        "mean": 0.0011142970641682091,
+        "p95": 0.0029923027785967856,
+        "max": 0.35279615018187166
+      },
+      "body_step_m": {
+        "mean": 0.0015389544136397214,
+        "p95": 0.004267832450462642,
+        "max": 0.40081033786655
+      },
+      "joint_step_rad": {
+        "mean": 0.0020388533959048577,
+        "p95": 0.009259086847305278,
+        "max": 0.32253701984882355
+      },
+      "body_linear_speed_mps": {
+        "mean": 0.08180842530452563,
+        "p95": 0.21801835569325337,
+        "max": 19.795752328227348
+      },
+      "body_angular_speed_radps": {
+        "mean": 0.2592424664062332,
+        "p95": 0.9067767102290224,
+        "max": 16.650066925152814
+      },
+      "max_root_step_transition": 1,
+      "max_body_step_transition": 1,
+      "discontinuity_transition_count": 2,
+      "discontinuity_transitions": [
+        1,
+        2
+      ],
+      "first_discontinuity_transition": 1,
+      "last_discontinuity_transition": 2,
+      "prefix_trim_candidate": true,
+      "suspicious_reference": true,
+      "suspicious_reasons": [
+        "root_step_gt_10cm",
+        "body_step_gt_15cm",
+        "body_speed_gt_5mps"
+      ]
+    },
+    "G1_WBT_Inspire_Put_Clothes_into_Washing_Machine_ep_0057": {
+      "path": "/root/shengyin/ScaleBFM/ScaleTrack/data/hat4_unifolm/processed/G1_WBT_Inspire_Put_Clothes_into_Washing_Machine_ep_0057.npz",
+      "frames": 3064,
+      "fps": 50.0,
+      "duration_s": 61.26,
+      "root_step_m": {
+        "mean": 0.0013335005430361014,
+        "p95": 0.0033004359264070843,
+        "max": 0.6242073868999792
+      },
+      "body_step_m": {
+        "mean": 0.00164322004166567,
+        "p95": 0.0041223063174679045,
+        "max": 0.6416973996720682
+      },
+      "joint_step_rad": {
+        "mean": 0.0018793440409595246,
+        "p95": 0.008624637126922597,
+        "max": 0.1367693543434143
+      },
+      "body_linear_speed_mps": {
+        "mean": 0.08725832266006162,
+        "p95": 0.20508484615649913,
+        "max": 31.99180925631137
+      },
+      "body_angular_speed_radps": {
+        "mean": 0.22431232896051576,
+        "p95": 0.8027987267546924,
+        "max": 11.10119590159774
+      },
+      "max_root_step_transition": 1,
+      "max_body_step_transition": 1,
+      "discontinuity_transition_count": 2,
+      "discontinuity_transitions": [
+        1,
+        2
+      ],
+      "first_discontinuity_transition": 1,
+      "last_discontinuity_transition": 2,
+      "prefix_trim_candidate": true,
+      "suspicious_reference": true,
+      "suspicious_reasons": [
+        "root_step_gt_10cm",
+        "body_step_gt_15cm",
+        "body_speed_gt_5mps"
+      ]
+    },
+    "G1_WBT_Inspire_Put_Clothes_into_Washing_Machine_ep_0059": {
+      "path": "/root/shengyin/ScaleBFM/ScaleTrack/data/hat4_unifolm/processed/G1_WBT_Inspire_Put_Clothes_into_Washing_Machine_ep_0059.npz",
+      "frames": 3835,
+      "fps": 50.0,
+      "duration_s": 76.68,
+      "root_step_m": {
+        "mean": 0.0007681083565389027,
+        "p95": 0.0018780823279839366,
+        "max": 0.2686041990002654
+      },
+      "body_step_m": {
+        "mean": 0.001117418981123916,
+        "p95": 0.003055208783638997,
+        "max": 0.2822093836793186
+      },
+      "joint_step_rad": {
+        "mean": 0.0017383534848181166,
+        "p95": 0.007835488766431808,
+        "max": 0.1642102524638176
+      },
+      "body_linear_speed_mps": {
+        "mean": 0.058688295972474554,
+        "p95": 0.16172442046728647,
+        "max": 14.689462271569655
+      },
+      "body_angular_speed_radps": {
+        "mean": 0.21800919118581671,
+        "p95": 0.7454598290729127,
+        "max": 8.435199238186115
+      },
+      "max_root_step_transition": 1,
+      "max_body_step_transition": 1,
+      "discontinuity_transition_count": 2,
+      "discontinuity_transitions": [
+        1,
+        2
+      ],
+      "first_discontinuity_transition": 1,
+      "last_discontinuity_transition": 2,
+      "prefix_trim_candidate": true,
+      "suspicious_reference": true,
+      "suspicious_reasons": [
+        "root_step_gt_10cm",
+        "body_step_gt_15cm",
+        "body_speed_gt_5mps"
+      ]
+    },
+    "G1_WBT_Inspire_Put_Clothes_into_Washing_Machine_ep_0065": {
+      "path": "/root/shengyin/ScaleBFM/ScaleTrack/data/hat4_unifolm/processed/G1_WBT_Inspire_Put_Clothes_into_Washing_Machine_ep_0065.npz",
+      "frames": 2394,
+      "fps": 50.0,
+      "duration_s": 47.86,
+      "root_step_m": {
+        "mean": 0.0009614668718145547,
+        "p95": 0.002496661372127141,
+        "max": 0.21628036789228502
+      },
+      "body_step_m": {
+        "mean": 0.0013354136829540624,
+        "p95": 0.0036706029918942367,
+        "max": 0.24253495838190225
+      },
+      "joint_step_rad": {
+        "mean": 0.001933927041091074,
+        "p95": 0.009047937393188476,
+        "max": 0.1671152412891388
+      },
+      "body_linear_speed_mps": {
+        "mean": 0.06932028500501336,
+        "p95": 0.1903663022883468,
+        "max": 12.38259138686622
+      },
+      "body_angular_speed_radps": {
+        "mean": 0.23051778069469306,
+        "p95": 0.816325145674883,
+        "max": 19.15724540192981
+      },
+      "max_root_step_transition": 1,
+      "max_body_step_transition": 1,
+      "discontinuity_transition_count": 2,
+      "discontinuity_transitions": [
+        1,
+        2
+      ],
+      "first_discontinuity_transition": 1,
+      "last_discontinuity_transition": 2,
+      "prefix_trim_candidate": true,
+      "suspicious_reference": true,
+      "suspicious_reasons": [
+        "root_step_gt_10cm",
+        "body_step_gt_15cm",
+        "body_speed_gt_5mps"
+      ]
+    },
+    "G1_WBT_Inspire_Put_Clothes_into_Washing_Machine_ep_0068": {
+      "path": "/root/shengyin/ScaleBFM/ScaleTrack/data/hat4_unifolm/processed/G1_WBT_Inspire_Put_Clothes_into_Washing_Machine_ep_0068.npz",
+      "frames": 5420,
+      "fps": 50.0,
+      "duration_s": 108.38,
+      "root_step_m": {
+        "mean": 0.0007248124902456709,
+        "p95": 0.0020040616414192377,
+        "max": 0.4203484444910231
+      },
+      "body_step_m": {
+        "mean": 0.0009471049565479293,
+        "p95": 0.002741828486592804,
+        "max": 0.4514915308084032
+      },
+      "joint_step_rad": {
+        "mean": 0.0012496961918325475,
+        "p95": 0.0064764320850372314,
+        "max": 0.1761249303817749
+      },
+      "body_linear_speed_mps": {
+        "mean": 0.04974749103317121,
+        "p95": 0.14213665902963946,
+        "max": 22.484217630638355
+      },
+      "body_angular_speed_radps": {
+        "mean": 0.15445519782745443,
+        "p95": 0.5916329549025187,
+        "max": 15.232748045656114
+      },
+      "max_root_step_transition": 1,
+      "max_body_step_transition": 1,
+      "discontinuity_transition_count": 2,
+      "discontinuity_transitions": [
+        1,
+        2
+      ],
+      "first_discontinuity_transition": 1,
+      "last_discontinuity_transition": 2,
+      "prefix_trim_candidate": true,
+      "suspicious_reference": true,
+      "suspicious_reasons": [
+        "root_step_gt_10cm",
+        "body_step_gt_15cm",
+        "body_speed_gt_5mps"
+      ]
+    },
+    "G1_WBT_Inspire_Put_Clothes_into_Washing_Machine_ep_0073": {
+      "path": "/root/shengyin/ScaleBFM/ScaleTrack/data/hat4_unifolm/processed/G1_WBT_Inspire_Put_Clothes_into_Washing_Machine_ep_0073.npz",
+      "frames": 2362,
+      "fps": 50.0,
+      "duration_s": 47.22,
+      "root_step_m": {
+        "mean": 0.001417099388004957,
+        "p95": 0.004966649065858756,
+        "max": 0.06071030744346545
+      },
+      "body_step_m": {
+        "mean": 0.0018461128287757262,
+        "p95": 0.005901744333809521,
+        "max": 0.08198415853449115
+      },
+      "joint_step_rad": {
+        "mean": 0.0025034053847561347,
+        "p95": 0.010799516737461089,
+        "max": 0.2506548538804054
+      },
+      "body_linear_speed_mps": {
+        "mean": 0.09211396046684121,
+        "p95": 0.2849950780005427,
+        "max": 3.795554418546185
+      },
+      "body_angular_speed_radps": {
+        "mean": 0.30191805464137134,
+        "p95": 0.9326319617323916,
+        "max": 18.873740056257116
+      },
+      "max_root_step_transition": 1,
+      "max_body_step_transition": 1,
+      "discontinuity_transition_count": 0,
+      "discontinuity_transitions": [],
+      "first_discontinuity_transition": null,
+      "last_discontinuity_transition": null,
+      "prefix_trim_candidate": false,
+      "suspicious_reference": false,
+      "suspicious_reasons": []
+    },
+    "G1_WBT_Inspire_Put_Clothes_into_Washing_Machine_ep_0074": {
+      "path": "/root/shengyin/ScaleBFM/ScaleTrack/data/hat4_unifolm/processed/G1_WBT_Inspire_Put_Clothes_into_Washing_Machine_ep_0074.npz",
+      "frames": 3825,
+      "fps": 50.0,
+      "duration_s": 76.48,
+      "root_step_m": {
+        "mean": 0.0014517709921498376,
+        "p95": 0.004760912814054812,
+        "max": 0.44667139105767606
+      },
+      "body_step_m": {
+        "mean": 0.0017634065987580695,
+        "p95": 0.005352479681127451,
+        "max": 0.47175248398812775
+      },
+      "joint_step_rad": {
+        "mean": 0.0020820074846680963,
+        "p95": 0.009426616132259369,
+        "max": 0.1293792873620987
+      },
+      "body_linear_speed_mps": {
+        "mean": 0.08971218467441318,
+        "p95": 0.25114717657102814,
+        "max": 23.518388583784272
+      },
+      "body_angular_speed_radps": {
+        "mean": 0.2499661738779173,
+        "p95": 0.852807192844979,
+        "max": 10.85965792602844
+      },
+      "max_root_step_transition": 1,
+      "max_body_step_transition": 1,
+      "discontinuity_transition_count": 2,
+      "discontinuity_transitions": [
+        1,
+        2
+      ],
+      "first_discontinuity_transition": 1,
+      "last_discontinuity_transition": 2,
+      "prefix_trim_candidate": true,
+      "suspicious_reference": true,
+      "suspicious_reasons": [
+        "root_step_gt_10cm",
+        "body_step_gt_15cm",
+        "body_speed_gt_5mps"
+      ]
+    },
+    "G1_WBT_Inspire_Put_Clothes_into_Washing_Machine_ep_0101": {
+      "path": "/root/shengyin/ScaleBFM/ScaleTrack/data/hat4_unifolm/processed/G1_WBT_Inspire_Put_Clothes_into_Washing_Machine_ep_0101.npz",
+      "frames": 2394,
+      "fps": 50.0,
+      "duration_s": 47.86,
+      "root_step_m": {
+        "mean": 0.0010241170222836148,
+        "p95": 0.002778723668900629,
+        "max": 0.44726436800948755
+      },
+      "body_step_m": {
+        "mean": 0.001370964875049997,
+        "p95": 0.003606971262712906,
+        "max": 0.4623698492799465
+      },
+      "joint_step_rad": {
+        "mean": 0.0014925177646054847,
+        "p95": 0.007313013076782223,
+        "max": 0.1982574462890625
+      },
+      "body_linear_speed_mps": {
+        "mean": 0.07482817022792336,
+        "p95": 0.18305937510077241,
+        "max": 23.474375240208303
+      },
+      "body_angular_speed_radps": {
+        "mean": 0.18673185645124318,
+        "p95": 0.6885979807582496,
+        "max": 13.976840753069434
+      },
+      "max_root_step_transition": 1,
+      "max_body_step_transition": 1,
+      "discontinuity_transition_count": 2,
+      "discontinuity_transitions": [
+        1,
+        2
+      ],
+      "first_discontinuity_transition": 1,
+      "last_discontinuity_transition": 2,
+      "prefix_trim_candidate": true,
+      "suspicious_reference": true,
+      "suspicious_reasons": [
+        "root_step_gt_10cm",
+        "body_step_gt_15cm",
+        "body_speed_gt_5mps"
+      ]
+    },
+    "G1_WBT_Inspire_Put_Clothes_into_Washing_Machine_ep_0111": {
+      "path": "/root/shengyin/ScaleBFM/ScaleTrack/data/hat4_unifolm/processed/G1_WBT_Inspire_Put_Clothes_into_Washing_Machine_ep_0111.npz",
+      "frames": 3835,
+      "fps": 50.0,
+      "duration_s": 76.68,
+      "root_step_m": {
+        "mean": 0.0007681083565389027,
+        "p95": 0.0018780823279839366,
+        "max": 0.2686041990002654
+      },
+      "body_step_m": {
+        "mean": 0.001117418981123916,
+        "p95": 0.003055208783638997,
+        "max": 0.2822093836793186
+      },
+      "joint_step_rad": {
+        "mean": 0.0017383534848181166,
+        "p95": 0.007835488766431808,
+        "max": 0.1642102524638176
+      },
+      "body_linear_speed_mps": {
+        "mean": 0.058688295972474554,
+        "p95": 0.16172442046728647,
+        "max": 14.689462271569655
+      },
+      "body_angular_speed_radps": {
+        "mean": 0.21800919118581671,
+        "p95": 0.7454598290729127,
+        "max": 8.435199238186115
+      },
+      "max_root_step_transition": 1,
+      "max_body_step_transition": 1,
+      "discontinuity_transition_count": 2,
+      "discontinuity_transitions": [
+        1,
+        2
+      ],
+      "first_discontinuity_transition": 1,
+      "last_discontinuity_transition": 2,
+      "prefix_trim_candidate": true,
+      "suspicious_reference": true,
+      "suspicious_reasons": [
+        "root_step_gt_10cm",
+        "body_step_gt_15cm",
+        "body_speed_gt_5mps"
+      ]
+    },
+    "G1_WBT_Inspire_Put_Clothes_into_Washing_Machine_ep_0114": {
+      "path": "/root/shengyin/ScaleBFM/ScaleTrack/data/hat4_unifolm/processed/G1_WBT_Inspire_Put_Clothes_into_Washing_Machine_ep_0114.npz",
+      "frames": 3940,
+      "fps": 50.0,
+      "duration_s": 78.78,
+      "root_step_m": {
+        "mean": 0.0007802550831228356,
+        "p95": 0.0020941798641345567,
+        "max": 0.22318882644913388
+      },
+      "body_step_m": {
+        "mean": 0.0011505513568384103,
+        "p95": 0.0031931006697903403,
+        "max": 0.22578471674478182
+      },
+      "joint_step_rad": {
+        "mean": 0.0016474382628219974,
+        "p95": 0.007485345005989075,
+        "max": 0.21752085909247398
+      },
+      "body_linear_speed_mps": {
+        "mean": 0.05931107514511203,
+        "p95": 0.16692625279889853,
+        "max": 11.372455805428695
+      },
+      "body_angular_speed_radps": {
+        "mean": 0.20206952919824456,
+        "p95": 0.6896795653483454,
+        "max": 19.86952588402266
+      },
+      "max_root_step_transition": 1,
+      "max_body_step_transition": 1,
+      "discontinuity_transition_count": 2,
+      "discontinuity_transitions": [
+        1,
+        2
+      ],
+      "first_discontinuity_transition": 1,
+      "last_discontinuity_transition": 2,
+      "prefix_trim_candidate": true,
+      "suspicious_reference": true,
+      "suspicious_reasons": [
+        "root_step_gt_10cm",
+        "body_step_gt_15cm",
+        "body_speed_gt_5mps"
+      ]
+    },
+    "G1_WBT_Inspire_Put_Clothes_into_Washing_Machine_ep_0119": {
+      "path": "/root/shengyin/ScaleBFM/ScaleTrack/data/hat4_unifolm/processed/G1_WBT_Inspire_Put_Clothes_into_Washing_Machine_ep_0119.npz",
+      "frames": 2425,
+      "fps": 50.0,
+      "duration_s": 48.48,
+      "root_step_m": {
+        "mean": 0.0012441881698479766,
+        "p95": 0.0038156173618204945,
+        "max": 0.34438519501990605
+      },
+      "body_step_m": {
+        "mean": 0.0015929569395310703,
+        "p95": 0.004460832949395864,
+        "max": 0.40709358330727563
+      },
+      "joint_step_rad": {
+        "mean": 0.0017905204052900388,
+        "p95": 0.008222326636314392,
+        "max": 0.5090610980987549
+      },
+      "body_linear_speed_mps": {
+        "mean": 0.0829902463745335,
+        "p95": 0.22359368459757367,
+        "max": 20.78528474643013
+      },
+      "body_angular_speed_radps": {
+        "mean": 0.23113384097400566,
+        "p95": 0.7751414547736586,
+        "max": 25.42074319898832
+      },
+      "max_root_step_transition": 1,
+      "max_body_step_transition": 1,
+      "discontinuity_transition_count": 2,
+      "discontinuity_transitions": [
+        1,
+        2
+      ],
+      "first_discontinuity_transition": 1,
+      "last_discontinuity_transition": 2,
+      "prefix_trim_candidate": true,
+      "suspicious_reference": true,
+      "suspicious_reasons": [
+        "root_step_gt_10cm",
+        "body_step_gt_15cm",
+        "body_speed_gt_5mps",
+        "body_ang_speed_gt_20radps"
+      ]
+    },
+    "G1_WBT_Inspire_Put_Clothes_into_Washing_Machine_ep_0130": {
+      "path": "/root/shengyin/ScaleBFM/ScaleTrack/data/hat4_unifolm/processed/G1_WBT_Inspire_Put_Clothes_into_Washing_Machine_ep_0130.npz",
+      "frames": 4649,
+      "fps": 50.0,
+      "duration_s": 92.96,
+      "root_step_m": {
+        "mean": 0.0011231973801658207,
+        "p95": 0.003956317979674065,
+        "max": 0.5076773976888984
+      },
+      "body_step_m": {
+        "mean": 0.0014356380684669827,
+        "p95": 0.005051620945814545,
+        "max": 0.5310426446675768
+      },
+      "joint_step_rad": {
+        "mean": 0.0019437463080450104,
+        "p95": 0.009771692752838134,
+        "max": 0.12411406636238098
+      },
+      "body_linear_speed_mps": {
+        "mean": 0.07453954944634822,
+        "p95": 0.2426597329088159,
+        "max": 26.143953014912796
+      },
+      "body_angular_speed_radps": {
+        "mean": 0.21568257529105758,
+        "p95": 0.7990915262880247,
+        "max": 12.567857993982809
+      },
+      "max_root_step_transition": 1,
+      "max_body_step_transition": 1,
+      "discontinuity_transition_count": 2,
+      "discontinuity_transitions": [
+        1,
+        2
+      ],
+      "first_discontinuity_transition": 1,
+      "last_discontinuity_transition": 2,
+      "prefix_trim_candidate": true,
+      "suspicious_reference": true,
+      "suspicious_reasons": [
+        "root_step_gt_10cm",
+        "body_step_gt_15cm",
+        "body_speed_gt_5mps"
+      ]
+    },
+    "G1_WBT_Inspire_Put_Clothes_into_Washing_Machine_ep_0137": {
+      "path": "/root/shengyin/ScaleBFM/ScaleTrack/data/hat4_unifolm/processed/G1_WBT_Inspire_Put_Clothes_into_Washing_Machine_ep_0137.npz",
+      "frames": 4019,
+      "fps": 50.0,
+      "duration_s": 80.36,
+      "root_step_m": {
+        "mean": 0.0014406294575658614,
+        "p95": 0.004162388109494817,
+        "max": 0.5832114250344028
+      },
+      "body_step_m": {
+        "mean": 0.0016514541242327013,
+        "p95": 0.0044610172300766915,
+        "max": 0.663816899805926
+      },
+      "joint_step_rad": {
+        "mean": 0.001904815789553125,
+        "p95": 0.008574616909027093,
+        "max": 0.43090030550956726
+      },
+      "body_linear_speed_mps": {
+        "mean": 0.0848641650782628,
+        "p95": 0.20799143976240816,
+        "max": 32.437592332926506
+      },
+      "body_angular_speed_radps": {
+        "mean": 0.22626236551996246,
+        "p95": 0.7159004700313045,
+        "max": 27.26495215663722
+      },
+      "max_root_step_transition": 1,
+      "max_body_step_transition": 1,
+      "discontinuity_transition_count": 2,
+      "discontinuity_transitions": [
+        1,
+        2
+      ],
+      "first_discontinuity_transition": 1,
+      "last_discontinuity_transition": 2,
+      "prefix_trim_candidate": true,
+      "suspicious_reference": true,
+      "suspicious_reasons": [
+        "root_step_gt_10cm",
+        "body_step_gt_15cm",
+        "body_speed_gt_5mps",
+        "body_ang_speed_gt_20radps"
+      ]
+    },
+    "G1_WBT_Inspire_Put_Clothes_into_Washing_Machine_ep_0154": {
+      "path": "/root/shengyin/ScaleBFM/ScaleTrack/data/hat4_unifolm/processed/G1_WBT_Inspire_Put_Clothes_into_Washing_Machine_ep_0154.npz",
+      "frames": 3640,
+      "fps": 50.0,
+      "duration_s": 72.78,
+      "root_step_m": {
+        "mean": 0.00221269101540559,
+        "p95": 0.007227215274187416,
+        "max": 0.9025136861347043
+      },
+      "body_step_m": {
+        "mean": 0.0027151692367615504,
+        "p95": 0.007922846531666054,
+        "max": 0.924878759617344
+      },
+      "joint_step_rad": {
+        "mean": 0.0029735491044740906,
+        "p95": 0.012431764043867588,
+        "max": 0.21621090173721313
+      },
+      "body_linear_speed_mps": {
+        "mean": 0.14257058048677934,
+        "p95": 0.391023822478878,
+        "max": 45.817289541580365
+      },
+      "body_angular_speed_radps": {
+        "mean": 0.3278196760335184,
+        "p95": 0.9850530987556276,
+        "max": 8.395297390615267
+      },
+      "max_root_step_transition": 1,
+      "max_body_step_transition": 1,
+      "discontinuity_transition_count": 2,
+      "discontinuity_transitions": [
+        1,
+        2
+      ],
+      "first_discontinuity_transition": 1,
+      "last_discontinuity_transition": 2,
+      "prefix_trim_candidate": true,
+      "suspicious_reference": true,
+      "suspicious_reasons": [
+        "root_step_gt_10cm",
+        "body_step_gt_15cm",
+        "body_speed_gt_5mps"
+      ]
+    },
+    "G1_WBT_Inspire_Put_Clothes_into_Washing_Machine_ep_0168": {
+      "path": "/root/shengyin/ScaleBFM/ScaleTrack/data/hat4_unifolm/processed/G1_WBT_Inspire_Put_Clothes_into_Washing_Machine_ep_0168.npz",
+      "frames": 3397,
+      "fps": 50.0,
+      "duration_s": 67.92,
+      "root_step_m": {
+        "mean": 0.0012430233061349657,
+        "p95": 0.003785647252848659,
+        "max": 0.3404118190042825
+      },
+      "body_step_m": {
+        "mean": 0.001417861652063354,
+        "p95": 0.004025347662476713,
+        "max": 0.37970760595517233
+      },
+      "joint_step_rad": {
+        "mean": 0.0017204370172033611,
+        "p95": 0.007800929993391037,
+        "max": 0.11412787809967995
+      },
+      "body_linear_speed_mps": {
+        "mean": 0.0711895794397235,
+        "p95": 0.18758696289658353,
+        "max": 19.126398479552773
+      },
+      "body_angular_speed_radps": {
+        "mean": 0.20013560208627246,
+        "p95": 0.6132721642130032,
+        "max": 9.041590518676308
+      },
+      "max_root_step_transition": 1,
+      "max_body_step_transition": 1,
+      "discontinuity_transition_count": 2,
+      "discontinuity_transitions": [
+        1,
+        2
+      ],
+      "first_discontinuity_transition": 1,
+      "last_discontinuity_transition": 2,
+      "prefix_trim_candidate": true,
+      "suspicious_reference": true,
+      "suspicious_reasons": [
+        "root_step_gt_10cm",
+        "body_step_gt_15cm",
+        "body_speed_gt_5mps"
+      ]
+    },
+    "G1_WBT_Inspire_Put_Clothes_into_Washing_Machine_ep_0185": {
+      "path": "/root/shengyin/ScaleBFM/ScaleTrack/data/hat4_unifolm/processed/G1_WBT_Inspire_Put_Clothes_into_Washing_Machine_ep_0185.npz",
+      "frames": 3105,
+      "fps": 50.0,
+      "duration_s": 62.08,
+      "root_step_m": {
+        "mean": 0.0019143965085174964,
+        "p95": 0.0061395479922632,
+        "max": 0.6666038548022951
+      },
+      "body_step_m": {
+        "mean": 0.002375463122375694,
+        "p95": 0.006797981308933043,
+        "max": 0.6841905240685687
+      },
+      "joint_step_rad": {
+        "mean": 0.002661595490598427,
+        "p95": 0.01134570874273777,
+        "max": 0.1398882269859314
+      },
+      "body_linear_speed_mps": {
+        "mean": 0.1246448718437529,
+        "p95": 0.3402374229081288,
+        "max": 34.074908138112924
+      },
+      "body_angular_speed_radps": {
+        "mean": 0.32477195526137165,
+        "p95": 1.048555897802096,
+        "max": 10.88178148917023
+      },
+      "max_root_step_transition": 1,
+      "max_body_step_transition": 1,
+      "discontinuity_transition_count": 2,
+      "discontinuity_transitions": [
+        1,
+        2
+      ],
+      "first_discontinuity_transition": 1,
+      "last_discontinuity_transition": 2,
+      "prefix_trim_candidate": true,
+      "suspicious_reference": true,
+      "suspicious_reasons": [
+        "root_step_gt_10cm",
+        "body_step_gt_15cm",
+        "body_speed_gt_5mps"
+      ]
+    },
+    "G1_WBT_Inspire_Put_Clothes_into_Washing_Machine_ep_0188": {
+      "path": "/root/shengyin/ScaleBFM/ScaleTrack/data/hat4_unifolm/processed/G1_WBT_Inspire_Put_Clothes_into_Washing_Machine_ep_0188.npz",
+      "frames": 1645,
+      "fps": 50.0,
+      "duration_s": 32.88,
+      "root_step_m": {
+        "mean": 0.003015315836794255,
+        "p95": 0.009299399085308607,
+        "max": 0.7810880217772425
+      },
+      "body_step_m": {
+        "mean": 0.0035097312973939028,
+        "p95": 0.009991725078970776,
+        "max": 0.8051933165824968
+      },
+      "joint_step_rad": {
+        "mean": 0.0031396616017585104,
+        "p95": 0.013134507462382317,
+        "max": 0.14977943897247314
+      },
+      "body_linear_speed_mps": {
+        "mean": 0.1867573947423468,
+        "p95": 0.493544861867951,
+        "max": 39.92567085619131
+      },
+      "body_angular_speed_radps": {
+        "mean": 0.3783828745196186,
+        "p95": 1.237672171322934,
+        "max": 9.561499704296178
+      },
+      "max_root_step_transition": 1,
+      "max_body_step_transition": 1,
+      "discontinuity_transition_count": 2,
+      "discontinuity_transitions": [
+        1,
+        2
+      ],
+      "first_discontinuity_transition": 1,
+      "last_discontinuity_transition": 2,
+      "prefix_trim_candidate": true,
+      "suspicious_reference": true,
+      "suspicious_reasons": [
+        "root_step_gt_10cm",
+        "body_step_gt_15cm",
+        "body_speed_gt_5mps"
+      ]
+    },
+    "G1_WBT_Inspire_Put_Clothes_into_Washing_Machine_ep_0196": {
+      "path": "/root/shengyin/ScaleBFM/ScaleTrack/data/hat4_unifolm/processed/G1_WBT_Inspire_Put_Clothes_into_Washing_Machine_ep_0196.npz",
+      "frames": 1407,
+      "fps": 50.0,
+      "duration_s": 28.12,
+      "root_step_m": {
+        "mean": 0.0021656873089381705,
+        "p95": 0.006187081172198898,
+        "max": 0.663351778413435
+      },
+      "body_step_m": {
+        "mean": 0.0026236437270494785,
+        "p95": 0.006670947479063922,
+        "max": 0.7242315301892415
+      },
+      "joint_step_rad": {
+        "mean": 0.002838738885522004,
+        "p95": 0.011923530697822567,
+        "max": 0.22492942214012146
+      },
+      "body_linear_speed_mps": {
+        "mean": 0.14369919827199865,
+        "p95": 0.3254811663964448,
+        "max": 35.73602312220476
+      },
+      "body_angular_speed_radps": {
+        "mean": 0.35640895068003,
+        "p95": 1.1315941456517893,
+        "max": 17.21887703009998
+      },
+      "max_root_step_transition": 1,
+      "max_body_step_transition": 1,
+      "discontinuity_transition_count": 2,
+      "discontinuity_transitions": [
+        1,
+        2
+      ],
+      "first_discontinuity_transition": 1,
+      "last_discontinuity_transition": 2,
+      "prefix_trim_candidate": true,
+      "suspicious_reference": true,
+      "suspicious_reasons": [
+        "root_step_gt_10cm",
+        "body_step_gt_15cm",
+        "body_speed_gt_5mps"
+      ]
+    },
+    "G1_WBT_Inspire_Put_Clothes_into_Washing_Machine_ep_0203": {
+      "path": "/root/shengyin/ScaleBFM/ScaleTrack/data/hat4_unifolm/processed/G1_WBT_Inspire_Put_Clothes_into_Washing_Machine_ep_0203.npz",
+      "frames": 1200,
+      "fps": 50.0,
+      "duration_s": 23.98,
+      "root_step_m": {
+        "mean": 0.002902840546006927,
+        "p95": 0.007355073860094826,
+        "max": 0.8359493983803442
+      },
+      "body_step_m": {
+        "mean": 0.003559750560988027,
+        "p95": 0.008015405616344532,
+        "max": 0.8865305950248422
+      },
+      "joint_step_rad": {
+        "mean": 0.002970516457782534,
+        "p95": 0.012078650295734406,
+        "max": 0.14370842650532722
+      },
+      "body_linear_speed_mps": {
+        "mean": 0.19903489414873213,
+        "p95": 0.40691169058673005,
+        "max": 44.09233861730761
+      },
+      "body_angular_speed_radps": {
+        "mean": 0.3777818630048488,
+        "p95": 1.1443100755087328,
+        "max": 8.204938063385082
+      },
+      "max_root_step_transition": 1,
+      "max_body_step_transition": 1,
+      "discontinuity_transition_count": 2,
+      "discontinuity_transitions": [
+        1,
+        2
+      ],
+      "first_discontinuity_transition": 1,
+      "last_discontinuity_transition": 2,
+      "prefix_trim_candidate": true,
+      "suspicious_reference": true,
+      "suspicious_reasons": [
+        "root_step_gt_10cm",
+        "body_step_gt_15cm",
+        "body_speed_gt_5mps"
+      ]
+    },
+    "G1_WBT_Inspire_Put_Clothes_into_Washing_Machine_ep_0204": {
+      "path": "/root/shengyin/ScaleBFM/ScaleTrack/data/hat4_unifolm/processed/G1_WBT_Inspire_Put_Clothes_into_Washing_Machine_ep_0204.npz",
+      "frames": 2017,
+      "fps": 50.0,
+      "duration_s": 40.32,
+      "root_step_m": {
+        "mean": 0.0024223373372993123,
+        "p95": 0.007558956253379154,
+        "max": 0.57565255585613
+      },
+      "body_step_m": {
+        "mean": 0.0028832428031219347,
+        "p95": 0.008504877701079393,
+        "max": 0.61251528530061
+      },
+      "joint_step_rad": {
+        "mean": 0.0030339895923320644,
+        "p95": 0.012122252583503723,
+        "max": 0.17146549373865128
+      },
+      "body_linear_speed_mps": {
+        "mean": 0.15096556483098605,
+        "p95": 0.41625527480475016,
+        "max": 30.193312453037574
+      },
+      "body_angular_speed_radps": {
+        "mean": 0.3658172742550578,
+        "p95": 1.2317455681583422,
+        "max": 15.541160275823207
+      },
+      "max_root_step_transition": 1,
+      "max_body_step_transition": 1,
+      "discontinuity_transition_count": 2,
+      "discontinuity_transitions": [
+        1,
+        2
+      ],
+      "first_discontinuity_transition": 1,
+      "last_discontinuity_transition": 2,
+      "prefix_trim_candidate": true,
+      "suspicious_reference": true,
+      "suspicious_reasons": [
+        "root_step_gt_10cm",
+        "body_step_gt_15cm",
+        "body_speed_gt_5mps"
+      ]
+    },
+    "G1_WBT_Inspire_Put_Clothes_into_Washing_Machine_ep_0211": {
+      "path": "/root/shengyin/ScaleBFM/ScaleTrack/data/hat4_unifolm/processed/G1_WBT_Inspire_Put_Clothes_into_Washing_Machine_ep_0211.npz",
+      "frames": 1140,
+      "fps": 50.0,
+      "duration_s": 22.78,
+      "root_step_m": {
+        "mean": 0.001856863928243161,
+        "p95": 0.005455462666455763,
+        "max": 0.4076902203677481
+      },
+      "body_step_m": {
+        "mean": 0.0022454196401589166,
+        "p95": 0.006069092078236855,
+        "max": 0.42652725953188775
+      },
+      "joint_step_rad": {
+        "mean": 0.0020578125437684196,
+        "p95": 0.008973360061645508,
+        "max": 0.13754774630069733
+      },
+      "body_linear_speed_mps": {
+        "mean": 0.12053590388252035,
+        "p95": 0.2862114144892991,
+        "max": 20.971330849679198
+      },
+      "body_angular_speed_radps": {
+        "mean": 0.28225892652751083,
+        "p95": 0.9161913943194181,
+        "max": 11.202090640745526
+      },
+      "max_root_step_transition": 1,
+      "max_body_step_transition": 1,
+      "discontinuity_transition_count": 2,
+      "discontinuity_transitions": [
+        1,
+        2
+      ],
+      "first_discontinuity_transition": 1,
+      "last_discontinuity_transition": 2,
+      "prefix_trim_candidate": true,
+      "suspicious_reference": true,
+      "suspicious_reasons": [
+        "root_step_gt_10cm",
+        "body_step_gt_15cm",
+        "body_speed_gt_5mps"
+      ]
+    },
+    "G1_WBT_Inspire_Put_Clothes_into_Washing_Machine_ep_0217": {
+      "path": "/root/shengyin/ScaleBFM/ScaleTrack/data/hat4_unifolm/processed/G1_WBT_Inspire_Put_Clothes_into_Washing_Machine_ep_0217.npz",
+      "frames": 1805,
+      "fps": 50.0,
+      "duration_s": 36.08,
+      "root_step_m": {
+        "mean": 0.0018422034651153854,
+        "p95": 0.005499457244426712,
+        "max": 0.40781510531666904
+      },
+      "body_step_m": {
+        "mean": 0.002224166267014105,
+        "p95": 0.005941801024434735,
+        "max": 0.4547050346690237
+      },
+      "joint_step_rad": {
+        "mean": 0.002878156070693996,
+        "p95": 0.011569795897230506,
+        "max": 0.1549919918179512
+      },
+      "body_linear_speed_mps": {
+        "mean": 0.11637451449345067,
+        "p95": 0.28675321411462495,
+        "max": 22.13447802429016
+      },
+      "body_angular_speed_radps": {
+        "mean": 0.3353285247772881,
+        "p95": 1.0717636856116783,
+        "max": 17.04254325934948
+      },
+      "max_root_step_transition": 1,
+      "max_body_step_transition": 1,
+      "discontinuity_transition_count": 2,
+      "discontinuity_transitions": [
+        1,
+        2
+      ],
+      "first_discontinuity_transition": 1,
+      "last_discontinuity_transition": 2,
+      "prefix_trim_candidate": true,
+      "suspicious_reference": true,
+      "suspicious_reasons": [
+        "root_step_gt_10cm",
+        "body_step_gt_15cm",
+        "body_speed_gt_5mps"
+      ]
+    },
+    "G1_WBT_Inspire_Put_Clothes_into_Washing_Machine_ep_0252": {
+      "path": "/root/shengyin/ScaleBFM/ScaleTrack/data/hat4_unifolm/processed/G1_WBT_Inspire_Put_Clothes_into_Washing_Machine_ep_0252.npz",
+      "frames": 1159,
+      "fps": 50.0,
+      "duration_s": 23.16,
+      "root_step_m": {
+        "mean": 0.0022793675610238667,
+        "p95": 0.0061734967427442685,
+        "max": 0.6367938024451891
+      },
+      "body_step_m": {
+        "mean": 0.002682762299013621,
+        "p95": 0.006511270263066768,
+        "max": 0.6687211845748341
+      },
+      "joint_step_rad": {
+        "mean": 0.00232598862190174,
+        "p95": 0.010432687401771525,
+        "max": 0.10117600113153458
+      },
+      "body_linear_speed_mps": {
+        "mean": 0.1478815325551177,
+        "p95": 0.3157867494777237,
+        "max": 33.3315945311231
+      },
+      "body_angular_speed_radps": {
+        "mean": 0.29971721511173016,
+        "p95": 1.0425243446164885,
+        "max": 9.226012576926
+      },
+      "max_root_step_transition": 1,
+      "max_body_step_transition": 1,
+      "discontinuity_transition_count": 2,
+      "discontinuity_transitions": [
+        1,
+        2
+      ],
+      "first_discontinuity_transition": 1,
+      "last_discontinuity_transition": 2,
+      "prefix_trim_candidate": true,
+      "suspicious_reference": true,
+      "suspicious_reasons": [
+        "root_step_gt_10cm",
+        "body_step_gt_15cm",
+        "body_speed_gt_5mps"
+      ]
+    },
+    "G1_WBT_Inspire_Put_Clothes_into_Washing_Machine_ep_0255": {
+      "path": "/root/shengyin/ScaleBFM/ScaleTrack/data/hat4_unifolm/processed/G1_WBT_Inspire_Put_Clothes_into_Washing_Machine_ep_0255.npz",
+      "frames": 3384,
+      "fps": 50.0,
+      "duration_s": 67.66,
+      "root_step_m": {
+        "mean": 0.0016853186669888143,
+        "p95": 0.004894639988898199,
+        "max": 0.36183501651356875
+      },
+      "body_step_m": {
+        "mean": 0.0020783986518899044,
+        "p95": 0.005703804066220721,
+        "max": 0.39595392585091155
+      },
+      "joint_step_rad": {
+        "mean": 0.0024692491410160883,
+        "p95": 0.010251039266586302,
+        "max": 0.13469301164150238
+      },
+      "body_linear_speed_mps": {
+        "mean": 0.10559108924283818,
+        "p95": 0.2749113575049057,
+        "max": 19.516409078029962
+      },
+      "body_angular_speed_radps": {
+        "mean": 0.2896465156996016,
+        "p95": 0.8515892397674716,
+        "max": 12.781339006684478
+      },
+      "max_root_step_transition": 1,
+      "max_body_step_transition": 1,
+      "discontinuity_transition_count": 2,
+      "discontinuity_transitions": [
+        1,
+        2
+      ],
+      "first_discontinuity_transition": 1,
+      "last_discontinuity_transition": 2,
+      "prefix_trim_candidate": true,
+      "suspicious_reference": true,
+      "suspicious_reasons": [
+        "root_step_gt_10cm",
+        "body_step_gt_15cm",
+        "body_speed_gt_5mps"
+      ]
+    },
+    "G1_WBT_Inspire_Put_Clothes_into_Washing_Machine_ep_0257": {
+      "path": "/root/shengyin/ScaleBFM/ScaleTrack/data/hat4_unifolm/processed/G1_WBT_Inspire_Put_Clothes_into_Washing_Machine_ep_0257.npz",
+      "frames": 1315,
+      "fps": 50.0,
+      "duration_s": 26.28,
+      "root_step_m": {
+        "mean": 0.0021051498148746124,
+        "p95": 0.006674648944887978,
+        "max": 0.35092921393007587
+      },
+      "body_step_m": {
+        "mean": 0.0026404091459180934,
+        "p95": 0.006911202911769729,
+        "max": 0.3952990212949837
+      },
+      "joint_step_rad": {
+        "mean": 0.0029212845711309955,
+        "p95": 0.011316061019897461,
+        "max": 0.17365683987736702
+      },
+      "body_linear_speed_mps": {
+        "mean": 0.13817031655269071,
+        "p95": 0.32612338867625446,
+        "max": 19.034365308039312
+      },
+      "body_angular_speed_radps": {
+        "mean": 0.38191778921961184,
+        "p95": 1.056444871253229,
+        "max": 15.216023137970339
+      },
+      "max_root_step_transition": 1,
+      "max_body_step_transition": 1,
+      "discontinuity_transition_count": 2,
+      "discontinuity_transitions": [
+        1,
+        2
+      ],
+      "first_discontinuity_transition": 1,
+      "last_discontinuity_transition": 2,
+      "prefix_trim_candidate": true,
+      "suspicious_reference": true,
+      "suspicious_reasons": [
+        "root_step_gt_10cm",
+        "body_step_gt_15cm",
+        "body_speed_gt_5mps"
+      ]
+    },
+    "G1_WBT_Inspire_Put_Clothes_into_Washing_Machine_ep_0264": {
+      "path": "/root/shengyin/ScaleBFM/ScaleTrack/data/hat4_unifolm/processed/G1_WBT_Inspire_Put_Clothes_into_Washing_Machine_ep_0264.npz",
+      "frames": 3392,
+      "fps": 50.0,
+      "duration_s": 67.82,
+      "root_step_m": {
+        "mean": 0.0020261540105627777,
+        "p95": 0.005639682712620045,
+        "max": 0.5720750284049014
+      },
+      "body_step_m": {
+        "mean": 0.0023747054684728386,
+        "p95": 0.0060394825417414985,
+        "max": 0.6251590307183607
+      },
+      "joint_step_rad": {
+        "mean": 0.0029107014605132668,
+        "p95": 0.01159105449914932,
+        "max": 0.12513896822929382
+      },
+      "body_linear_speed_mps": {
+        "mean": 0.12092411100562979,
+        "p95": 0.2824674643242164,
+        "max": 30.87824554453846
+      },
+      "body_angular_speed_radps": {
+        "mean": 0.34391103640403703,
+        "p95": 0.982451734968343,
+        "max": 14.993995853336271
+      },
+      "max_root_step_transition": 1,
+      "max_body_step_transition": 1,
+      "discontinuity_transition_count": 2,
+      "discontinuity_transitions": [
+        1,
+        2
+      ],
+      "first_discontinuity_transition": 1,
+      "last_discontinuity_transition": 2,
+      "prefix_trim_candidate": true,
+      "suspicious_reference": true,
+      "suspicious_reasons": [
+        "root_step_gt_10cm",
+        "body_step_gt_15cm",
+        "body_speed_gt_5mps"
+      ]
+    },
+    "G1_WBT_Inspire_Put_Clothes_into_Washing_Machine_ep_0285": {
+      "path": "/root/shengyin/ScaleBFM/ScaleTrack/data/hat4_unifolm/processed/G1_WBT_Inspire_Put_Clothes_into_Washing_Machine_ep_0285.npz",
+      "frames": 1349,
+      "fps": 50.0,
+      "duration_s": 26.96,
+      "root_step_m": {
+        "mean": 0.002154340337916251,
+        "p95": 0.006694909433459708,
+        "max": 0.4970088606283509
+      },
+      "body_step_m": {
+        "mean": 0.002556759904956308,
+        "p95": 0.006913317727320112,
+        "max": 0.5684352799604241
+      },
+      "joint_step_rad": {
+        "mean": 0.0025283164285559933,
+        "p95": 0.01041573011316359,
+        "max": 0.13420593738555908
+      },
+      "body_linear_speed_mps": {
+        "mean": 0.13744476555358937,
+        "p95": 0.33255990723774187,
+        "max": 27.971406268248554
+      },
+      "body_angular_speed_radps": {
+        "mean": 0.3185950178346062,
+        "p95": 1.0495177764902115,
+        "max": 13.23075846975398
+      },
+      "max_root_step_transition": 1,
+      "max_body_step_transition": 1,
+      "discontinuity_transition_count": 2,
+      "discontinuity_transitions": [
+        1,
+        2
+      ],
+      "first_discontinuity_transition": 1,
+      "last_discontinuity_transition": 2,
+      "prefix_trim_candidate": true,
+      "suspicious_reference": true,
+      "suspicious_reasons": [
+        "root_step_gt_10cm",
+        "body_step_gt_15cm",
+        "body_speed_gt_5mps"
+      ]
+    },
+    "G1_WBT_Inspire_Put_Clothes_into_Washing_Machine_ep_0286": {
+      "path": "/root/shengyin/ScaleBFM/ScaleTrack/data/hat4_unifolm/processed/G1_WBT_Inspire_Put_Clothes_into_Washing_Machine_ep_0286.npz",
+      "frames": 1395,
+      "fps": 50.0,
+      "duration_s": 27.88,
+      "root_step_m": {
+        "mean": 0.0022330869407509958,
+        "p95": 0.006685299953135171,
+        "max": 0.5172372601804768
+      },
+      "body_step_m": {
+        "mean": 0.0026473313345669403,
+        "p95": 0.007126151078835244,
+        "max": 0.5789791386264583
+      },
+      "joint_step_rad": {
+        "mean": 0.0025235387009462347,
+        "p95": 0.010485772043466568,
+        "max": 0.12848752737045288
+      },
+      "body_linear_speed_mps": {
+        "mean": 0.14207881638844214,
+        "p95": 0.36322517600546317,
+        "max": 28.36807663520806
+      },
+      "body_angular_speed_radps": {
+        "mean": 0.322583260033421,
+        "p95": 1.0244760329379632,
+        "max": 14.078831935379515
+      },
+      "max_root_step_transition": 1,
+      "max_body_step_transition": 1,
+      "discontinuity_transition_count": 2,
+      "discontinuity_transitions": [
+        1,
+        2
+      ],
+      "first_discontinuity_transition": 1,
+      "last_discontinuity_transition": 2,
+      "prefix_trim_candidate": true,
+      "suspicious_reference": true,
+      "suspicious_reasons": [
+        "root_step_gt_10cm",
+        "body_step_gt_15cm",
+        "body_speed_gt_5mps"
+      ]
+    },
+    "G1_WBT_Inspire_Put_Clothes_into_Washing_Machine_ep_0295": {
+      "path": "/root/shengyin/ScaleBFM/ScaleTrack/data/hat4_unifolm/processed/G1_WBT_Inspire_Put_Clothes_into_Washing_Machine_ep_0295.npz",
+      "frames": 3587,
+      "fps": 50.0,
+      "duration_s": 71.72,
+      "root_step_m": {
+        "mean": 0.0012144392611692875,
+        "p95": 0.003997070764457276,
+        "max": 0.5143836197983432
+      },
+      "body_step_m": {
+        "mean": 0.00142551423315446,
+        "p95": 0.004334065189861073,
+        "max": 0.550048006588401
+      },
+      "joint_step_rad": {
+        "mean": 0.001706567266380872,
+        "p95": 0.008452790603041637,
+        "max": 0.12215283513069153
+      },
+      "body_linear_speed_mps": {
+        "mean": 0.07398405294526322,
+        "p95": 0.20272408122675284,
+        "max": 27.338354380660324
+      },
+      "body_angular_speed_radps": {
+        "mean": 0.1980623449165761,
+        "p95": 0.6953156278077156,
+        "max": 7.53327741210202
+      },
+      "max_root_step_transition": 1,
+      "max_body_step_transition": 1,
+      "discontinuity_transition_count": 2,
+      "discontinuity_transitions": [
+        1,
+        2
+      ],
+      "first_discontinuity_transition": 1,
+      "last_discontinuity_transition": 2,
+      "prefix_trim_candidate": true,
+      "suspicious_reference": true,
+      "suspicious_reasons": [
+        "root_step_gt_10cm",
+        "body_step_gt_15cm",
+        "body_speed_gt_5mps"
+      ]
+    },
+    "G1_WBT_Inspire_Put_Vegetables_Into_Basket_ep_0140": {
+      "path": "/root/shengyin/ScaleBFM/ScaleTrack/data/hat4_unifolm/processed/G1_WBT_Inspire_Put_Vegetables_Into_Basket_ep_0140.npz",
+      "frames": 1520,
+      "fps": 50.0,
+      "duration_s": 30.38,
+      "root_step_m": {
+        "mean": 0.0013046179039631128,
+        "p95": 0.004542921565432022,
+        "max": 0.04650261048546641
+      },
+      "body_step_m": {
+        "mean": 0.0014470787847069688,
+        "p95": 0.0048273045371105576,
+        "max": 0.07240685537679172
+      },
+      "joint_step_rad": {
+        "mean": 0.0025664139918689073,
+        "p95": 0.012978470884263515,
+        "max": 0.20514589548110962
+      },
+      "body_linear_speed_mps": {
+        "mean": 0.07268436168804578,
+        "p95": 0.23514534959503736,
+        "max": 3.4106145889109105
+      },
+      "body_angular_speed_radps": {
+        "mean": 0.24786360758992637,
+        "p95": 0.9592938655020495,
+        "max": 12.174574844670508
+      },
+      "max_root_step_transition": 1,
+      "max_body_step_transition": 1,
+      "discontinuity_transition_count": 0,
+      "discontinuity_transitions": [],
+      "first_discontinuity_transition": null,
+      "last_discontinuity_transition": null,
+      "prefix_trim_candidate": false,
+      "suspicious_reference": false,
+      "suspicious_reasons": []
+    },
+    "G1_WBT_Inspire_Put_Vegetables_Into_Basket_ep_0155": {
+      "path": "/root/shengyin/ScaleBFM/ScaleTrack/data/hat4_unifolm/processed/G1_WBT_Inspire_Put_Vegetables_Into_Basket_ep_0155.npz",
+      "frames": 1217,
+      "fps": 50.0,
+      "duration_s": 24.32,
+      "root_step_m": {
+        "mean": 0.0018351135114368616,
+        "p95": 0.005363926800932995,
+        "max": 0.0899248331858346
+      },
+      "body_step_m": {
+        "mean": 0.0020785128823292507,
+        "p95": 0.00603794342219516,
+        "max": 0.13023311409678448
+      },
+      "joint_step_rad": {
+        "mean": 0.0032573815529385536,
+        "p95": 0.015272745490074149,
+        "max": 0.3335185647010803
+      },
+      "body_linear_speed_mps": {
+        "mean": 0.10645888901375289,
+        "p95": 0.30048212342756137,
+        "max": 6.561108660785314
+      },
+      "body_angular_speed_radps": {
+        "mean": 0.3139878933538642,
+        "p95": 1.0674453250968494,
+        "max": 23.550583197778426
+      },
+      "max_root_step_transition": 1,
+      "max_body_step_transition": 1,
+      "discontinuity_transition_count": 0,
+      "discontinuity_transitions": [],
+      "first_discontinuity_transition": null,
+      "last_discontinuity_transition": null,
+      "prefix_trim_candidate": false,
+      "suspicious_reference": true,
+      "suspicious_reasons": [
+        "body_speed_gt_5mps",
+        "body_ang_speed_gt_20radps"
+      ]
+    },
+    "G1_WBT_Inspire_Put_Vegetables_Into_Basket_ep_0190": {
+      "path": "/root/shengyin/ScaleBFM/ScaleTrack/data/hat4_unifolm/processed/G1_WBT_Inspire_Put_Vegetables_Into_Basket_ep_0190.npz",
+      "frames": 1595,
+      "fps": 50.0,
+      "duration_s": 31.88,
+      "root_step_m": {
+        "mean": 0.001228889946569286,
+        "p95": 0.004594401606050968,
+        "max": 0.09896315279539745
+      },
+      "body_step_m": {
+        "mean": 0.0013790444405051181,
+        "p95": 0.0046822718867744854,
+        "max": 0.13052913262469437
+      },
+      "joint_step_rad": {
+        "mean": 0.00235515985222086,
+        "p95": 0.012033943086862564,
+        "max": 0.3166927695274353
+      },
+      "body_linear_speed_mps": {
+        "mean": 0.07100362042711336,
+        "p95": 0.22737816438059702,
+        "max": 6.86562484219339
+      },
+      "body_angular_speed_radps": {
+        "mean": 0.21601589086127362,
+        "p95": 0.8647663356414378,
+        "max": 19.25454970589192
+      },
+      "max_root_step_transition": 1,
+      "max_body_step_transition": 1,
+      "discontinuity_transition_count": 0,
+      "discontinuity_transitions": [],
+      "first_discontinuity_transition": null,
+      "last_discontinuity_transition": null,
+      "prefix_trim_candidate": false,
+      "suspicious_reference": true,
+      "suspicious_reasons": [
+        "body_speed_gt_5mps"
+      ]
+    },
+    "G1_WBT_Inspire_Put_Vegetables_Into_Basket_ep_0203": {
+      "path": "/root/shengyin/ScaleBFM/ScaleTrack/data/hat4_unifolm/processed/G1_WBT_Inspire_Put_Vegetables_Into_Basket_ep_0203.npz",
+      "frames": 1654,
+      "fps": 50.0,
+      "duration_s": 33.06,
+      "root_step_m": {
+        "mean": 0.0012618345816147116,
+        "p95": 0.004415813748872455,
+        "max": 0.06072653393319837
+      },
+      "body_step_m": {
+        "mean": 0.001460822016825924,
+        "p95": 0.004746249819484202,
+        "max": 0.08667784368858714
+      },
+      "joint_step_rad": {
+        "mean": 0.0025547515430017213,
+        "p95": 0.01262269318103789,
+        "max": 0.277202308177948
+      },
+      "body_linear_speed_mps": {
+        "mean": 0.07448207946092619,
+        "p95": 0.23215501885081805,
+        "max": 4.423863851787171
+      },
+      "body_angular_speed_radps": {
+        "mean": 0.2588330686379398,
+        "p95": 0.928145046075558,
+        "max": 16.862078866706714
+      },
+      "max_root_step_transition": 1,
+      "max_body_step_transition": 1,
+      "discontinuity_transition_count": 0,
+      "discontinuity_transitions": [],
+      "first_discontinuity_transition": null,
+      "last_discontinuity_transition": null,
+      "prefix_trim_candidate": false,
+      "suspicious_reference": false,
+      "suspicious_reasons": []
+    },
+    "G1_WBT_Inspire_Put_Vegetables_Into_Basket_ep_0222": {
+      "path": "/root/shengyin/ScaleBFM/ScaleTrack/data/hat4_unifolm/processed/G1_WBT_Inspire_Put_Vegetables_Into_Basket_ep_0222.npz",
+      "frames": 1357,
+      "fps": 50.0,
+      "duration_s": 27.12,
+      "root_step_m": {
+        "mean": 0.0014380123481076356,
+        "p95": 0.004342373490277045,
+        "max": 0.09703615391497618
+      },
+      "body_step_m": {
+        "mean": 0.0016510438583959637,
+        "p95": 0.005120296038499571,
+        "max": 0.12875359822496818
+      },
+      "joint_step_rad": {
+        "mean": 0.0025289409430340475,
+        "p95": 0.012592775747179983,
+        "max": 0.20687168277800083
+      },
+      "body_linear_speed_mps": {
+        "mean": 0.08516923723749645,
+        "p95": 0.2598326336150514,
+        "max": 6.171658555108125
+      },
+      "body_angular_speed_radps": {
+        "mean": 0.2579533624255898,
+        "p95": 0.9263969903787275,
+        "max": 27.528496107690042
+      },
+      "max_root_step_transition": 1,
+      "max_body_step_transition": 1,
+      "discontinuity_transition_count": 0,
+      "discontinuity_transitions": [],
+      "first_discontinuity_transition": null,
+      "last_discontinuity_transition": null,
+      "prefix_trim_candidate": false,
+      "suspicious_reference": true,
+      "suspicious_reasons": [
+        "body_speed_gt_5mps",
+        "body_ang_speed_gt_20radps"
+      ]
+    },
+    "G1_WBT_Inspire_Put_Vegetables_Into_Basket_ep_0226": {
+      "path": "/root/shengyin/ScaleBFM/ScaleTrack/data/hat4_unifolm/processed/G1_WBT_Inspire_Put_Vegetables_Into_Basket_ep_0226.npz",
+      "frames": 1204,
+      "fps": 50.0,
+      "duration_s": 24.06,
+      "root_step_m": {
+        "mean": 0.0016189743075849569,
+        "p95": 0.005229850913224136,
+        "max": 0.08539497947027051
+      },
+      "body_step_m": {
+        "mean": 0.0017812009174502511,
+        "p95": 0.005414925400699841,
+        "max": 0.12303894252460867
+      },
+      "joint_step_rad": {
+        "mean": 0.0029201965090751777,
+        "p95": 0.014270532131195068,
+        "max": 0.49307654798030853
+      },
+      "body_linear_speed_mps": {
+        "mean": 0.09042451336362518,
+        "p95": 0.26348017883410646,
+        "max": 6.416406477902184
+      },
+      "body_angular_speed_radps": {
+        "mean": 0.27263219098412883,
+        "p95": 0.9847634108723812,
+        "max": 31.20699561080476
+      },
+      "max_root_step_transition": 1,
+      "max_body_step_transition": 1,
+      "discontinuity_transition_count": 0,
+      "discontinuity_transitions": [],
+      "first_discontinuity_transition": null,
+      "last_discontinuity_transition": null,
+      "prefix_trim_candidate": false,
+      "suspicious_reference": true,
+      "suspicious_reasons": [
+        "body_speed_gt_5mps",
+        "body_ang_speed_gt_20radps"
+      ]
+    }
+  },
+  "representative_motions": [
+    "G1_WBT_Inspire_Put_Clothes_into_Washing_Machine_ep_0006",
+    "G1_WBT_Brainco_Collect_Plates_Into_Dishwasher_ep_0007",
+    "G1_WBT_Inspire_Pick_Up_Drinks_ep_0046",
+    "G1_WBT_Brainco_Make_The_Bed_ep_0002",
+    "G1_WBT_Inspire_Put_Clothes_Into_Basket_ep_0012",
+    "G1_WBT_Brainco_Pickup_Pillow_ep_0022",
+    "G1_WBT_Inspire_Put_Vegetables_Into_Basket_ep_0155",
+    "G1_WBT_Inspire_Put_Clothes_into_Washing_Machine_ep_0009",
+    "G1_WBT_Brainco_Collect_Plates_Into_Dishwasher_ep_0013",
+    "G1_WBT_Inspire_Pick_Up_Drinks_ep_0095"
+  ]
+}

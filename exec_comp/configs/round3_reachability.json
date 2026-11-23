@@ -1,0 +1,1557 @@
+{
+  "chain_upper_bounds_cm": {
+    "head": 44.417816027998924,
+    "left_wrist": 72.18822203576565,
+    "right_wrist": 72.18784652650356
+  },
+  "shoulder_arm_upper_bounds_cm": {
+    "left": 41.03940725326538,
+    "right": 41.03940725326538
+  },
+  "nominal_head_threshold_cm": 44.4,
+  "nominal_threshold_note": "44.4cm is rounded; report it separately from the XML chain bound44.4178cm to avoid declaring rounding-scale deviations unreachable",
+  "bound_meaning": "root-to-link distance cannot exceed the sum of the fixed translations along the chain; the head bound includes the 0.4 m virtual head offset above torso_link",
+  "per_episode": [
+    {
+      "episode": 0,
+      "type": "human",
+      "source": "/mnt/nvme0n1/human_policy_ckpt/bottle0930_8runs_20261003_data/human_old/wholebody-63_unified_V.hdf5",
+      "shoulder_arm": {
+        "left": {
+          "frames": 11800,
+          "bound_cm": 41.03940725326538,
+          "fraction_beyond_reach": 1.0,
+          "distance_mean_cm": 70.55606245994568,
+          "distance_p95_cm": 75.27250438928604,
+          "distance_max_cm": 79.50073480606079,
+          "excess_mean_cm": 29.516653060913086,
+          "excess_p95_cm": 34.23309631347656
+        },
+        "right": {
+          "frames": 11800,
+          "bound_cm": 41.03940725326538,
+          "fraction_beyond_reach": 0.20940677966101695,
+          "distance_mean_cm": 36.40165328979492,
+          "distance_p95_cm": 47.49286323785782,
+          "distance_max_cm": 61.99023723602295,
+          "excess_mean_cm": 1.0725728273391724,
+          "excess_p95_cm": 6.453456091880796
+        }
+      },
+      "head": {
+        "frames": 11800,
+        "bound_cm": 44.417816027998924,
+        "fraction_beyond_reach": 1.0,
+        "distance_mean_cm": 58.5718035697937,
+        "distance_p95_cm": 60.13596951961517,
+        "distance_max_cm": 61.57889366149902,
+        "excess_mean_cm": 14.153985977172852,
+        "excess_p95_cm": 15.71815333366394
+      },
+      "left_wrist": {
+        "frames": 11800,
+        "bound_cm": 72.18822203576565,
+        "fraction_beyond_reach": 0.0,
+        "distance_mean_cm": 23.57134222984314,
+        "distance_p95_cm": 24.551665857434273,
+        "distance_max_cm": 27.982118725776672,
+        "excess_mean_cm": 0.0,
+        "excess_p95_cm": 0.0
+      },
+      "right_wrist": {
+        "frames": 11800,
+        "bound_cm": 72.18784652650356,
+        "fraction_beyond_reach": 0.0,
+        "distance_mean_cm": 59.28008556365967,
+        "distance_p95_cm": 65.28619915246964,
+        "distance_max_cm": 65.83083868026733,
+        "excess_mean_cm": 0.0,
+        "excess_p95_cm": 0.0
+      }
+    },
+    {
+      "episode": 1,
+      "type": "human",
+      "source": "/mnt/nvme0n1/human_policy_ckpt/bottle0930_8runs_20261003_data/human_old/wholebody-89_unified_V.hdf5",
+      "shoulder_arm": {
+        "left": {
+          "frames": 12200,
+          "bound_cm": 41.03940725326538,
+          "fraction_beyond_reach": 1.0,
+          "distance_mean_cm": 72.2848653793335,
+          "distance_p95_cm": 78.34894359111786,
+          "distance_max_cm": 85.91199517250061,
+          "excess_mean_cm": 31.24545669555664,
+          "excess_p95_cm": 37.3095380783081
+        },
+        "right": {
+          "frames": 12200,
+          "bound_cm": 41.03940725326538,
+          "fraction_beyond_reach": 0.24114754098360655,
+          "distance_mean_cm": 36.320891976356506,
+          "distance_p95_cm": 47.92044922709465,
+          "distance_max_cm": 54.30019497871399,
+          "excess_mean_cm": 1.1241182088851929,
+          "excess_p95_cm": 6.881042098999021
+        }
+      },
+      "head": {
+        "frames": 12200,
+        "bound_cm": 44.417816027998924,
+        "fraction_beyond_reach": 1.0,
+        "distance_mean_cm": 59.52832102775574,
+        "distance_p95_cm": 60.79966247081756,
+        "distance_max_cm": 61.9697630405426,
+        "excess_mean_cm": 15.110503196716309,
+        "excess_p95_cm": 16.38184585571289
+      },
+      "left_wrist": {
+        "frames": 12200,
+        "bound_cm": 72.18822203576565,
+        "fraction_beyond_reach": 0.0,
+        "distance_mean_cm": 23.44300150871277,
+        "distance_p95_cm": 25.694837123155594,
+        "distance_max_cm": 35.04754900932312,
+        "excess_mean_cm": 0.0,
+        "excess_p95_cm": 0.0
+      },
+      "right_wrist": {
+        "frames": 12200,
+        "bound_cm": 72.18784652650356,
+        "fraction_beyond_reach": 0.0,
+        "distance_mean_cm": 58.77391695976257,
+        "distance_p95_cm": 67.28327363729477,
+        "distance_max_cm": 67.77164936065674,
+        "excess_mean_cm": 0.0,
+        "excess_p95_cm": 0.0
+      }
+    },
+    {
+      "episode": 2,
+      "type": "human",
+      "source": "/mnt/nvme0n1/human_policy_ckpt/bottle0930_8runs_20261003_data/human_old/wholebody-109_unified_V.hdf5",
+      "shoulder_arm": {
+        "left": {
+          "frames": 10100,
+          "bound_cm": 41.03940725326538,
+          "fraction_beyond_reach": 1.0,
+          "distance_mean_cm": 74.94965195655823,
+          "distance_p95_cm": 79.99703139066696,
+          "distance_max_cm": 86.87946200370789,
+          "excess_mean_cm": 33.910240173339844,
+          "excess_p95_cm": 38.95762557983398
+        },
+        "right": {
+          "frames": 10100,
+          "bound_cm": 41.03940725326538,
+          "fraction_beyond_reach": 0.19217821782178218,
+          "distance_mean_cm": 36.172476410865784,
+          "distance_p95_cm": 46.429646760225296,
+          "distance_max_cm": 51.784008741378784,
+          "excess_mean_cm": 0.731164813041687,
+          "excess_p95_cm": 5.39023950099945
+        }
+      },
+      "head": {
+        "frames": 10100,
+        "bound_cm": 44.417816027998924,
+        "fraction_beyond_reach": 1.0,
+        "distance_mean_cm": 60.426920652389526,
+        "distance_p95_cm": 61.75062924623489,
+        "distance_max_cm": 63.30857872962952,
+        "excess_mean_cm": 16.009105682373047,
+        "excess_p95_cm": 17.332813262939453
+      },
+      "left_wrist": {
+        "frames": 10100,
+        "bound_cm": 72.18822203576565,
+        "fraction_beyond_reach": 0.0,
+        "distance_mean_cm": 23.019134998321533,
+        "distance_p95_cm": 23.821981623768803,
+        "distance_max_cm": 37.78097331523895,
+        "excess_mean_cm": 0.0,
+        "excess_p95_cm": 0.0
+      },
+      "right_wrist": {
+        "frames": 10100,
+        "bound_cm": 72.18784652650356,
+        "fraction_beyond_reach": 0.0,
+        "distance_mean_cm": 58.30860137939453,
+        "distance_p95_cm": 66.6212585568428,
+        "distance_max_cm": 68.02493929862976,
+        "excess_mean_cm": 0.0,
+        "excess_p95_cm": 0.0
+      }
+    },
+    {
+      "episode": 3,
+      "type": "human",
+      "source": "/mnt/nvme0n1/human_policy_ckpt/bottle0930_8runs_20261003_data/human_old/wholebody-121_unified_V.hdf5",
+      "shoulder_arm": {
+        "left": {
+          "frames": 11800,
+          "bound_cm": 41.03940725326538,
+          "fraction_beyond_reach": 1.0,
+          "distance_mean_cm": 75.31853914260864,
+          "distance_p95_cm": 78.56335192918777,
+          "distance_max_cm": 84.55922603607178,
+          "excess_mean_cm": 34.27914047241211,
+          "excess_p95_cm": 37.52394428253174
+        },
+        "right": {
+          "frames": 11800,
+          "bound_cm": 41.03940725326538,
+          "fraction_beyond_reach": 0.32652542372881355,
+          "distance_mean_cm": 38.318002223968506,
+          "distance_p95_cm": 52.40053802728652,
+          "distance_max_cm": 58.93436670303345,
+          "excess_mean_cm": 2.5278823375701904,
+          "excess_p95_cm": 11.361130332946775
+        }
+      },
+      "head": {
+        "frames": 11800,
+        "bound_cm": 44.417816027998924,
+        "fraction_beyond_reach": 1.0,
+        "distance_mean_cm": 59.362900257110596,
+        "distance_p95_cm": 60.534972250461585,
+        "distance_max_cm": 61.40747666358948,
+        "excess_mean_cm": 14.945087432861328,
+        "excess_p95_cm": 16.11715517044067
+      },
+      "left_wrist": {
+        "frames": 11800,
+        "bound_cm": 72.18822203576565,
+        "fraction_beyond_reach": 0.0,
+        "distance_mean_cm": 23.592425882816315,
+        "distance_p95_cm": 26.556672304868695,
+        "distance_max_cm": 33.49126577377319,
+        "excess_mean_cm": 0.0,
+        "excess_p95_cm": 0.0
+      },
+      "right_wrist": {
+        "frames": 11800,
+        "bound_cm": 72.18784652650356,
+        "fraction_beyond_reach": 0.0,
+        "distance_mean_cm": 55.38889765739441,
+        "distance_p95_cm": 64.37946826219559,
+        "distance_max_cm": 65.86597561836243,
+        "excess_mean_cm": 0.0,
+        "excess_p95_cm": 0.0
+      }
+    },
+    {
+      "episode": 4,
+      "type": "human",
+      "source": "/mnt/nvme0n1/human_policy_ckpt/bottle0930_8runs_20261003_data/human_old/wholebody-127_unified_V.hdf5",
+      "shoulder_arm": {
+        "left": {
+          "frames": 10100,
+          "bound_cm": 41.03940725326538,
+          "fraction_beyond_reach": 1.0,
+          "distance_mean_cm": 74.26379919052124,
+          "distance_p95_cm": 76.18622183799744,
+          "distance_max_cm": 76.79587006568909,
+          "excess_mean_cm": 33.224388122558594,
+          "excess_p95_cm": 35.14681453704834
+        },
+        "right": {
+          "frames": 10100,
+          "bound_cm": 41.03940725326538,
+          "fraction_beyond_reach": 0.18405940594059406,
+          "distance_mean_cm": 37.01682984828949,
+          "distance_p95_cm": 46.187651455402374,
+          "distance_max_cm": 47.923192381858826,
+          "excess_mean_cm": 0.6260472536087036,
+          "excess_p95_cm": 5.148244309425353
+        }
+      },
+      "head": {
+        "frames": 10100,
+        "bound_cm": 44.417816027998924,
+        "fraction_beyond_reach": 1.0,
+        "distance_mean_cm": 59.604692459106445,
+        "distance_p95_cm": 60.7788160443306,
+        "distance_max_cm": 60.989415645599365,
+        "excess_mean_cm": 15.186881065368652,
+        "excess_p95_cm": 16.36099967956543
+      },
+      "left_wrist": {
+        "frames": 10100,
+        "bound_cm": 72.18822203576565,
+        "fraction_beyond_reach": 0.0,
+        "distance_mean_cm": 22.955422103405,
+        "distance_p95_cm": 23.716579750180244,
+        "distance_max_cm": 24.473774433135986,
+        "excess_mean_cm": 0.0,
+        "excess_p95_cm": 0.0
+      },
+      "right_wrist": {
+        "frames": 10100,
+        "bound_cm": 72.18784652650356,
+        "fraction_beyond_reach": 0.0,
+        "distance_mean_cm": 56.877726316452026,
+        "distance_p95_cm": 64.65448141098022,
+        "distance_max_cm": 65.31256437301636,
+        "excess_mean_cm": 0.0,
+        "excess_p95_cm": 0.0
+      }
+    },
+    {
+      "episode": 5,
+      "type": "human",
+      "source": "/mnt/nvme0n1/human_policy_ckpt/bottle0930_8runs_20261003_data/human_old/wholebody-132_unified_V.hdf5",
+      "shoulder_arm": {
+        "left": {
+          "frames": 9900,
+          "bound_cm": 41.03940725326538,
+          "fraction_beyond_reach": 1.0,
+          "distance_mean_cm": 73.67439270019531,
+          "distance_p95_cm": 76.38441264629364,
+          "distance_max_cm": 76.71143412590027,
+          "excess_mean_cm": 32.634986877441406,
+          "excess_p95_cm": 35.34500503540039
+        },
+        "right": {
+          "frames": 9900,
+          "bound_cm": 41.03940725326538,
+          "fraction_beyond_reach": 0.20444444444444446,
+          "distance_mean_cm": 35.04941761493683,
+          "distance_p95_cm": 46.08460471034049,
+          "distance_max_cm": 49.45909380912781,
+          "excess_mean_cm": 0.7011805772781372,
+          "excess_p95_cm": 5.045197343826287
+        }
+      },
+      "head": {
+        "frames": 9900,
+        "bound_cm": 44.417816027998924,
+        "fraction_beyond_reach": 1.0,
+        "distance_mean_cm": 60.36670207977295,
+        "distance_p95_cm": 62.19404816627503,
+        "distance_max_cm": 62.37896680831909,
+        "excess_mean_cm": 15.948888778686523,
+        "excess_p95_cm": 17.776231575012208
+      },
+      "left_wrist": {
+        "frames": 9900,
+        "bound_cm": 72.18822203576565,
+        "fraction_beyond_reach": 0.0,
+        "distance_mean_cm": 23.280978202819824,
+        "distance_p95_cm": 24.240103736519814,
+        "distance_max_cm": 25.669097900390625,
+        "excess_mean_cm": 0.0,
+        "excess_p95_cm": 0.0
+      },
+      "right_wrist": {
+        "frames": 9900,
+        "bound_cm": 72.18784652650356,
+        "fraction_beyond_reach": 0.0,
+        "distance_mean_cm": 58.757734298706055,
+        "distance_p95_cm": 67.76230692863464,
+        "distance_max_cm": 68.7559723854065,
+        "excess_mean_cm": 0.0,
+        "excess_p95_cm": 0.0
+      }
+    },
+    {
+      "episode": 6,
+      "type": "human",
+      "source": "/mnt/nvme0n1/human_policy_ckpt/bottle0930_8runs_20261003_data/human_old/wholebody-146_unified_V.hdf5",
+      "shoulder_arm": {
+        "left": {
+          "frames": 11000,
+          "bound_cm": 41.03940725326538,
+          "fraction_beyond_reach": 1.0,
+          "distance_mean_cm": 101.55131816864014,
+          "distance_p95_cm": 143.43214571475983,
+          "distance_max_cm": 147.76010513305664,
+          "excess_mean_cm": 60.511898040771484,
+          "excess_p95_cm": 102.39274024963379
+        },
+        "right": {
+          "frames": 11000,
+          "bound_cm": 41.03940725326538,
+          "fraction_beyond_reach": 0.16627272727272727,
+          "distance_mean_cm": 36.24243140220642,
+          "distance_p95_cm": 49.20363485813141,
+          "distance_max_cm": 57.1988046169281,
+          "excess_mean_cm": 0.9823954105377197,
+          "excess_p95_cm": 8.164227485656737
+        }
+      },
+      "head": {
+        "frames": 11000,
+        "bound_cm": 44.417816027998924,
+        "fraction_beyond_reach": 1.0,
+        "distance_mean_cm": 58.96165370941162,
+        "distance_p95_cm": 59.960276782512665,
+        "distance_max_cm": 60.21069884300232,
+        "excess_mean_cm": 14.543835639953613,
+        "excess_p95_cm": 15.542460393905639
+      },
+      "left_wrist": {
+        "frames": 11000,
+        "bound_cm": 72.18822203576565,
+        "fraction_beyond_reach": 0.41818181818181815,
+        "distance_mean_cm": 57.69659876823425,
+        "distance_p95_cm": 108.02933216094969,
+        "distance_max_cm": 111.81678771972656,
+        "excess_mean_cm": 13.89455795288086,
+        "excess_p95_cm": 35.84110927581787
+      },
+      "right_wrist": {
+        "frames": 11000,
+        "bound_cm": 72.18784652650356,
+        "fraction_beyond_reach": 0.0,
+        "distance_mean_cm": 53.934693336486816,
+        "distance_p95_cm": 61.02130532264709,
+        "distance_max_cm": 62.90818452835083,
+        "excess_mean_cm": 0.0,
+        "excess_p95_cm": 0.0
+      }
+    },
+    {
+      "episode": 7,
+      "type": "human",
+      "source": "/mnt/nvme0n1/human_policy_ckpt/bottle0930_8runs_20261003_data/human_old/wholebody-153_unified_V.hdf5",
+      "shoulder_arm": {
+        "left": {
+          "frames": 12500,
+          "bound_cm": 41.03940725326538,
+          "fraction_beyond_reach": 1.0,
+          "distance_mean_cm": 136.4385485649109,
+          "distance_p95_cm": 143.40375363826752,
+          "distance_max_cm": 150.44326782226562,
+          "excess_mean_cm": 95.39913940429688,
+          "excess_p95_cm": 102.36434402465821
+        },
+        "right": {
+          "frames": 12500,
+          "bound_cm": 41.03940725326538,
+          "fraction_beyond_reach": 0.1052,
+          "distance_mean_cm": 35.616305470466614,
+          "distance_p95_cm": 46.00436076521873,
+          "distance_max_cm": 54.12040948867798,
+          "excess_mean_cm": 0.5411875247955322,
+          "excess_p95_cm": 4.964953279495231
+        }
+      },
+      "head": {
+        "frames": 12500,
+        "bound_cm": 44.417816027998924,
+        "fraction_beyond_reach": 1.0,
+        "distance_mean_cm": 59.41063165664673,
+        "distance_p95_cm": 60.42528748512268,
+        "distance_max_cm": 60.703325271606445,
+        "excess_mean_cm": 14.992817878723145,
+        "excess_p95_cm": 16.00747127532959
+      },
+      "left_wrist": {
+        "frames": 12500,
+        "bound_cm": 72.18822203576565,
+        "fraction_beyond_reach": 0.91856,
+        "distance_mean_cm": 98.9323616027832,
+        "distance_p95_cm": 107.2531658411026,
+        "distance_max_cm": 114.02682065963745,
+        "excess_mean_cm": 28.802579879760742,
+        "excess_p95_cm": 35.064941596984866
+      },
+      "right_wrist": {
+        "frames": 12500,
+        "bound_cm": 72.18784652650356,
+        "fraction_beyond_reach": 0.0,
+        "distance_mean_cm": 54.52492833137512,
+        "distance_p95_cm": 61.35720819234848,
+        "distance_max_cm": 61.92348599433899,
+        "excess_mean_cm": 0.0,
+        "excess_p95_cm": 0.0
+      }
+    },
+    {
+      "episode": 8,
+      "type": "human",
+      "source": "/mnt/nvme0n1/human_policy_ckpt/bottle0930_8runs_20261003_data/human_old/wholebody-158_unified_V.hdf5",
+      "shoulder_arm": {
+        "left": {
+          "frames": 9700,
+          "bound_cm": 41.03940725326538,
+          "fraction_beyond_reach": 1.0,
+          "distance_mean_cm": 75.25922060012817,
+          "distance_p95_cm": 79.63146924972534,
+          "distance_max_cm": 88.4981095790863,
+          "excess_mean_cm": 34.219818115234375,
+          "excess_p95_cm": 38.59206180572509
+        },
+        "right": {
+          "frames": 9700,
+          "bound_cm": 41.03940725326538,
+          "fraction_beyond_reach": 0.13484536082474227,
+          "distance_mean_cm": 35.70742309093475,
+          "distance_p95_cm": 50.94492435455321,
+          "distance_max_cm": 63.98363709449768,
+          "excess_mean_cm": 1.0298048257827759,
+          "excess_p95_cm": 9.905517101287835
+        }
+      },
+      "head": {
+        "frames": 9700,
+        "bound_cm": 44.417816027998924,
+        "fraction_beyond_reach": 1.0,
+        "distance_mean_cm": 59.531718492507935,
+        "distance_p95_cm": 60.74893116950989,
+        "distance_max_cm": 61.44810914993286,
+        "excess_mean_cm": 15.113900184631348,
+        "excess_p95_cm": 16.33111457824707
+      },
+      "left_wrist": {
+        "frames": 9700,
+        "bound_cm": 72.18822203576565,
+        "fraction_beyond_reach": 0.0,
+        "distance_mean_cm": 24.540194869041443,
+        "distance_p95_cm": 33.081284761428826,
+        "distance_max_cm": 45.207929611206055,
+        "excess_mean_cm": 0.0,
+        "excess_p95_cm": 0.0
+      },
+      "right_wrist": {
+        "frames": 9700,
+        "bound_cm": 72.18784652650356,
+        "fraction_beyond_reach": 0.0,
+        "distance_mean_cm": 54.41378355026245,
+        "distance_p95_cm": 61.408614218235016,
+        "distance_max_cm": 62.07786798477173,
+        "excess_mean_cm": 0.0,
+        "excess_p95_cm": 0.0
+      }
+    },
+    {
+      "episode": 9,
+      "type": "human",
+      "source": "/mnt/nvme0n1/human_policy_ckpt/bottle0930_8runs_20261003_data/human_old/wholebody-162_unified_V.hdf5",
+      "shoulder_arm": {
+        "left": {
+          "frames": 11400,
+          "bound_cm": 41.03940725326538,
+          "fraction_beyond_reach": 1.0,
+          "distance_mean_cm": 75.12387037277222,
+          "distance_p95_cm": 78.33092719316483,
+          "distance_max_cm": 81.15224242210388,
+          "excess_mean_cm": 34.0844612121582,
+          "excess_p95_cm": 37.291520309448245
+        },
+        "right": {
+          "frames": 11400,
+          "bound_cm": 41.03940725326538,
+          "fraction_beyond_reach": 0.14719298245614035,
+          "distance_mean_cm": 35.410481691360474,
+          "distance_p95_cm": 46.568027287721634,
+          "distance_max_cm": 52.878618240356445,
+          "excess_mean_cm": 0.6441555023193359,
+          "excess_p95_cm": 5.528620028495787
+        }
+      },
+      "head": {
+        "frames": 11400,
+        "bound_cm": 44.417816027998924,
+        "fraction_beyond_reach": 1.0,
+        "distance_mean_cm": 59.1535747051239,
+        "distance_p95_cm": 60.260511338710785,
+        "distance_max_cm": 60.625070333480835,
+        "excess_mean_cm": 14.735766410827637,
+        "excess_p95_cm": 15.842694950103759
+      },
+      "left_wrist": {
+        "frames": 11400,
+        "bound_cm": 72.18822203576565,
+        "fraction_beyond_reach": 0.0,
+        "distance_mean_cm": 23.160643875598907,
+        "distance_p95_cm": 24.25127886235714,
+        "distance_max_cm": 25.823241472244263,
+        "excess_mean_cm": 0.0,
+        "excess_p95_cm": 0.0
+      },
+      "right_wrist": {
+        "frames": 11400,
+        "bound_cm": 72.18784652650356,
+        "fraction_beyond_reach": 0.0,
+        "distance_mean_cm": 51.8660843372345,
+        "distance_p95_cm": 59.86535847187042,
+        "distance_max_cm": 60.71489453315735,
+        "excess_mean_cm": 0.0,
+        "excess_p95_cm": 0.0
+      }
+    },
+    {
+      "episode": 10,
+      "type": "human",
+      "source": "/mnt/nvme0n1/human_policy_ckpt/bottle0930_8runs_20261003_data/human_old/wholebody-177_unified_V.hdf5",
+      "shoulder_arm": {
+        "left": {
+          "frames": 11600,
+          "bound_cm": 41.03940725326538,
+          "fraction_beyond_reach": 1.0,
+          "distance_mean_cm": 75.31383633613586,
+          "distance_p95_cm": 81.08086466789246,
+          "distance_max_cm": 85.97915768623352,
+          "excess_mean_cm": 34.27443313598633,
+          "excess_p95_cm": 40.04145927429199
+        },
+        "right": {
+          "frames": 11600,
+          "bound_cm": 41.03940725326538,
+          "fraction_beyond_reach": 0.22198275862068967,
+          "distance_mean_cm": 36.65074408054352,
+          "distance_p95_cm": 48.34493860602379,
+          "distance_max_cm": 54.7078013420105,
+          "excess_mean_cm": 1.1765093803405762,
+          "excess_p95_cm": 7.305531454086304
+        }
+      },
+      "head": {
+        "frames": 11600,
+        "bound_cm": 44.417816027998924,
+        "fraction_beyond_reach": 1.0,
+        "distance_mean_cm": 58.877938985824585,
+        "distance_p95_cm": 60.12877345085143,
+        "distance_max_cm": 60.45240759849548,
+        "excess_mean_cm": 14.460121154785156,
+        "excess_p95_cm": 15.710956573486328
+      },
+      "left_wrist": {
+        "frames": 11600,
+        "bound_cm": 72.18822203576565,
+        "fraction_beyond_reach": 0.0,
+        "distance_mean_cm": 24.42840337753296,
+        "distance_p95_cm": 28.47206503152847,
+        "distance_max_cm": 36.173224449157715,
+        "excess_mean_cm": 0.0,
+        "excess_p95_cm": 0.0
+      },
+      "right_wrist": {
+        "frames": 11600,
+        "bound_cm": 72.18784652650356,
+        "fraction_beyond_reach": 0.0,
+        "distance_mean_cm": 52.25181579589844,
+        "distance_p95_cm": 60.0963133573532,
+        "distance_max_cm": 62.004005908966064,
+        "excess_mean_cm": 0.0,
+        "excess_p95_cm": 0.0
+      }
+    },
+    {
+      "episode": 11,
+      "type": "human",
+      "source": "/mnt/nvme0n1/human_policy_ckpt/bottle0930_8runs_20261003_data/human_old/wholebody-179_unified_V.hdf5",
+      "shoulder_arm": {
+        "left": {
+          "frames": 10500,
+          "bound_cm": 41.03940725326538,
+          "fraction_beyond_reach": 1.0,
+          "distance_mean_cm": 76.518714427948,
+          "distance_p95_cm": 79.16901618242264,
+          "distance_max_cm": 86.70238852500916,
+          "excess_mean_cm": 35.479305267333984,
+          "excess_p95_cm": 38.12961082458496
+        },
+        "right": {
+          "frames": 10500,
+          "bound_cm": 41.03940725326538,
+          "fraction_beyond_reach": 0.0919047619047619,
+          "distance_mean_cm": 35.21438241004944,
+          "distance_p95_cm": 43.64665687084197,
+          "distance_max_cm": 55.714040994644165,
+          "excess_mean_cm": 0.41822510957717896,
+          "excess_p95_cm": 2.6072494983672994
+        }
+      },
+      "head": {
+        "frames": 10500,
+        "bound_cm": 44.417816027998924,
+        "fraction_beyond_reach": 1.0,
+        "distance_mean_cm": 59.995245933532715,
+        "distance_p95_cm": 61.13632380962372,
+        "distance_max_cm": 61.603593826293945,
+        "excess_mean_cm": 15.577431678771973,
+        "excess_p95_cm": 16.71850652694702
+      },
+      "left_wrist": {
+        "frames": 10500,
+        "bound_cm": 72.18822203576565,
+        "fraction_beyond_reach": 0.0,
+        "distance_mean_cm": 24.11740869283676,
+        "distance_p95_cm": 26.018910706043236,
+        "distance_max_cm": 33.42231810092926,
+        "excess_mean_cm": 0.0,
+        "excess_p95_cm": 0.0
+      },
+      "right_wrist": {
+        "frames": 10500,
+        "bound_cm": 72.18784652650356,
+        "fraction_beyond_reach": 0.0,
+        "distance_mean_cm": 54.936349391937256,
+        "distance_p95_cm": 61.4072072505951,
+        "distance_max_cm": 62.6268744468689,
+        "excess_mean_cm": 0.0,
+        "excess_p95_cm": 0.0
+      }
+    },
+    {
+      "episode": 12,
+      "type": "human",
+      "source": "/mnt/nvme0n1/human_policy_ckpt/bottle0930_8runs_20261003_data/human_old/wholebody-185_unified_V.hdf5",
+      "shoulder_arm": {
+        "left": {
+          "frames": 10600,
+          "bound_cm": 41.03940725326538,
+          "fraction_beyond_reach": 1.0,
+          "distance_mean_cm": 74.38839673995972,
+          "distance_p95_cm": 77.95459598302841,
+          "distance_max_cm": 80.44590950012207,
+          "excess_mean_cm": 33.3489875793457,
+          "excess_p95_cm": 36.9151870727539
+        },
+        "right": {
+          "frames": 10600,
+          "bound_cm": 41.03940725326538,
+          "fraction_beyond_reach": 0.1399056603773585,
+          "distance_mean_cm": 35.75524687767029,
+          "distance_p95_cm": 45.8381187915802,
+          "distance_max_cm": 48.49867224693298,
+          "excess_mean_cm": 0.5291778445243835,
+          "excess_p95_cm": 4.798711657524108
+        }
+      },
+      "head": {
+        "frames": 10600,
+        "bound_cm": 44.417816027998924,
+        "fraction_beyond_reach": 1.0,
+        "distance_mean_cm": 59.14573669433594,
+        "distance_p95_cm": 60.42147517204285,
+        "distance_max_cm": 60.746002197265625,
+        "excess_mean_cm": 14.727920532226562,
+        "excess_p95_cm": 16.003658771514893
+      },
+      "left_wrist": {
+        "frames": 10600,
+        "bound_cm": 72.18822203576565,
+        "fraction_beyond_reach": 0.0,
+        "distance_mean_cm": 23.231448233127594,
+        "distance_p95_cm": 24.884577393531796,
+        "distance_max_cm": 33.05860459804535,
+        "excess_mean_cm": 0.0,
+        "excess_p95_cm": 0.0
+      },
+      "right_wrist": {
+        "frames": 10600,
+        "bound_cm": 72.18784652650356,
+        "fraction_beyond_reach": 0.0,
+        "distance_mean_cm": 54.24055457115173,
+        "distance_p95_cm": 60.603371560573585,
+        "distance_max_cm": 61.84689402580261,
+        "excess_mean_cm": 0.0,
+        "excess_p95_cm": 0.0
+      }
+    },
+    {
+      "episode": 13,
+      "type": "human",
+      "source": "/mnt/nvme0n1/human_policy_ckpt/bottle0930_8runs_20261003_data/human_old/wholebody-186_unified_V.hdf5",
+      "shoulder_arm": {
+        "left": {
+          "frames": 9100,
+          "bound_cm": 41.03940725326538,
+          "fraction_beyond_reach": 1.0,
+          "distance_mean_cm": 74.46691989898682,
+          "distance_p95_cm": 84.45589393377304,
+          "distance_max_cm": 92.45931506156921,
+          "excess_mean_cm": 33.42751693725586,
+          "excess_p95_cm": 43.41648712158203
+        },
+        "right": {
+          "frames": 9100,
+          "bound_cm": 41.03940725326538,
+          "fraction_beyond_reach": 0.2076923076923077,
+          "distance_mean_cm": 37.53083050251007,
+          "distance_p95_cm": 48.45158025622368,
+          "distance_max_cm": 51.6351044178009,
+          "excess_mean_cm": 1.019304871559143,
+          "excess_p95_cm": 7.41217288970947
+        }
+      },
+      "head": {
+        "frames": 9100,
+        "bound_cm": 44.417816027998924,
+        "fraction_beyond_reach": 1.0,
+        "distance_mean_cm": 59.36248302459717,
+        "distance_p95_cm": 61.18857741355897,
+        "distance_max_cm": 62.33629584312439,
+        "excess_mean_cm": 14.944666862487793,
+        "excess_p95_cm": 16.770761013031006
+      },
+      "left_wrist": {
+        "frames": 9100,
+        "bound_cm": 72.18822203576565,
+        "fraction_beyond_reach": 0.0,
+        "distance_mean_cm": 23.827287554740906,
+        "distance_p95_cm": 29.918566495180123,
+        "distance_max_cm": 40.23406803607941,
+        "excess_mean_cm": 0.0,
+        "excess_p95_cm": 0.0
+      },
+      "right_wrist": {
+        "frames": 9100,
+        "bound_cm": 72.18784652650356,
+        "fraction_beyond_reach": 0.0,
+        "distance_mean_cm": 53.4715473651886,
+        "distance_p95_cm": 62.81975120306015,
+        "distance_max_cm": 63.424938917160034,
+        "excess_mean_cm": 0.0,
+        "excess_p95_cm": 0.0
+      }
+    },
+    {
+      "episode": 14,
+      "type": "human",
+      "source": "/mnt/nvme0n1/human_policy_ckpt/bottle0930_8runs_20261003_data/human_old/wholebody-206_unified_V.hdf5",
+      "shoulder_arm": {
+        "left": {
+          "frames": 8200,
+          "bound_cm": 41.03940725326538,
+          "fraction_beyond_reach": 1.0,
+          "distance_mean_cm": 75.51193237304688,
+          "distance_p95_cm": 85.0704175233841,
+          "distance_max_cm": 90.54167866706848,
+          "excess_mean_cm": 34.47252655029297,
+          "excess_p95_cm": 44.03101177215576
+        },
+        "right": {
+          "frames": 8200,
+          "bound_cm": 41.03940725326538,
+          "fraction_beyond_reach": 0.14292682926829267,
+          "distance_mean_cm": 36.33390665054321,
+          "distance_p95_cm": 49.04346406459808,
+          "distance_max_cm": 51.40858292579651,
+          "excess_mean_cm": 0.7937185764312744,
+          "excess_p95_cm": 8.004057168960568
+        }
+      },
+      "head": {
+        "frames": 8200,
+        "bound_cm": 44.417816027998924,
+        "fraction_beyond_reach": 1.0,
+        "distance_mean_cm": 58.80497694015503,
+        "distance_p95_cm": 60.206549167633064,
+        "distance_max_cm": 60.464245080947876,
+        "excess_mean_cm": 14.387162208557129,
+        "excess_p95_cm": 15.788732528686523
+      },
+      "left_wrist": {
+        "frames": 8200,
+        "bound_cm": 72.18822203576565,
+        "fraction_beyond_reach": 0.0,
+        "distance_mean_cm": 24.171684682369232,
+        "distance_p95_cm": 30.645677000284188,
+        "distance_max_cm": 36.71686053276062,
+        "excess_mean_cm": 0.0,
+        "excess_p95_cm": 0.0
+      },
+      "right_wrist": {
+        "frames": 8200,
+        "bound_cm": 72.18784652650356,
+        "fraction_beyond_reach": 0.0,
+        "distance_mean_cm": 51.47297978401184,
+        "distance_p95_cm": 59.439122378826134,
+        "distance_max_cm": 60.642051696777344,
+        "excess_mean_cm": 0.0,
+        "excess_p95_cm": 0.0
+      }
+    },
+    {
+      "episode": 15,
+      "type": "robot",
+      "source": "/mnt/nvme0n1/human_policy_ckpt/bottle0930_8runs_20261003_data/robot_new/SONIC_Dex5_20260930_ep_0009_rootfix.hdf5",
+      "shoulder_arm": {
+        "left": {
+          "frames": 6100,
+          "bound_cm": 41.03940725326538,
+          "fraction_beyond_reach": 0.0,
+          "distance_mean_cm": 36.450451612472534,
+          "distance_p95_cm": 36.93326994776726,
+          "distance_max_cm": 37.26509213447571,
+          "excess_mean_cm": 0.0,
+          "excess_p95_cm": 0.0
+        },
+        "right": {
+          "frames": 6100,
+          "bound_cm": 41.03940725326538,
+          "fraction_beyond_reach": 0.0,
+          "distance_mean_cm": 29.228875041007996,
+          "distance_p95_cm": 39.28687080740929,
+          "distance_max_cm": 40.42154550552368,
+          "excess_mean_cm": 0.0,
+          "excess_p95_cm": 0.0
+        }
+      },
+      "head": {
+        "frames": 6100,
+        "bound_cm": 44.417816027998924,
+        "fraction_beyond_reach": 0.3549180327868853,
+        "distance_mean_cm": 44.408851861953735,
+        "distance_p95_cm": 44.489334374666214,
+        "distance_max_cm": 44.528478384017944,
+        "excess_mean_cm": 0.010538200847804546,
+        "excess_p95_cm": 0.07151797413825992
+      },
+      "left_wrist": {
+        "frames": 6100,
+        "bound_cm": 72.18822203576565,
+        "fraction_beyond_reach": 0.0,
+        "distance_mean_cm": 25.45298933982849,
+        "distance_p95_cm": 27.69672453403473,
+        "distance_max_cm": 30.243030190467834,
+        "excess_mean_cm": 0.0,
+        "excess_p95_cm": 0.0
+      },
+      "right_wrist": {
+        "frames": 6100,
+        "bound_cm": 72.18784652650356,
+        "fraction_beyond_reach": 0.0,
+        "distance_mean_cm": 31.686976552009583,
+        "distance_p95_cm": 37.99838811159134,
+        "distance_max_cm": 43.446722626686096,
+        "excess_mean_cm": 0.0,
+        "excess_p95_cm": 0.0
+      }
+    },
+    {
+      "episode": 16,
+      "type": "robot",
+      "source": "/mnt/nvme0n1/human_policy_ckpt/bottle0930_8runs_20261003_data/robot_new/SONIC_Dex5_20260930_ep_0012_rootfix.hdf5",
+      "shoulder_arm": {
+        "left": {
+          "frames": 6300,
+          "bound_cm": 41.03940725326538,
+          "fraction_beyond_reach": 0.0,
+          "distance_mean_cm": 35.857513546943665,
+          "distance_p95_cm": 36.46136626601219,
+          "distance_max_cm": 36.91454827785492,
+          "excess_mean_cm": 0.0,
+          "excess_p95_cm": 0.0
+        },
+        "right": {
+          "frames": 6300,
+          "bound_cm": 41.03940725326538,
+          "fraction_beyond_reach": 0.0004761904761904762,
+          "distance_mean_cm": 28.599631786346436,
+          "distance_p95_cm": 38.98758351802826,
+          "distance_max_cm": 41.530680656433105,
+          "excess_mean_cm": 0.00010234259389108047,
+          "excess_p95_cm": 0.0
+        }
+      },
+      "head": {
+        "frames": 6300,
+        "bound_cm": 44.417816027998924,
+        "fraction_beyond_reach": 0.2706349206349206,
+        "distance_mean_cm": 44.39952373504639,
+        "distance_p95_cm": 44.454778879880905,
+        "distance_max_cm": 44.50502693653107,
+        "excess_mean_cm": 0.005746777169406414,
+        "excess_p95_cm": 0.03696247935295098
+      },
+      "left_wrist": {
+        "frames": 6300,
+        "bound_cm": 72.18822203576565,
+        "fraction_beyond_reach": 0.0,
+        "distance_mean_cm": 25.75812339782715,
+        "distance_p95_cm": 28.12432214617729,
+        "distance_max_cm": 30.72025775909424,
+        "excess_mean_cm": 0.0,
+        "excess_p95_cm": 0.0
+      },
+      "right_wrist": {
+        "frames": 6300,
+        "bound_cm": 72.18784652650356,
+        "fraction_beyond_reach": 0.0,
+        "distance_mean_cm": 31.64890706539154,
+        "distance_p95_cm": 36.924645602703094,
+        "distance_max_cm": 42.16553568840027,
+        "excess_mean_cm": 0.0,
+        "excess_p95_cm": 0.0
+      }
+    },
+    {
+      "episode": 17,
+      "type": "robot",
+      "source": "/mnt/nvme0n1/human_policy_ckpt/bottle0930_8runs_20261003_data/robot_new/SONIC_Dex5_20260930_ep_0017_rootfix.hdf5",
+      "shoulder_arm": {
+        "left": {
+          "frames": 5700,
+          "bound_cm": 41.03940725326538,
+          "fraction_beyond_reach": 0.0,
+          "distance_mean_cm": 36.87862753868103,
+          "distance_p95_cm": 37.57798746228218,
+          "distance_max_cm": 37.848737835884094,
+          "excess_mean_cm": 0.0,
+          "excess_p95_cm": 0.0
+        },
+        "right": {
+          "frames": 5700,
+          "bound_cm": 41.03940725326538,
+          "fraction_beyond_reach": 0.0,
+          "distance_mean_cm": 29.300963878631592,
+          "distance_p95_cm": 38.79155859351158,
+          "distance_max_cm": 40.72014093399048,
+          "excess_mean_cm": 0.0,
+          "excess_p95_cm": 0.0
+        }
+      },
+      "head": {
+        "frames": 5700,
+        "bound_cm": 44.417816027998924,
+        "fraction_beyond_reach": 0.16578947368421051,
+        "distance_mean_cm": 44.38645839691162,
+        "distance_p95_cm": 44.4534732401371,
+        "distance_max_cm": 44.532084465026855,
+        "excess_mean_cm": 0.004560114350169897,
+        "excess_p95_cm": 0.035656839609146125
+      },
+      "left_wrist": {
+        "frames": 5700,
+        "bound_cm": 72.18822203576565,
+        "fraction_beyond_reach": 0.0,
+        "distance_mean_cm": 23.455001413822174,
+        "distance_p95_cm": 26.503262370824814,
+        "distance_max_cm": 28.138568997383118,
+        "excess_mean_cm": 0.0,
+        "excess_p95_cm": 0.0
+      },
+      "right_wrist": {
+        "frames": 5700,
+        "bound_cm": 72.18784652650356,
+        "fraction_beyond_reach": 0.0,
+        "distance_mean_cm": 33.157116174697876,
+        "distance_p95_cm": 42.53490462899209,
+        "distance_max_cm": 47.229382395744324,
+        "excess_mean_cm": 0.0,
+        "excess_p95_cm": 0.0
+      }
+    },
+    {
+      "episode": 18,
+      "type": "robot",
+      "source": "/mnt/nvme0n1/human_policy_ckpt/bottle0930_8runs_20261003_data/robot_new/SONIC_Dex5_20260930_ep_0018_rootfix.hdf5",
+      "shoulder_arm": {
+        "left": {
+          "frames": 6100,
+          "bound_cm": 41.03940725326538,
+          "fraction_beyond_reach": 0.0,
+          "distance_mean_cm": 36.64816617965698,
+          "distance_p95_cm": 37.30109006166458,
+          "distance_max_cm": 37.479615211486816,
+          "excess_mean_cm": 0.0,
+          "excess_p95_cm": 0.0
+        },
+        "right": {
+          "frames": 6100,
+          "bound_cm": 41.03940725326538,
+          "fraction_beyond_reach": 0.0,
+          "distance_mean_cm": 29.783767461776733,
+          "distance_p95_cm": 39.07275751233101,
+          "distance_max_cm": 40.57844877243042,
+          "excess_mean_cm": 0.0,
+          "excess_p95_cm": 0.0
+        }
+      },
+      "head": {
+        "frames": 6100,
+        "bound_cm": 44.417816027998924,
+        "fraction_beyond_reach": 0.17655737704918031,
+        "distance_mean_cm": 44.37958002090454,
+        "distance_p95_cm": 44.4500532746315,
+        "distance_max_cm": 44.50029730796814,
+        "excess_mean_cm": 0.004508461337536573,
+        "excess_p95_cm": 0.032236874103546184
+      },
+      "left_wrist": {
+        "frames": 6100,
+        "bound_cm": 72.18822203576565,
+        "fraction_beyond_reach": 0.0,
+        "distance_mean_cm": 23.756948113441467,
+        "distance_p95_cm": 26.461669355630875,
+        "distance_max_cm": 27.810189127922058,
+        "excess_mean_cm": 0.0,
+        "excess_p95_cm": 0.0
+      },
+      "right_wrist": {
+        "frames": 6100,
+        "bound_cm": 72.18784652650356,
+        "fraction_beyond_reach": 0.0,
+        "distance_mean_cm": 33.635178208351135,
+        "distance_p95_cm": 41.383376121521,
+        "distance_max_cm": 44.141826033592224,
+        "excess_mean_cm": 0.0,
+        "excess_p95_cm": 0.0
+      }
+    },
+    {
+      "episode": 19,
+      "type": "robot",
+      "source": "/mnt/nvme0n1/human_policy_ckpt/bottle0930_8runs_20261003_data/robot_new/SONIC_Dex5_20260930_ep_0032_rootfix.hdf5",
+      "shoulder_arm": {
+        "left": {
+          "frames": 6600,
+          "bound_cm": 41.03940725326538,
+          "fraction_beyond_reach": 0.0,
+          "distance_mean_cm": 37.46655285358429,
+          "distance_p95_cm": 38.03400829434395,
+          "distance_max_cm": 38.50135803222656,
+          "excess_mean_cm": 0.0,
+          "excess_p95_cm": 0.0
+        },
+        "right": {
+          "frames": 6600,
+          "bound_cm": 41.03940725326538,
+          "fraction_beyond_reach": 0.03090909090909091,
+          "distance_mean_cm": 31.879261136054993,
+          "distance_p95_cm": 40.74378982186317,
+          "distance_max_cm": 42.455852031707764,
+          "excess_mean_cm": 0.015641311183571815,
+          "excess_p95_cm": 0.0
+        }
+      },
+      "head": {
+        "frames": 6600,
+        "bound_cm": 44.417816027998924,
+        "fraction_beyond_reach": 0.4643939393939394,
+        "distance_mean_cm": 44.42159831523895,
+        "distance_p95_cm": 44.5315183699131,
+        "distance_max_cm": 44.59503889083862,
+        "excess_mean_cm": 0.023761382326483727,
+        "excess_p95_cm": 0.11370196938514701
+      },
+      "left_wrist": {
+        "frames": 6600,
+        "bound_cm": 72.18822203576565,
+        "fraction_beyond_reach": 0.0,
+        "distance_mean_cm": 24.878042936325073,
+        "distance_p95_cm": 26.956098079681396,
+        "distance_max_cm": 28.883570432662964,
+        "excess_mean_cm": 0.0,
+        "excess_p95_cm": 0.0
+      },
+      "right_wrist": {
+        "frames": 6600,
+        "bound_cm": 72.18784652650356,
+        "fraction_beyond_reach": 0.0,
+        "distance_mean_cm": 33.84040594100952,
+        "distance_p95_cm": 42.85607293248176,
+        "distance_max_cm": 50.0271201133728,
+        "excess_mean_cm": 0.0,
+        "excess_p95_cm": 0.0
+      }
+    },
+    {
+      "episode": 20,
+      "type": "robot",
+      "source": "/mnt/nvme0n1/human_policy_ckpt/bottle0930_8runs_20261003_data/robot_new/SONIC_Dex5_20260930_ep_0039_rootfix.hdf5",
+      "shoulder_arm": {
+        "left": {
+          "frames": 6100,
+          "bound_cm": 41.03940725326538,
+          "fraction_beyond_reach": 0.0,
+          "distance_mean_cm": 37.568292021751404,
+          "distance_p95_cm": 38.10593083500862,
+          "distance_max_cm": 38.36430013179779,
+          "excess_mean_cm": 0.0,
+          "excess_p95_cm": 0.0
+        },
+        "right": {
+          "frames": 6100,
+          "bound_cm": 41.03940725326538,
+          "fraction_beyond_reach": 0.0,
+          "distance_mean_cm": 28.267765045166016,
+          "distance_p95_cm": 37.16357409954071,
+          "distance_max_cm": 38.75459432601929,
+          "excess_mean_cm": 0.0,
+          "excess_p95_cm": 0.0
+        }
+      },
+      "head": {
+        "frames": 6100,
+        "bound_cm": 44.417816027998924,
+        "fraction_beyond_reach": 0.09934426229508196,
+        "distance_mean_cm": 44.35659646987915,
+        "distance_p95_cm": 44.44129481911659,
+        "distance_max_cm": 44.520992040634155,
+        "excess_mean_cm": 0.003063471056520939,
+        "excess_p95_cm": 0.023478418588638306
+      },
+      "left_wrist": {
+        "frames": 6100,
+        "bound_cm": 72.18822203576565,
+        "fraction_beyond_reach": 0.0,
+        "distance_mean_cm": 30.255213379859924,
+        "distance_p95_cm": 31.807523518800735,
+        "distance_max_cm": 33.52435827255249,
+        "excess_mean_cm": 0.0,
+        "excess_p95_cm": 0.0
+      },
+      "right_wrist": {
+        "frames": 6100,
+        "bound_cm": 72.18784652650356,
+        "fraction_beyond_reach": 0.0,
+        "distance_mean_cm": 31.70458972454071,
+        "distance_p95_cm": 39.50462505221367,
+        "distance_max_cm": 45.31932771205902,
+        "excess_mean_cm": 0.0,
+        "excess_p95_cm": 0.0
+      }
+    },
+    {
+      "episode": 21,
+      "type": "robot",
+      "source": "/mnt/nvme0n1/human_policy_ckpt/bottle0930_8runs_20261003_data/robot_new/SONIC_Dex5_20260930_ep_0042_rootfix.hdf5",
+      "shoulder_arm": {
+        "left": {
+          "frames": 11100,
+          "bound_cm": 41.03940725326538,
+          "fraction_beyond_reach": 0.0,
+          "distance_mean_cm": 37.61503994464874,
+          "distance_p95_cm": 38.30701604485512,
+          "distance_max_cm": 38.620299100875854,
+          "excess_mean_cm": 0.0,
+          "excess_p95_cm": 0.0
+        },
+        "right": {
+          "frames": 11100,
+          "bound_cm": 41.03940725326538,
+          "fraction_beyond_reach": 0.0,
+          "distance_mean_cm": 28.806474804878235,
+          "distance_p95_cm": 38.507111966609955,
+          "distance_max_cm": 40.54039418697357,
+          "excess_mean_cm": 0.0,
+          "excess_p95_cm": 0.0
+        }
+      },
+      "head": {
+        "frames": 11100,
+        "bound_cm": 44.417816027998924,
+        "fraction_beyond_reach": 0.17468468468468468,
+        "distance_mean_cm": 44.369035959243774,
+        "distance_p95_cm": 44.452024549245834,
+        "distance_max_cm": 44.553518295288086,
+        "excess_mean_cm": 0.004580605309456587,
+        "excess_p95_cm": 0.034208148717880235
+      },
+      "left_wrist": {
+        "frames": 11100,
+        "bound_cm": 72.18822203576565,
+        "fraction_beyond_reach": 0.0,
+        "distance_mean_cm": 29.49557900428772,
+        "distance_p95_cm": 31.779579222202297,
+        "distance_max_cm": 34.55235958099365,
+        "excess_mean_cm": 0.0,
+        "excess_p95_cm": 0.0
+      },
+      "right_wrist": {
+        "frames": 11100,
+        "bound_cm": 72.18784652650356,
+        "fraction_beyond_reach": 0.0,
+        "distance_mean_cm": 32.493141293525696,
+        "distance_p95_cm": 40.24145931005477,
+        "distance_max_cm": 43.82697939872742,
+        "excess_mean_cm": 0.0,
+        "excess_p95_cm": 0.0
+      }
+    },
+    {
+      "episode": 22,
+      "type": "robot",
+      "source": "/mnt/nvme0n1/human_policy_ckpt/bottle0930_8runs_20261003_data/robot_new/SONIC_Dex5_20260930_ep_0060_rootfix.hdf5",
+      "shoulder_arm": {
+        "left": {
+          "frames": 6300,
+          "bound_cm": 41.03940725326538,
+          "fraction_beyond_reach": 0.0,
+          "distance_mean_cm": 37.84859478473663,
+          "distance_p95_cm": 38.40991735458374,
+          "distance_max_cm": 38.60752284526825,
+          "excess_mean_cm": 0.0,
+          "excess_p95_cm": 0.0
+        },
+        "right": {
+          "frames": 6300,
+          "bound_cm": 41.03940725326538,
+          "fraction_beyond_reach": 0.0019047619047619048,
+          "distance_mean_cm": 29.136785864830017,
+          "distance_p95_cm": 38.23764681816101,
+          "distance_max_cm": 41.30195677280426,
+          "excess_mean_cm": 0.00029554206412285566,
+          "excess_p95_cm": 0.0
+        }
+      },
+      "head": {
+        "frames": 6300,
+        "bound_cm": 44.417816027998924,
+        "fraction_beyond_reach": 0.22285714285714286,
+        "distance_mean_cm": 44.37854886054993,
+        "distance_p95_cm": 44.4717875123024,
+        "distance_max_cm": 44.535669684410095,
+        "excess_mean_cm": 0.007600015960633755,
+        "excess_p95_cm": 0.053971111774444504
+      },
+      "left_wrist": {
+        "frames": 6300,
+        "bound_cm": 72.18822203576565,
+        "fraction_beyond_reach": 0.0,
+        "distance_mean_cm": 26.646101474761963,
+        "distance_p95_cm": 29.403343051671982,
+        "distance_max_cm": 31.483078002929688,
+        "excess_mean_cm": 0.0,
+        "excess_p95_cm": 0.0
+      },
+      "right_wrist": {
+        "frames": 6300,
+        "bound_cm": 72.18784652650356,
+        "fraction_beyond_reach": 0.0,
+        "distance_mean_cm": 33.34113955497742,
+        "distance_p95_cm": 45.99551454186439,
+        "distance_max_cm": 49.510589241981506,
+        "excess_mean_cm": 0.0,
+        "excess_p95_cm": 0.0
+      }
+    },
+    {
+      "episode": 23,
+      "type": "robot",
+      "source": "/mnt/nvme0n1/human_policy_ckpt/bottle0930_8runs_20261003_data/robot_new/SONIC_Dex5_20260930_ep_0068_rootfix.hdf5",
+      "shoulder_arm": {
+        "left": {
+          "frames": 4300,
+          "bound_cm": 41.03940725326538,
+          "fraction_beyond_reach": 0.0,
+          "distance_mean_cm": 38.059476017951965,
+          "distance_p95_cm": 38.861946165561676,
+          "distance_max_cm": 39.4332081079483,
+          "excess_mean_cm": 0.0,
+          "excess_p95_cm": 0.0
+        },
+        "right": {
+          "frames": 4300,
+          "bound_cm": 41.03940725326538,
+          "fraction_beyond_reach": 0.0006976744186046512,
+          "distance_mean_cm": 31.41484558582306,
+          "distance_p95_cm": 39.493124186992645,
+          "distance_max_cm": 41.176557540893555,
+          "excess_mean_cm": 6.044673500582576e-05,
+          "excess_p95_cm": 0.0
+        }
+      },
+      "head": {
+        "frames": 4300,
+        "bound_cm": 44.417816027998924,
+        "fraction_beyond_reach": 0.29651162790697677,
+        "distance_mean_cm": 44.388002157211304,
+        "distance_p95_cm": 44.4522824883461,
+        "distance_max_cm": 44.51715052127838,
+        "excess_mean_cm": 0.006454852409660816,
+        "excess_p95_cm": 0.03446608781814574
+      },
+      "left_wrist": {
+        "frames": 4300,
+        "bound_cm": 72.18822203576565,
+        "fraction_beyond_reach": 0.0,
+        "distance_mean_cm": 29.58797812461853,
+        "distance_p95_cm": 35.15806019306182,
+        "distance_max_cm": 36.84545457363129,
+        "excess_mean_cm": 0.0,
+        "excess_p95_cm": 0.0
+      },
+      "right_wrist": {
+        "frames": 4300,
+        "bound_cm": 72.18784652650356,
+        "fraction_beyond_reach": 0.0,
+        "distance_mean_cm": 35.32411754131317,
+        "distance_p95_cm": 45.551279336214066,
+        "distance_max_cm": 50.063544511795044,
+        "excess_mean_cm": 0.0,
+        "excess_p95_cm": 0.0
+      }
+    },
+    {
+      "episode": 24,
+      "type": "robot",
+      "source": "/mnt/nvme0n1/human_policy_ckpt/bottle0930_8runs_20261003_data/robot_new/SONIC_Dex5_20260930_ep_0077_rootfix.hdf5",
+      "shoulder_arm": {
+        "left": {
+          "frames": 7100,
+          "bound_cm": 41.03940725326538,
+          "fraction_beyond_reach": 0.0,
+          "distance_mean_cm": 37.1474951505661,
+          "distance_p95_cm": 37.89278492331505,
+          "distance_max_cm": 38.576316833496094,
+          "excess_mean_cm": 0.0,
+          "excess_p95_cm": 0.0
+        },
+        "right": {
+          "frames": 7100,
+          "bound_cm": 41.03940725326538,
+          "fraction_beyond_reach": 0.0,
+          "distance_mean_cm": 30.67016303539276,
+          "distance_p95_cm": 38.189176470041275,
+          "distance_max_cm": 40.78517556190491,
+          "excess_mean_cm": 0.0,
+          "excess_p95_cm": 0.0
+        }
+      },
+      "head": {
+        "frames": 7100,
+        "bound_cm": 44.417816027998924,
+        "fraction_beyond_reach": 0.06802816901408451,
+        "distance_mean_cm": 44.35409903526306,
+        "distance_p95_cm": 44.42385718226433,
+        "distance_max_cm": 44.527190923690796,
+        "excess_mean_cm": 0.001602252828888595,
+        "excess_p95_cm": 0.00604078173637386
+      },
+      "left_wrist": {
+        "frames": 7100,
+        "bound_cm": 72.18822203576565,
+        "fraction_beyond_reach": 0.0,
+        "distance_mean_cm": 28.504541516304016,
+        "distance_p95_cm": 32.53980055451393,
+        "distance_max_cm": 35.48475503921509,
+        "excess_mean_cm": 0.0,
+        "excess_p95_cm": 0.0
+      },
+      "right_wrist": {
+        "frames": 7100,
+        "bound_cm": 72.18784652650356,
+        "fraction_beyond_reach": 0.0,
+        "distance_mean_cm": 37.93623745441437,
+        "distance_p95_cm": 46.45184710621834,
+        "distance_max_cm": 53.54706048965454,
+        "excess_mean_cm": 0.0,
+        "excess_p95_cm": 0.0
+      }
+    }
+  ],
+  "groups": {
+    "robot": {
+      "episodes": 10,
+      "head": {
+        "frames": 65700,
+        "bound_cm": 44.417816027998924,
+        "fraction_beyond_reach": 0.22319634703196348,
+        "distance_mean_cm": 44.382816553115845,
+        "distance_p95_cm": 44.46686804294586,
+        "distance_max_cm": 44.59503889083862,
+        "excess_mean_cm": 0.007113409228622913,
+        "excess_p95_cm": 0.049051642417907715
+      },
+      "left_wrist": {
+        "frames": 65700,
+        "bound_cm": 72.18822203576565,
+        "fraction_beyond_reach": 0.0,
+        "distance_mean_cm": 26.93735361099243,
+        "distance_p95_cm": 31.19864627718925,
+        "distance_max_cm": 36.84545457363129,
+        "excess_mean_cm": 0.0,
+        "excess_p95_cm": 0.0
+      },
+      "right_wrist": {
+        "frames": 65700,
+        "bound_cm": 72.18784652650356,
+        "fraction_beyond_reach": 0.0,
+        "distance_mean_cm": 33.417922258377075,
+        "distance_p95_cm": 42.260363399982445,
+        "distance_max_cm": 53.54706048965454,
+        "excess_mean_cm": 0.0,
+        "excess_p95_cm": 0.0
+      },
+      "head_nominal_44_4cm_fraction": 0.35165905631659056,
+      "shoulder_arm": {
+        "left": {
+          "frames": 65700,
+          "bound_cm": 41.03940725326538,
+          "fraction_beyond_reach": 0.0,
+          "distance_mean_cm": 37.16641962528229,
+          "distance_p95_cm": 38.23637530207634,
+          "distance_max_cm": 39.4332081079483,
+          "excess_mean_cm": 0.0,
+          "excess_p95_cm": 0.0
+        },
+        "right": {
+          "frames": 65700,
+          "bound_cm": 41.03940725326538,
+          "fraction_beyond_reach": 0.003378995433789954,
+          "distance_mean_cm": 29.621952772140503,
+          "distance_p95_cm": 38.97547662258148,
+          "distance_max_cm": 42.455852031707764,
+          "excess_mean_cm": 0.001613382832147181,
+          "excess_p95_cm": 0.0
+        }
+      }
+    },
+    "human": {
+      "episodes": 15,
+      "head": {
+        "frames": 160500,
+        "bound_cm": 44.417816027998924,
+        "fraction_beyond_reach": 1.0,
+        "distance_mean_cm": 59.39640998840332,
+        "distance_p95_cm": 61.26110672950744,
+        "distance_max_cm": 63.30857872962952,
+        "excess_mean_cm": 14.978585243225098,
+        "excess_p95_cm": 16.84328966140747
+      },
+      "left_wrist": {
+        "frames": 160500,
+        "bound_cm": 72.18822203576565,
+        "fraction_beyond_reach": 0.1001993769470405,
+        "distance_mean_cm": 31.82954490184784,
+        "distance_p95_cm": 104.67936515808105,
+        "distance_max_cm": 114.02682065963745,
+        "excess_mean_cm": 3.195466995239258,
+        "excess_p95_cm": 32.49114265441894
+      },
+      "right_wrist": {
+        "frames": 160500,
+        "bound_cm": 72.18784652650356,
+        "fraction_beyond_reach": 0.0,
+        "distance_mean_cm": 55.30045032501221,
+        "distance_p95_cm": 64.98027443885802,
+        "distance_max_cm": 68.7559723854065,
+        "excess_mean_cm": 0.0,
+        "excess_p95_cm": 0.0
+      },
+      "head_nominal_44_4cm_fraction": 1.0,
+      "shoulder_arm": {
+        "left": {
+          "frames": 160500,
+          "bound_cm": 41.03940725326538,
+          "fraction_beyond_reach": 1.0,
+          "distance_mean_cm": 81.06574416160583,
+          "distance_p95_cm": 141.33087038993835,
+          "distance_max_cm": 150.44326782226562,
+          "excess_mean_cm": 40.026336669921875,
+          "excess_p95_cm": 100.29146614074706
+        },
+        "right": {
+          "frames": 160500,
+          "bound_cm": 41.03940725326538,
+          "fraction_beyond_reach": 0.18258566978193147,
+          "distance_mean_cm": 36.25105321407318,
+          "distance_p95_cm": 48.12511906027794,
+          "distance_max_cm": 63.98363709449768,
+          "excess_mean_cm": 0.9419636130332947,
+          "excess_p95_cm": 7.085711908340452
+        }
+      }
+    }
+  },
+  "human_note": "human episodes are reported for diagnosis only and never enter a tracking number; no confirmed human-to-G1 retarget exists",
+  "predictions": "/root/shengyin/ScaleBFM/exec_comp/runs/round3/hat_predictions"
+}

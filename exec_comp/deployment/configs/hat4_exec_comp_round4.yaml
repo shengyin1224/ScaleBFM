@@ -1,0 +1,39 @@
+# Draft bundle: R4 fallback/4080S acceptance pending; enable stays false.
+defaults:
+- hat4_online
+- override /env: motion_tracking_hat4_adaptive
+- _self_
+hydra:
+  searchpath:
+  - file:///home/nerv/qingyaoxu/ScaleBFM/ScaleBridge/scalebridge/config
+exec_comp:
+  enable: false
+  log_baseline: true
+  model: /home/nerv/qingyaoxu/ScaleBFM/exec_comp/releases/round4/b1/b1_correct_kp.pt
+  cerebellum_model: ${agent.config.checkpoint}
+  mode: stepwise
+  residual_lowpass: true
+  total_offset_cap_m: 0.05
+  grasp_release_ramp_s: 0.15
+  seam_crossfade_s: 0.12
+  fallback_ramp_s: 0.15
+  cap_hold_s: 1.0
+  cap_guard: residual
+  keep_lookahead: true
+  max_step_cm: 1.0
+  log_dir: /home/nerv/qingyaoxu/ScaleBFM/exec_comp/runs/round4/deployment_logs
+  method: b1
+  cuda_graph: false
+  coefficient_transition: false
+  activation_ramp: false
+env:
+  _target_: exec_comp.round4.deployment_env.ExecCompRound4Env
+  config:
+    exec_comp: ${exec_comp}
+    reference_forcing: false
+    min_chunk_execution_fraction: 0.1
+    chunk_start_reference_continuity: true
+    focus_handoff_enabled: true
+    focus_handoff_version: v3
+    focus_handoff_source: keypoints
+    focus_handoff_finger_mode: hold_progress

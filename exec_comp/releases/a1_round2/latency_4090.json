@@ -1,0 +1,17 @@
+{
+  "gpu": "NVIDIA GeForce RTX 4090",
+  "torch": "2.7.0+cu128",
+  "latency": {
+    "mean_ms": 1.5307008028030396,
+    "median_ms": 1.504256010055542,
+    "p95_ms": 1.5308799743652344,
+    "batch": 1,
+    "warmup": 50,
+    "measured_calls": 200,
+    "timing": "CUDA events; GPU tensors already resident; excludes disk logging and CPU conversion"
+  },
+  "artifact": "/root/shengyin/ScaleBFM/exec_comp/releases/a1_round2/a1_correct_kp.pt",
+  "artifact_sha256": "253cc04109110eae33dc43bca353d49ad2f2c2e32ac215db42686f9089ba5ea2",
+  "eager_max_abs": 0.0,
+  "max_position_residual_m": 0.05000004172325134
+}

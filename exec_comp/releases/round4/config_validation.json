@@ -1,0 +1,11 @@
+{
+  "checks": {
+    "disabled": true,
+    "method_b1": true,
+    "env_switch_disabled": true,
+    "original_env_options_equal": true,
+    "correct_target": true
+  },
+  "environment_instantiated": false,
+  "real_robot_run": false
+}
