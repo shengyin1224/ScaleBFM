@@ -1,0 +1,2818 @@
+{
+  "F3hw4": {
+    "Eval_Test/success_rate": [
+      [
+        19999,
+        0.8050000071525574
+      ]
+    ],
+    "Eval_Test/error_anchor_height_success": [
+      [
+        19999,
+        0.007368380669504404
+      ]
+    ],
+    "Eval_Test/error_anchor_rot_success": [
+      [
+        19999,
+        0.05844751372933388
+      ]
+    ],
+    "Eval_Test/error_anchor_pos_success": [
+      [
+        19999,
+        0.033388011157512665
+      ]
+    ],
+    "Eval_Test/error_anchor_lin_vel_success": [
+      [
+        19999,
+        0.06300301849842072
+      ]
+    ],
+    "Eval_Test/error_anchor_ang_vel_success": [
+      [
+        19999,
+        0.16239887475967407
+      ]
+    ],
+    "Eval_Test/error_body_pos_g_success": [
+      [
+        19999,
+        0.03833911940455437
+      ]
+    ],
+    "Eval_Test/error_body_pos_success": [
+      [
+        19999,
+        0.0169033482670784
+      ]
+    ],
+    "Eval_Test/error_body_pos_relative_success": [
+      [
+        19999,
+        0.019709298387169838
+      ]
+    ],
+    "Eval_Test/error_body_rot_success": [
+      [
+        19999,
+        0.06848837435245514
+      ]
+    ],
+    "Eval_Test/error_body_rot_relative_success": [
+      [
+        19999,
+        0.06950821727514267
+      ]
+    ],
+    "Eval_Test/error_joint_pos_success": [
+      [
+        19999,
+        0.3413226902484894
+      ]
+    ],
+    "Eval_Test/error_joint_vel_success": [
+      [
+        19999,
+        1.0722252130508423
+      ]
+    ],
+    "Eval_Test/error_left_wrist_pelvis_local_pos_success": [
+      [
+        19999,
+        0.02037736028432846
+      ]
+    ],
+    "Eval_Test/error_left_wrist_pelvis_local_rot_success": [
+      [
+        19999,
+        0.09056711941957474
+      ]
+    ],
+    "Eval_Test/error_right_wrist_pelvis_local_pos_success": [
+      [
+        19999,
+        0.02384948916733265
+      ]
+    ],
+    "Eval_Test/error_right_wrist_pelvis_local_rot_success": [
+      [
+        19999,
+        0.09085903316736221
+      ]
+    ],
+    "Eval_Test/error_head_proxy_pelvis_local_pos_success": [
+      [
+        19999,
+        0.025468625128269196
+      ]
+    ],
+    "Eval_Test/error_head_proxy_pelvis_local_rot_success": [
+      [
+        19999,
+        0.07084967195987701
+      ]
+    ],
+    "Eval_Test/error_left_wrist_pelvis_local_pos_focus_success": [
+      [
+        19999,
+        0.02227683737874031
+      ]
+    ],
+    "Eval_Test/error_left_wrist_pelvis_local_rot_focus_success": [
+      [
+        19999,
+        0.0901234820485115
+      ]
+    ],
+    "Eval_Test/error_right_wrist_pelvis_local_pos_focus_success": [
+      [
+        19999,
+        0.027119724079966545
+      ]
+    ],
+    "Eval_Test/error_right_wrist_pelvis_local_rot_focus_success": [
+      [
+        19999,
+        0.09225483983755112
+      ]
+    ],
+    "Eval_Test/error_head_proxy_pelvis_local_pos_focus_success": [
+      [
+        19999,
+        0.026924466714262962
+      ]
+    ],
+    "Eval_Test/error_head_proxy_pelvis_local_rot_focus_success": [
+      [
+        19999,
+        0.07454179972410202
+      ]
+    ],
+    "Eval_Test/error_anchor_height": [
+      [
+        19999,
+        0.16057512164115906
+      ]
+    ],
+    "Eval_Test/error_anchor_rot": [
+      [
+        19999,
+        0.44752752780914307
+      ]
+    ],
+    "Eval_Test/error_anchor_pos": [
+      [
+        19999,
+        8.758424758911133
+      ]
+    ],
+    "Eval_Test/error_anchor_lin_vel": [
+      [
+        19999,
+        0.5599771738052368
+      ]
+    ],
+    "Eval_Test/error_anchor_ang_vel": [
+      [
+        19999,
+        0.31863781809806824
+      ]
+    ],
+    "Eval_Test/error_body_pos_g": [
+      [
+        19999,
+        8.765169143676758
+      ]
+    ],
+    "Eval_Test/error_body_pos": [
+      [
+        19999,
+        0.09635495394468307
+      ]
+    ],
+    "Eval_Test/error_body_pos_relative": [
+      [
+        19999,
+        0.18302622437477112
+      ]
+    ],
+    "Eval_Test/error_body_rot": [
+      [
+        19999,
+        0.45437687635421753
+      ]
+    ],
+    "Eval_Test/error_body_rot_relative": [
+      [
+        19999,
+        0.43305903673171997
+      ]
+    ],
+    "Eval_Test/error_joint_pos": [
+      [
+        19999,
+        0.6950085759162903
+      ]
+    ],
+    "Eval_Test/error_joint_vel": [
+      [
+        19999,
+        1.3290324211120605
+      ]
+    ],
+    "Eval_Test/error_left_wrist_pelvis_local_pos": [
+      [
+        19999,
+        0.04817528650164604
+      ]
+    ],
+    "Eval_Test/error_left_wrist_pelvis_local_rot": [
+      [
+        19999,
+        0.25067073106765747
+      ]
+    ],
+    "Eval_Test/error_right_wrist_pelvis_local_pos": [
+      [
+        19999,
+        0.07323731482028961
+      ]
+    ],
+    "Eval_Test/error_right_wrist_pelvis_local_rot": [
+      [
+        19999,
+        0.2891262173652649
+      ]
+    ],
+    "Eval_Test/error_head_proxy_pelvis_local_pos": [
+      [
+        19999,
+        0.04429735988378525
+      ]
+    ],
+    "Eval_Test/error_head_proxy_pelvis_local_rot": [
+      [
+        19999,
+        0.12416468560695648
+      ]
+    ],
+    "Eval_Test/error_left_wrist_pelvis_local_pos_focus": [
+      [
+        19999,
+        0.0501893125474453
+      ]
+    ],
+    "Eval_Test/error_left_wrist_pelvis_local_rot_focus": [
+      [
+        19999,
+        0.24684929847717285
+      ]
+    ],
+    "Eval_Test/error_right_wrist_pelvis_local_pos_focus": [
+      [
+        19999,
+        0.08416297286748886
+      ]
+    ],
+    "Eval_Test/error_right_wrist_pelvis_local_rot_focus": [
+      [
+        19999,
+        0.2988012433052063
+      ]
+    ],
+    "Eval_Test/error_head_proxy_pelvis_local_pos_focus": [
+      [
+        19999,
+        0.05231393501162529
+      ]
+    ],
+    "Eval_Test/error_head_proxy_pelvis_local_rot_focus": [
+      [
+        19999,
+        0.14451642334461212
+      ]
+    ]
+  },
+  "formal_focusv2_20260824_F3h": {
+    "Eval_Test/success_rate": [
+      [
+        19999,
+        0.8050000071525574
+      ]
+    ],
+    "Eval_Test/error_anchor_height_success": [
+      [
+        19999,
+        0.007378189358860254
+      ]
+    ],
+    "Eval_Test/error_anchor_rot_success": [
+      [
+        19999,
+        0.05426952242851257
+      ]
+    ],
+    "Eval_Test/error_anchor_pos_success": [
+      [
+        19999,
+        0.034914951771497726
+      ]
+    ],
+    "Eval_Test/error_anchor_lin_vel_success": [
+      [
+        19999,
+        0.06361278146505356
+      ]
+    ],
+    "Eval_Test/error_anchor_ang_vel_success": [
+      [
+        19999,
+        0.16342872381210327
+      ]
+    ],
+    "Eval_Test/error_body_pos_g_success": [
+      [
+        19999,
+        0.03956793621182442
+      ]
+    ],
+    "Eval_Test/error_body_pos_success": [
+      [
+        19999,
+        0.01643681526184082
+      ]
+    ],
+    "Eval_Test/error_body_pos_relative_success": [
+      [
+        19999,
+        0.019980838522315025
+      ]
+    ],
+    "Eval_Test/error_body_rot_success": [
+      [
+        19999,
+        0.06898481398820877
+      ]
+    ],
+    "Eval_Test/error_body_rot_relative_success": [
+      [
+        19999,
+        0.07181069999933243
+      ]
+    ],
+    "Eval_Test/error_joint_pos_success": [
+      [
+        19999,
+        0.344644695520401
+      ]
+    ],
+    "Eval_Test/error_joint_vel_success": [
+      [
+        19999,
+        1.0741868019104004
+      ]
+    ],
+    "Eval_Test/error_left_wrist_pelvis_local_pos_success": [
+      [
+        19999,
+        0.019817134365439415
+      ]
+    ],
+    "Eval_Test/error_left_wrist_pelvis_local_rot_success": [
+      [
+        19999,
+        0.07199891656637192
+      ]
+    ],
+    "Eval_Test/error_right_wrist_pelvis_local_pos_success": [
+      [
+        19999,
+        0.02485184371471405
+      ]
+    ],
+    "Eval_Test/error_right_wrist_pelvis_local_rot_success": [
+      [
+        19999,
+        0.07789251953363419
+      ]
+    ],
+    "Eval_Test/error_head_proxy_pelvis_local_pos_success": [
+      [
+        19999,
+        0.02568848803639412
+      ]
+    ],
+    "Eval_Test/error_head_proxy_pelvis_local_rot_success": [
+      [
+        19999,
+        0.07232680171728134
+      ]
+    ],
+    "Eval_Test/error_left_wrist_pelvis_local_pos_focus_success": [
+      [
+        19999,
+        0.021391771733760834
+      ]
+    ],
+    "Eval_Test/error_left_wrist_pelvis_local_rot_focus_success": [
+      [
+        19999,
+        0.06912757456302643
+      ]
+    ],
+    "Eval_Test/error_right_wrist_pelvis_local_pos_focus_success": [
+      [
+        19999,
+        0.027964472770690918
+      ]
+    ],
+    "Eval_Test/error_right_wrist_pelvis_local_rot_focus_success": [
+      [
+        19999,
+        0.07560538500547409
+      ]
+    ],
+    "Eval_Test/error_head_proxy_pelvis_local_pos_focus_success": [
+      [
+        19999,
+        0.02731478027999401
+      ]
+    ],
+    "Eval_Test/error_head_proxy_pelvis_local_rot_focus_success": [
+      [
+        19999,
+        0.07659947872161865
+      ]
+    ],
+    "Eval_Test/error_anchor_height": [
+      [
+        19999,
+        0.12828457355499268
+      ]
+    ],
+    "Eval_Test/error_anchor_rot": [
+      [
+        19999,
+        0.4470723569393158
+      ]
+    ],
+    "Eval_Test/error_anchor_pos": [
+      [
+        19999,
+        8.419184684753418
+      ]
+    ],
+    "Eval_Test/error_anchor_lin_vel": [
+      [
+        19999,
+        0.5332338213920593
+      ]
+    ],
+    "Eval_Test/error_anchor_ang_vel": [
+      [
+        19999,
+        0.3060910403728485
+      ]
+    ],
+    "Eval_Test/error_body_pos_g": [
+      [
+        19999,
+        8.424569129943848
+      ]
+    ],
+    "Eval_Test/error_body_pos": [
+      [
+        19999,
+        0.09649446606636047
+      ]
+    ],
+    "Eval_Test/error_body_pos_relative": [
+      [
+        19999,
+        0.1510901302099228
+      ]
+    ],
+    "Eval_Test/error_body_rot": [
+      [
+        19999,
+        0.45716843008995056
+      ]
+    ],
+    "Eval_Test/error_body_rot_relative": [
+      [
+        19999,
+        0.43850570917129517
+      ]
+    ],
+    "Eval_Test/error_joint_pos": [
+      [
+        19999,
+        0.7154830694198608
+      ]
+    ],
+    "Eval_Test/error_joint_vel": [
+      [
+        19999,
+        1.3329988718032837
+      ]
+    ],
+    "Eval_Test/error_left_wrist_pelvis_local_pos": [
+      [
+        19999,
+        0.04868865758180618
+      ]
+    ],
+    "Eval_Test/error_left_wrist_pelvis_local_rot": [
+      [
+        19999,
+        0.23296396434307098
+      ]
+    ],
+    "Eval_Test/error_right_wrist_pelvis_local_pos": [
+      [
+        19999,
+        0.07412495464086533
+      ]
+    ],
+    "Eval_Test/error_right_wrist_pelvis_local_rot": [
+      [
+        19999,
+        0.28411802649497986
+      ]
+    ],
+    "Eval_Test/error_head_proxy_pelvis_local_pos": [
+      [
+        19999,
+        0.04435297101736069
+      ]
+    ],
+    "Eval_Test/error_head_proxy_pelvis_local_rot": [
+      [
+        19999,
+        0.12515980005264282
+      ]
+    ],
+    "Eval_Test/error_left_wrist_pelvis_local_pos_focus": [
+      [
+        19999,
+        0.05139411985874176
+      ]
+    ],
+    "Eval_Test/error_left_wrist_pelvis_local_rot_focus": [
+      [
+        19999,
+        0.23024658858776093
+      ]
+    ],
+    "Eval_Test/error_right_wrist_pelvis_local_pos_focus": [
+      [
+        19999,
+        0.08420977741479874
+      ]
+    ],
+    "Eval_Test/error_right_wrist_pelvis_local_rot_focus": [
+      [
+        19999,
+        0.28917306661605835
+      ]
+    ],
+    "Eval_Test/error_head_proxy_pelvis_local_pos_focus": [
+      [
+        19999,
+        0.052843641489744186
+      ]
+    ],
+    "Eval_Test/error_head_proxy_pelvis_local_rot_focus": [
+      [
+        19999,
+        0.14644236862659454
+      ]
+    ]
+  },
+  "official_threeway_20261007_1510_v3_focus_only": {
+    "Eval_Test/success_rate": [
+      [
+        19999,
+        0.800000011920929
+      ]
+    ],
+    "Eval_Test/error_anchor_height_success": [
+      [
+        19999,
+        0.006923040375113487
+      ]
+    ],
+    "Eval_Test/error_anchor_rot_success": [
+      [
+        19999,
+        0.053621821105480194
+      ]
+    ],
+    "Eval_Test/error_anchor_pos_success": [
+      [
+        19999,
+        0.03390083834528923
+      ]
+    ],
+    "Eval_Test/error_anchor_lin_vel_success": [
+      [
+        19999,
+        0.06367554515600204
+      ]
+    ],
+    "Eval_Test/error_anchor_ang_vel_success": [
+      [
+        19999,
+        0.16636775434017181
+      ]
+    ],
+    "Eval_Test/error_body_pos_g_success": [
+      [
+        19999,
+        0.03923829272389412
+      ]
+    ],
+    "Eval_Test/error_body_pos_success": [
+      [
+        19999,
+        0.017286458984017372
+      ]
+    ],
+    "Eval_Test/error_body_pos_relative_success": [
+      [
+        19999,
+        0.01974847912788391
+      ]
+    ],
+    "Eval_Test/error_body_rot_success": [
+      [
+        19999,
+        0.0688750222325325
+      ]
+    ],
+    "Eval_Test/error_body_rot_relative_success": [
+      [
+        19999,
+        0.0696517750620842
+      ]
+    ],
+    "Eval_Test/error_joint_pos_success": [
+      [
+        19999,
+        0.3476446568965912
+      ]
+    ],
+    "Eval_Test/error_joint_vel_success": [
+      [
+        19999,
+        1.0996530055999756
+      ]
+    ],
+    "Eval_Test/error_left_wrist_pelvis_local_pos_success": [
+      [
+        19999,
+        0.021346300840377808
+      ]
+    ],
+    "Eval_Test/error_left_wrist_pelvis_local_rot_success": [
+      [
+        19999,
+        0.08799909055233002
+      ]
+    ],
+    "Eval_Test/error_right_wrist_pelvis_local_pos_success": [
+      [
+        19999,
+        0.023515621200203896
+      ]
+    ],
+    "Eval_Test/error_right_wrist_pelvis_local_rot_success": [
+      [
+        19999,
+        0.08553098887205124
+      ]
+    ],
+    "Eval_Test/error_head_proxy_pelvis_local_pos_success": [
+      [
+        19999,
+        0.02488117106258869
+      ]
+    ],
+    "Eval_Test/error_head_proxy_pelvis_local_rot_success": [
+      [
+        19999,
+        0.06891859322786331
+      ]
+    ],
+    "Eval_Test/error_left_wrist_pelvis_local_pos_focus_success": [
+      [
+        19999,
+        0.02164454571902752
+      ]
+    ],
+    "Eval_Test/error_left_wrist_pelvis_local_rot_focus_success": [
+      [
+        19999,
+        0.08344608545303345
+      ]
+    ],
+    "Eval_Test/error_right_wrist_pelvis_local_pos_focus_success": [
+      [
+        19999,
+        0.02352440357208252
+      ]
+    ],
+    "Eval_Test/error_right_wrist_pelvis_local_rot_focus_success": [
+      [
+        19999,
+        0.08207524567842484
+      ]
+    ],
+    "Eval_Test/error_head_proxy_pelvis_local_pos_focus_success": [
+      [
+        19999,
+        0.025386231020092964
+      ]
+    ],
+    "Eval_Test/error_head_proxy_pelvis_local_rot_focus_success": [
+      [
+        19999,
+        0.07090234756469727
+      ]
+    ],
+    "Eval_Test/error_anchor_height": [
+      [
+        19999,
+        0.15101942420005798
+      ]
+    ],
+    "Eval_Test/error_anchor_rot": [
+      [
+        19999,
+        0.44752630591392517
+      ]
+    ],
+    "Eval_Test/error_anchor_pos": [
+      [
+        19999,
+        9.10370922088623
+      ]
+    ],
+    "Eval_Test/error_anchor_lin_vel": [
+      [
+        19999,
+        0.5815650820732117
+      ]
+    ],
+    "Eval_Test/error_anchor_ang_vel": [
+      [
+        19999,
+        0.3265312612056732
+      ]
+    ],
+    "Eval_Test/error_body_pos_g": [
+      [
+        19999,
+        9.110227584838867
+      ]
+    ],
+    "Eval_Test/error_body_pos": [
+      [
+        19999,
+        0.09937286376953125
+      ]
+    ],
+    "Eval_Test/error_body_pos_relative": [
+      [
+        19999,
+        0.17465569078922272
+      ]
+    ],
+    "Eval_Test/error_body_rot": [
+      [
+        19999,
+        0.46019846200942993
+      ]
+    ],
+    "Eval_Test/error_body_rot_relative": [
+      [
+        19999,
+        0.4400506615638733
+      ]
+    ],
+    "Eval_Test/error_joint_pos": [
+      [
+        19999,
+        0.7346985340118408
+      ]
+    ],
+    "Eval_Test/error_joint_vel": [
+      [
+        19999,
+        1.3798149824142456
+      ]
+    ],
+    "Eval_Test/error_left_wrist_pelvis_local_pos": [
+      [
+        19999,
+        0.053075160831213
+      ]
+    ],
+    "Eval_Test/error_left_wrist_pelvis_local_rot": [
+      [
+        19999,
+        0.2683630585670471
+      ]
+    ],
+    "Eval_Test/error_right_wrist_pelvis_local_pos": [
+      [
+        19999,
+        0.07374218106269836
+      ]
+    ],
+    "Eval_Test/error_right_wrist_pelvis_local_rot": [
+      [
+        19999,
+        0.29659757018089294
+      ]
+    ],
+    "Eval_Test/error_head_proxy_pelvis_local_pos": [
+      [
+        19999,
+        0.04116025194525719
+      ]
+    ],
+    "Eval_Test/error_head_proxy_pelvis_local_rot": [
+      [
+        19999,
+        0.1190052255988121
+      ]
+    ],
+    "Eval_Test/error_left_wrist_pelvis_local_pos_focus": [
+      [
+        19999,
+        0.055356305092573166
+      ]
+    ],
+    "Eval_Test/error_left_wrist_pelvis_local_rot_focus": [
+      [
+        19999,
+        0.2655523717403412
+      ]
+    ],
+    "Eval_Test/error_right_wrist_pelvis_local_pos_focus": [
+      [
+        19999,
+        0.07409369200468063
+      ]
+    ],
+    "Eval_Test/error_right_wrist_pelvis_local_rot_focus": [
+      [
+        19999,
+        0.28563636541366577
+      ]
+    ],
+    "Eval_Test/error_head_proxy_pelvis_local_pos_focus": [
+      [
+        19999,
+        0.04260352998971939
+      ]
+    ],
+    "Eval_Test/error_head_proxy_pelvis_local_rot_focus": [
+      [
+        19999,
+        0.12298467755317688
+      ]
+    ]
+  },
+  "F3hw4m": {
+    "Eval_Test/success_rate": [
+      [
+        19999,
+        0.800000011920929
+      ]
+    ],
+    "Eval_Test/error_anchor_height_success": [
+      [
+        19999,
+        0.007970125414431095
+      ]
+    ],
+    "Eval_Test/error_anchor_rot_success": [
+      [
+        19999,
+        0.07144887000322342
+      ]
+    ],
+    "Eval_Test/error_anchor_pos_success": [
+      [
+        19999,
+        0.04380064085125923
+      ]
+    ],
+    "Eval_Test/error_anchor_lin_vel_success": [
+      [
+        19999,
+        0.06552013009786606
+      ]
+    ],
+    "Eval_Test/error_anchor_ang_vel_success": [
+      [
+        19999,
+        0.17394421994686127
+      ]
+    ],
+    "Eval_Test/error_body_pos_g_success": [
+      [
+        19999,
+        0.05155731365084648
+      ]
+    ],
+    "Eval_Test/error_body_pos_success": [
+      [
+        19999,
+        0.02070968970656395
+      ]
+    ],
+    "Eval_Test/error_body_pos_relative_success": [
+      [
+        19999,
+        0.023441443219780922
+      ]
+    ],
+    "Eval_Test/error_body_rot_success": [
+      [
+        19999,
+        0.09364036470651627
+      ]
+    ],
+    "Eval_Test/error_body_rot_relative_success": [
+      [
+        19999,
+        0.09265680611133575
+      ]
+    ],
+    "Eval_Test/error_joint_pos_success": [
+      [
+        19999,
+        0.44448620080947876
+      ]
+    ],
+    "Eval_Test/error_joint_vel_success": [
+      [
+        19999,
+        1.168425440788269
+      ]
+    ],
+    "Eval_Test/error_left_wrist_pelvis_local_pos_success": [
+      [
+        19999,
+        0.02652740105986595
+      ]
+    ],
+    "Eval_Test/error_left_wrist_pelvis_local_rot_success": [
+      [
+        19999,
+        0.13985519111156464
+      ]
+    ],
+    "Eval_Test/error_right_wrist_pelvis_local_pos_success": [
+      [
+        19999,
+        0.027150707319378853
+      ]
+    ],
+    "Eval_Test/error_right_wrist_pelvis_local_rot_success": [
+      [
+        19999,
+        0.13499511778354645
+      ]
+    ],
+    "Eval_Test/error_head_proxy_pelvis_local_pos_success": [
+      [
+        19999,
+        0.02796316146850586
+      ]
+    ],
+    "Eval_Test/error_head_proxy_pelvis_local_rot_success": [
+      [
+        19999,
+        0.08570842444896698
+      ]
+    ],
+    "Eval_Test/error_left_wrist_pelvis_local_pos_focus_success": [
+      [
+        19999,
+        0.027025295421481133
+      ]
+    ],
+    "Eval_Test/error_left_wrist_pelvis_local_rot_focus_success": [
+      [
+        19999,
+        0.14932046830654144
+      ]
+    ],
+    "Eval_Test/error_right_wrist_pelvis_local_pos_focus_success": [
+      [
+        19999,
+        0.030113106593489647
+      ]
+    ],
+    "Eval_Test/error_right_wrist_pelvis_local_rot_focus_success": [
+      [
+        19999,
+        0.14673307538032532
+      ]
+    ],
+    "Eval_Test/error_head_proxy_pelvis_local_pos_focus_success": [
+      [
+        19999,
+        0.02938579022884369
+      ]
+    ],
+    "Eval_Test/error_head_proxy_pelvis_local_rot_focus_success": [
+      [
+        19999,
+        0.08855684101581573
+      ]
+    ],
+    "Eval_Test/error_anchor_height": [
+      [
+        19999,
+        0.13128487765789032
+      ]
+    ],
+    "Eval_Test/error_anchor_rot": [
+      [
+        19999,
+        0.4628736972808838
+      ]
+    ],
+    "Eval_Test/error_anchor_pos": [
+      [
+        19999,
+        8.864120483398438
+      ]
+    ],
+    "Eval_Test/error_anchor_lin_vel": [
+      [
+        19999,
+        0.5654100775718689
+      ]
+    ],
+    "Eval_Test/error_anchor_ang_vel": [
+      [
+        19999,
+        0.3138647973537445
+      ]
+    ],
+    "Eval_Test/error_body_pos_g": [
+      [
+        19999,
+        8.871003150939941
+      ]
+    ],
+    "Eval_Test/error_body_pos": [
+      [
+        19999,
+        0.10049652308225632
+      ]
+    ],
+    "Eval_Test/error_body_pos_relative": [
+      [
+        19999,
+        0.15721525251865387
+      ]
+    ],
+    "Eval_Test/error_body_rot": [
+      [
+        19999,
+        0.4743693470954895
+      ]
+    ],
+    "Eval_Test/error_body_rot_relative": [
+      [
+        19999,
+        0.4580777585506439
+      ]
+    ],
+    "Eval_Test/error_joint_pos": [
+      [
+        19999,
+        0.7882332801818848
+      ]
+    ],
+    "Eval_Test/error_joint_vel": [
+      [
+        19999,
+        1.3961296081542969
+      ]
+    ],
+    "Eval_Test/error_left_wrist_pelvis_local_pos": [
+      [
+        19999,
+        0.052809227257966995
+      ]
+    ],
+    "Eval_Test/error_left_wrist_pelvis_local_rot": [
+      [
+        19999,
+        0.283506840467453
+      ]
+    ],
+    "Eval_Test/error_right_wrist_pelvis_local_pos": [
+      [
+        19999,
+        0.07251555472612381
+      ]
+    ],
+    "Eval_Test/error_right_wrist_pelvis_local_rot": [
+      [
+        19999,
+        0.32490047812461853
+      ]
+    ],
+    "Eval_Test/error_head_proxy_pelvis_local_pos": [
+      [
+        19999,
+        0.04109945148229599
+      ]
+    ],
+    "Eval_Test/error_head_proxy_pelvis_local_rot": [
+      [
+        19999,
+        0.1255883276462555
+      ]
+    ],
+    "Eval_Test/error_left_wrist_pelvis_local_pos_focus": [
+      [
+        19999,
+        0.055153846740722656
+      ]
+    ],
+    "Eval_Test/error_left_wrist_pelvis_local_rot_focus": [
+      [
+        19999,
+        0.2911297082901001
+      ]
+    ],
+    "Eval_Test/error_right_wrist_pelvis_local_pos_focus": [
+      [
+        19999,
+        0.0817612037062645
+      ]
+    ],
+    "Eval_Test/error_right_wrist_pelvis_local_rot_focus": [
+      [
+        19999,
+        0.34199023246765137
+      ]
+    ],
+    "Eval_Test/error_head_proxy_pelvis_local_pos_focus": [
+      [
+        19999,
+        0.04752737283706665
+      ]
+    ],
+    "Eval_Test/error_head_proxy_pelvis_local_rot_focus": [
+      [
+        19999,
+        0.14346516132354736
+      ]
+    ]
+  },
+  "official_threeway_20261007_1510_v2_new_settings": {
+    "Eval_Test/success_rate": [
+      [
+        19999,
+        0.800000011920929
+      ]
+    ],
+    "Eval_Test/error_anchor_height_success": [
+      [
+        19999,
+        0.006017144303768873
+      ]
+    ],
+    "Eval_Test/error_anchor_rot_success": [
+      [
+        19999,
+        0.09910161793231964
+      ]
+    ],
+    "Eval_Test/error_anchor_pos_success": [
+      [
+        19999,
+        0.03225809708237648
+      ]
+    ],
+    "Eval_Test/error_anchor_lin_vel_success": [
+      [
+        19999,
+        0.07168865948915482
+      ]
+    ],
+    "Eval_Test/error_anchor_ang_vel_success": [
+      [
+        19999,
+        0.20516270399093628
+      ]
+    ],
+    "Eval_Test/error_body_pos_g_success": [
+      [
+        19999,
+        0.03501410409808159
+      ]
+    ],
+    "Eval_Test/error_body_pos_success": [
+      [
+        19999,
+        0.02440432831645012
+      ]
+    ],
+    "Eval_Test/error_body_pos_relative_success": [
+      [
+        19999,
+        0.027214577421545982
+      ]
+    ],
+    "Eval_Test/error_body_rot_success": [
+      [
+        19999,
+        0.08744882792234421
+      ]
+    ],
+    "Eval_Test/error_body_rot_relative_success": [
+      [
+        19999,
+        0.09611669927835464
+      ]
+    ],
+    "Eval_Test/error_joint_pos_success": [
+      [
+        19999,
+        0.47049808502197266
+      ]
+    ],
+    "Eval_Test/error_joint_vel_success": [
+      [
+        19999,
+        1.229131817817688
+      ]
+    ],
+    "Eval_Test/error_left_wrist_pelvis_local_pos_success": [
+      [
+        19999,
+        0.038177330046892166
+      ]
+    ],
+    "Eval_Test/error_left_wrist_pelvis_local_rot_success": [
+      [
+        19999,
+        0.11172446608543396
+      ]
+    ],
+    "Eval_Test/error_right_wrist_pelvis_local_pos_success": [
+      [
+        19999,
+        0.039815209805965424
+      ]
+    ],
+    "Eval_Test/error_right_wrist_pelvis_local_rot_success": [
+      [
+        19999,
+        0.1095297560095787
+      ]
+    ],
+    "Eval_Test/error_head_proxy_pelvis_local_pos_success": [
+      [
+        19999,
+        0.03991920128464699
+      ]
+    ],
+    "Eval_Test/error_head_proxy_pelvis_local_rot_success": [
+      [
+        19999,
+        0.11667941510677338
+      ]
+    ],
+    "Eval_Test/error_left_wrist_pelvis_local_pos_focus_success": [
+      [
+        19999,
+        0.04404302313923836
+      ]
+    ],
+    "Eval_Test/error_left_wrist_pelvis_local_rot_focus_success": [
+      [
+        19999,
+        0.12542052567005157
+      ]
+    ],
+    "Eval_Test/error_right_wrist_pelvis_local_pos_focus_success": [
+      [
+        19999,
+        0.0476742684841156
+      ]
+    ],
+    "Eval_Test/error_right_wrist_pelvis_local_rot_focus_success": [
+      [
+        19999,
+        0.11674272269010544
+      ]
+    ],
+    "Eval_Test/error_head_proxy_pelvis_local_pos_focus_success": [
+      [
+        19999,
+        0.0451236367225647
+      ]
+    ],
+    "Eval_Test/error_head_proxy_pelvis_local_rot_focus_success": [
+      [
+        19999,
+        0.13159529864788055
+      ]
+    ],
+    "Eval_Test/error_anchor_height": [
+      [
+        19999,
+        0.14298497140407562
+      ]
+    ],
+    "Eval_Test/error_anchor_rot": [
+      [
+        19999,
+        0.49170801043510437
+      ]
+    ],
+    "Eval_Test/error_anchor_pos": [
+      [
+        19999,
+        8.930922508239746
+      ]
+    ],
+    "Eval_Test/error_anchor_lin_vel": [
+      [
+        19999,
+        0.576562762260437
+      ]
+    ],
+    "Eval_Test/error_anchor_ang_vel": [
+      [
+        19999,
+        0.37878844141960144
+      ]
+    ],
+    "Eval_Test/error_body_pos_g": [
+      [
+        19999,
+        8.934224128723145
+      ]
+    ],
+    "Eval_Test/error_body_pos": [
+      [
+        19999,
+        0.10657822340726852
+      ]
+    ],
+    "Eval_Test/error_body_pos_relative": [
+      [
+        19999,
+        0.17506279051303864
+      ]
+    ],
+    "Eval_Test/error_body_rot": [
+      [
+        19999,
+        0.4818299412727356
+      ]
+    ],
+    "Eval_Test/error_body_rot_relative": [
+      [
+        19999,
+        0.4651649594306946
+      ]
+    ],
+    "Eval_Test/error_joint_pos": [
+      [
+        19999,
+        0.8418673276901245
+      ]
+    ],
+    "Eval_Test/error_joint_vel": [
+      [
+        19999,
+        1.5306352376937866
+      ]
+    ],
+    "Eval_Test/error_left_wrist_pelvis_local_pos": [
+      [
+        19999,
+        0.07668273150920868
+      ]
+    ],
+    "Eval_Test/error_left_wrist_pelvis_local_rot": [
+      [
+        19999,
+        0.3115547299385071
+      ]
+    ],
+    "Eval_Test/error_right_wrist_pelvis_local_pos": [
+      [
+        19999,
+        0.09770689904689789
+      ]
+    ],
+    "Eval_Test/error_right_wrist_pelvis_local_rot": [
+      [
+        19999,
+        0.3466131091117859
+      ]
+    ],
+    "Eval_Test/error_head_proxy_pelvis_local_pos": [
+      [
+        19999,
+        0.05880804732441902
+      ]
+    ],
+    "Eval_Test/error_head_proxy_pelvis_local_rot": [
+      [
+        19999,
+        0.16999085247516632
+      ]
+    ],
+    "Eval_Test/error_left_wrist_pelvis_local_pos_focus": [
+      [
+        19999,
+        0.08026464283466339
+      ]
+    ],
+    "Eval_Test/error_left_wrist_pelvis_local_rot_focus": [
+      [
+        19999,
+        0.3157511353492737
+      ]
+    ],
+    "Eval_Test/error_right_wrist_pelvis_local_pos_focus": [
+      [
+        19999,
+        0.11071936786174774
+      ]
+    ],
+    "Eval_Test/error_right_wrist_pelvis_local_rot_focus": [
+      [
+        19999,
+        0.3591717481613159
+      ]
+    ],
+    "Eval_Test/error_head_proxy_pelvis_local_pos_focus": [
+      [
+        19999,
+        0.06954257190227509
+      ]
+    ],
+    "Eval_Test/error_head_proxy_pelvis_local_rot_focus": [
+      [
+        19999,
+        0.19943296909332275
+      ]
+    ]
+  },
+  "formal_core5_20260728b_F3h": {
+    "Eval_Test/success_rate": [
+      [
+        19999,
+        0.8033333420753479
+      ]
+    ],
+    "Eval_Test/error_anchor_height_success": [
+      [
+        19999,
+        0.007300970144569874
+      ]
+    ],
+    "Eval_Test/error_anchor_rot_success": [
+      [
+        19999,
+        0.04822154343128204
+      ]
+    ],
+    "Eval_Test/error_anchor_pos_success": [
+      [
+        19999,
+        0.037093520164489746
+      ]
+    ],
+    "Eval_Test/error_anchor_lin_vel_success": [
+      [
+        19999,
+        0.06357443332672119
+      ]
+    ],
+    "Eval_Test/error_anchor_ang_vel_success": [
+      [
+        19999,
+        0.1619618982076645
+      ]
+    ],
+    "Eval_Test/error_body_pos_g_success": [
+      [
+        19999,
+        0.04238973185420036
+      ]
+    ],
+    "Eval_Test/error_body_pos_success": [
+      [
+        19999,
+        0.016781190410256386
+      ]
+    ],
+    "Eval_Test/error_body_pos_relative_success": [
+      [
+        19999,
+        0.019825883209705353
+      ]
+    ],
+    "Eval_Test/error_body_rot_success": [
+      [
+        19999,
+        0.06762582063674927
+      ]
+    ],
+    "Eval_Test/error_body_rot_relative_success": [
+      [
+        19999,
+        0.06870357692241669
+      ]
+    ],
+    "Eval_Test/error_joint_pos_success": [
+      [
+        19999,
+        0.32673636078834534
+      ]
+    ],
+    "Eval_Test/error_joint_vel_success": [
+      [
+        19999,
+        1.0690497159957886
+      ]
+    ],
+    "Eval_Test/error_left_wrist_pelvis_local_pos_success": [
+      [
+        19999,
+        0.019064191728830338
+      ]
+    ],
+    "Eval_Test/error_left_wrist_pelvis_local_rot_success": [
+      [
+        19999,
+        0.08915868401527405
+      ]
+    ],
+    "Eval_Test/error_right_wrist_pelvis_local_pos_success": [
+      [
+        19999,
+        0.02231352962553501
+      ]
+    ],
+    "Eval_Test/error_right_wrist_pelvis_local_rot_success": [
+      [
+        19999,
+        0.09727062284946442
+      ]
+    ],
+    "Eval_Test/error_head_proxy_pelvis_local_pos_success": [
+      [
+        19999,
+        0.02428528480231762
+      ]
+    ],
+    "Eval_Test/error_head_proxy_pelvis_local_rot_success": [
+      [
+        19999,
+        0.06650103628635406
+      ]
+    ],
+    "Eval_Test/error_left_wrist_pelvis_local_pos_focus_success": [
+      [
+        19999,
+        0.02258862555027008
+      ]
+    ],
+    "Eval_Test/error_left_wrist_pelvis_local_rot_focus_success": [
+      [
+        19999,
+        0.08476938307285309
+      ]
+    ],
+    "Eval_Test/error_right_wrist_pelvis_local_pos_focus_success": [
+      [
+        19999,
+        0.024002311751246452
+      ]
+    ],
+    "Eval_Test/error_right_wrist_pelvis_local_rot_focus_success": [
+      [
+        19999,
+        0.09983725100755692
+      ]
+    ],
+    "Eval_Test/error_head_proxy_pelvis_local_pos_focus_success": [
+      [
+        19999,
+        0.02356727048754692
+      ]
+    ],
+    "Eval_Test/error_head_proxy_pelvis_local_rot_focus_success": [
+      [
+        19999,
+        0.06609417498111725
+      ]
+    ],
+    "Eval_Test/error_anchor_height": [
+      [
+        19999,
+        0.13890916109085083
+      ]
+    ],
+    "Eval_Test/error_anchor_rot": [
+      [
+        19999,
+        0.4330967664718628
+      ]
+    ],
+    "Eval_Test/error_anchor_pos": [
+      [
+        19999,
+        8.807978630065918
+      ]
+    ],
+    "Eval_Test/error_anchor_lin_vel": [
+      [
+        19999,
+        0.561362087726593
+      ]
+    ],
+    "Eval_Test/error_anchor_ang_vel": [
+      [
+        19999,
+        0.3213304877281189
+      ]
+    ],
+    "Eval_Test/error_body_pos_g": [
+      [
+        19999,
+        8.814083099365234
+      ]
+    ],
+    "Eval_Test/error_body_pos": [
+      [
+        19999,
+        0.09546226263046265
+      ]
+    ],
+    "Eval_Test/error_body_pos_relative": [
+      [
+        19999,
+        0.16106848418712616
+      ]
+    ],
+    "Eval_Test/error_body_rot": [
+      [
+        19999,
+        0.450687050819397
+      ]
+    ],
+    "Eval_Test/error_body_rot_relative": [
+      [
+        19999,
+        0.43033167719841003
+      ]
+    ],
+    "Eval_Test/error_joint_pos": [
+      [
+        19999,
+        0.6854624152183533
+      ]
+    ],
+    "Eval_Test/error_joint_vel": [
+      [
+        19999,
+        1.3451553583145142
+      ]
+    ],
+    "Eval_Test/error_left_wrist_pelvis_local_pos": [
+      [
+        19999,
+        0.04806479439139366
+      ]
+    ],
+    "Eval_Test/error_left_wrist_pelvis_local_rot": [
+      [
+        19999,
+        0.254879355430603
+      ]
+    ],
+    "Eval_Test/error_right_wrist_pelvis_local_pos": [
+      [
+        19999,
+        0.0685761570930481
+      ]
+    ],
+    "Eval_Test/error_right_wrist_pelvis_local_rot": [
+      [
+        19999,
+        0.28471922874450684
+      ]
+    ],
+    "Eval_Test/error_head_proxy_pelvis_local_pos": [
+      [
+        19999,
+        0.03881009668111801
+      ]
+    ],
+    "Eval_Test/error_head_proxy_pelvis_local_rot": [
+      [
+        19999,
+        0.11399028450250626
+      ]
+    ],
+    "Eval_Test/error_left_wrist_pelvis_local_pos_focus": [
+      [
+        19999,
+        0.056493718177080154
+      ]
+    ],
+    "Eval_Test/error_left_wrist_pelvis_local_rot_focus": [
+      [
+        19999,
+        0.24195848405361176
+      ]
+    ],
+    "Eval_Test/error_right_wrist_pelvis_local_pos_focus": [
+      [
+        19999,
+        0.0663200318813324
+      ]
+    ],
+    "Eval_Test/error_right_wrist_pelvis_local_rot_focus": [
+      [
+        19999,
+        0.2726643681526184
+      ]
+    ],
+    "Eval_Test/error_head_proxy_pelvis_local_pos_focus": [
+      [
+        19999,
+        0.03639854118227959
+      ]
+    ],
+    "Eval_Test/error_head_proxy_pelvis_local_rot_focus": [
+      [
+        19999,
+        0.10927832871675491
+      ]
+    ]
+  },
+  "official_threeway_20261007_1510_v3_new_settings": {
+    "Eval_Test/success_rate": [
+      [
+        19999,
+        0.8033333420753479
+      ]
+    ],
+    "Eval_Test/error_anchor_height_success": [
+      [
+        19999,
+        0.006569082848727703
+      ]
+    ],
+    "Eval_Test/error_anchor_rot_success": [
+      [
+        19999,
+        0.13222604990005493
+      ]
+    ],
+    "Eval_Test/error_anchor_pos_success": [
+      [
+        19999,
+        0.03107922151684761
+      ]
+    ],
+    "Eval_Test/error_anchor_lin_vel_success": [
+      [
+        19999,
+        0.07179155945777893
+      ]
+    ],
+    "Eval_Test/error_anchor_ang_vel_success": [
+      [
+        19999,
+        0.2250346839427948
+      ]
+    ],
+    "Eval_Test/error_body_pos_g_success": [
+      [
+        19999,
+        0.03424492105841637
+      ]
+    ],
+    "Eval_Test/error_body_pos_success": [
+      [
+        19999,
+        0.023761697113513947
+      ]
+    ],
+    "Eval_Test/error_body_pos_relative_success": [
+      [
+        19999,
+        0.026659417897462845
+      ]
+    ],
+    "Eval_Test/error_body_rot_success": [
+      [
+        19999,
+        0.09044063091278076
+      ]
+    ],
+    "Eval_Test/error_body_rot_relative_success": [
+      [
+        19999,
+        0.09847955405712128
+      ]
+    ],
+    "Eval_Test/error_joint_pos_success": [
+      [
+        19999,
+        0.5135904550552368
+      ]
+    ],
+    "Eval_Test/error_joint_vel_success": [
+      [
+        19999,
+        1.2813044786453247
+      ]
+    ],
+    "Eval_Test/error_left_wrist_pelvis_local_pos_success": [
+      [
+        19999,
+        0.042472194880247116
+      ]
+    ],
+    "Eval_Test/error_left_wrist_pelvis_local_rot_success": [
+      [
+        19999,
+        0.13966159522533417
+      ]
+    ],
+    "Eval_Test/error_right_wrist_pelvis_local_pos_success": [
+      [
+        19999,
+        0.04317004606127739
+      ]
+    ],
+    "Eval_Test/error_right_wrist_pelvis_local_rot_success": [
+      [
+        19999,
+        0.13871309161186218
+      ]
+    ],
+    "Eval_Test/error_head_proxy_pelvis_local_pos_success": [
+      [
+        19999,
+        0.05385040119290352
+      ]
+    ],
+    "Eval_Test/error_head_proxy_pelvis_local_rot_success": [
+      [
+        19999,
+        0.1482839286327362
+      ]
+    ],
+    "Eval_Test/error_left_wrist_pelvis_local_pos_focus_success": [
+      [
+        19999,
+        0.04612043499946594
+      ]
+    ],
+    "Eval_Test/error_left_wrist_pelvis_local_rot_focus_success": [
+      [
+        19999,
+        0.1493254452943802
+      ]
+    ],
+    "Eval_Test/error_right_wrist_pelvis_local_pos_focus_success": [
+      [
+        19999,
+        0.04849496856331825
+      ]
+    ],
+    "Eval_Test/error_right_wrist_pelvis_local_rot_focus_success": [
+      [
+        19999,
+        0.14918920397758484
+      ]
+    ],
+    "Eval_Test/error_head_proxy_pelvis_local_pos_focus_success": [
+      [
+        19999,
+        0.058402810245752335
+      ]
+    ],
+    "Eval_Test/error_head_proxy_pelvis_local_rot_focus_success": [
+      [
+        19999,
+        0.1601344496011734
+      ]
+    ],
+    "Eval_Test/error_anchor_height": [
+      [
+        19999,
+        0.1294468641281128
+      ]
+    ],
+    "Eval_Test/error_anchor_rot": [
+      [
+        19999,
+        0.4850485324859619
+      ]
+    ],
+    "Eval_Test/error_anchor_pos": [
+      [
+        19999,
+        8.405374526977539
+      ]
+    ],
+    "Eval_Test/error_anchor_lin_vel": [
+      [
+        19999,
+        0.539071261882782
+      ]
+    ],
+    "Eval_Test/error_anchor_ang_vel": [
+      [
+        19999,
+        0.3500727117061615
+      ]
+    ],
+    "Eval_Test/error_body_pos_g": [
+      [
+        19999,
+        8.408672332763672
+      ]
+    ],
+    "Eval_Test/error_body_pos": [
+      [
+        19999,
+        0.10408692061901093
+      ]
+    ],
+    "Eval_Test/error_body_pos_relative": [
+      [
+        19999,
+        0.15964317321777344
+      ]
+    ],
+    "Eval_Test/error_body_rot": [
+      [
+        19999,
+        0.4624730944633484
+      ]
+    ],
+    "Eval_Test/error_body_rot_relative": [
+      [
+        19999,
+        0.46278005838394165
+      ]
+    ],
+    "Eval_Test/error_joint_pos": [
+      [
+        19999,
+        0.8928713202476501
+      ]
+    ],
+    "Eval_Test/error_joint_vel": [
+      [
+        19999,
+        1.543745756149292
+      ]
+    ],
+    "Eval_Test/error_left_wrist_pelvis_local_pos": [
+      [
+        19999,
+        0.08065861463546753
+      ]
+    ],
+    "Eval_Test/error_left_wrist_pelvis_local_rot": [
+      [
+        19999,
+        0.3242676854133606
+      ]
+    ],
+    "Eval_Test/error_right_wrist_pelvis_local_pos": [
+      [
+        19999,
+        0.10288503021001816
+      ]
+    ],
+    "Eval_Test/error_right_wrist_pelvis_local_rot": [
+      [
+        19999,
+        0.3805184066295624
+      ]
+    ],
+    "Eval_Test/error_head_proxy_pelvis_local_pos": [
+      [
+        19999,
+        0.06743837147951126
+      ]
+    ],
+    "Eval_Test/error_head_proxy_pelvis_local_rot": [
+      [
+        19999,
+        0.1897670030593872
+      ]
+    ],
+    "Eval_Test/error_left_wrist_pelvis_local_pos_focus": [
+      [
+        19999,
+        0.08506198972463608
+      ]
+    ],
+    "Eval_Test/error_left_wrist_pelvis_local_rot_focus": [
+      [
+        19999,
+        0.333717405796051
+      ]
+    ],
+    "Eval_Test/error_right_wrist_pelvis_local_pos_focus": [
+      [
+        19999,
+        0.10894624888896942
+      ]
+    ],
+    "Eval_Test/error_right_wrist_pelvis_local_rot_focus": [
+      [
+        19999,
+        0.38682883977890015
+      ]
+    ],
+    "Eval_Test/error_head_proxy_pelvis_local_pos_focus": [
+      [
+        19999,
+        0.07324486970901489
+      ]
+    ],
+    "Eval_Test/error_head_proxy_pelvis_local_rot_focus": [
+      [
+        19999,
+        0.2044590264558792
+      ]
+    ]
+  },
+  "direct_20261013_speed_wrist2": {
+    "Eval_Test/success_rate": [
+      [
+        19999,
+        0.8016666769981384
+      ]
+    ],
+    "Eval_Test/error_anchor_height_success": [
+      [
+        19999,
+        0.007056806236505508
+      ]
+    ],
+    "Eval_Test/error_anchor_rot_success": [
+      [
+        19999,
+        0.05701455473899841
+      ]
+    ],
+    "Eval_Test/error_anchor_pos_success": [
+      [
+        19999,
+        0.026041420176625252
+      ]
+    ],
+    "Eval_Test/error_anchor_lin_vel_success": [
+      [
+        19999,
+        0.06677649170160294
+      ]
+    ],
+    "Eval_Test/error_anchor_ang_vel_success": [
+      [
+        19999,
+        0.16965137422084808
+      ]
+    ],
+    "Eval_Test/error_body_pos_g_success": [
+      [
+        19999,
+        0.0301570575684309
+      ]
+    ],
+    "Eval_Test/error_body_pos_success": [
+      [
+        19999,
+        0.023358669131994247
+      ]
+    ],
+    "Eval_Test/error_body_pos_relative_success": [
+      [
+        19999,
+        0.0252323430031538
+      ]
+    ],
+    "Eval_Test/error_body_rot_success": [
+      [
+        19999,
+        0.0903969556093216
+      ]
+    ],
+    "Eval_Test/error_body_rot_relative_success": [
+      [
+        19999,
+        0.09133981913328171
+      ]
+    ],
+    "Eval_Test/error_joint_pos_success": [
+      [
+        19999,
+        0.49699604511260986
+      ]
+    ],
+    "Eval_Test/error_joint_vel_success": [
+      [
+        19999,
+        1.1803827285766602
+      ]
+    ],
+    "Eval_Test/error_left_wrist_pelvis_local_pos_success": [
+      [
+        19999,
+        0.026558874174952507
+      ]
+    ],
+    "Eval_Test/error_left_wrist_pelvis_local_rot_success": [
+      [
+        19999,
+        0.06246368959546089
+      ]
+    ],
+    "Eval_Test/error_right_wrist_pelvis_local_pos_success": [
+      [
+        19999,
+        0.03025182895362377
+      ]
+    ],
+    "Eval_Test/error_right_wrist_pelvis_local_rot_success": [
+      [
+        19999,
+        0.06723662465810776
+      ]
+    ],
+    "Eval_Test/error_head_proxy_pelvis_local_pos_success": [
+      [
+        19999,
+        0.02884649485349655
+      ]
+    ],
+    "Eval_Test/error_head_proxy_pelvis_local_rot_success": [
+      [
+        19999,
+        0.07895375788211823
+      ]
+    ],
+    "Eval_Test/error_left_wrist_global_pos_success": [
+      [
+        19999,
+        0.011928661726415157
+      ]
+    ],
+    "Eval_Test/error_right_wrist_global_pos_success": [
+      [
+        19999,
+        0.013759549707174301
+      ]
+    ],
+    "Eval_Test/error_anchor_height": [
+      [
+        19999,
+        0.1310029774904251
+      ]
+    ],
+    "Eval_Test/error_anchor_rot": [
+      [
+        19999,
+        0.4569147229194641
+      ]
+    ],
+    "Eval_Test/error_anchor_pos": [
+      [
+        19999,
+        8.77220344543457
+      ]
+    ],
+    "Eval_Test/error_anchor_lin_vel": [
+      [
+        19999,
+        0.5597794651985168
+      ]
+    ],
+    "Eval_Test/error_anchor_ang_vel": [
+      [
+        19999,
+        0.33158326148986816
+      ]
+    ],
+    "Eval_Test/error_body_pos_g": [
+      [
+        19999,
+        8.77506160736084
+      ]
+    ],
+    "Eval_Test/error_body_pos": [
+      [
+        19999,
+        0.1042303815484047
+      ]
+    ],
+    "Eval_Test/error_body_pos_relative": [
+      [
+        19999,
+        0.15888410806655884
+      ]
+    ],
+    "Eval_Test/error_body_rot": [
+      [
+        19999,
+        0.48698675632476807
+      ]
+    ],
+    "Eval_Test/error_body_rot_relative": [
+      [
+        19999,
+        0.45329952239990234
+      ]
+    ],
+    "Eval_Test/error_joint_pos": [
+      [
+        19999,
+        0.8504069447517395
+      ]
+    ],
+    "Eval_Test/error_joint_vel": [
+      [
+        19999,
+        1.4672887325286865
+      ]
+    ],
+    "Eval_Test/error_left_wrist_pelvis_local_pos": [
+      [
+        19999,
+        0.05930420011281967
+      ]
+    ],
+    "Eval_Test/error_left_wrist_pelvis_local_rot": [
+      [
+        19999,
+        0.24677185714244843
+      ]
+    ],
+    "Eval_Test/error_right_wrist_pelvis_local_pos": [
+      [
+        19999,
+        0.08088867366313934
+      ]
+    ],
+    "Eval_Test/error_right_wrist_pelvis_local_rot": [
+      [
+        19999,
+        0.28986871242523193
+      ]
+    ],
+    "Eval_Test/error_head_proxy_pelvis_local_pos": [
+      [
+        19999,
+        0.0457996129989624
+      ]
+    ],
+    "Eval_Test/error_head_proxy_pelvis_local_rot": [
+      [
+        19999,
+        0.1310492604970932
+      ]
+    ],
+    "Eval_Test/error_left_wrist_global_pos": [
+      [
+        19999,
+        8.760140419006348
+      ]
+    ],
+    "Eval_Test/error_right_wrist_global_pos": [
+      [
+        19999,
+        8.759751319885254
+      ]
+    ]
+  },
+  "direct_20261013_speed_wrist1": {
+    "Eval_Test/success_rate": [
+      [
+        19999,
+        0.8016666769981384
+      ]
+    ],
+    "Eval_Test/error_anchor_height_success": [
+      [
+        19999,
+        0.007084621116518974
+      ]
+    ],
+    "Eval_Test/error_anchor_rot_success": [
+      [
+        19999,
+        0.0502358116209507
+      ]
+    ],
+    "Eval_Test/error_anchor_pos_success": [
+      [
+        19999,
+        0.02309057116508484
+      ]
+    ],
+    "Eval_Test/error_anchor_lin_vel_success": [
+      [
+        19999,
+        0.06447193771600723
+      ]
+    ],
+    "Eval_Test/error_anchor_ang_vel_success": [
+      [
+        19999,
+        0.1622375100851059
+      ]
+    ],
+    "Eval_Test/error_body_pos_g_success": [
+      [
+        19999,
+        0.030134815722703934
+      ]
+    ],
+    "Eval_Test/error_body_pos_success": [
+      [
+        19999,
+        0.019626008346676826
+      ]
+    ],
+    "Eval_Test/error_body_pos_relative_success": [
+      [
+        19999,
+        0.02201388031244278
+      ]
+    ],
+    "Eval_Test/error_body_rot_success": [
+      [
+        19999,
+        0.0776333287358284
+      ]
+    ],
+    "Eval_Test/error_body_rot_relative_success": [
+      [
+        19999,
+        0.07859878242015839
+      ]
+    ],
+    "Eval_Test/error_joint_pos_success": [
+      [
+        19999,
+        0.3976570665836334
+      ]
+    ],
+    "Eval_Test/error_joint_vel_success": [
+      [
+        19999,
+        1.1492173671722412
+      ]
+    ],
+    "Eval_Test/error_left_wrist_pelvis_local_pos_success": [
+      [
+        19999,
+        0.020610788837075233
+      ]
+    ],
+    "Eval_Test/error_left_wrist_pelvis_local_rot_success": [
+      [
+        19999,
+        0.05660950019955635
+      ]
+    ],
+    "Eval_Test/error_right_wrist_pelvis_local_pos_success": [
+      [
+        19999,
+        0.02527332678437233
+      ]
+    ],
+    "Eval_Test/error_right_wrist_pelvis_local_rot_success": [
+      [
+        19999,
+        0.059474144130945206
+      ]
+    ],
+    "Eval_Test/error_head_proxy_pelvis_local_pos_success": [
+      [
+        19999,
+        0.02528364025056362
+      ]
+    ],
+    "Eval_Test/error_head_proxy_pelvis_local_rot_success": [
+      [
+        19999,
+        0.07044198364019394
+      ]
+    ],
+    "Eval_Test/error_left_wrist_global_pos_success": [
+      [
+        19999,
+        0.016564922407269478
+      ]
+    ],
+    "Eval_Test/error_right_wrist_global_pos_success": [
+      [
+        19999,
+        0.019283048808574677
+      ]
+    ],
+    "Eval_Test/error_anchor_height": [
+      [
+        19999,
+        0.13126103579998016
+      ]
+    ],
+    "Eval_Test/error_anchor_rot": [
+      [
+        19999,
+        0.44146260619163513
+      ]
+    ],
+    "Eval_Test/error_anchor_pos": [
+      [
+        19999,
+        8.9856538772583
+      ]
+    ],
+    "Eval_Test/error_anchor_lin_vel": [
+      [
+        19999,
+        0.5714559555053711
+      ]
+    ],
+    "Eval_Test/error_anchor_ang_vel": [
+      [
+        19999,
+        0.331229031085968
+      ]
+    ],
+    "Eval_Test/error_body_pos_g": [
+      [
+        19999,
+        8.993072509765625
+      ]
+    ],
+    "Eval_Test/error_body_pos": [
+      [
+        19999,
+        0.10008507966995239
+      ]
+    ],
+    "Eval_Test/error_body_pos_relative": [
+      [
+        19999,
+        0.15631532669067383
+      ]
+    ],
+    "Eval_Test/error_body_rot": [
+      [
+        19999,
+        0.46802622079849243
+      ]
+    ],
+    "Eval_Test/error_body_rot_relative": [
+      [
+        19999,
+        0.4432036876678467
+      ]
+    ],
+    "Eval_Test/error_joint_pos": [
+      [
+        19999,
+        0.7839438319206238
+      ]
+    ],
+    "Eval_Test/error_joint_vel": [
+      [
+        19999,
+        1.4459030628204346
+      ]
+    ],
+    "Eval_Test/error_left_wrist_pelvis_local_pos": [
+      [
+        19999,
+        0.058030638843774796
+      ]
+    ],
+    "Eval_Test/error_left_wrist_pelvis_local_rot": [
+      [
+        19999,
+        0.2663710415363312
+      ]
+    ],
+    "Eval_Test/error_right_wrist_pelvis_local_pos": [
+      [
+        19999,
+        0.0765024721622467
+      ]
+    ],
+    "Eval_Test/error_right_wrist_pelvis_local_rot": [
+      [
+        19999,
+        0.2759951055049896
+      ]
+    ],
+    "Eval_Test/error_head_proxy_pelvis_local_pos": [
+      [
+        19999,
+        0.04355728253722191
+      ]
+    ],
+    "Eval_Test/error_head_proxy_pelvis_local_rot": [
+      [
+        19999,
+        0.12782664597034454
+      ]
+    ],
+    "Eval_Test/error_left_wrist_global_pos": [
+      [
+        19999,
+        8.979948997497559
+      ]
+    ],
+    "Eval_Test/error_right_wrist_global_pos": [
+      [
+        19999,
+        8.978423118591309
+      ]
+    ]
+  },
+  "direct_20261013_wrist1": {
+    "Eval_Test/success_rate": [
+      [
+        19999,
+        0.8033333420753479
+      ]
+    ],
+    "Eval_Test/error_anchor_height_success": [
+      [
+        19999,
+        0.006985103245824575
+      ]
+    ],
+    "Eval_Test/error_anchor_rot_success": [
+      [
+        19999,
+        0.05043227970600128
+      ]
+    ],
+    "Eval_Test/error_anchor_pos_success": [
+      [
+        19999,
+        0.02237793803215027
+      ]
+    ],
+    "Eval_Test/error_anchor_lin_vel_success": [
+      [
+        19999,
+        0.06422300636768341
+      ]
+    ],
+    "Eval_Test/error_anchor_ang_vel_success": [
+      [
+        19999,
+        0.1648164540529251
+      ]
+    ],
+    "Eval_Test/error_body_pos_g_success": [
+      [
+        19999,
+        0.029740238562226295
+      ]
+    ],
+    "Eval_Test/error_body_pos_success": [
+      [
+        19999,
+        0.01928056590259075
+      ]
+    ],
+    "Eval_Test/error_body_pos_relative_success": [
+      [
+        19999,
+        0.021884283050894737
+      ]
+    ],
+    "Eval_Test/error_body_rot_success": [
+      [
+        19999,
+        0.07751896977424622
+      ]
+    ],
+    "Eval_Test/error_body_rot_relative_success": [
+      [
+        19999,
+        0.07923411577939987
+      ]
+    ],
+    "Eval_Test/error_joint_pos_success": [
+      [
+        19999,
+        0.3954433500766754
+      ]
+    ],
+    "Eval_Test/error_joint_vel_success": [
+      [
+        19999,
+        1.1491055488586426
+      ]
+    ],
+    "Eval_Test/error_left_wrist_pelvis_local_pos_success": [
+      [
+        19999,
+        0.019987545907497406
+      ]
+    ],
+    "Eval_Test/error_left_wrist_pelvis_local_rot_success": [
+      [
+        19999,
+        0.05971319228410721
+      ]
+    ],
+    "Eval_Test/error_right_wrist_pelvis_local_pos_success": [
+      [
+        19999,
+        0.023764556273818016
+      ]
+    ],
+    "Eval_Test/error_right_wrist_pelvis_local_rot_success": [
+      [
+        19999,
+        0.06228315457701683
+      ]
+    ],
+    "Eval_Test/error_head_proxy_pelvis_local_pos_success": [
+      [
+        19999,
+        0.023763548582792282
+      ]
+    ],
+    "Eval_Test/error_head_proxy_pelvis_local_rot_success": [
+      [
+        19999,
+        0.07058509439229965
+      ]
+    ],
+    "Eval_Test/error_left_wrist_global_pos_success": [
+      [
+        19999,
+        0.01626528985798359
+      ]
+    ],
+    "Eval_Test/error_right_wrist_global_pos_success": [
+      [
+        19999,
+        0.019071631133556366
+      ]
+    ],
+    "Eval_Test/error_anchor_height": [
+      [
+        19999,
+        0.14210771024227142
+      ]
+    ],
+    "Eval_Test/error_anchor_rot": [
+      [
+        19999,
+        0.4460815489292145
+      ]
+    ],
+    "Eval_Test/error_anchor_pos": [
+      [
+        19999,
+        8.706686973571777
+      ]
+    ],
+    "Eval_Test/error_anchor_lin_vel": [
+      [
+        19999,
+        0.5553445816040039
+      ]
+    ],
+    "Eval_Test/error_anchor_ang_vel": [
+      [
+        19999,
+        0.33206379413604736
+      ]
+    ],
+    "Eval_Test/error_body_pos_g": [
+      [
+        19999,
+        8.715290069580078
+      ]
+    ],
+    "Eval_Test/error_body_pos": [
+      [
+        19999,
+        0.10011619329452515
+      ]
+    ],
+    "Eval_Test/error_body_pos_relative": [
+      [
+        19999,
+        0.16726504266262054
+      ]
+    ],
+    "Eval_Test/error_body_rot": [
+      [
+        19999,
+        0.4740104079246521
+      ]
+    ],
+    "Eval_Test/error_body_rot_relative": [
+      [
+        19999,
+        0.4331776797771454
+      ]
+    ],
+    "Eval_Test/error_joint_pos": [
+      [
+        19999,
+        0.7619199752807617
+      ]
+    ],
+    "Eval_Test/error_joint_vel": [
+      [
+        19999,
+        1.4489234685897827
+      ]
+    ],
+    "Eval_Test/error_left_wrist_pelvis_local_pos": [
+      [
+        19999,
+        0.054372623562812805
+      ]
+    ],
+    "Eval_Test/error_left_wrist_pelvis_local_rot": [
+      [
+        19999,
+        0.2531246840953827
+      ]
+    ],
+    "Eval_Test/error_right_wrist_pelvis_local_pos": [
+      [
+        19999,
+        0.07357378304004669
+      ]
+    ],
+    "Eval_Test/error_right_wrist_pelvis_local_rot": [
+      [
+        19999,
+        0.27830734848976135
+      ]
+    ],
+    "Eval_Test/error_head_proxy_pelvis_local_pos": [
+      [
+        19999,
+        0.041225846856832504
+      ]
+    ],
+    "Eval_Test/error_head_proxy_pelvis_local_rot": [
+      [
+        19999,
+        0.12185346335172653
+      ]
+    ],
+    "Eval_Test/error_left_wrist_global_pos": [
+      [
+        19999,
+        8.702369689941406
+      ]
+    ],
+    "Eval_Test/error_right_wrist_global_pos": [
+      [
+        19999,
+        8.709375381469727
+      ]
+    ]
+  }
+}

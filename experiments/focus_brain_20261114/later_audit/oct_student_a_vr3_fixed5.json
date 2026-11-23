@@ -1,0 +1,333 @@
+{
+  "condition": "oct_student_a",
+  "checkpoint": "/root/shengyin/ScaleBFM/ScaleTrack/logs/rsl_rl/student_regularized/student_20261023_A/model_1000.pt",
+  "checkpoint_sha256": "7fa552a24b3fcd6f9b17f350ed25b0b59b44bbaf8e91fd9f0104817f070c6f10",
+  "mode": "VR-3",
+  "active_links": [
+    "pelvis",
+    "left_wrist_yaw_link",
+    "right_wrist_yaw_link"
+  ],
+  "motions": 600,
+  "seed": 42,
+  "max_steps": 1000,
+  "label_definition": "same corrected August v2 labels; student phase weights are disabled",
+  "label_sha256": "2a664308f1e7ef37cf03366dcb8e18059d4cecc3b5ad9c071b5ee7ddb2f43d20",
+  "fixed_future_offset": 5,
+  "success_count": 484,
+  "success_rate": 0.8066666722297668,
+  "phase_input": "native motion-file labels; official factory projection gains only zero phase columns",
+  "success_buckets": {
+    "focus": {
+      "motions": 481,
+      "frames": 151951,
+      "errors_cm_deg": {
+        "error_anchor_pos": {
+          "mean_over_motions": 2.7929153442382812,
+          "frame_weighted_mean": 2.818073034286499
+        },
+        "error_anchor_rot": {
+          "mean_over_motions": 4.195213317871094,
+          "frame_weighted_mean": 4.148129940032959
+        },
+        "error_left_wrist_global_pos": {
+          "mean_over_motions": 2.3973491191864014,
+          "frame_weighted_mean": 2.458127021789551
+        },
+        "error_left_wrist_global_rot": {
+          "mean_over_motions": 2.5149717330932617,
+          "frame_weighted_mean": 2.5059218406677246
+        },
+        "error_left_wrist_pelvis_local_pos": {
+          "mean_over_motions": 2.5251731872558594,
+          "frame_weighted_mean": 2.5441272258758545
+        },
+        "error_left_wrist_pelvis_local_rot": {
+          "mean_over_motions": 4.288300037384033,
+          "frame_weighted_mean": 4.327059268951416
+        },
+        "error_right_wrist_global_pos": {
+          "mean_over_motions": 1.742619514465332,
+          "frame_weighted_mean": 1.7773889303207397
+        },
+        "error_right_wrist_global_rot": {
+          "mean_over_motions": 2.338714361190796,
+          "frame_weighted_mean": 2.378516435623169
+        },
+        "error_right_wrist_pelvis_local_pos": {
+          "mean_over_motions": 2.936631441116333,
+          "frame_weighted_mean": 2.9697675704956055
+        },
+        "error_right_wrist_pelvis_local_rot": {
+          "mean_over_motions": 4.71001672744751,
+          "frame_weighted_mean": 4.805452823638916
+        },
+        "error_head_proxy_global_pos": {
+          "mean_over_motions": 3.194875717163086,
+          "frame_weighted_mean": 3.1912951469421387
+        },
+        "error_head_proxy_global_rot": {
+          "mean_over_motions": 6.0056843757629395,
+          "frame_weighted_mean": 6.008491039276123
+        },
+        "error_head_proxy_pelvis_local_pos": {
+          "mean_over_motions": 3.817246198654175,
+          "frame_weighted_mean": 3.7203004360198975
+        },
+        "error_head_proxy_pelvis_local_rot": {
+          "mean_over_motions": 6.135368824005127,
+          "frame_weighted_mean": 6.016179084777832
+        }
+      }
+    },
+    "nonfocus": {
+      "motions": 484,
+      "frames": 316393,
+      "errors_cm_deg": {
+        "error_anchor_pos": {
+          "mean_over_motions": 3.13955020904541,
+          "frame_weighted_mean": 3.1024580001831055
+        },
+        "error_anchor_rot": {
+          "mean_over_motions": 3.306783437728882,
+          "frame_weighted_mean": 3.386672258377075
+        },
+        "error_left_wrist_global_pos": {
+          "mean_over_motions": 2.582138776779175,
+          "frame_weighted_mean": 2.553130626678467
+        },
+        "error_left_wrist_global_rot": {
+          "mean_over_motions": 2.5772554874420166,
+          "frame_weighted_mean": 2.5490856170654297
+        },
+        "error_left_wrist_pelvis_local_pos": {
+          "mean_over_motions": 2.5303597450256348,
+          "frame_weighted_mean": 2.5229361057281494
+        },
+        "error_left_wrist_pelvis_local_rot": {
+          "mean_over_motions": 3.9391887187957764,
+          "frame_weighted_mean": 3.9700167179107666
+        },
+        "error_right_wrist_global_pos": {
+          "mean_over_motions": 2.05068302154541,
+          "frame_weighted_mean": 2.0345404148101807
+        },
+        "error_right_wrist_global_rot": {
+          "mean_over_motions": 2.430954694747925,
+          "frame_weighted_mean": 2.4178922176361084
+        },
+        "error_right_wrist_pelvis_local_pos": {
+          "mean_over_motions": 2.44791316986084,
+          "frame_weighted_mean": 2.4743940830230713
+        },
+        "error_right_wrist_pelvis_local_rot": {
+          "mean_over_motions": 4.115900039672852,
+          "frame_weighted_mean": 4.155551433563232
+        },
+        "error_head_proxy_global_pos": {
+          "mean_over_motions": 3.649531364440918,
+          "frame_weighted_mean": 3.6351065635681152
+        },
+        "error_head_proxy_global_rot": {
+          "mean_over_motions": 6.658599376678467,
+          "frame_weighted_mean": 6.567409515380859
+        },
+        "error_head_proxy_pelvis_local_pos": {
+          "mean_over_motions": 4.236115455627441,
+          "frame_weighted_mean": 4.253537654876709
+        },
+        "error_head_proxy_pelvis_local_rot": {
+          "mean_over_motions": 6.55606746673584,
+          "frame_weighted_mean": 6.587019443511963
+        }
+      }
+    }
+  },
+  "all_motion_buckets": {
+    "focus": {
+      "motions": 597,
+      "frames": 187101,
+      "errors_cm_deg": {
+        "error_anchor_pos": {
+          "mean_over_motions": 943.6890869140625,
+          "frame_weighted_mean": 779.4290161132812
+        },
+        "error_anchor_rot": {
+          "mean_over_motions": 26.43825340270996,
+          "frame_weighted_mean": 25.636943817138672
+        },
+        "error_left_wrist_global_pos": {
+          "mean_over_motions": 943.4483032226562,
+          "frame_weighted_mean": 779.3027954101562
+        },
+        "error_left_wrist_global_rot": {
+          "mean_over_motions": 24.669628143310547,
+          "frame_weighted_mean": 24.218706130981445
+        },
+        "error_left_wrist_pelvis_local_pos": {
+          "mean_over_motions": 5.8857245445251465,
+          "frame_weighted_mean": 5.746074199676514
+        },
+        "error_left_wrist_pelvis_local_rot": {
+          "mean_over_motions": 16.092018127441406,
+          "frame_weighted_mean": 15.663962364196777
+        },
+        "error_right_wrist_global_pos": {
+          "mean_over_motions": 943.7894897460938,
+          "frame_weighted_mean": 779.8163452148438
+        },
+        "error_right_wrist_global_rot": {
+          "mean_over_motions": 24.17359733581543,
+          "frame_weighted_mean": 23.4221248626709
+        },
+        "error_right_wrist_pelvis_local_pos": {
+          "mean_over_motions": 8.50728988647461,
+          "frame_weighted_mean": 8.347504615783691
+        },
+        "error_right_wrist_pelvis_local_rot": {
+          "mean_over_motions": 16.75535774230957,
+          "frame_weighted_mean": 16.654674530029297
+        },
+        "error_head_proxy_global_pos": {
+          "mean_over_motions": 946.6796264648438,
+          "frame_weighted_mean": 782.8759155273438
+        },
+        "error_head_proxy_global_rot": {
+          "mean_over_motions": 27.729211807250977,
+          "frame_weighted_mean": 27.03003692626953
+        },
+        "error_head_proxy_pelvis_local_pos": {
+          "mean_over_motions": 5.895223140716553,
+          "frame_weighted_mean": 5.732284069061279
+        },
+        "error_head_proxy_pelvis_local_rot": {
+          "mean_over_motions": 9.84632682800293,
+          "frame_weighted_mean": 9.671731948852539
+        }
+      }
+    },
+    "nonfocus": {
+      "motions": 600,
+      "frames": 396394,
+      "errors_cm_deg": {
+        "error_anchor_pos": {
+          "mean_over_motions": 818.6359252929688,
+          "frame_weighted_mean": 905.98095703125
+        },
+        "error_anchor_rot": {
+          "mean_over_motions": 25.144437789916992,
+          "frame_weighted_mean": 26.183551788330078
+        },
+        "error_left_wrist_global_pos": {
+          "mean_over_motions": 818.0465698242188,
+          "frame_weighted_mean": 905.3067016601562
+        },
+        "error_left_wrist_global_rot": {
+          "mean_over_motions": 24.186832427978516,
+          "frame_weighted_mean": 25.05618667602539
+        },
+        "error_left_wrist_pelvis_local_pos": {
+          "mean_over_motions": 5.890726089477539,
+          "frame_weighted_mean": 6.0428466796875
+        },
+        "error_left_wrist_pelvis_local_rot": {
+          "mean_over_motions": 15.642646789550781,
+          "frame_weighted_mean": 16.304025650024414
+        },
+        "error_right_wrist_global_pos": {
+          "mean_over_motions": 817.7575073242188,
+          "frame_weighted_mean": 905.0392456054688
+        },
+        "error_right_wrist_global_rot": {
+          "mean_over_motions": 23.630887985229492,
+          "frame_weighted_mean": 24.539203643798828
+        },
+        "error_right_wrist_pelvis_local_pos": {
+          "mean_over_motions": 7.064233303070068,
+          "frame_weighted_mean": 7.323246479034424
+        },
+        "error_right_wrist_pelvis_local_rot": {
+          "mean_over_motions": 15.633620262145996,
+          "frame_weighted_mean": 16.230117797851562
+        },
+        "error_head_proxy_global_pos": {
+          "mean_over_motions": 820.9083251953125,
+          "frame_weighted_mean": 908.1228637695312
+        },
+        "error_head_proxy_global_rot": {
+          "mean_over_motions": 27.618085861206055,
+          "frame_weighted_mean": 28.48335838317871
+        },
+        "error_head_proxy_pelvis_local_pos": {
+          "mean_over_motions": 5.436816215515137,
+          "frame_weighted_mean": 5.503223896026611
+        },
+        "error_head_proxy_pelvis_local_rot": {
+          "mean_over_motions": 8.844573974609375,
+          "frame_weighted_mean": 8.951537132263184
+        }
+      }
+    }
+  },
+  "original_evaluator_metrics": {
+    "success_rate": 0.8066666722297668,
+    "error_body_pos_g_success": 0.032228097319602966,
+    "error_anchor_pos_success": 0.03021237812936306,
+    "error_anchor_rot_success": 0.06323852390050888,
+    "error_left_wrist_global_pos_success": 0.025253716856241226,
+    "error_left_wrist_global_rot_success": 0.04433402046561241,
+    "error_left_wrist_pelvis_local_pos_success": 0.025338472798466682,
+    "error_left_wrist_pelvis_local_rot_success": 0.07128725200891495,
+    "error_right_wrist_global_pos_success": 0.019541917368769646,
+    "error_right_wrist_global_rot_success": 0.04197363182902336,
+    "error_right_wrist_pelvis_local_pos_success": 0.026333769783377647,
+    "error_right_wrist_pelvis_local_rot_success": 0.07616164535284042,
+    "error_head_proxy_global_pos_success": 0.034926485270261765,
+    "error_head_proxy_global_rot_success": 0.11171430349349976,
+    "error_head_proxy_pelvis_local_pos_success": 0.040761906653642654,
+    "error_head_proxy_pelvis_local_rot_success": 0.11164124310016632,
+    "error_anchor_pos_focus_success": 0.0279291532933712,
+    "error_anchor_rot_focus_success": 0.07322029024362564,
+    "error_left_wrist_global_pos_focus_success": 0.023973489180207253,
+    "error_left_wrist_global_rot_focus_success": 0.04389454051852226,
+    "error_left_wrist_pelvis_local_pos_focus_success": 0.025251731276512146,
+    "error_left_wrist_pelvis_local_rot_focus_success": 0.07484494894742966,
+    "error_right_wrist_global_pos_focus_success": 0.01742619462311268,
+    "error_right_wrist_global_rot_focus_success": 0.040818266570568085,
+    "error_right_wrist_pelvis_local_pos_focus_success": 0.02936631627380848,
+    "error_right_wrist_pelvis_local_rot_focus_success": 0.08220530301332474,
+    "error_head_proxy_global_pos_focus_success": 0.0319487564265728,
+    "error_head_proxy_global_rot_focus_success": 0.10481897741556168,
+    "error_head_proxy_pelvis_local_pos_focus_success": 0.03817245736718178,
+    "error_head_proxy_pelvis_local_rot_focus_success": 0.10708237439393997,
+    "error_body_pos_g": 8.496162414550781,
+    "error_anchor_pos": 8.49064826965332,
+    "error_anchor_rot": 0.44580185413360596,
+    "error_left_wrist_global_pos": 8.4856595993042,
+    "error_left_wrist_global_rot": 0.4243254065513611,
+    "error_left_wrist_pelvis_local_pos": 0.05884469300508499,
+    "error_left_wrist_pelvis_local_rot": 0.2766648232936859,
+    "error_right_wrist_global_pos": 8.485492706298828,
+    "error_right_wrist_global_rot": 0.41429010033607483,
+    "error_right_wrist_pelvis_local_pos": 0.07538875192403793,
+    "error_right_wrist_pelvis_local_rot": 0.28105735778808594,
+    "error_head_proxy_global_pos": 8.515680313110352,
+    "error_head_proxy_global_rot": 0.48153090476989746,
+    "error_head_proxy_pelvis_local_pos": 0.05540820583701134,
+    "error_head_proxy_pelvis_local_rot": 0.15910789370536804,
+    "error_anchor_pos_focus": 9.4368896484375,
+    "error_anchor_rot_focus": 0.46143457293510437,
+    "error_left_wrist_global_pos_focus": 9.434483528137207,
+    "error_left_wrist_global_rot_focus": 0.4305662214756012,
+    "error_left_wrist_pelvis_local_pos_focus": 0.05885724350810051,
+    "error_left_wrist_pelvis_local_rot_focus": 0.28085869550704956,
+    "error_right_wrist_global_pos_focus": 9.437893867492676,
+    "error_right_wrist_global_rot_focus": 0.4219088554382324,
+    "error_right_wrist_pelvis_local_pos_focus": 0.08507289737462997,
+    "error_right_wrist_pelvis_local_rot_focus": 0.2924361824989319,
+    "error_head_proxy_global_pos_focus": 9.466794967651367,
+    "error_head_proxy_global_rot_focus": 0.48396605253219604,
+    "error_head_proxy_pelvis_local_pos_focus": 0.05895223096013069,
+    "error_head_proxy_pelvis_local_rot_focus": 0.17185081541538239
+  }
+}

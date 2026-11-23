@@ -1,0 +1,24 @@
+{
+  "command": [
+    "/root/miniconda3/envs/isaaclab_sonic/bin/python",
+    "/root/shengyin/ScaleBFM_focus_brain_20261114/ScaleTrack/scripts/pretrain/rsl_rl/eval_vr3_focus_buckets.py",
+    "--checkpoint",
+    "/root/shengyin/ScaleBFM/ScaleTrack/logs/rsl_rl/g1_hat4_focus_finetune/formal_focusv2_20260824_F3h/model_20000.pt",
+    "--motion-file",
+    "/root/shengyin/ScaleBFM/ScaleTrack/data/hat4_unifolm_focus_v2/manifests/unifolm_hat4_heldout.yaml",
+    "--output",
+    "/root/shengyin/ScaleBFM_focus_brain_20261114/experiments/focus_brain_20261114/vr3_buckets/august_v2.json",
+    "--condition",
+    "august_v2",
+    "--label-definition",
+    "original August labels, same corrected v2 definition",
+    "--max-steps",
+    "1000",
+    "--num-envs",
+    "600",
+    "--device",
+    "cuda:0",
+    "--headless"
+  ],
+  "gpu": 5
+}

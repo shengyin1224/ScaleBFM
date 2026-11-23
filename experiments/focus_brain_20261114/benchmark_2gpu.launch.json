@@ -1,0 +1,39 @@
+{
+  "command": [
+    "/root/miniconda3/envs/isaaclab_sonic/bin/python",
+    "-m",
+    "torch.distributed.run",
+    "--standalone",
+    "--nnodes=1",
+    "--nproc_per_node=2",
+    "/root/shengyin/ScaleBFM_focus_brain_20261114/ScaleTrack/scripts/pretrain/rsl_rl/train.py",
+    "--task",
+    "G1-HAT4-BrainFocusLR-Finetune",
+    "--motion_file",
+    "/root/shengyin/ScaleBFM_focus_brain_20261114/experiments/focus_brain_20261114/corpus/manifests/unifolm_hat4_train.yaml",
+    "--test_motion_file",
+    "/root/shengyin/ScaleBFM_focus_brain_20261114/experiments/focus_brain_20261114/corpus/manifests/unifolm_hat4_heldout.yaml",
+    "--pretrained_checkpoint",
+    "/root/shengyin/ScaleBFM/ScaleTrack/logs/rsl_rl/g1_bfm_tracking_exp/humanoid_transformer_m/model_22200.pt",
+    "--num_envs",
+    "2048",
+    "--max_iterations",
+    "10",
+    "--run_name",
+    "benchmark_2gpu_20261114",
+    "--device",
+    "cuda:0",
+    "--headless",
+    "--distributed",
+    "agent.eval_during_training=false"
+  ],
+  "physical_gpus": [
+    5,
+    4
+  ],
+  "environment": {
+    "CUDA_VISIBLE_DEVICES": "5,4",
+    "PYTHONPATH": "/root/shengyin/ScaleBFM_focus_brain_20261114/ScaleTrack/source/scaletrack:/root/shengyin/ScaleBFM_focus_brain_20261114/ScaleTrack/source/my_rsl_rl:/root/shengyin/ScaleBFM_focus_brain_20261114/ScaleTrack/scripts/pretrain/rsl_rl:/root/shengyin/ScaleBFM_focus_brain_20261114",
+    "FOCUS_LR_ROOT": "/root/shengyin/ScaleBFM_focus_brain_20261114/experiments/focus_brain_20261114/corpus"
+  }
+}

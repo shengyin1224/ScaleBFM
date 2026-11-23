@@ -1,0 +1,352 @@
+{
+  "w4_vr3": {
+    "stage": "complete",
+    "gpu": 5,
+    "command": [
+      "/root/miniconda3/envs/isaaclab_sonic/bin/python",
+      "/root/shengyin/ScaleBFM_focus_brain_20261114/ScaleTrack/scripts/pretrain/rsl_rl/eval_vr3_focus_buckets.py",
+      "--checkpoint",
+      "/root/shengyin/ScaleBFM/ScaleTrack/logs/rsl_rl/g1_hat4_focus_finetune/F3hw4/model_20000.pt",
+      "--motion-file",
+      "/root/shengyin/ScaleBFM/ScaleTrack/data/hat4_unifolm_focus_v2/manifests/unifolm_hat4_heldout.yaml",
+      "--output",
+      "/root/shengyin/ScaleBFM_focus_brain_20261114/experiments/focus_brain_20261114/later_audit/w4_vr3.json",
+      "--condition",
+      "w4",
+      "--label-definition",
+      "same corrected August v2 labels for all checkpoints",
+      "--max-steps",
+      "1000",
+      "--num-envs",
+      "600",
+      "--device",
+      "cuda:0",
+      "--headless"
+    ],
+    "start": 1794643568.849709,
+    "exit_code": 0,
+    "end": 1794643698.01064
+  },
+  "july_mode3_jitter1": {
+    "stage": "complete",
+    "gpu": 4,
+    "command": [
+      "/root/miniconda3/envs/twist/bin/python",
+      "/root/shengyin/ScaleBFM_focus_brain_20261114/experiments/focus_brain_20261114/stability_one.py",
+      "/root/shengyin/ScaleBFM/ScaleTrack/logs/rsl_rl/g1_hat4_focus_finetune/formal_core5_20260728b_F3h/model_20000.pt",
+      "3",
+      "1",
+      "/root/shengyin/ScaleBFM_focus_brain_20261114/experiments/focus_brain_20261114/later_audit/july_mode3_jitter1.json"
+    ],
+    "start": 1794643568.8502772,
+    "exit_code": 0,
+    "end": 1794643606.347303
+  },
+  "july_mode4_jitter1": {
+    "stage": "complete",
+    "gpu": 4,
+    "command": [
+      "/root/miniconda3/envs/twist/bin/python",
+      "/root/shengyin/ScaleBFM_focus_brain_20261114/experiments/focus_brain_20261114/stability_one.py",
+      "/root/shengyin/ScaleBFM/ScaleTrack/logs/rsl_rl/g1_hat4_focus_finetune/formal_core5_20260728b_F3h/model_20000.pt",
+      "4",
+      "1",
+      "/root/shengyin/ScaleBFM_focus_brain_20261114/experiments/focus_brain_20261114/later_audit/july_mode4_jitter1.json"
+    ],
+    "start": 1794643606.3478093,
+    "exit_code": 0,
+    "end": 1794643645.101728
+  },
+  "august_mode3_jitter1": {
+    "stage": "complete",
+    "gpu": 4,
+    "command": [
+      "/root/miniconda3/envs/twist/bin/python",
+      "/root/shengyin/ScaleBFM_focus_brain_20261114/experiments/focus_brain_20261114/stability_one.py",
+      "/root/shengyin/ScaleBFM/ScaleTrack/logs/rsl_rl/g1_hat4_focus_finetune/formal_focusv2_20260824_F3h/model_20000.pt",
+      "3",
+      "1",
+      "/root/shengyin/ScaleBFM_focus_brain_20261114/experiments/focus_brain_20261114/later_audit/august_mode3_jitter1.json"
+    ],
+    "start": 1794643645.1023655,
+    "exit_code": 0,
+    "end": 1794643681.814228
+  },
+  "august_mode4_jitter1": {
+    "stage": "complete",
+    "gpu": 4,
+    "command": [
+      "/root/miniconda3/envs/twist/bin/python",
+      "/root/shengyin/ScaleBFM_focus_brain_20261114/experiments/focus_brain_20261114/stability_one.py",
+      "/root/shengyin/ScaleBFM/ScaleTrack/logs/rsl_rl/g1_hat4_focus_finetune/formal_focusv2_20260824_F3h/model_20000.pt",
+      "4",
+      "1",
+      "/root/shengyin/ScaleBFM_focus_brain_20261114/experiments/focus_brain_20261114/later_audit/august_mode4_jitter1.json"
+    ],
+    "start": 1794643681.8147762,
+    "exit_code": 0,
+    "end": 1794643720.2636995
+  },
+  "w4_only_hat4_vr3": {
+    "stage": "complete",
+    "gpu": 5,
+    "command": [
+      "/root/miniconda3/envs/isaaclab_sonic/bin/python",
+      "/root/shengyin/ScaleBFM_focus_brain_20261114/ScaleTrack/scripts/pretrain/rsl_rl/eval_vr3_focus_buckets.py",
+      "--checkpoint",
+      "/root/shengyin/ScaleBFM/ScaleTrack/logs/rsl_rl/g1_hat4_focus_finetune/F3hw4m/model_20000.pt",
+      "--motion-file",
+      "/root/shengyin/ScaleBFM/ScaleTrack/data/hat4_unifolm_focus_v2/manifests/unifolm_hat4_heldout.yaml",
+      "--output",
+      "/root/shengyin/ScaleBFM_focus_brain_20261114/experiments/focus_brain_20261114/later_audit/w4_only_hat4_vr3.json",
+      "--condition",
+      "w4_only_hat4",
+      "--label-definition",
+      "same corrected August v2 labels for all checkpoints",
+      "--max-steps",
+      "1000",
+      "--num-envs",
+      "600",
+      "--device",
+      "cuda:0",
+      "--headless"
+    ],
+    "start": 1794643698.0113518,
+    "exit_code": 0,
+    "end": 1794643823.2766004
+  },
+  "w4_mode3_jitter1": {
+    "stage": "complete",
+    "gpu": 4,
+    "command": [
+      "/root/miniconda3/envs/twist/bin/python",
+      "/root/shengyin/ScaleBFM_focus_brain_20261114/experiments/focus_brain_20261114/stability_one.py",
+      "/root/shengyin/ScaleBFM/ScaleTrack/logs/rsl_rl/g1_hat4_focus_finetune/F3hw4/model_20000.pt",
+      "3",
+      "1",
+      "/root/shengyin/ScaleBFM_focus_brain_20261114/experiments/focus_brain_20261114/later_audit/w4_mode3_jitter1.json"
+    ],
+    "start": 1794643720.2644274,
+    "exit_code": 0,
+    "end": 1794643757.7709184
+  },
+  "w4_mode4_jitter1": {
+    "stage": "complete",
+    "gpu": 4,
+    "command": [
+      "/root/miniconda3/envs/twist/bin/python",
+      "/root/shengyin/ScaleBFM_focus_brain_20261114/experiments/focus_brain_20261114/stability_one.py",
+      "/root/shengyin/ScaleBFM/ScaleTrack/logs/rsl_rl/g1_hat4_focus_finetune/F3hw4/model_20000.pt",
+      "4",
+      "1",
+      "/root/shengyin/ScaleBFM_focus_brain_20261114/experiments/focus_brain_20261114/later_audit/w4_mode4_jitter1.json"
+    ],
+    "start": 1794643757.7717175,
+    "exit_code": 0,
+    "end": 1794643796.0523021
+  },
+  "w4_only_hat4_mode3_jitter1": {
+    "stage": "complete",
+    "gpu": 4,
+    "command": [
+      "/root/miniconda3/envs/twist/bin/python",
+      "/root/shengyin/ScaleBFM_focus_brain_20261114/experiments/focus_brain_20261114/stability_one.py",
+      "/root/shengyin/ScaleBFM/ScaleTrack/logs/rsl_rl/g1_hat4_focus_finetune/F3hw4m/model_20000.pt",
+      "3",
+      "1",
+      "/root/shengyin/ScaleBFM_focus_brain_20261114/experiments/focus_brain_20261114/later_audit/w4_only_hat4_mode3_jitter1.json"
+    ],
+    "start": 1794643796.0544329,
+    "exit_code": 0,
+    "end": 1794643835.0796297
+  },
+  "oct_v3_focus_vr3": {
+    "stage": "complete",
+    "gpu": 5,
+    "command": [
+      "/root/miniconda3/envs/isaaclab_sonic/bin/python",
+      "/root/shengyin/ScaleBFM_focus_brain_20261114/ScaleTrack/scripts/pretrain/rsl_rl/eval_vr3_focus_buckets.py",
+      "--checkpoint",
+      "/root/shengyin/ScaleBFM/ScaleTrack/logs/rsl_rl/g1_hat4_focus_finetune/official_threeway_20261007_1510_v3_focus_only/model_20000.pt",
+      "--motion-file",
+      "/root/shengyin/ScaleBFM/ScaleTrack/data/hat4_unifolm_focus_v2/manifests/unifolm_hat4_heldout.yaml",
+      "--output",
+      "/root/shengyin/ScaleBFM_focus_brain_20261114/experiments/focus_brain_20261114/later_audit/oct_v3_focus_vr3.json",
+      "--condition",
+      "oct_v3_focus",
+      "--label-definition",
+      "same corrected August v2 labels for all checkpoints",
+      "--max-steps",
+      "1000",
+      "--num-envs",
+      "600",
+      "--device",
+      "cuda:0",
+      "--headless"
+    ],
+    "start": 1794643823.2772698,
+    "exit_code": 0,
+    "end": 1794643935.311694
+  },
+  "w4_only_hat4_mode4_jitter1": {
+    "stage": "complete",
+    "gpu": 4,
+    "command": [
+      "/root/miniconda3/envs/twist/bin/python",
+      "/root/shengyin/ScaleBFM_focus_brain_20261114/experiments/focus_brain_20261114/stability_one.py",
+      "/root/shengyin/ScaleBFM/ScaleTrack/logs/rsl_rl/g1_hat4_focus_finetune/F3hw4m/model_20000.pt",
+      "4",
+      "1",
+      "/root/shengyin/ScaleBFM_focus_brain_20261114/experiments/focus_brain_20261114/later_audit/w4_only_hat4_mode4_jitter1.json"
+    ],
+    "start": 1794643835.080288,
+    "exit_code": 0,
+    "end": 1794643875.5975714
+  },
+  "oct_v3_focus_mode3_jitter1": {
+    "stage": "complete",
+    "gpu": 4,
+    "command": [
+      "/root/miniconda3/envs/twist/bin/python",
+      "/root/shengyin/ScaleBFM_focus_brain_20261114/experiments/focus_brain_20261114/stability_one.py",
+      "/root/shengyin/ScaleBFM/ScaleTrack/logs/rsl_rl/g1_hat4_focus_finetune/official_threeway_20261007_1510_v3_focus_only/model_20000.pt",
+      "3",
+      "1",
+      "/root/shengyin/ScaleBFM_focus_brain_20261114/experiments/focus_brain_20261114/later_audit/oct_v3_focus_mode3_jitter1.json"
+    ],
+    "start": 1794643875.5982683,
+    "exit_code": 0,
+    "end": 1794643914.439184
+  },
+  "oct_v3_focus_mode4_jitter1": {
+    "stage": "complete",
+    "gpu": 4,
+    "command": [
+      "/root/miniconda3/envs/twist/bin/python",
+      "/root/shengyin/ScaleBFM_focus_brain_20261114/experiments/focus_brain_20261114/stability_one.py",
+      "/root/shengyin/ScaleBFM/ScaleTrack/logs/rsl_rl/g1_hat4_focus_finetune/official_threeway_20261007_1510_v3_focus_only/model_20000.pt",
+      "4",
+      "1",
+      "/root/shengyin/ScaleBFM_focus_brain_20261114/experiments/focus_brain_20261114/later_audit/oct_v3_focus_mode4_jitter1.json"
+    ],
+    "start": 1794643914.4398658,
+    "exit_code": 0,
+    "end": 1794643953.9256072
+  },
+  "oct_v3_precision_vr3": {
+    "stage": "complete",
+    "gpu": 5,
+    "command": [
+      "/root/miniconda3/envs/isaaclab_sonic/bin/python",
+      "/root/shengyin/ScaleBFM_focus_brain_20261114/ScaleTrack/scripts/pretrain/rsl_rl/eval_vr3_focus_buckets.py",
+      "--checkpoint",
+      "/root/shengyin/ScaleBFM/ScaleTrack/logs/rsl_rl/g1_hat4_focus_finetune/official_threeway_20261007_1510_v3_new_settings/model_20000.pt",
+      "--motion-file",
+      "/root/shengyin/ScaleBFM/ScaleTrack/data/hat4_unifolm_focus_v2/manifests/unifolm_hat4_heldout.yaml",
+      "--output",
+      "/root/shengyin/ScaleBFM_focus_brain_20261114/experiments/focus_brain_20261114/later_audit/oct_v3_precision_vr3.json",
+      "--condition",
+      "oct_v3_precision",
+      "--label-definition",
+      "same corrected August v2 labels for all checkpoints",
+      "--max-steps",
+      "1000",
+      "--num-envs",
+      "600",
+      "--device",
+      "cuda:0",
+      "--headless"
+    ],
+    "start": 1794643935.3124375,
+    "exit_code": 0,
+    "end": 1794644049.4987466
+  },
+  "oct_v3_precision_mode3_jitter1": {
+    "stage": "complete",
+    "gpu": 4,
+    "command": [
+      "/root/miniconda3/envs/twist/bin/python",
+      "/root/shengyin/ScaleBFM_focus_brain_20261114/experiments/focus_brain_20261114/stability_one.py",
+      "/root/shengyin/ScaleBFM/ScaleTrack/logs/rsl_rl/g1_hat4_focus_finetune/official_threeway_20261007_1510_v3_new_settings/model_20000.pt",
+      "3",
+      "1",
+      "/root/shengyin/ScaleBFM_focus_brain_20261114/experiments/focus_brain_20261114/later_audit/oct_v3_precision_mode3_jitter1.json"
+    ],
+    "start": 1794643953.9264216,
+    "exit_code": 0,
+    "end": 1794643992.4173167
+  },
+  "oct_v3_precision_mode4_jitter1": {
+    "stage": "complete",
+    "gpu": 4,
+    "command": [
+      "/root/miniconda3/envs/twist/bin/python",
+      "/root/shengyin/ScaleBFM_focus_brain_20261114/experiments/focus_brain_20261114/stability_one.py",
+      "/root/shengyin/ScaleBFM/ScaleTrack/logs/rsl_rl/g1_hat4_focus_finetune/official_threeway_20261007_1510_v3_new_settings/model_20000.pt",
+      "4",
+      "1",
+      "/root/shengyin/ScaleBFM_focus_brain_20261114/experiments/focus_brain_20261114/later_audit/oct_v3_precision_mode4_jitter1.json"
+    ],
+    "start": 1794643992.4180608,
+    "exit_code": 0,
+    "end": 1794644032.4204443
+  },
+  "oct_v2_precision_mode3_jitter1": {
+    "stage": "complete",
+    "gpu": 4,
+    "command": [
+      "/root/miniconda3/envs/twist/bin/python",
+      "/root/shengyin/ScaleBFM_focus_brain_20261114/experiments/focus_brain_20261114/stability_one.py",
+      "/root/shengyin/ScaleBFM/ScaleTrack/logs/rsl_rl/g1_hat4_focus_finetune/official_threeway_20261007_1510_v2_new_settings/model_20000.pt",
+      "3",
+      "1",
+      "/root/shengyin/ScaleBFM_focus_brain_20261114/experiments/focus_brain_20261114/later_audit/oct_v2_precision_mode3_jitter1.json"
+    ],
+    "start": 1794644032.4211874,
+    "exit_code": 0,
+    "end": 1794644071.8233573
+  },
+  "oct_v2_precision_vr3": {
+    "stage": "complete",
+    "gpu": 5,
+    "command": [
+      "/root/miniconda3/envs/isaaclab_sonic/bin/python",
+      "/root/shengyin/ScaleBFM_focus_brain_20261114/ScaleTrack/scripts/pretrain/rsl_rl/eval_vr3_focus_buckets.py",
+      "--checkpoint",
+      "/root/shengyin/ScaleBFM/ScaleTrack/logs/rsl_rl/g1_hat4_focus_finetune/official_threeway_20261007_1510_v2_new_settings/model_20000.pt",
+      "--motion-file",
+      "/root/shengyin/ScaleBFM/ScaleTrack/data/hat4_unifolm_focus_v2/manifests/unifolm_hat4_heldout.yaml",
+      "--output",
+      "/root/shengyin/ScaleBFM_focus_brain_20261114/experiments/focus_brain_20261114/later_audit/oct_v2_precision_vr3.json",
+      "--condition",
+      "oct_v2_precision",
+      "--label-definition",
+      "same corrected August v2 labels for all checkpoints",
+      "--max-steps",
+      "1000",
+      "--num-envs",
+      "600",
+      "--device",
+      "cuda:0",
+      "--headless"
+    ],
+    "start": 1794644049.4995496,
+    "exit_code": 0,
+    "end": 1794644172.6997254
+  },
+  "oct_v2_precision_mode4_jitter1": {
+    "stage": "complete",
+    "gpu": 4,
+    "command": [
+      "/root/miniconda3/envs/twist/bin/python",
+      "/root/shengyin/ScaleBFM_focus_brain_20261114/experiments/focus_brain_20261114/stability_one.py",
+      "/root/shengyin/ScaleBFM/ScaleTrack/logs/rsl_rl/g1_hat4_focus_finetune/official_threeway_20261007_1510_v2_new_settings/model_20000.pt",
+      "4",
+      "1",
+      "/root/shengyin/ScaleBFM_focus_brain_20261114/experiments/focus_brain_20261114/later_audit/oct_v2_precision_mode4_jitter1.json"
+    ],
+    "start": 1794644071.8241785,
+    "exit_code": 0,
+    "end": 1794644111.7160149
+  }
+}

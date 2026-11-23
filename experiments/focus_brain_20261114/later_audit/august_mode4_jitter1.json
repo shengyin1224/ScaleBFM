@@ -1,0 +1,150 @@
+{
+  "checkpoint": "/root/shengyin/ScaleBFM/ScaleTrack/logs/rsl_rl/g1_hat4_focus_finetune/formal_focusv2_20260824_F3h/model_20000.pt",
+  "reference": "/root/shengyin/ScaleBFM/ScaleTrack/data/hat4_unifolm_focus_v3/processed/G1_WBT_Inspire_Pick_Up_Drinks_ep_0006.npz",
+  "mode": "4",
+  "success_rate_frames": 1.0,
+  "first_failure_frame": null,
+  "static_arm_hf_rms_rad": 6.465471018617385e-05,
+  "action_second_difference_rms": 0.02083439938724041,
+  "frames": 1833,
+  "hold_s": 3.0,
+  "localization_jitter_rms_mm_per_axis": 1.0,
+  "tracking": {
+    "active_link_pose_vs_reference": {
+      "pelvis": {
+        "position_m": {
+          "mean": 0.042849984534028246,
+          "rmse": 0.049757142504468305,
+          "p95": 0.0961007549724659,
+          "max": 0.14072039720800203
+        },
+        "rotation_deg": {
+          "mean": 1.9103022081591021,
+          "rmse": 2.0924900090337837,
+          "p95": 3.4332359503233847,
+          "max": 5.364631070837556
+        }
+      },
+      "left_wrist_yaw_link": {
+        "position_m": {
+          "mean": 0.04241189348763657,
+          "rmse": 0.048478623413894625,
+          "p95": 0.09445109329075159,
+          "max": 0.12035091560194616
+        },
+        "rotation_deg": {
+          "mean": 2.4369677589551815,
+          "rmse": 2.912137983627282,
+          "p95": 6.427864728356361,
+          "max": 8.250644024596069
+        }
+      },
+      "right_wrist_yaw_link": {
+        "position_m": {
+          "mean": 0.05115503182435244,
+          "rmse": 0.05623345569748009,
+          "p95": 0.10042527996757196,
+          "max": 0.15729051517107262
+        },
+        "rotation_deg": {
+          "mean": 3.6612206282871855,
+          "rmse": 4.032231915969713,
+          "p95": 6.7687217056410764,
+          "max": 9.152448491442737
+        }
+      },
+      "torso_link": {
+        "position_m": {
+          "mean": 0.04301310378123112,
+          "rmse": 0.049773022937716196,
+          "p95": 0.09468837638176289,
+          "max": 0.14204293196254755
+        },
+        "rotation_deg": {
+          "mean": 2.366774757421166,
+          "rmse": 2.620060287922361,
+          "p95": 4.272694471713506,
+          "max": 4.734726754828815
+        }
+      }
+    },
+    "active_link_pose_pelvis_frame_local_twist": {
+      "pelvis": {
+        "position_m": {
+          "mean": 0.0,
+          "rmse": 0.0,
+          "p95": 0.0,
+          "max": 0.0
+        },
+        "rotation_deg": {
+          "mean": 0.0,
+          "rmse": 0.0,
+          "p95": 0.0,
+          "max": 0.0
+        }
+      },
+      "left_wrist_yaw_link": {
+        "position_m": {
+          "mean": 0.02042073261589875,
+          "rmse": 0.021498853195492544,
+          "p95": 0.032381087043706826,
+          "max": 0.0410450054715718
+        },
+        "rotation_deg": {
+          "mean": 3.1282091746549265,
+          "rmse": 3.7874068464910304,
+          "p95": 8.303009854009746,
+          "max": 10.240097404164603
+        }
+      },
+      "right_wrist_yaw_link": {
+        "position_m": {
+          "mean": 0.028496484324019883,
+          "rmse": 0.030062764656332015,
+          "p95": 0.045599075393033976,
+          "max": 0.05629171542531414
+        },
+        "rotation_deg": {
+          "mean": 4.668282790985495,
+          "rmse": 5.048011926690856,
+          "p95": 8.049598876274876,
+          "max": 10.54711993301656
+        }
+      },
+      "torso_link": {
+        "position_m": {
+          "mean": 7.531417457709646e-05,
+          "rmse": 9.041624944639683e-05,
+          "p95": 0.00016480589419794436,
+          "max": 0.00023014809057938512
+        },
+        "rotation_deg": {
+          "mean": 3.670923567423221,
+          "rmse": 4.141236414937323,
+          "p95": 6.721188399300811,
+          "max": 8.252745329478511
+        }
+      }
+    }
+  },
+  "dynamic_by_group": {
+    "arms": {
+      "action_second_difference_rms": 0.008001123555004597,
+      "target_angle_second_difference_rms_rad": 0.0030564740851947874,
+      "joint_acceleration_control_rate_rms_rad_s2": 1.5879335403442383
+    },
+    "legs_waist": {
+      "action_second_difference_rms": 0.02791873924434185,
+      "target_angle_second_difference_rms_rad": 0.012258563952022059,
+      "joint_acceleration_control_rate_rms_rad_s2": 4.672048091888428
+    }
+  },
+  "source_sha256": {
+    "eval_memory.py": "dbb756842375e748094e487fad5481dfda34fba4f663a168326891bfec734e4d",
+    "_legacy_mujoco.py": "b523001add5aa7bb2bf4000d0d4cb32309e5b1ba239bba1dea8628220e4f1f90",
+    "deployment_contract.json": "340153cb6d5bf361e02138cf8de63d5fef08fc44b79b340c479d3bafa49453b5"
+  },
+  "checkpoint_sha256": "63fc1350dc4bd315f3c0775d2e0d5b7019727d31f4f81813bcff7da59d1c545d",
+  "reference_sha256": "318ac67061d2d8b9a342b20df1e982a54694e2334234461dc468ed8c98f34ae9",
+  "scope": "October stability probe: one full motion plus 3 s hold, same v3 reference and phase labels"
+}

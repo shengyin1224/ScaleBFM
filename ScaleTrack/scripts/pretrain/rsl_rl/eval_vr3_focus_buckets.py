@@ -12,6 +12,7 @@ p.add_argument('--condition',required=True)
 p.add_argument('--label-definition',required=True)
 p.add_argument('--num-envs',type=int,default=600)
 p.add_argument('--max-steps',type=int,default=1000)
+p.add_argument('--fixed-future-offset',type=int,default=None)
 AppLauncher.add_app_launcher_args(p)
 args,remaining=p.parse_known_args()
 sys.argv=[sys.argv[0]]+remaining
@@ -49,6 +50,8 @@ cfg.scene.num_envs=args.num_envs
 cfg.commands.motion.motion_file=str(Path(args.motion_file).resolve())
 cfg.commands.motion.test_motion_file=''
 cfg.commands.motion.enable_reset_disturbance=False
+if args.fixed_future_offset is not None:
+    cfg.commands.motion.rand_timestep_range=(args.fixed_future_offset,args.fixed_future_offset+1)
 cfg.commands.motion.debug_vis=False
 links=cfg.commands.motion.mode_candidates['VR-3']
 assert links==['pelvis','left_wrist_yaw_link','right_wrist_yaw_link']
@@ -89,6 +92,7 @@ report=dict(condition=args.condition,checkpoint=str(Path(args.checkpoint).resolv
             checkpoint_sha256=hashlib.sha256(Path(args.checkpoint).read_bytes()).hexdigest(),
             mode='VR-3',active_links=links,motions=len(manifest),seed=42,
             max_steps=args.max_steps,label_definition=args.label_definition,label_sha256=digest.hexdigest(),
+            fixed_future_offset=args.fixed_future_offset,
             success_count=int(success.sum()),success_rate=float(success.float().mean()),
             phase_input='native motion-file labels; official factory projection gains only zero phase columns',
             success_buckets=summarize(buckets,success),

@@ -1,0 +1,26 @@
+{
+  "july_v2": {
+    "time": "2026-11-14T07:12:15.152447+00:00",
+    "stage": "complete",
+    "gpu": 5,
+    "exit_code": 0
+  },
+  "official_v2": {
+    "time": "2026-11-14T07:12:13.555210+00:00",
+    "stage": "complete",
+    "gpu": 4,
+    "exit_code": 0
+  },
+  "july_native": {
+    "time": "2026-11-14T07:14:12.006898+00:00",
+    "stage": "complete",
+    "gpu": 4,
+    "exit_code": 0
+  },
+  "august_v2": {
+    "time": "2026-11-14T07:14:04.133973+00:00",
+    "stage": "complete",
+    "gpu": 5,
+    "exit_code": 0
+  }
+}

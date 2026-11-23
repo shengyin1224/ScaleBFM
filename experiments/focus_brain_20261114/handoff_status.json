@@ -1,0 +1,33 @@
+{
+  "checked_at_utc": "2026-11-14T07:02:17.211901+00:00",
+  "git_commit": "1be6117cf2dca3c7135d13841b6ff81c4630dc14",
+  "baseline_commit": "992c844491c0bd081f213f14bef567b52f71dae5",
+  "backup": "/root/shengyin/focus_brain_20261114_backup",
+  "branch": "codex/focus-brain-lr-20261114",
+  "training": {
+    "time": "2026-11-14T06:59:41.741131+00:00",
+    "stage": "formal_training",
+    "pid": 3234015,
+    "child_pid": 3234195,
+    "physical_gpus": [
+      7,
+      6
+    ]
+  },
+  "last_observed_iteration": 5,
+  "global_environments": 4096,
+  "per_rank_environments": 2048,
+  "max_iterations": 20000,
+  "checkpoint_and_eval_interval": 2000,
+  "log_dir": "/root/shengyin/ScaleBFM_focus_brain_20261114/ScaleTrack/logs/rsl_rl/g1_hat4_brain_focus_lr/brain_focus_lr_20261114",
+  "checks": [
+    "exact brain detector AST and 3000-episode labels",
+    "independent hand reward and masks",
+    "factory warmstart bitwise actor equivalence",
+    "train/heldout switch regression",
+    "fixed-HAT4 simulator evaluation smoke",
+    "paired phase-input statistical-label identity",
+    "one/two/four GPU benchmarks",
+    "formal distributed training updates"
+  ]
+}

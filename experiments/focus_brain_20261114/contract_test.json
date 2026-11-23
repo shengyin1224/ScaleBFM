@@ -1,0 +1,12 @@
+{
+  "detector_parity": true,
+  "independent_hands": true,
+  "no_stationary_hand_events": true,
+  "exact_window_padding": true,
+  "signed_edges": true,
+  "independent_reward_gates": true,
+  "torso_union_gate": true,
+  "dataset_switch_property_guard": true,
+  "evaluation_respects_sparse_mode": true,
+  "validated_corpus_episodes": 3000
+}

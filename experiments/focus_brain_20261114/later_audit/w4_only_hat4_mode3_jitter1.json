@@ -1,0 +1,122 @@
+{
+  "checkpoint": "/root/shengyin/ScaleBFM/ScaleTrack/logs/rsl_rl/g1_hat4_focus_finetune/F3hw4m/model_20000.pt",
+  "reference": "/root/shengyin/ScaleBFM/ScaleTrack/data/hat4_unifolm_focus_v3/processed/G1_WBT_Inspire_Pick_Up_Drinks_ep_0006.npz",
+  "mode": "3",
+  "success_rate_frames": 1.0,
+  "first_failure_frame": null,
+  "static_arm_hf_rms_rad": 0.0001176723794531944,
+  "action_second_difference_rms": 0.017674611881375313,
+  "frames": 1833,
+  "hold_s": 3.0,
+  "localization_jitter_rms_mm_per_axis": 1.0,
+  "tracking": {
+    "active_link_pose_vs_reference": {
+      "pelvis": {
+        "position_m": {
+          "mean": 0.05130968276851696,
+          "rmse": 0.06284085976759327,
+          "p95": 0.13894443637865772,
+          "max": 0.16923694501155606
+        },
+        "rotation_deg": {
+          "mean": 2.3767178100821367,
+          "rmse": 2.621170413797931,
+          "p95": 4.333820004484002,
+          "max": 5.557597911377809
+        }
+      },
+      "left_wrist_yaw_link": {
+        "position_m": {
+          "mean": 0.0477005451423695,
+          "rmse": 0.05215211059741962,
+          "p95": 0.09295530543194107,
+          "max": 0.1319322101202113
+        },
+        "rotation_deg": {
+          "mean": 4.930965477675365,
+          "rmse": 5.624532781969285,
+          "p95": 7.630441534755113,
+          "max": 28.38041682330766
+        }
+      },
+      "right_wrist_yaw_link": {
+        "position_m": {
+          "mean": 0.06610202367585358,
+          "rmse": 0.07316850103128465,
+          "p95": 0.12723633814312862,
+          "max": 0.1797831242473639
+        },
+        "rotation_deg": {
+          "mean": 5.31763048584203,
+          "rmse": 5.844854626085017,
+          "p95": 10.85747040757866,
+          "max": 15.926691181579201
+        }
+      }
+    },
+    "active_link_pose_pelvis_frame_local_twist": {
+      "pelvis": {
+        "position_m": {
+          "mean": 0.0,
+          "rmse": 0.0,
+          "p95": 0.0,
+          "max": 0.0
+        },
+        "rotation_deg": {
+          "mean": 0.0,
+          "rmse": 0.0,
+          "p95": 0.0,
+          "max": 0.0
+        }
+      },
+      "left_wrist_yaw_link": {
+        "position_m": {
+          "mean": 0.039690924774044005,
+          "rmse": 0.04758818489325797,
+          "p95": 0.10820751332297494,
+          "max": 0.12910532243977677
+        },
+        "rotation_deg": {
+          "mean": 5.9623872453554,
+          "rmse": 6.770701593013077,
+          "p95": 9.92264762515555,
+          "max": 30.087299160738446
+        }
+      },
+      "right_wrist_yaw_link": {
+        "position_m": {
+          "mean": 0.05077150589545451,
+          "rmse": 0.05590590518585076,
+          "p95": 0.09966434189303314,
+          "max": 0.11044586217929302
+        },
+        "rotation_deg": {
+          "mean": 5.224457333477569,
+          "rmse": 5.705330594293612,
+          "p95": 10.465628667090195,
+          "max": 15.906859096367006
+        }
+      }
+    }
+  },
+  "dynamic_by_group": {
+    "arms": {
+      "action_second_difference_rms": 0.00875739473849535,
+      "target_angle_second_difference_rms_rad": 0.0034839918612302573,
+      "joint_acceleration_control_rate_rms_rad_s2": 1.7684932947158813
+    },
+    "legs_waist": {
+      "action_second_difference_rms": 0.023073328658938408,
+      "target_angle_second_difference_rms_rad": 0.010090120360363868,
+      "joint_acceleration_control_rate_rms_rad_s2": 3.6187145709991455
+    }
+  },
+  "source_sha256": {
+    "eval_memory.py": "dbb756842375e748094e487fad5481dfda34fba4f663a168326891bfec734e4d",
+    "_legacy_mujoco.py": "b523001add5aa7bb2bf4000d0d4cb32309e5b1ba239bba1dea8628220e4f1f90",
+    "deployment_contract.json": "340153cb6d5bf361e02138cf8de63d5fef08fc44b79b340c479d3bafa49453b5"
+  },
+  "checkpoint_sha256": "475e0de2bfdb14318cec03abaa1f72acb0b9d5c7abc2fd19c272a250324290c3",
+  "reference_sha256": "318ac67061d2d8b9a342b20df1e982a54694e2334234461dc468ed8c98f34ae9",
+  "scope": "October stability probe: one full motion plus 3 s hold, same v3 reference and phase labels"
+}

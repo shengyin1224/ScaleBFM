@@ -1,0 +1,6 @@
+{
+  "time": "2026-11-16T17:15:43.595432+00:00",
+  "stage": "failed",
+  "pid": 3234015,
+  "error": "RuntimeError('formal_training failed: exit=1; see /root/shengyin/ScaleBFM_focus_brain_20261114/experiments/focus_brain_20261114/formal_training.log')"
+}

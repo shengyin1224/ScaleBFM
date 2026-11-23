@@ -1,0 +1,20 @@
+{
+  "checked_at_utc": "2026-11-14T07:18:57.172826+00:00",
+  "stage": "formal_training",
+  "physical_gpus": [
+    7,
+    6
+  ],
+  "last_iteration_index": 85,
+  "total_iterations": 20000,
+  "reported_remaining_eta": "2d 20:56:55",
+  "estimated_completion_beijing": "2026-11-17 noon to afternoon, subject to evaluation and runtime variation",
+  "vr3_mode": [
+    "pelvis",
+    "left_wrist_yaw_link",
+    "right_wrist_yaw_link"
+  ],
+  "vr3_conditions": 5,
+  "common_success_motions": 485,
+  "paired_stage_motions": 482
+}

@@ -1,0 +1,122 @@
+{
+  "checkpoint": "/root/shengyin/ScaleBFM/ScaleTrack/logs/rsl_rl/student_regularized/student_20261023_C/model_1000.pt",
+  "reference": "/root/shengyin/ScaleBFM/ScaleTrack/data/hat4_unifolm_focus_v3/processed/G1_WBT_Inspire_Pick_Up_Drinks_ep_0006.npz",
+  "mode": "3",
+  "success_rate_frames": 1.0,
+  "first_failure_frame": null,
+  "static_arm_hf_rms_rad": 0.00011759038109930803,
+  "action_second_difference_rms": 0.02464953623712063,
+  "frames": 1833,
+  "hold_s": 3.0,
+  "localization_jitter_rms_mm_per_axis": 1.0,
+  "tracking": {
+    "active_link_pose_vs_reference": {
+      "pelvis": {
+        "position_m": {
+          "mean": 0.030078176145475758,
+          "rmse": 0.03497780401781746,
+          "p95": 0.06408899029578155,
+          "max": 0.08495655512138538
+        },
+        "rotation_deg": {
+          "mean": 3.9457010246848823,
+          "rmse": 4.518056360485101,
+          "p95": 8.530773262710802,
+          "max": 11.483834792713157
+        }
+      },
+      "left_wrist_yaw_link": {
+        "position_m": {
+          "mean": 0.02119883830544578,
+          "rmse": 0.02291418656770057,
+          "p95": 0.03800706569362469,
+          "max": 0.05289279739044055
+        },
+        "rotation_deg": {
+          "mean": 2.0863522505625545,
+          "rmse": 2.1734414645715074,
+          "p95": 3.0613436950122725,
+          "max": 3.7744149636751607
+        }
+      },
+      "right_wrist_yaw_link": {
+        "position_m": {
+          "mean": 0.01584987846041388,
+          "rmse": 0.01815098253712495,
+          "p95": 0.03419032286710166,
+          "max": 0.04766455354605831
+        },
+        "rotation_deg": {
+          "mean": 2.338068326678749,
+          "rmse": 2.552198411086694,
+          "p95": 4.035207505550597,
+          "max": 8.849214494698975
+        }
+      }
+    },
+    "active_link_pose_pelvis_frame_local_twist": {
+      "pelvis": {
+        "position_m": {
+          "mean": 0.0,
+          "rmse": 0.0,
+          "p95": 0.0,
+          "max": 0.0
+        },
+        "rotation_deg": {
+          "mean": 0.0,
+          "rmse": 0.0,
+          "p95": 0.0,
+          "max": 0.0
+        }
+      },
+      "left_wrist_yaw_link": {
+        "position_m": {
+          "mean": 0.023156874508394636,
+          "rmse": 0.025441823322920352,
+          "p95": 0.04127764669300039,
+          "max": 0.05655144868452843
+        },
+        "rotation_deg": {
+          "mean": 4.083164994323611,
+          "rmse": 4.364775521934398,
+          "p95": 7.1367362986863006,
+          "max": 9.95427756499251
+        }
+      },
+      "right_wrist_yaw_link": {
+        "position_m": {
+          "mean": 0.02270332090171169,
+          "rmse": 0.026592996283430096,
+          "p95": 0.05504607043780506,
+          "max": 0.07496719569293846
+        },
+        "rotation_deg": {
+          "mean": 5.332563231556186,
+          "rmse": 5.900361389185081,
+          "p95": 9.92411615075885,
+          "max": 12.422500566100242
+        }
+      }
+    }
+  },
+  "dynamic_by_group": {
+    "arms": {
+      "action_second_difference_rms": 0.009542539715766907,
+      "target_angle_second_difference_rms_rad": 0.003509418379329517,
+      "joint_acceleration_control_rate_rms_rad_s2": 1.8934755325317383
+    },
+    "legs_waist": {
+      "action_second_difference_rms": 0.03301065042614937,
+      "target_angle_second_difference_rms_rad": 0.014380814358203048,
+      "joint_acceleration_control_rate_rms_rad_s2": 5.892568588256836
+    }
+  },
+  "source_sha256": {
+    "eval_memory.py": "dbb756842375e748094e487fad5481dfda34fba4f663a168326891bfec734e4d",
+    "_legacy_mujoco.py": "b523001add5aa7bb2bf4000d0d4cb32309e5b1ba239bba1dea8628220e4f1f90",
+    "deployment_contract.json": "340153cb6d5bf361e02138cf8de63d5fef08fc44b79b340c479d3bafa49453b5"
+  },
+  "checkpoint_sha256": "83b55b1d3837d7eb8f252aaf65917226c871eab0a506672f86af5ef6a048a081",
+  "reference_sha256": "318ac67061d2d8b9a342b20df1e982a54694e2334234461dc468ed8c98f34ae9",
+  "scope": "October stability probe: one full motion plus 3 s hold, same v3 reference and phase labels"
+}

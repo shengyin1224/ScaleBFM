@@ -1,0 +1,122 @@
+{
+  "checkpoint": "/root/shengyin/ScaleBFM/ScaleTrack/logs/rsl_rl/g1_hat4_focus_finetune/official_threeway_20261007_1510_v2_new_settings/model_20000.pt",
+  "reference": "/root/shengyin/ScaleBFM/ScaleTrack/data/hat4_unifolm_focus_v3/processed/G1_WBT_Inspire_Pick_Up_Drinks_ep_0006.npz",
+  "mode": "3",
+  "success_rate_frames": 1.0,
+  "first_failure_frame": null,
+  "static_arm_hf_rms_rad": 0.0002569431789159142,
+  "action_second_difference_rms": 0.021111395210027695,
+  "frames": 1833,
+  "hold_s": 3.0,
+  "localization_jitter_rms_mm_per_axis": 1.0,
+  "tracking": {
+    "active_link_pose_vs_reference": {
+      "pelvis": {
+        "position_m": {
+          "mean": 0.041295537311537504,
+          "rmse": 0.05094791888128478,
+          "p95": 0.1034313460769686,
+          "max": 0.13885527485163782
+        },
+        "rotation_deg": {
+          "mean": 6.443462244857569,
+          "rmse": 6.961762617444207,
+          "p95": 10.763446672843676,
+          "max": 12.50821379982499
+        }
+      },
+      "left_wrist_yaw_link": {
+        "position_m": {
+          "mean": 0.012255416691166159,
+          "rmse": 0.01548114075983285,
+          "p95": 0.029729530612300523,
+          "max": 0.062311454454949365
+        },
+        "rotation_deg": {
+          "mean": 1.2321089991192382,
+          "rmse": 1.3315632351122375,
+          "p95": 2.2726523675864487,
+          "max": 3.398638610374548
+        }
+      },
+      "right_wrist_yaw_link": {
+        "position_m": {
+          "mean": 0.01323077549404835,
+          "rmse": 0.016840193630544016,
+          "p95": 0.031526581742568026,
+          "max": 0.07018123013025837
+        },
+        "rotation_deg": {
+          "mean": 2.1765686517708356,
+          "rmse": 2.2755019074003116,
+          "p95": 3.334434584085349,
+          "max": 5.2202174414331575
+        }
+      }
+    },
+    "active_link_pose_pelvis_frame_local_twist": {
+      "pelvis": {
+        "position_m": {
+          "mean": 0.0,
+          "rmse": 0.0,
+          "p95": 0.0,
+          "max": 0.0
+        },
+        "rotation_deg": {
+          "mean": 0.0,
+          "rmse": 0.0,
+          "p95": 0.0,
+          "max": 0.0
+        }
+      },
+      "left_wrist_yaw_link": {
+        "position_m": {
+          "mean": 0.04851171419147318,
+          "rmse": 0.05472199347354144,
+          "p95": 0.09943594881883681,
+          "max": 0.13161702106636014
+        },
+        "rotation_deg": {
+          "mean": 7.228898672905516,
+          "rmse": 7.78056606206059,
+          "p95": 12.308421319662008,
+          "max": 13.114550918829568
+        }
+      },
+      "right_wrist_yaw_link": {
+        "position_m": {
+          "mean": 0.046301817568560145,
+          "rmse": 0.05456861683603776,
+          "p95": 0.10033085386244033,
+          "max": 0.16427992134996114
+        },
+        "rotation_deg": {
+          "mean": 7.694040761753683,
+          "rmse": 8.180449033629374,
+          "p95": 12.115125072790864,
+          "max": 12.914348566754263
+        }
+      }
+    }
+  },
+  "dynamic_by_group": {
+    "arms": {
+      "action_second_difference_rms": 0.013761398382484913,
+      "target_angle_second_difference_rms_rad": 0.004864272422071622,
+      "joint_acceleration_control_rate_rms_rad_s2": 1.7909735441207886
+    },
+    "legs_waist": {
+      "action_second_difference_rms": 0.026170942932367325,
+      "target_angle_second_difference_rms_rad": 0.011899406895922202,
+      "joint_acceleration_control_rate_rms_rad_s2": 4.538088798522949
+    }
+  },
+  "source_sha256": {
+    "eval_memory.py": "dbb756842375e748094e487fad5481dfda34fba4f663a168326891bfec734e4d",
+    "_legacy_mujoco.py": "b523001add5aa7bb2bf4000d0d4cb32309e5b1ba239bba1dea8628220e4f1f90",
+    "deployment_contract.json": "340153cb6d5bf361e02138cf8de63d5fef08fc44b79b340c479d3bafa49453b5"
+  },
+  "checkpoint_sha256": "d9ae17f836e8cd0b4a93b94cff8de30e040671240256fe4e8836d10f7838536f",
+  "reference_sha256": "318ac67061d2d8b9a342b20df1e982a54694e2334234461dc468ed8c98f34ae9",
+  "scope": "October stability probe: one full motion plus 3 s hold, same v3 reference and phase labels"
+}

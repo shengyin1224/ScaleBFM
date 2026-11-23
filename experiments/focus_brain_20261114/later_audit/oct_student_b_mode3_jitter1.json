@@ -1,0 +1,122 @@
+{
+  "checkpoint": "/root/shengyin/ScaleBFM/ScaleTrack/logs/rsl_rl/student_regularized/student_20261023_B/model_1000.pt",
+  "reference": "/root/shengyin/ScaleBFM/ScaleTrack/data/hat4_unifolm_focus_v3/processed/G1_WBT_Inspire_Pick_Up_Drinks_ep_0006.npz",
+  "mode": "3",
+  "success_rate_frames": 1.0,
+  "first_failure_frame": null,
+  "static_arm_hf_rms_rad": 0.00011470545570376104,
+  "action_second_difference_rms": 0.024144943803548813,
+  "frames": 1833,
+  "hold_s": 3.0,
+  "localization_jitter_rms_mm_per_axis": 1.0,
+  "tracking": {
+    "active_link_pose_vs_reference": {
+      "pelvis": {
+        "position_m": {
+          "mean": 0.030607446561443808,
+          "rmse": 0.035696400190603696,
+          "p95": 0.0647304730753669,
+          "max": 0.09003688241340052
+        },
+        "rotation_deg": {
+          "mean": 3.5415852399691654,
+          "rmse": 4.1390277322470395,
+          "p95": 8.017435109969734,
+          "max": 10.353293776128584
+        }
+      },
+      "left_wrist_yaw_link": {
+        "position_m": {
+          "mean": 0.022907834186789308,
+          "rmse": 0.02428974368090291,
+          "p95": 0.0386510864037496,
+          "max": 0.049237234699587115
+        },
+        "rotation_deg": {
+          "mean": 1.976892858797673,
+          "rmse": 2.0630459634260228,
+          "p95": 2.8408020307596176,
+          "max": 3.714714588635277
+        }
+      },
+      "right_wrist_yaw_link": {
+        "position_m": {
+          "mean": 0.01640004656019974,
+          "rmse": 0.01904977681818716,
+          "p95": 0.03604132054281813,
+          "max": 0.054937236593983356
+        },
+        "rotation_deg": {
+          "mean": 2.352513424592362,
+          "rmse": 2.5514226295228966,
+          "p95": 3.961285216341442,
+          "max": 8.59656752051603
+        }
+      }
+    },
+    "active_link_pose_pelvis_frame_local_twist": {
+      "pelvis": {
+        "position_m": {
+          "mean": 0.0,
+          "rmse": 0.0,
+          "p95": 0.0,
+          "max": 0.0
+        },
+        "rotation_deg": {
+          "mean": 0.0,
+          "rmse": 0.0,
+          "p95": 0.0,
+          "max": 0.0
+        }
+      },
+      "left_wrist_yaw_link": {
+        "position_m": {
+          "mean": 0.020603784100518385,
+          "rmse": 0.02333909773221793,
+          "p95": 0.040374208345264576,
+          "max": 0.05751867194179997
+        },
+        "rotation_deg": {
+          "mean": 3.7799347214221877,
+          "rmse": 4.084811866558564,
+          "p95": 7.2727216674097726,
+          "max": 8.50783350047087
+        }
+      },
+      "right_wrist_yaw_link": {
+        "position_m": {
+          "mean": 0.02193562091616716,
+          "rmse": 0.025639030439211077,
+          "p95": 0.056515129861228766,
+          "max": 0.07065388967559855
+        },
+        "rotation_deg": {
+          "mean": 5.003406903557464,
+          "rmse": 5.572525945029158,
+          "p95": 9.35334626467125,
+          "max": 11.841305154237702
+        }
+      }
+    }
+  },
+  "dynamic_by_group": {
+    "arms": {
+      "action_second_difference_rms": 0.01031849067658186,
+      "target_angle_second_difference_rms_rad": 0.003925052153841032,
+      "joint_acceleration_control_rate_rms_rad_s2": 1.8731640577316284
+    },
+    "legs_waist": {
+      "action_second_difference_rms": 0.03205804526805878,
+      "target_angle_second_difference_rms_rad": 0.014026051155355804,
+      "joint_acceleration_control_rate_rms_rad_s2": 5.546433925628662
+    }
+  },
+  "source_sha256": {
+    "eval_memory.py": "dbb756842375e748094e487fad5481dfda34fba4f663a168326891bfec734e4d",
+    "_legacy_mujoco.py": "b523001add5aa7bb2bf4000d0d4cb32309e5b1ba239bba1dea8628220e4f1f90",
+    "deployment_contract.json": "340153cb6d5bf361e02138cf8de63d5fef08fc44b79b340c479d3bafa49453b5"
+  },
+  "checkpoint_sha256": "ad982da60ba13f6f1cc823776508f67a2b708c92afce10ee911556a81589d959",
+  "reference_sha256": "318ac67061d2d8b9a342b20df1e982a54694e2334234461dc468ed8c98f34ae9",
+  "scope": "October stability probe: one full motion plus 3 s hold, same v3 reference and phase labels"
+}

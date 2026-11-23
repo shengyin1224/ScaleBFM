@@ -1,0 +1,11 @@
+{
+  "all_model_weights_finite": true,
+  "actor_projection_width": 271,
+  "learned_phase_column_norms": [
+    0.008018765598535538,
+    0.00537142576649785,
+    0.009026614017784595,
+    0.006796697154641151
+  ],
+  "checkpoint": "/root/shengyin/ScaleBFM_focus_brain_20261114/ScaleTrack/logs/rsl_rl/g1_hat4_brain_focus_lr/brain_focus_lr_smoke_20261114/model_5.pt"
+}
